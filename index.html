@@ -341,55 +341,60 @@
           <div class="relative mx-auto max-w-sm sm:max-w-md lg:max-w-none">
             
             <!-- Exterior Glowing Neon Frame -->
-            <div class="neon-card-glow pulse-neon rounded-3xl p-2.5 sm:p-3 bg-[#161218]/90 backdrop-blur-xl">
+            <div class="neon-card-glow pulse-neon rounded-3xl p-2.5 sm:p-3 bg-[#161218] backdrop-blur-xl">
               <div class="relative rounded-2xl overflow-hidden group shadow-2xl">
                 
                 <!-- Main Dynamic Hero Image -->
                 <img id="hero-dynamic-img" 
                   class="w-full h-[320px] sm:h-[400px] lg:h-[460px] object-cover hero-img-transition group-hover:scale-105" 
                   alt="Mica Lash Art Trabajo de pestañas" 
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBv0rL3kbn14-9ggz-f3oR_MQJEjBMgCLanS27bqrl8snwyoasvn78Aa9L_4AEkHwXmArrVYdfCgGHZRDhBmOVFQdbbzAalNFwEe_A-1zQ1WZjz3IvuVcCGwuQQor-U9nTzsMz_0dMqVacs8arA4_e7v_Ud2VUgP9u3N_DdxKiPYQbQt2kTIeXC6QNT7Im9fDIBTny8X5WXrKskNeH6p8Oterrf29L2d1B3XxM2iQVy-nQzgq8kN5qd"/>
+                  src="images/hero-eyelash-extensions.jpg"/>
 
-                <!-- Top Floating Badge -->
+                <!-- Top & Bottom Contrast Scrims (Garantizan lectura óptima sobre cualquier foto) -->
+                <div class="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/85 via-black/40 to-transparent pointer-events-none z-[5]"></div>
+                <div class="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-black via-black/75 to-transparent pointer-events-none z-[5]"></div>
+
+                <!-- Top Floating Badge (100% Sólido y Alto Contraste) -->
                 <div class="absolute top-3 sm:top-4 left-3 sm:left-4 z-10 flex flex-wrap gap-2">
-                  <span id="hero-dynamic-badge" class="px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-[#0d0a0f]/85 backdrop-blur-md border border-[#ff3e96]/60 text-[#ffaed8] text-[11px] sm:text-xs font-bold flex items-center gap-1 shadow-md">
-                    <span class="material-symbols-outlined text-xs text-[#ff3e96]">sparkles</span>
-                    <span id="hero-badge-text">★ Look Más Pedido</span>
+                  <span id="hero-dynamic-badge" class="px-3.5 py-1.5 rounded-full bg-[#070509] border-2 border-[#ff3e96] text-white text-xs font-black flex items-center gap-1.5 shadow-[0_4px_15px_rgba(0,0,0,0.9)]">
+                    <span class="w-2 h-2 rounded-full bg-[#ff3e96] animate-pulse"></span>
+                    <span id="hero-badge-text" class="text-white font-extrabold tracking-wide">★ Look Más Pedido</span>
                   </span>
                 </div>
 
-                <!-- Next/Prev Buttons for Changing Styles (Mobile Friendly) -->
-                <button type="button" id="hero-prev-btn" aria-label="Estilo anterior" class="absolute left-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/60 hover:bg-[#ff3e96] text-white flex items-center justify-center backdrop-blur-sm border border-white/20 transition-all z-20">
+                <!-- Next/Prev Buttons for Changing Styles (Mobile Friendly & High Contrast) -->
+                <button type="button" id="hero-prev-btn" aria-label="Estilo anterior" class="absolute left-2.5 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/90 hover:bg-[#ff2d85] text-white flex items-center justify-center border-2 border-[#ff3e96]/80 shadow-[0_4px_15px_rgba(0,0,0,0.8)] transition-all z-20 active:scale-90">
                   <span class="material-symbols-outlined text-base">chevron_left</span>
                 </button>
-                <button type="button" id="hero-next-btn" aria-label="Siguiente estilo" class="absolute right-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/60 hover:bg-[#ff3e96] text-white flex items-center justify-center backdrop-blur-sm border border-white/20 transition-all z-20">
+                <button type="button" id="hero-next-btn" aria-label="Siguiente estilo" class="absolute right-2.5 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/90 hover:bg-[#ff2d85] text-white flex items-center justify-center border-2 border-[#ff3e96]/80 shadow-[0_4px_15px_rgba(0,0,0,0.8)] transition-all z-20 active:scale-90">
                   <span class="material-symbols-outlined text-base">chevron_right</span>
                 </button>
 
-                <!-- Bottom Floating VIP Card -->
-                <div class="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:right-4 p-3 sm:p-4 rounded-xl bg-[#0d0a0f]/92 backdrop-blur-md border border-[#ff3e96]/50 flex items-center justify-between shadow-xl">
-                  <div>
+                <!-- Bottom Floating VIP Card (100% Fondo Sólido Oscuro y Letras Claras de Máximo Contraste) -->
+                <div class="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:right-4 p-3.5 sm:p-4 rounded-2xl bg-[#08050a] border-2 border-[#ff3e96] flex items-center justify-between shadow-[0_10px_35px_rgba(0,0,0,0.95)] z-10">
+                  <div class="pr-2">
                     <div class="flex items-center gap-1.5">
-                      <span id="hero-card-title" class="text-xs sm:text-sm font-display font-bold text-white">
+                      <span id="hero-card-title" class="text-sm sm:text-base font-display font-extrabold text-white tracking-wide drop-shadow-md">
                         Volumen Híbrido Glam
                       </span>
                       <span class="text-[#ff3e96] text-xs">♡</span>
                     </div>
-                    <p id="hero-card-detail" class="text-[11px] sm:text-xs text-[#d8c4d6] line-clamp-1 mt-0.5">
+                    <p id="hero-card-detail" class="text-xs sm:text-sm text-gray-100 font-medium line-clamp-1 mt-0.5 drop-shadow-sm">
                       Densidad suave, textura aterciopelada y abanicos ultralivianos
                     </p>
-                    <div class="flex items-center gap-2 mt-1">
-                      <span id="hero-card-price" class="font-bold text-xs text-[#ffaed8]">$34.000</span>
-                      <span class="text-[10px] text-white/50">•</span>
-                      <span id="hero-card-time" class="text-[10px] text-[#ff6ea7] flex items-center gap-0.5">
-                        <span class="material-symbols-outlined text-[11px]">schedule</span> 120 min
+                    <div class="flex items-center gap-2 mt-1.5">
+                      <span id="hero-card-price" class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-gradient-to-r from-[#ff2d85] to-[#ff529c] text-white font-black text-xs shadow-md">
+                        $34.000
+                      </span>
+                      <span id="hero-card-time" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white/10 text-white font-bold text-xs border border-white/20">
+                        <span class="material-symbols-outlined text-[13px] text-[#ffaed8]">schedule</span> 120 min
                       </span>
                     </div>
                   </div>
-                  <a class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] text-white flex items-center justify-center shadow-lg shadow-[#ff2d85]/50 hover:scale-105 active:scale-95 transition-transform flex-shrink-0 ml-2" 
+                  <a class="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] text-white flex items-center justify-center shadow-lg shadow-[#ff2d85]/60 hover:scale-105 active:scale-95 transition-transform flex-shrink-0 ml-2" 
                     href="https://wa.me/5492914491141?text=Hola%20Mica!%20Quiero%20consultar%20por%20un%20turno" 
                     target="_blank" title="Enviar WhatsApp">
-                    <span class="material-symbols-outlined text-lg sm:text-xl">send</span>
+                    <span class="material-symbols-outlined text-xl">send</span>
                   </a>
                 </div>
 
@@ -742,8 +747,8 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         
         <!-- Gallery 1 -->
-        <div class="relative group cursor-pointer overflow-hidden rounded-2xl neon-card bg-[#161218]" onclick="openLightbox('https://lh3.googleusercontent.com/aida-public/AB6AXuBP7yC6j1Z4VV_n2cPGs8YE7jNeH42d8dwm_2KImcA_DUQDqI5FZdQrVAKNHaKUPmYLec_kk4PmCj-lYSVmxBYHywQakifsLVk1G44znxwV29H0OS0TCyrAw3rAKpRma8-soinZSvauEbxcqqMYzJN-vB1Rc13qH-b9AeXzdpWaKadE2NZ0gcBapPJfROHHLQtRxHRe0Why0sqvDM4wbKu2lDqWpt59W_oPRKAGi58zMJv222ePtAQz', 'Lifting de Pestañas &amp; Tinte Profundo', 'Curvatura natural que abre la mirada por completo con efecto máscara limpio.')">
-          <img class="w-full h-64 sm:h-80 object-cover transition-transform duration-500 group-hover:scale-110" alt="Lifting de Pestañas" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBP7yC6j1Z4VV_n2cPGs8YE7jNeH42d8dwm_2KImcA_DUQDqI5FZdQrVAKNHaKUPmYLec_kk4PmCj-lYSVmxBYHywQakifsLVk1G44znxwV29H0OS0TCyrAw3rAKpRma8-soinZSvauEbxcqqMYzJN-vB1Rc13qH-b9AeXzdpWaKadE2NZ0gcBapPJfROHHLQtRxHRe0Why0sqvDM4wbKu2lDqWpt59W_oPRKAGi58zMJv222ePtAQz"/>
+        <div class="relative group cursor-pointer overflow-hidden rounded-2xl neon-card bg-[#161218]" onclick="openLightbox('images/gallery-1-lash-lift.jpg', 'Lifting de Pestañas &amp; Tinte Profundo', 'Curvatura natural que abre la mirada por completo con efecto máscara limpio.')">
+          <img class="w-full h-64 sm:h-80 object-cover transition-transform duration-500 group-hover:scale-110" alt="Lifting de Pestañas" src="images/gallery-1-lash-lift.jpg"/>
           <div class="absolute inset-0 bg-gradient-to-t from-[#0d0a0f] via-black/40 to-transparent opacity-90 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4 sm:p-5">
             <span class="text-[11px] font-bold text-[#ff3e96] uppercase tracking-widest">Lifting Natural</span>
             <p class="font-display text-white text-base sm:text-lg font-bold">Curvatura y Nutrición</p>
@@ -751,8 +756,8 @@
         </div>
 
         <!-- Gallery 2 -->
-        <div class="relative group cursor-pointer overflow-hidden rounded-2xl neon-card bg-[#161218]" onclick="openLightbox('https://lh3.googleusercontent.com/aida-public/AB6AXuDuB8FkY9QqHmmM3TABeQ5OZrEvnqoTxJOS3UTeLLJuk_RoC-WblFUPlVadjlyI_gJVorIUqqEimIv8AXg_fX9R8HvdJmlE8afhFhQ7GtxCI7-jxXFQmANw0NU52wEz9jQqMcQ4DpJNlyQYMART_E8Q8DticjSkEemyr3t8oSIKXGrssAvRRBkiVlrpkh0mP_BJ7_9VtuKxW4sDHn6BIraVk9tQrl2pl3mZHHQWPbbNYnTvqc-uXrb7', 'Extensiones Clásicas Efecto Rímel', 'Aislación 1 a 1 milimétrica para un orden suave y duradero.')">
-          <img class="w-full h-64 sm:h-80 object-cover transition-transform duration-500 group-hover:scale-110" alt="Extensiones Clásicas 1 a 1" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuB8FkY9QqHmmM3TABeQ5OZrEvnqoTxJOS3UTeLLJuk_RoC-WblFUPlVadjlyI_gJVorIUqqEimIv8AXg_fX9R8HvdJmlE8afhFhQ7GtxCI7-jxXFQmANw0NU52wEz9jQqMcQ4DpJNlyQYMART_E8Q8DticjSkEemyr3t8oSIKXGrssAvRRBkiVlrpkh0mP_BJ7_9VtuKxW4sDHn6BIraVk9tQrl2pl3mZHHQWPbbNYnTvqc-uXrb7"/>
+        <div class="relative group cursor-pointer overflow-hidden rounded-2xl neon-card bg-[#161218]" onclick="openLightbox('images/gallery-2-classic-extensions.jpg', 'Extensiones Clásicas Efecto Rímel', 'Aislación 1 a 1 milimétrica para un orden suave y duradero.')">
+          <img class="w-full h-64 sm:h-80 object-cover transition-transform duration-500 group-hover:scale-110" alt="Extensiones Clásicas 1 a 1" src="images/gallery-2-classic-extensions.jpg"/>
           <div class="absolute inset-0 bg-gradient-to-t from-[#0d0a0f] via-black/40 to-transparent opacity-90 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4 sm:p-5">
             <span class="text-[11px] font-bold text-[#ff3e96] uppercase tracking-widest">Clásicas 1:1</span>
             <p class="font-display text-white text-base sm:text-lg font-bold">Elegancia Cotidiana</p>
@@ -760,8 +765,8 @@
         </div>
 
         <!-- Gallery 3 -->
-        <div class="relative group cursor-pointer overflow-hidden rounded-2xl neon-card bg-[#161218]" onclick="openLightbox('https://lh3.googleusercontent.com/aida-public/AB6AXuBNDWGmxxkvtJoRoMkFBKY5nkiwBshfIvYJOsvflKKK5NLqRQ31sUPbMyLUkjlT5y4EGMnnJw6ox4E2ZvfeHs4-PQECvxfrfICysI75zWcYM3n-w1m7FOZhH893rd5jsL6p0yCX6zShUKlvpC52IIC5bKcU4CVc6xK-NkHkgGmZuaiKK2cgfCMXc5KGOaSIUaz84kpi19N5WJ-AGjgtmXzuUTYD6j9GohCjebAUNB3h8TCz_FfdQoC2', 'Volumen Híbrido Esponjoso', 'Transición suave de densidad en abanicos ligeros sin sobrecargar el ojo.')">
-          <img class="w-full h-64 sm:h-80 object-cover transition-transform duration-500 group-hover:scale-110" alt="Volumen Híbrido" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNDWGmxxkvtJoRoMkFBKY5nkiwBshfIvYJOsvflKKK5NLqRQ31sUPbMyLUkjlT5y4EGMnnJw6ox4E2ZvfeHs4-PQECvxfrfICysI75zWcYM3n-w1m7FOZhH893rd5jsL6p0yCX6zShUKlvpC52IIC5bKcU4CVc6xK-NkHkgGmZuaiKK2cgfCMXc5KGOaSIUaz84kpi19N5WJ-AGjgtmXzuUTYD6j9GohCjebAUNB3h8TCz_FfdQoC2"/>
+        <div class="relative group cursor-pointer overflow-hidden rounded-2xl neon-card bg-[#161218]" onclick="openLightbox('images/gallery-3-volume-hybrid.jpg', 'Volumen Híbrido Esponjoso', 'Transición suave de densidad en abanicos ligeros sin sobrecargar el ojo.')">
+          <img class="w-full h-64 sm:h-80 object-cover transition-transform duration-500 group-hover:scale-110" alt="Volumen Híbrido" src="images/gallery-3-volume-hybrid.jpg"/>
           <div class="absolute inset-0 bg-gradient-to-t from-[#0d0a0f] via-black/40 to-transparent opacity-90 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4 sm:p-5">
             <span class="text-[11px] font-bold text-[#ff3e96] uppercase tracking-widest">Híbridas Suaves</span>
             <p class="font-display text-white text-base sm:text-lg font-bold">Densidad y Textura</p>
@@ -769,8 +774,8 @@
         </div>
 
         <!-- Gallery 4 -->
-        <div class="relative group cursor-pointer overflow-hidden rounded-2xl neon-card bg-[#161218]" onclick="openLightbox('https://lh3.googleusercontent.com/aida-public/AB6AXuCiUQhhkOUcWZv6ttsvAAKgCL6Jhe5-a3mfSiS1xSQZMRs_g115QhuJdJbfno6cMojPUI_XLB1A4yyDs2RgO9MOwBHpoXnJTreMG72d53wclX4gB2wVnOGaFD3WqToCsrhAOounkJ5jECgdV_OMkPabTmsiRIb3MFI2lx0_f5CRLgzL4JQz1N5jB9iBjGSgZIJzSce5lhZXM5jAty1ahU2ahYIVF7ZHoj26DyhjX9c-QpJdcEXN9yQT', 'Laminado &amp; Diseño de Cejas', 'Pelo cepillado hacia arriba con simetría orgánica y aspecto denso.')">
-          <img class="w-full h-64 sm:h-80 object-cover transition-transform duration-500 group-hover:scale-110" alt="Laminado de Cejas" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCiUQhhkOUcWZv6ttsvAAKgCL6Jhe5-a3mfSiS1xSQZMRs_g115QhuJdJbfno6cMojPUI_XLB1A4yyDs2RgO9MOwBHpoXnJTreMG72d53wclX4gB2wVnOGaFD3WqToCsrhAOounkJ5jECgdV_OMkPabTmsiRIb3MFI2lx0_f5CRLgzL4JQz1N5jB9iBjGSgZIJzSce5lhZXM5jAty1ahU2ahYIVF7ZHoj26DyhjX9c-QpJdcEXN9yQT"/>
+        <div class="relative group cursor-pointer overflow-hidden rounded-2xl neon-card bg-[#161218]" onclick="openLightbox('images/gallery-4-brow-lamination.jpg', 'Laminado &amp; Diseño de Cejas', 'Pelo cepillado hacia arriba con simetría orgánica y aspecto denso.')">
+          <img class="w-full h-64 sm:h-80 object-cover transition-transform duration-500 group-hover:scale-110" alt="Laminado de Cejas" src="images/gallery-4-brow-lamination.jpg"/>
           <div class="absolute inset-0 bg-gradient-to-t from-[#0d0a0f] via-black/40 to-transparent opacity-90 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4 sm:p-5">
             <span class="text-[11px] font-bold text-[#ff3e96] uppercase tracking-widest">Cejas Orgánicas</span>
             <p class="font-display text-white text-base sm:text-lg font-bold">Laminado &amp; Simetría</p>
@@ -792,71 +797,170 @@
 
   <!-- ================= SOBRE MICA ================= -->
   <section class="py-16 sm:py-20 md:py-28" id="sobre-mica">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
       
-      <!-- Foto de Mica con Marco Neón -->
-      <div class="lg:col-span-5 order-2 lg:order-1">
+      <!-- Visual Column: Fotos reales de Micaela con intercalado responsivo por tamaño de pantalla -->
+      <div class="lg:col-span-5 order-2 lg:order-1 lg:sticky lg:top-24">
         <div class="relative max-w-sm sm:max-w-md mx-auto">
-          <div class="neon-card-glow rounded-3xl overflow-hidden bg-[#161218]">
-            <img class="w-full h-[360px] sm:h-[440px] object-cover" alt="Micaela Lash Artist" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9f75dHzOrimQ6pDuaGX_EtfHpdt2ABqzlYIqb-Mm5UxCMn6l9nnXg8dbv99VYAup-5oI2HIh6sxLzngWDtASeKM8jwXeciRSZR-s3idQsyXaaAmkR-qO3SGAfuaeu76NsQMyy4XZC1x2XwuwbVKWvzq7fgNOvzSPl1SYvixQxvb5_iZwNpb0euA1jFAFw9wzzXarOaWXJOXTWLv0uA7hR0ty3IOpm0FHfGvlJo5zS-6DgL0kl6psi"/>
-            <div class="p-4 sm:p-5 bg-[#0d0a0f]/90 border-t border-[#ff3e96]/30">
-              <div class="flex items-center justify-between">
-                <div>
-                  <p class="font-display font-bold text-lg sm:text-xl text-white">Micaela</p>
-                  <p class="text-xs text-[#ff6ea7] font-semibold">Lash Artist Certificada • Bahía Blanca</p>
-                </div>
-                <span class="text-[#ff3e96] text-xl">♡</span>
+          
+          <!-- Marco Neón Glam exterior -->
+          <div class="neon-card-glow rounded-3xl overflow-hidden bg-[#161218] shadow-2xl p-2.5 sm:p-3">
+            <div class="relative rounded-2xl overflow-hidden group">
+              
+              <!-- Responsive Picture Element: Intercala fotos por tamaño de pantalla -->
+              <picture id="mica-bio-picture">
+                <!-- En celulares (hasta 768px): foto en pose frontal -->
+                <source media="(max-width: 768px)" srcset="images/mica-bio-1.jpg"/>
+                <!-- En tablets y pantallas grandes (desde 769px): foto en pose de estudio -->
+                <source media="(min-width: 769px)" srcset="images/mica-bio-2.jpg"/>
+                <img id="mica-bio-img" 
+                  class="w-full h-[400px] sm:h-[480px] lg:h-[560px] object-cover object-top transition-all duration-500 group-hover:scale-105" 
+                  alt="Micaela creadora de Mica Lash Art con pinza gigante" 
+                  src="images/mica-bio-1.jpg"/>
+              </picture>
+
+              <!-- Contrast Scrims -->
+              <div class="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/80 via-black/40 to-transparent pointer-events-none"></div>
+              <div class="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black via-black/70 to-transparent pointer-events-none"></div>
+
+              <!-- Top Floating Badge -->
+              <div class="absolute top-3 left-3 z-10">
+                <span class="px-3.5 py-1.5 rounded-full bg-[#070509] border-2 border-[#ff3e96] text-white text-xs font-black flex items-center gap-1.5 shadow-[0_4px_15px_rgba(0,0,0,0.9)]">
+                  <span class="text-[#ff3e96]">👑</span>
+                  <span>Lashista &amp; Maquilladora desde 2016</span>
+                </span>
               </div>
+
+              <!-- Bottom Floating Signature Card con selector de foto interactivo -->
+              <div class="absolute bottom-3 left-3 right-3 p-3.5 rounded-xl bg-[#08050a]/95 border-2 border-[#ff3e96] flex items-center justify-between shadow-2xl z-10 backdrop-blur-md">
+                <div>
+                  <div class="flex items-center gap-1.5">
+                    <p class="font-display font-extrabold text-base sm:text-lg text-white">Micaela</p>
+                    <span class="text-[#ff3e96] text-sm">♡</span>
+                  </div>
+                  <p class="text-[11px] sm:text-xs text-[#ff6ea7] font-bold">Creadora de Mica Lash Art • Bahía Blanca</p>
+                  <p class="text-[10px] text-gray-200 mt-0.5">Atención VIP &amp; Capacitaciones</p>
+                </div>
+                <!-- Selector manual de foto para intercalar en cualquier dispositivo -->
+                <div class="flex items-center gap-1 bg-[#161218] p-1 rounded-full border border-white/10">
+                  <button type="button" onclick="toggleMicaPhoto(1)" id="btn-photo-1" class="w-7 h-7 rounded-full bg-[#ff2d85] text-white text-xs font-bold flex items-center justify-center transition-all shadow" title="Ver foto 1">1</button>
+                  <button type="button" onclick="toggleMicaPhoto(2)" id="btn-photo-2" class="w-7 h-7 rounded-full bg-transparent text-[#d8c4d6] hover:text-white text-xs font-bold flex items-center justify-center transition-all" title="Ver foto 2">2</button>
+                </div>
+              </div>
+
             </div>
           </div>
+
+          <!-- Micro-stats badges under photo -->
+          <div class="mt-4 grid grid-cols-2 gap-3 text-center">
+            <div class="p-3 rounded-2xl bg-[#161218] border border-[#ff3e96]/30 shadow-md">
+              <p class="font-display font-black text-xl text-white text-glow">9+ Años</p>
+              <p class="text-[11px] text-[#ffaed8] font-bold uppercase tracking-wider">De Experiencia (2016)</p>
+            </div>
+            <div class="p-3 rounded-2xl bg-[#161218] border border-[#ff3e96]/30 shadow-md">
+              <p class="font-display font-black text-xl text-white text-glow">+150</p>
+              <p class="text-[11px] text-[#ffaed8] font-bold uppercase tracking-wider">Clientas &amp; Alumnas</p>
+            </div>
+          </div>
+
         </div>
       </div>
 
-      <!-- Filosofía -->
-      <div class="lg:col-span-7 space-y-5 sm:space-y-6 order-1 lg:order-2 text-center lg:text-left">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1e1622] border border-[#ff3e96]/30 text-xs text-[#ffaed8] font-bold tracking-widest uppercase">
-          <span class="text-[#ff3e96]">♡</span> Filosofía del Estudio <span class="text-[#ff3e96]">♡</span>
+      <!-- Narrative Column: Bio Oficial de Micaela -->
+      <div class="lg:col-span-7 space-y-6 order-1 lg:order-2 text-left">
+        
+        <!-- Header Pill Oficial -->
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#1e1622] border-2 border-[#ff3e96] text-xs sm:text-sm text-[#ffaed8] font-black tracking-wider uppercase shadow-lg shadow-[#ff3e96]/20">
+          <span>🎀✨ ¡HOLA, SOY MICA! BIENVENIDAS A MI MUNDO ✨🎀</span>
         </div>
-        <h2 class="font-display text-2xl sm:text-3xl md:text-5xl font-bold text-white leading-tight">
-          "Cada mirada es única y merece un diseño artesanal."
-        </h2>
-        <p class="text-sm sm:text-base md:text-lg text-[#d8c4d6] leading-relaxed">
-          Hola, soy Mica. En mi estudio de Bahía Blanca priorizo siempre la salud de tus pestañas naturales. No realizo aplicaciones masivas ni apresuradas: cada turno es un momento íntimo de relax y cuidado minucioso.
-        </p>
-        <p class="text-xs sm:text-sm md:text-base text-[#d8c4d6]/90 leading-relaxed">
-          Mi objetivo es que te despiertes lista todos los días, sintiéndote hermosa y cómoda, con pestañas livianas que no se sienten ni molestan en absoluto.
-        </p>
 
-        <!-- 3 Compromisos de Mica -->
-        <div class="space-y-3.5 pt-2 text-left">
-          <div class="flex items-start gap-3.5">
-            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#271c2b] border border-[#ff3e96]/50 flex items-center justify-center text-[#ff3e96] flex-shrink-0 mt-0.5">
-              <span class="material-symbols-outlined text-base sm:text-lg">verified</span>
-            </div>
-            <div>
-              <h3 class="font-bold text-white text-sm sm:text-base">Cero daño a tu pestaña natural</h3>
-              <p class="text-xs sm:text-sm text-[#d8c4d6]">Aislación prolija y elección estricta del calibre ideal para tu fibra capilar.</p>
-            </div>
+        <!-- Headline & Subtitle -->
+        <div class="space-y-2">
+          <h2 class="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold text-white leading-tight">
+            "Hacer de mi pasión mi profesión." 👑
+          </h2>
+          <p class="font-script text-2xl sm:text-3xl text-[#ffaed8] italic leading-relaxed">
+            Si todavía no me conocés, ¡me presento! 💗
+          </p>
+        </div>
+
+        <!-- Story Presentation -->
+        <div class="space-y-4 text-sm sm:text-base text-[#f5edf5] leading-relaxed">
+          <p class="bg-[#161218]/80 p-4 sm:p-5 rounded-2xl border border-white/5">
+            Soy <strong>Micaela</strong>, creadora de <strong>Mica Lash Art</strong>, lashista desde 2016, maquilladora y apasionada por el mundo de la belleza. 🦋💄
+          </p>
+          <p class="text-[#d8c4d6]">
+            A lo largo de los años fui aprendiendo, capacitándome y sumando nuevos servicios para ofrecerles una experiencia cada vez más completa, siempre con amor, dedicación y atención a cada detalle. 🩷
+          </p>
+        </div>
+
+        <!-- Services Box: ¿Qué podés encontrar en Mica Lash Art? -->
+        <div class="p-5 sm:p-7 rounded-3xl bg-gradient-to-br from-[#1e1622] via-[#161218] to-[#120d15] border-2 border-[#ff3e96]/50 shadow-2xl space-y-4">
+          <div class="flex items-center gap-2 border-b border-white/10 pb-3">
+            <span class="text-xl">✨</span>
+            <h3 class="font-display text-lg sm:text-xl font-bold text-white tracking-wide">
+              ¿Qué podés encontrar en Mica Lash Art?
+            </h3>
           </div>
-          <div class="flex items-start gap-3.5">
-            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#271c2b] border border-[#ff3e96]/50 flex items-center justify-center text-[#ff3e96] flex-shrink-0 mt-0.5">
-              <span class="material-symbols-outlined text-base sm:text-lg">sanitizer</span>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm">
+            <div class="flex items-center gap-3 p-3 rounded-xl bg-[#0d0a0f] border border-[#ff3e96]/30 hover:border-[#ff3e96] transition-colors">
+              <span class="text-lg">🎀</span>
+              <span class="font-bold text-white">Extensiones de pestañas y diseños personalizados</span>
             </div>
-            <div>
-              <h3 class="font-bold text-white text-sm sm:text-base">Bioseguridad de grado estético</h3>
-              <p class="text-xs sm:text-sm text-[#d8c4d6]">Pinzas desinfectadas y esterilizadas, descartables de un solo uso por clienta.</p>
+            <div class="flex items-center gap-3 p-3 rounded-xl bg-[#0d0a0f] border border-[#ff3e96]/30 hover:border-[#ff3e96] transition-colors">
+              <span class="text-lg">🤍</span>
+              <span class="font-bold text-white">Lifting de pestañas</span>
             </div>
-          </div>
-          <div class="flex items-start gap-3.5">
-            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#271c2b] border border-[#ff3e96]/50 flex items-center justify-center text-[#ff3e96] flex-shrink-0 mt-0.5">
-              <span class="material-symbols-outlined text-base sm:text-lg">spa</span>
+            <div class="flex items-center gap-3 p-3 rounded-xl bg-[#0d0a0f] border border-[#ff3e96]/30 hover:border-[#ff3e96] transition-colors">
+              <span class="text-lg">🦋</span>
+              <span class="font-bold text-white">Diseño y perfilado de cejas</span>
             </div>
-            <div>
-              <h3 class="font-bold text-white text-sm sm:text-base">Espacio de silencio &amp; descanso</h3>
-              <p class="text-xs sm:text-sm text-[#d8c4d6]">Camilla ergonómica, mantita suave y música relajante para desconectar por completo.</p>
+            <div class="flex items-center gap-3 p-3 rounded-xl bg-[#0d0a0f] border border-[#ff3e96]/30 hover:border-[#ff3e96] transition-colors">
+              <span class="text-lg">🌸</span>
+              <span class="font-bold text-white">Depilación</span>
+            </div>
+            <div class="flex items-center gap-3 p-3 rounded-xl bg-[#0d0a0f] border border-[#ff3e96]/30 hover:border-[#ff3e96] transition-colors">
+              <span class="text-lg">💄</span>
+              <span class="font-bold text-white">Maquillaje profesional</span>
+            </div>
+            <div class="flex items-center gap-3 p-3 rounded-xl bg-[#0d0a0f] border border-[#ff3e96]/30 hover:border-[#ff3e96] transition-colors">
+              <span class="text-lg">✨</span>
+              <span class="font-bold text-white">Electroestimulación corporal</span>
             </div>
           </div>
         </div>
+
+        <!-- Filosofía & Agradecimiento Personal -->
+        <div class="space-y-3.5 text-xs sm:text-sm text-[#d8c4d6] leading-relaxed">
+          <p class="text-sm sm:text-base text-white font-medium italic border-l-2 border-[#ff3e96] pl-4 py-1">
+            "Cada servicio tiene su magia, pero todos comparten lo mismo: las ganas de ayudarte a resaltar tu belleza y que te sientas hermosa, cómoda y segura de vos misma. 🫶🏻"
+          </p>
+          <p>
+            Detrás de esta marca hay años de trabajo, esfuerzo, aprendizaje y muchísimos sueños por cumplir. Y esto es solo el comienzo… 💫
+          </p>
+          <p class="text-white/95">
+            Gracias a cada clienta y alumna que confía en mí, recomienda mi trabajo y me acompaña en este camino. Ustedes son una parte muy importante de todo lo que estoy construyendo. 🥹💕
+          </p>
+          <p class="font-display text-base sm:text-lg text-[#ffaed8] font-bold">
+            Bienvenidas a mi espacio, a mi trabajo y a este sueño llamado <span class="text-white uppercase tracking-wider text-glow">MICA LASH ART</span>. 🎀🩷
+          </p>
+        </div>
+
+        <!-- CTA Directo con WhatsApp para Turnos, Consultas & Capacitaciones -->
+        <div class="pt-3 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+          <a class="inline-flex justify-center items-center gap-2.5 bg-gradient-to-r from-[#25D366] to-[#128C7E] hover:from-[#20bd5a] hover:to-[#0f7a6e] text-white px-7 py-4 rounded-full font-bold text-sm sm:text-base shadow-xl shadow-[#25D366]/30 active:scale-95 transition-all text-center" href="https://wa.me/5492914491141?text=Hola%20Mica!%20Te%20escribo%20por%20turnos,%20consultas%20o%20capacitaciones%20de%20Mica%20Lash%20Art" target="_blank">
+            <svg class="w-5 h-5 fill-current" viewbox="0 0 24 24">
+              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"></path>
+            </svg>
+            <span>💌 Turnos, Consultas &amp; Capacitaciones</span>
+          </a>
+          <a class="inline-flex justify-center items-center gap-2 bg-[#1e1622] hover:bg-[#271c2b] border border-[#ff3e96]/40 text-[#ffaed8] px-6 py-4 rounded-full font-bold text-xs uppercase tracking-wider transition-all" href="https://instagram.com/mica.lashart" target="_blank">
+            <span class="material-symbols-outlined text-base">photo_camera</span>
+            <span>Instagram @mica.lashart</span>
+          </a>
+        </div>
+
       </div>
 
     </div>
@@ -1011,7 +1115,7 @@
 
         <div class="lg:col-span-6">
           <div class="neon-card-glow rounded-2xl overflow-hidden bg-[#0d0a0f] p-2">
-            <img class="w-full h-64 sm:h-80 object-cover rounded-xl" alt="Studio Mica Lash Art" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAp2Q72K77kC0Z7Igcfx4xmvY0THVkxv5crIrZoy60B8GcFGVuDOHLg4OYyTbyqt4isX5-L-3AMXgnn9BroPbMn2Xqo5MmOjPCdxRY9jLmMAYHJ_o-vHi2nMjgsc24nDd3I_Q_2gdUzPWmZv6BH5jISF5t9OF-JfcKzdq-iHIN9Btd5B1-bKZFJSg0jtzakaO93yf8CNKKxsvBUVaZSQXO8EyN0NCv8W31p9pD33MwrXJMkXInbYfs-"/>
+            <img class="w-full h-64 sm:h-80 object-cover rounded-xl" alt="Studio Mica Lash Art" src="images/studio-ambiance-vip.jpg"/>
           </div>
         </div>
 
@@ -1143,7 +1247,7 @@
   <!-- ================= JAVASCRIPT ================= -->
   <script>
     // 1. Hero Dynamic Style Switcher ("que el hero cambie")
-    const heroStyles = [{"id":"glam","name":"Signature Glam","badge":"★ Look Más Pedido","title":"Volumen Híbrido Glam","detail":"Densidad suave, textura aterciopelada y abanicos ultralivianos","price":"$34.000","time":"120 min","cdnUrl":"https://lh3.googleusercontent.com/aida-public/AB6AXuBv0rL3kbn14-9ggz-f3oR_MQJEjBMgCLanS27bqrl8snwyoasvn78Aa9L_4AEkHwXmArrVYdfCgGHZRDhBmOVFQdbbzAalNFwEe_A-1zQ1WZjz3IvuVcCGwuQQor-U9nTzsMz_0dMqVacs8arA4_e7v_Ud2VUgP9u3N_DdxKiPYQbQt2kTIeXC6QNT7Im9fDIBTny8X5WXrKskNeH6p8Oterrf29L2d1B3XxM2iQVy-nQzgq8kN5qd","localUrl":"images/hero-eyelash-extensions.jpg","img":"https://lh3.googleusercontent.com/aida-public/AB6AXuBv0rL3kbn14-9ggz-f3oR_MQJEjBMgCLanS27bqrl8snwyoasvn78Aa9L_4AEkHwXmArrVYdfCgGHZRDhBmOVFQdbbzAalNFwEe_A-1zQ1WZjz3IvuVcCGwuQQor-U9nTzsMz_0dMqVacs8arA4_e7v_Ud2VUgP9u3N_DdxKiPYQbQt2kTIeXC6QNT7Im9fDIBTny8X5WXrKskNeH6p8Oterrf29L2d1B3XxM2iQVy-nQzgq8kN5qd"},{"id":"lifting","name":"Lifting & Botox","badge":"🌿 100% Natural","title":"Lifting con Keratina","detail":"Eleva tus pestañas naturales desde la raíz con nutrición botox","price":"$18.500","time":"60 min","cdnUrl":"https://lh3.googleusercontent.com/aida-public/AB6AXuBP7yC6j1Z4VV_n2cPGs8YE7jNeH42d8dwm_2KImcA_DUQDqI5FZdQrVAKNHaKUPmYLec_kk4PmCj-lYSVmxBYHywQakifsLVk1G44znxwV29H0OS0TCyrAw3rAKpRma8-soinZSvauEbxcqqMYzJN-vB1Rc13qH-b9AeXzdpWaKadE2NZ0gcBapPJfROHHLQtRxHRe0Why0sqvDM4wbKu2lDqWpt59W_oPRKAGi58zMJv222ePtAQz","localUrl":"images/gallery-1-lash-lift.jpg","img":"https://lh3.googleusercontent.com/aida-public/AB6AXuBP7yC6j1Z4VV_n2cPGs8YE7jNeH42d8dwm_2KImcA_DUQDqI5FZdQrVAKNHaKUPmYLec_kk4PmCj-lYSVmxBYHywQakifsLVk1G44znxwV29H0OS0TCyrAw3rAKpRma8-soinZSvauEbxcqqMYzJN-vB1Rc13qH-b9AeXzdpWaKadE2NZ0gcBapPJfROHHLQtRxHRe0Why0sqvDM4wbKu2lDqWpt59W_oPRKAGi58zMJv222ePtAQz"},{"id":"clasicas","name":"Pelo a Pelo","badge":"✨ Efecto Rímel","title":"Extensiones Clásicas 1:1","detail":"Aislación milimétrica individual para una mirada abierta y limpia","price":"$24.000","time":"90 min","cdnUrl":"https://lh3.googleusercontent.com/aida-public/AB6AXuDuB8FkY9QqHmmM3TABeQ5OZrEvnqoTxJOS3UTeLLJuk_RoC-WblFUPlVadjlyI_gJVorIUqqEimIv8AXg_fX9R8HvdJmlE8afhFhQ7GtxCI7-jxXFQmANw0NU52wEz9jQqMcQ4DpJNlyQYMART_E8Q8DticjSkEemyr3t8oSIKXGrssAvRRBkiVlrpkh0mP_BJ7_9VtuKxW4sDHn6BIraVk9tQrl2pl3mZHHQWPbbNYnTvqc-uXrb7","localUrl":"images/gallery-2-classic-extensions.jpg","img":"https://lh3.googleusercontent.com/aida-public/AB6AXuDuB8FkY9QqHmmM3TABeQ5OZrEvnqoTxJOS3UTeLLJuk_RoC-WblFUPlVadjlyI_gJVorIUqqEimIv8AXg_fX9R8HvdJmlE8afhFhQ7GtxCI7-jxXFQmANw0NU52wEz9jQqMcQ4DpJNlyQYMART_E8Q8DticjSkEemyr3t8oSIKXGrssAvRRBkiVlrpkh0mP_BJ7_9VtuKxW4sDHn6BIraVk9tQrl2pl3mZHHQWPbbNYnTvqc-uXrb7"}];
+    const heroStyles = [{"id":"glam","name":"Signature Glam","badge":"★ Look Más Pedido","title":"Volumen Híbrido Glam","detail":"Densidad suave, textura aterciopelada y abanicos ultralivianos","price":"$34.000","time":"120 min","cdnUrl":"https://lh3.googleusercontent.com/aida-public/AB6AXuBv0rL3kbn14-9ggz-f3oR_MQJEjBMgCLanS27bqrl8snwyoasvn78Aa9L_4AEkHwXmArrVYdfCgGHZRDhBmOVFQdbbzAalNFwEe_A-1zQ1WZjz3IvuVcCGwuQQor-U9nTzsMz_0dMqVacs8arA4_e7v_Ud2VUgP9u3N_DdxKiPYQbQt2kTIeXC6QNT7Im9fDIBTny8X5WXrKskNeH6p8Oterrf29L2d1B3XxM2iQVy-nQzgq8kN5qd","localUrl":"images/hero-eyelash-extensions.jpg","img":"images/hero-eyelash-extensions.jpg"},{"id":"lifting","name":"Lifting & Botox","badge":"🌿 100% Natural","title":"Lifting con Keratina","detail":"Eleva tus pestañas naturales desde la raíz con nutrición botox","price":"$18.500","time":"60 min","cdnUrl":"https://lh3.googleusercontent.com/aida-public/AB6AXuBP7yC6j1Z4VV_n2cPGs8YE7jNeH42d8dwm_2KImcA_DUQDqI5FZdQrVAKNHaKUPmYLec_kk4PmCj-lYSVmxBYHywQakifsLVk1G44znxwV29H0OS0TCyrAw3rAKpRma8-soinZSvauEbxcqqMYzJN-vB1Rc13qH-b9AeXzdpWaKadE2NZ0gcBapPJfROHHLQtRxHRe0Why0sqvDM4wbKu2lDqWpt59W_oPRKAGi58zMJv222ePtAQz","localUrl":"images/gallery-1-lash-lift.jpg","img":"images/gallery-1-lash-lift.jpg"},{"id":"clasicas","name":"Pelo a Pelo","badge":"✨ Efecto Rímel","title":"Extensiones Clásicas 1:1","detail":"Aislación milimétrica individual para una mirada abierta y limpia","price":"$24.000","time":"90 min","cdnUrl":"https://lh3.googleusercontent.com/aida-public/AB6AXuDuB8FkY9QqHmmM3TABeQ5OZrEvnqoTxJOS3UTeLLJuk_RoC-WblFUPlVadjlyI_gJVorIUqqEimIv8AXg_fX9R8HvdJmlE8afhFhQ7GtxCI7-jxXFQmANw0NU52wEz9jQqMcQ4DpJNlyQYMART_E8Q8DticjSkEemyr3t8oSIKXGrssAvRRBkiVlrpkh0mP_BJ7_9VtuKxW4sDHn6BIraVk9tQrl2pl3mZHHQWPbbNYnTvqc-uXrb7","localUrl":"images/gallery-2-classic-extensions.jpg","img":"images/gallery-2-classic-extensions.jpg"}];
     let currentHeroIdx = 0;
     let heroAutoTimer = null;
 
@@ -1174,7 +1278,7 @@
       if (titleEl) titleEl.textContent = data.title;
       if (detailEl) detailEl.textContent = data.detail;
       if (priceEl) priceEl.textContent = data.price;
-      if (timeEl) timeEl.innerHTML = '<span class="material-symbols-outlined text-[11px]">schedule</span> ' + data.time;
+      if (timeEl) timeEl.innerHTML = '<span class="material-symbols-outlined text-[13px] text-[#ffaed8]">schedule</span> ' + data.time;
 
       // Update pills
       document.querySelectorAll('.hero-pill-btn').forEach((btn, i) => {
@@ -1371,6 +1475,31 @@
         closeLightbox();
       }
     });
+
+    // 8. Toggle Fotos de Mica
+    function toggleMicaPhoto(num) {
+      const img = document.getElementById('mica-bio-img');
+      const b1 = document.getElementById('btn-photo-1');
+      const b2 = document.getElementById('btn-photo-2');
+      if (img) {
+        img.style.opacity = '0.3';
+        img.style.transform = 'scale(0.98)';
+        setTimeout(() => {
+          img.src = num === 1 ? 'images/mica-bio-1.jpg' : 'images/mica-bio-2.jpg';
+          img.style.opacity = '1';
+          img.style.transform = 'scale(1)';
+        }, 150);
+      }
+      if (b1 && b2) {
+        if (num === 1) {
+          b1.className = 'w-7 h-7 rounded-full bg-[#ff2d85] text-white text-xs font-bold flex items-center justify-center transition-all shadow';
+          b2.className = 'w-7 h-7 rounded-full bg-transparent text-[#d8c4d6] hover:text-white text-xs font-bold flex items-center justify-center transition-all';
+        } else {
+          b2.className = 'w-7 h-7 rounded-full bg-[#ff2d85] text-white text-xs font-bold flex items-center justify-center transition-all shadow';
+          b1.className = 'w-7 h-7 rounded-full bg-transparent text-[#d8c4d6] hover:text-white text-xs font-bold flex items-center justify-center transition-all';
+        }
+      }
+    }
   </script>
 </body>
 </html>

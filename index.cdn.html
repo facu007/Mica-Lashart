@@ -1,0 +1,1505 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0" name="viewport"/>
+  <title>Mica Lash Art | Estudio de Miradas VIP • Bahía Blanca</title>
+  <meta name="description" content="Estudio privado de extensiones de pestañas, lifting y visagismo de cejas en Bahía Blanca. Técnica personalizada 1 a 1 sin dañar tu pestaña natural."/>
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;0,6..96,700;1,6..96,400;1,6..96,600&amp;family=Dancing+Script:wght@600;700&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+  
+  <!-- Material Symbols Outlined -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            background: "#0d0a0f",
+            surface: "#161218",
+            "surface-container": "#1e1622",
+            "surface-container-high": "#271c2b",
+            "surface-container-lowest": "#0a070c",
+            primary: "#ff3e96",
+            "primary-bright": "#ff2d85",
+            "primary-light": "#ffaed8",
+            "primary-soft": "#ffb0c9",
+            "primary-glow": "rgba(255, 62, 150, 0.45)",
+            secondary: "#ff6ea7",
+            "on-background": "#ffffff",
+            "on-surface": "#f5edf5",
+            "on-surface-variant": "#d8c4d6",
+            outline: "#59404f",
+            "outline-bright": "#ff3e96",
+            "brand-green": "#25D366"
+          },
+          fontFamily: {
+            display: ["'Bodoni Moda'", "serif"],
+            script: ["'Dancing Script'", "cursive"],
+            body: ["'Plus Jakarta Sans'", "sans-serif"]
+          }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    
+    /* Brush Stroke Effect */
+    .brush-ribbon {
+      background: linear-gradient(90deg, #ff2d85 0%, #ff529c 48%, #ff2d85 100%);
+      box-shadow: 0 4px 20px rgba(255, 45, 133, 0.45);
+      position: relative;
+      clip-path: polygon(3% 0%, 98% 3%, 97% 96%, 1% 92%);
+    }
+    
+    .brush-ribbon-subtle {
+      background: linear-gradient(90deg, rgba(255,45,133,0.85) 0%, rgba(255,94,167,0.95) 50%, rgba(255,45,133,0.85) 100%);
+      clip-path: polygon(2% 4%, 99% 0%, 98% 95%, 1% 99%);
+    }
+
+    /* VIP Glowing Neon Rim Border */
+    .neon-card {
+      position: relative;
+      border: 1px solid rgba(255, 62, 150, 0.4);
+      box-shadow: 0 0 25px -4px rgba(255, 62, 150, 0.2), inset 0 0 15px rgba(255, 62, 150, 0.05);
+    }
+    
+    .neon-card-glow {
+      position: relative;
+      border: 1.5px solid rgba(255, 62, 150, 0.75);
+      box-shadow: 0 0 35px 2px rgba(255, 62, 150, 0.35), inset 0 0 25px rgba(255, 62, 150, 0.12);
+    }
+
+    .text-glow {
+      text-shadow: 0 0 16px rgba(255, 62, 150, 0.8), 0 0 30px rgba(255, 45, 133, 0.5);
+    }
+
+    /* Horizontal scrollbar hide */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Pulse Glow Animation */
+    @keyframes pulseNeon {
+      0%, 100% {
+        box-shadow: 0 0 25px 2px rgba(255, 62, 150, 0.35);
+      }
+      50% {
+        box-shadow: 0 0 35px 6px rgba(255, 62, 150, 0.6);
+      }
+    }
+    .pulse-neon {
+      animation: pulseNeon 3s infinite ease-in-out;
+    }
+
+    /* Fade Transition for Hero Images */
+    .hero-img-transition {
+      transition: opacity 0.4s ease-in-out, transform 0.6s ease-out;
+    }
+  </style>
+</head>
+<body class="bg-[#0d0a0f] text-[#f5edf5] font-body text-sm md:text-base antialiased selection:bg-[#ff3e96] selection:text-white pb-20 md:pb-0 overflow-x-hidden">
+
+
+  <!-- ================= TOP NAVIGATION BAR ================= -->
+  <header class="sticky top-0 z-50 bg-[#0d0a0f]/95 backdrop-blur-md border-b border-[#ff3e96]/25 shadow-lg shadow-black/60">
+    <div class="flex justify-between items-center max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-3">
+      
+      <!-- Brand Logo Anchor -->
+      <a class="flex flex-col group" href="#inicio">
+        <div class="flex items-center gap-1.5">
+          <span class="font-display font-bold text-lg sm:text-xl md:text-2xl tracking-wider text-white uppercase group-hover:text-[#ff3e96] transition-colors">
+            MICA LASH ART
+          </span>
+          <span class="text-[#ff3e96] text-xs">♡</span>
+        </div>
+        <span class="text-[9px] sm:text-[10px] uppercase font-bold tracking-[0.2em] sm:tracking-[0.25em] text-[#ff6ea7] -mt-1">
+          Estudio de Miradas • Bahía Blanca
+        </span>
+      </a>
+
+      <!-- Desktop Links -->
+      <nav class="hidden md:flex items-center space-x-6 lg:space-x-7 text-sm font-semibold">
+        <a class="text-[#d8c4d6] hover:text-[#ff3e96] hover:text-glow transition-all" href="#promos">Precios &amp; Promos</a>
+        <a class="text-[#d8c4d6] hover:text-[#ff3e96] hover:text-glow transition-all" href="#servicios">Servicios</a>
+        <a class="text-[#d8c4d6] hover:text-[#ff3e96] hover:text-glow transition-all" href="#galeria">Trabajos</a>
+        <a class="text-[#d8c4d6] hover:text-[#ff3e96] hover:text-glow transition-all" href="#sobre-mica">Sobre Mica</a>
+        <a class="text-[#d8c4d6] hover:text-[#ff3e96] hover:text-glow transition-all" href="#ubicacion">Ubicación</a>
+        <a class="text-[#d8c4d6] hover:text-[#ff3e96] hover:text-glow transition-all" href="#faqs">FAQs</a>
+      </nav>
+
+      <!-- Trailing Action CTA & Mobile Hamburger -->
+      <div class="flex items-center space-x-2 sm:space-x-3">
+        <a class="text-[#f5edf5] hover:text-[#ff3e96] p-2 rounded-full border border-white/10 hover:border-[#ff3e96]/50 bg-white/5 transition-all" href="https://instagram.com/mica.lashart" rel="noopener noreferrer" target="_blank" title="Instagram @mica.lashart">
+          <svg class="w-4 h-4 fill-current" viewbox="0 0 24 24">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path>
+          </svg>
+        </a>
+
+        <!-- Desktop Booking Button -->
+        <a class="hidden sm:inline-flex items-center space-x-1.5 sm:space-x-2 bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] text-white px-3.5 sm:px-5 py-2 rounded-full font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#ff2d85]/40 hover:brightness-110 active:scale-95 transition-all" href="https://wa.me/5492914491141?text=Hola%20Mica!%20Quiero%20reservar%20un%20turno%20en%20el%20estudio" target="_blank">
+          <span class="material-symbols-outlined text-sm">calendar_month</span>
+          <span>Reservar Turno</span>
+        </a>
+
+        <!-- Mobile Hamburger Toggle Button -->
+        <button id="mobile-menu-btn" class="md:hidden p-2 rounded-xl border border-[#ff3e96]/40 bg-[#1e1622] text-[#ffaed8] hover:text-white transition-colors focus:outline-none" aria-label="Abrir Menú">
+          <span id="menu-icon" class="material-symbols-outlined text-2xl">menu</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Drawer Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-[#0d0a0f]/98 border-b border-[#ff3e96]/30 px-6 py-6 space-y-4 shadow-2xl backdrop-blur-2xl animate-fadeIn">
+      <div class="flex flex-col space-y-3 font-semibold text-sm">
+        <a class="mobile-nav-link flex items-center justify-between text-[#d8c4d6] hover:text-[#ff3e96] py-2 border-b border-white/5" href="#promos">
+          <span class="flex items-center gap-2.5">
+            <span class="material-symbols-outlined text-[#ff3e96] text-lg">local_offer</span> Precios &amp; Promos
+          </span>
+          <span class="text-xs text-[#ff6ea7] font-bold">Ver</span>
+        </a>
+        <a class="mobile-nav-link flex items-center justify-between text-[#d8c4d6] hover:text-[#ff3e96] py-2 border-b border-white/5" href="#servicios">
+          <span class="flex items-center gap-2.5">
+            <span class="material-symbols-outlined text-[#ff3e96] text-lg">spa</span> Servicios &amp; Técnicas
+          </span>
+          <span class="material-symbols-outlined text-sm text-white/40">chevron_right</span>
+        </a>
+        <a class="mobile-nav-link flex items-center justify-between text-[#d8c4d6] hover:text-[#ff3e96] py-2 border-b border-white/5" href="#galeria">
+          <span class="flex items-center gap-2.5">
+            <span class="material-symbols-outlined text-[#ff3e96] text-lg">photo_camera</span> Trabajos Reales
+          </span>
+          <span class="material-symbols-outlined text-sm text-white/40">chevron_right</span>
+        </a>
+        <a class="mobile-nav-link flex items-center justify-between text-[#d8c4d6] hover:text-[#ff3e96] py-2 border-b border-white/5" href="#sobre-mica">
+          <span class="flex items-center gap-2.5">
+            <span class="material-symbols-outlined text-[#ff3e96] text-lg">person</span> Sobre Mica
+          </span>
+          <span class="material-symbols-outlined text-sm text-white/40">chevron_right</span>
+        </a>
+        <a class="mobile-nav-link flex items-center justify-between text-[#d8c4d6] hover:text-[#ff3e96] py-2 border-b border-white/5" href="#ubicacion">
+          <span class="flex items-center gap-2.5">
+            <span class="material-symbols-outlined text-[#ff3e96] text-lg">location_on</span> Ubicación
+          </span>
+          <span class="text-xs text-[#ffaed8]">Bahía Blanca</span>
+        </a>
+        <a class="mobile-nav-link flex items-center justify-between text-[#d8c4d6] hover:text-[#ff3e96] py-2 border-b border-white/5" href="#faqs">
+          <span class="flex items-center gap-2.5">
+            <span class="material-symbols-outlined text-[#ff3e96] text-lg">help_outline</span> Preguntas Frecuentes
+          </span>
+          <span class="material-symbols-outlined text-sm text-white/40">chevron_right</span>
+        </a>
+      </div>
+
+      <!-- Quick Action Inside Mobile Menu -->
+      <div class="pt-2">
+        <a class="w-full inline-flex justify-center items-center gap-2.5 bg-gradient-to-r from-[#25D366] to-[#128C7E] text-white py-3.5 rounded-full font-bold text-sm shadow-lg shadow-[#25D366]/30" href="https://wa.me/5492914491141?text=Hola%20Mica!%20Quiero%20reservar%20un%20turno" target="_blank">
+          <span class="material-symbols-outlined text-lg">chat</span>
+          <span>WhatsApp: 291 449 1141</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= HERO SECTION DINÁMICO & RESPONSIVE ================= -->
+  <section class="relative overflow-hidden pt-6 sm:pt-10 md:pt-16 pb-12 sm:pb-16 md:pb-24" id="inicio">
+    <!-- Glowing ambient light orbs -->
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-72 sm:w-96 h-72 sm:h-96 bg-[#ff2d85]/15 blur-[120px] rounded-full pointer-events-none"></div>
+    <div class="absolute -top-10 left-5 sm:left-10 w-48 sm:w-72 h-48 sm:h-72 bg-[#722e57]/30 blur-[90px] rounded-full pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 relative z-10">
+      
+      <!-- Top Status Pill (Mobile & Desktop) -->
+      <div class="flex items-center justify-center lg:justify-start mb-4 sm:mb-6">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1e1622]/90 border border-[#ff3e96]/40 shadow-sm backdrop-blur-md">
+          <span class="w-2 h-2 rounded-full bg-[#25D366] animate-pulse"></span>
+          <span class="text-[11px] sm:text-xs font-bold text-[#ffb0c9] tracking-wider uppercase">
+            Turnos Disponibles Esta Semana • Bahía Blanca
+          </span>
+          <span class="text-[#ff3e96] text-xs">♡</span>
+        </div>
+      </div>
+
+      <!-- Main Layout Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        
+        <!-- Text & Narrative Column -->
+        <div class="lg:col-span-7 flex flex-col justify-center space-y-5 sm:space-y-6 text-center lg:text-left order-2 lg:order-1">
+          
+          <!-- Headline Group -->
+          <div class="space-y-2">
+            <p class="font-script text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-[#ffaed8] italic leading-tight text-glow">
+              ¿Lista para sentir la diferencia?
+            </p>
+            <h1 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-tight pt-1">
+              Miradas con arte,<br/>
+              <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#ff3e96] via-[#ffaed8] to-[#ffffff]">
+                precisión &amp; elegancia.
+              </span>
+            </h1>
+          </div>
+
+          <!-- Ribbon Cartel de Referencia -->
+          <div class="py-1 flex justify-center lg:justify-start">
+            <div class="brush-ribbon px-5 sm:px-6 py-2.5 sm:py-3.5 text-center sm:text-left rounded-md inline-block max-w-xl">
+              <p class="text-[10px] sm:text-xs uppercase font-extrabold tracking-widest text-[#240012]">
+                RESERVÁ TU TURNO CON
+              </p>
+              <div class="flex items-center justify-center sm:justify-start gap-2 sm:gap-3 mt-0.5">
+                <span class="text-white text-sm sm:text-base">♡</span>
+                <span class="font-script text-xl sm:text-2xl md:text-3xl font-bold text-white tracking-wide">
+                  Mica Lash Art
+                </span>
+                <span class="text-white text-sm sm:text-base">♡</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <p class="text-[#d8c4d6] text-sm sm:text-base md:text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed">
+            Diseño exclusivo de pestañas, visagismo y cuidado integral. Un espacio privado en Bahía Blanca para relajarte mientras transformamos tu mirada sin dañar tu pestaña natural.
+          </p>
+
+          <!-- Interactive Style Selector (QUE EL HERO CAMBIE: Toca un estilo para cambiar la imagen del hero al instante) -->
+          <div class="pt-1">
+            <p class="text-xs uppercase font-bold tracking-wider text-[#ffaed8] mb-2 flex items-center justify-center lg:justify-start gap-1.5">
+              <span class="material-symbols-outlined text-sm text-[#ff3e96]">touch_app</span>
+              <span>Explorá y cambiá el estilo en vivo:</span>
+            </p>
+            <div class="flex flex-wrap items-center justify-center lg:justify-start gap-2" id="hero-style-pills">
+              
+                <button type="button" 
+                  class="hero-pill-btn bg-[#ff2d85] text-white shadow-md shadow-[#ff2d85]/40 border-[#ff3e96] px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border transition-all active:scale-95 flex items-center gap-1.5" 
+                  data-hero-idx="0">
+                  <span>Signature Glam</span>
+                </button>
+              
+                <button type="button" 
+                  class="hero-pill-btn bg-[#1e1622] text-[#d8c4d6] border-white/10 hover:border-[#ff3e96]/50 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border transition-all active:scale-95 flex items-center gap-1.5" 
+                  data-hero-idx="1">
+                  <span>Lifting & Botox</span>
+                </button>
+              
+                <button type="button" 
+                  class="hero-pill-btn bg-[#1e1622] text-[#d8c4d6] border-white/10 hover:border-[#ff3e96]/50 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border transition-all active:scale-95 flex items-center gap-1.5" 
+                  data-hero-idx="2">
+                  <span>Pelo a Pelo</span>
+                </button>
+              
+            </div>
+          </div>
+
+          <!-- CTAs -->
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-3 sm:gap-4 pt-2">
+            <a class="inline-flex justify-center items-center gap-2.5 bg-gradient-to-r from-[#25D366] to-[#128C7E] hover:from-[#20bd5a] hover:to-[#0f7a6e] text-white px-6 sm:px-7 py-3.5 sm:py-4 rounded-full font-bold text-sm sm:text-base shadow-lg shadow-[#25D366]/30 active:scale-95 transition-all text-center" href="https://wa.me/5492914491141?text=Hola%20Mica!%20Quiero%20consultar%20turnos%20disponibles%20y%20precios" target="_blank">
+              <svg class="w-5 h-5 fill-current" viewbox="0 0 24 24">
+                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"></path>
+              </svg>
+              <span>Turnos WhatsApp: 291 449 1141</span>
+            </a>
+            <a class="inline-flex justify-center items-center gap-2 bg-[#1e1622] hover:bg-[#271c2b] border border-[#ff3e96]/40 hover:border-[#ff3e96] text-[#ffaed8] px-5 sm:px-6 py-3.5 sm:py-4 rounded-full font-bold text-sm transition-all" href="#promos">
+              <span>Ver Precios &amp; Promos</span>
+              <span class="material-symbols-outlined text-sm">arrow_downward</span>
+            </a>
+          </div>
+
+          <!-- Badges de garantía y bioseguridad -->
+          <div class="pt-4 border-t border-[#382637] flex flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-4 text-xs text-[#d8c4d6]">
+            <div class="flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[#ff3e96] text-base">verified</span>
+              <span>100% Sin dolor</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[#ff3e96] text-base">spa</span>
+              <span>Nutrición folicular</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[#ff3e96] text-base">star</span>
+              <span>+150 clientas felices</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Visual Hero Showcase Column (DYNÁMICO: Cambia y se destaca tanto en celular como en escritorio) -->
+        <div class="lg:col-span-5 relative order-1 lg:order-2">
+          <div class="relative mx-auto max-w-sm sm:max-w-md lg:max-w-none">
+            
+            <!-- Exterior Glowing Neon Frame -->
+            <div class="neon-card-glow pulse-neon rounded-3xl p-2.5 sm:p-3 bg-[#161218] backdrop-blur-xl">
+              <div class="relative rounded-2xl overflow-hidden group shadow-2xl">
+                
+                <!-- Main Dynamic Hero Image -->
+                <img id="hero-dynamic-img" 
+                  class="w-full h-[320px] sm:h-[400px] lg:h-[460px] object-cover hero-img-transition group-hover:scale-105" 
+                  alt="Mica Lash Art Trabajo de pestañas" 
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBv0rL3kbn14-9ggz-f3oR_MQJEjBMgCLanS27bqrl8snwyoasvn78Aa9L_4AEkHwXmArrVYdfCgGHZRDhBmOVFQdbbzAalNFwEe_A-1zQ1WZjz3IvuVcCGwuQQor-U9nTzsMz_0dMqVacs8arA4_e7v_Ud2VUgP9u3N_DdxKiPYQbQt2kTIeXC6QNT7Im9fDIBTny8X5WXrKskNeH6p8Oterrf29L2d1B3XxM2iQVy-nQzgq8kN5qd"/>
+
+                <!-- Top & Bottom Contrast Scrims (Garantizan lectura óptima sobre cualquier foto) -->
+                <div class="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/85 via-black/40 to-transparent pointer-events-none z-[5]"></div>
+                <div class="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-black via-black/75 to-transparent pointer-events-none z-[5]"></div>
+
+                <!-- Top Floating Badge (100% Sólido y Alto Contraste) -->
+                <div class="absolute top-3 sm:top-4 left-3 sm:left-4 z-10 flex flex-wrap gap-2">
+                  <span id="hero-dynamic-badge" class="px-3.5 py-1.5 rounded-full bg-[#070509] border-2 border-[#ff3e96] text-white text-xs font-black flex items-center gap-1.5 shadow-[0_4px_15px_rgba(0,0,0,0.9)]">
+                    <span class="w-2 h-2 rounded-full bg-[#ff3e96] animate-pulse"></span>
+                    <span id="hero-badge-text" class="text-white font-extrabold tracking-wide">★ Look Más Pedido</span>
+                  </span>
+                </div>
+
+                <!-- Next/Prev Buttons for Changing Styles (Mobile Friendly & High Contrast) -->
+                <button type="button" id="hero-prev-btn" aria-label="Estilo anterior" class="absolute left-2.5 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/90 hover:bg-[#ff2d85] text-white flex items-center justify-center border-2 border-[#ff3e96]/80 shadow-[0_4px_15px_rgba(0,0,0,0.8)] transition-all z-20 active:scale-90">
+                  <span class="material-symbols-outlined text-base">chevron_left</span>
+                </button>
+                <button type="button" id="hero-next-btn" aria-label="Siguiente estilo" class="absolute right-2.5 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/90 hover:bg-[#ff2d85] text-white flex items-center justify-center border-2 border-[#ff3e96]/80 shadow-[0_4px_15px_rgba(0,0,0,0.8)] transition-all z-20 active:scale-90">
+                  <span class="material-symbols-outlined text-base">chevron_right</span>
+                </button>
+
+                <!-- Bottom Floating VIP Card (100% Fondo Sólido Oscuro y Letras Claras de Máximo Contraste) -->
+                <div class="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:right-4 p-3.5 sm:p-4 rounded-2xl bg-[#08050a] border-2 border-[#ff3e96] flex items-center justify-between shadow-[0_10px_35px_rgba(0,0,0,0.95)] z-10">
+                  <div class="pr-2">
+                    <div class="flex items-center gap-1.5">
+                      <span id="hero-card-title" class="text-sm sm:text-base font-display font-extrabold text-white tracking-wide drop-shadow-md">
+                        Volumen Híbrido Glam
+                      </span>
+                      <span class="text-[#ff3e96] text-xs">♡</span>
+                    </div>
+                    <p id="hero-card-detail" class="text-xs sm:text-sm text-gray-100 font-medium line-clamp-1 mt-0.5 drop-shadow-sm">
+                      Densidad suave, textura aterciopelada y abanicos ultralivianos
+                    </p>
+                    <div class="flex items-center gap-2 mt-1.5">
+                      <span id="hero-card-price" class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-gradient-to-r from-[#ff2d85] to-[#ff529c] text-white font-black text-xs shadow-md">
+                        $34.000
+                      </span>
+                      <span id="hero-card-time" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white/10 text-white font-bold text-xs border border-white/20">
+                        <span class="material-symbols-outlined text-[13px] text-[#ffaed8]">schedule</span> 120 min
+                      </span>
+                    </div>
+                  </div>
+                  <a class="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] text-white flex items-center justify-center shadow-lg shadow-[#ff2d85]/60 hover:scale-105 active:scale-95 transition-transform flex-shrink-0 ml-2" 
+                    href="https://wa.me/5492914491141?text=Hola%20Mica!%20Quiero%20consultar%20por%20un%20turno" 
+                    target="_blank" title="Enviar WhatsApp">
+                    <span class="material-symbols-outlined text-xl">send</span>
+                  </a>
+                </div>
+
+              </div>
+
+              <!-- Indicators dots underneath hero image -->
+              <div class="flex justify-center items-center gap-2 pt-2.5 pb-1" id="hero-dots">
+                
+                  <button type="button" aria-label="Ir a estilo 1" class="hero-dot w-2 h-2 rounded-full transition-all w-6 bg-[#ff3e96]" data-dot-idx="0"></button>
+                
+                  <button type="button" aria-label="Ir a estilo 2" class="hero-dot w-2 h-2 rounded-full transition-all bg-white/30" data-dot-idx="1"></button>
+                
+                  <button type="button" aria-label="Ir a estilo 3" class="hero-dot w-2 h-2 rounded-full transition-all bg-white/30" data-dot-idx="2"></button>
+                
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECCIÓN PROMOS & PRECIOS DESTACADOS ================= -->
+  <section class="py-14 sm:py-20 md:py-24 bg-[#120d15] border-y border-[#ff3e96]/20 relative" id="promos">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-12">
+      
+      <div class="text-center max-w-3xl mx-auto mb-10 sm:mb-14 space-y-3">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1e1622] border border-[#ff3e96]/30 text-xs text-[#ffaed8] font-bold tracking-widest uppercase">
+          <span class="text-[#ff3e96]">♡</span> Promociones de Temporada <span class="text-[#ff3e96]">♡</span>
+        </div>
+        <h2 class="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white">
+          Elegí la opción para potenciar tus resultados
+        </h2>
+        <p class="text-[#d8c4d6] text-xs sm:text-sm md:text-base max-w-xl mx-auto">
+          Paquetes y combos pensados para maximizar la belleza de tu mirada y mantenerla impecable por semanas.
+        </p>
+      </div>
+
+      <!-- Grid de Promociones con Borde Neón y Cinta Brush Stroke -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+        
+        <!-- Promo Card 1 -->
+        <div class="neon-card rounded-2xl bg-[#161218] p-6 sm:p-7 flex flex-col justify-between hover:scale-[1.02] transition-all duration-300 group">
+          <div>
+            <div class="flex justify-between items-center mb-3">
+              <span class="text-xs font-bold uppercase tracking-wider text-[#ffaed8] px-3 py-1 rounded-full bg-[#271c2b] border border-[#ff3e96]/30">Combo Look Natural</span>
+              <span class="text-xs text-[#d8c4d6]/80 flex items-center gap-1">
+                <span class="material-symbols-outlined text-sm text-[#ff3e96]">schedule</span> 75 min
+              </span>
+            </div>
+            <h3 class="font-display text-xl font-bold text-white mb-2">Lifting + Botox + Perfilado</h3>
+            <p class="text-xs text-[#d8c4d6] leading-relaxed mb-6">
+              Pestañas curvadas con nutrición profunda y cejas perfectamente definidas y ordenadas. Cero uso de rímel diario.
+            </p>
+            <div class="text-center py-4 my-2 rounded-xl bg-[#0d0a0f] border border-[#ff3e96]/20">
+              <p class="text-xs uppercase font-bold tracking-widest text-[#ff6ea7]">Precio Promoción</p>
+              <p class="font-display text-4xl font-extrabold text-white text-glow my-1">$22.000</p>
+              <div class="brush-ribbon-subtle px-3 py-1 rounded mx-auto inline-block text-[11px] font-bold text-white">
+                La opción para potenciar tus resultados ♡
+              </div>
+            </div>
+          </div>
+          <div class="pt-6 border-t border-[#382637]">
+            <a class="w-full inline-flex justify-center items-center gap-2 bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] text-white py-3.5 rounded-full font-bold text-xs uppercase tracking-wider shadow-md hover:brightness-110 active:scale-95 transition-all" href="https://wa.me/5492914491141?text=Hola%20Mica!%20Quiero%20reservar%20el%20Combo%20Lifting%20+%20Botox%20+%20Perfilado" target="_blank">
+              <span>Pedir Turno Promo</span>
+              <span class="material-symbols-outlined text-sm">arrow_forward</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Promo Card 2 (VIP Destacada estilo tarjeta central) -->
+        <div class="neon-card-glow rounded-2xl bg-gradient-to-b from-[#221325] to-[#161218] p-6 sm:p-7 flex flex-col justify-between transform md:-translate-y-2 hover:scale-[1.03] transition-all duration-300 relative">
+          <div class="absolute -top-3.5 left-1/2 -translate-x-1/2">
+            <span class="bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] text-white px-4 py-1 rounded-full text-xs font-black uppercase tracking-widest shadow-md">
+              ★ Más Elegido VIP ★
+            </span>
+          </div>
+          <div>
+            <div class="flex justify-between items-center mb-3 mt-2">
+              <span class="text-xs font-bold uppercase tracking-wider text-[#ff3e96] px-3 py-1 rounded-full bg-[#38162b] border border-[#ff3e96]/50">Pack Glow Total</span>
+              <span class="text-xs text-[#ffaed8] flex items-center gap-1">
+                <span class="material-symbols-outlined text-sm text-[#ff3e96]">schedule</span> 120 min
+              </span>
+            </div>
+            <h3 class="font-display text-2xl font-bold text-white mb-2">Extensiones Híbridas / Rusas + Cejas</h3>
+            <p class="text-xs text-[#d8c4d6] leading-relaxed mb-6">
+              Densidad suave, textura aterciopelada y abanicos ultralivianos hechos a mano más laminado de cejas completo.
+            </p>
+            <div class="text-center py-5 my-2 rounded-xl bg-[#0a070c] border border-[#ff3e96]/40 shadow-inner">
+              <p class="text-xs uppercase font-bold tracking-widest text-[#ffaed8]">Inversión Especial</p>
+              <p class="font-display text-5xl font-black text-white text-glow my-1 tracking-tight">$34.000</p>
+              <div class="brush-ribbon px-4 py-1.5 rounded mx-auto inline-block text-xs font-bold text-white shadow-lg">
+                La opción para potenciar tus resultados ♡
+              </div>
+            </div>
+          </div>
+          <div class="pt-6 border-t border-[#382637]">
+            <a class="w-full inline-flex justify-center items-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white py-3.5 rounded-full font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#25D366]/30 active:scale-95 transition-all" href="https://wa.me/5492914491141?text=Hola%20Mica!%20Quiero%20reservar%20el%20Pack%20Glow%20Total%20de%20Extensiones%20+%20Cejas" target="_blank">
+              <span class="material-symbols-outlined text-base">chat</span>
+              <span>Reservar Turno VIP</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Promo Card 3 -->
+        <div class="neon-card rounded-2xl bg-[#161218] p-6 sm:p-7 flex flex-col justify-between hover:scale-[1.02] transition-all duration-300 group">
+          <div>
+            <div class="flex justify-between items-center mb-3">
+              <span class="text-xs font-bold uppercase tracking-wider text-[#ffaed8] px-3 py-1 rounded-full bg-[#271c2b] border border-[#ff3e96]/30">Mantenimiento Mensual</span>
+              <span class="text-xs text-[#d8c4d6]/80 flex items-center gap-1">
+                <span class="material-symbols-outlined text-sm text-[#ff3e96]">schedule</span> 60 min
+              </span>
+            </div>
+            <h3 class="font-display text-xl font-bold text-white mb-2">Service Frecuente (Cada 2 a 3 sem)</h3>
+            <p class="text-xs text-[#d8c4d6] leading-relaxed mb-6">
+              Retiro de piezas crecidas y relleno prolijo para lucir tu set completo, limpio y simétrico todo el mes.
+            </p>
+            <div class="text-center py-4 my-2 rounded-xl bg-[#0d0a0f] border border-[#ff3e96]/20">
+              <p class="text-xs uppercase font-bold tracking-widest text-[#ff6ea7]">Precio Clientas Frecuentes</p>
+              <p class="font-display text-4xl font-extrabold text-white text-glow my-1">$18.000</p>
+              <div class="brush-ribbon-subtle px-3 py-1 rounded mx-auto inline-block text-[11px] font-bold text-white">
+                Cuidado continuo de tu mirada ♡
+              </div>
+            </div>
+          </div>
+          <div class="pt-6 border-t border-[#382637]">
+            <a class="w-full inline-flex justify-center items-center gap-2 bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] text-white py-3.5 rounded-full font-bold text-xs uppercase tracking-wider shadow-md hover:brightness-110 active:scale-95 transition-all" href="https://wa.me/5492914491141?text=Hola%20Mica!%20Quiero%20agendar%20mi%20service%20de%20mantenimiento" target="_blank">
+              <span>Agendar Service</span>
+              <span class="material-symbols-outlined text-sm">arrow_forward</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Banner directo de WhatsApp -->
+      <div class="mt-10 sm:mt-12 bg-gradient-to-r from-[#190d1c] via-[#2d1225] to-[#190d1c] border border-[#ff3e96]/40 p-5 sm:p-8 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl text-center md:text-left">
+        <div class="flex flex-col sm:flex-row items-center gap-4">
+          <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#25D366]/20 border border-[#25D366] flex items-center justify-center text-[#25D366] flex-shrink-0">
+            <svg class="w-7 h-7 sm:w-8 sm:h-8 fill-current" viewbox="0 0 24 24">
+              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"></path>
+            </svg>
+          </div>
+          <div>
+            <p class="text-xs uppercase font-extrabold tracking-widest text-[#ff6ea7]">Consultas Directas &amp; Turnos</p>
+            <p class="font-display text-xl sm:text-2xl md:text-3xl font-bold text-white">WhatsApp: 291 449 1141</p>
+            <p class="text-xs text-[#d8c4d6]">Zona Htal. Penna - Villa Cerrito - Bahía Blanca</p>
+          </div>
+        </div>
+        <a class="w-full md:w-auto inline-flex justify-center items-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white px-6 sm:px-8 py-3.5 rounded-full font-bold text-sm uppercase tracking-wider shadow-lg shadow-[#25D366]/40 transition-all whitespace-nowrap active:scale-95" href="https://wa.me/5492914491141?text=Hola%20Mica!%20Quiero%20hacerte%20una%20consulta%20por%20un%20turno" target="_blank">
+          <span>Escribir por WhatsApp</span>
+          <span class="material-symbols-outlined text-base">chat</span>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= CATÁLOGO DE SERVICIOS & PESTAÑAS ================= -->
+  <section class="py-16 sm:py-20 md:py-28" id="servicios">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-12">
+      
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-12 gap-6">
+        <div>
+          <div class="inline-flex items-center gap-1.5 text-[#ff6ea7] text-xs font-bold uppercase tracking-widest mb-2">
+            <span>♡</span> Catálogo del Estudio <span>♡</span>
+          </div>
+          <h2 class="font-display text-2xl sm:text-3xl md:text-5xl font-bold text-white">
+            Técnicas &amp; Tratamientos VIP
+          </h2>
+          <p class="text-[#d8c4d6] text-xs sm:text-sm md:text-base mt-2 max-w-lg">
+            Aislación prolija 1 a 1 sin excesos ni peso. Seleccioná el servicio para agendar tu horario exclusivo.
+          </p>
+        </div>
+
+        <!-- Filtros Glam Horizontal Scrollable en Móvil -->
+        <div class="flex overflow-x-auto no-scrollbar gap-2 pb-1" id="service-filters">
+          <button class="filter-btn active-filter flex-shrink-0 px-4 py-2 rounded-full font-bold text-xs uppercase tracking-wider transition-all bg-[#ff2d85] text-white shadow-md shadow-[#ff2d85]/30" data-filter="all">
+            Todos
+          </button>
+          <button class="filter-btn flex-shrink-0 px-4 py-2 rounded-full font-bold text-xs uppercase tracking-wider transition-all bg-[#1e1622] text-[#d8c4d6] hover:text-white hover:border-[#ff3e96]/50 border border-white/10" data-filter="lifting">
+            Lifting &amp; Botox
+          </button>
+          <button class="filter-btn flex-shrink-0 px-4 py-2 rounded-full font-bold text-xs uppercase tracking-wider transition-all bg-[#1e1622] text-[#d8c4d6] hover:text-white hover:border-[#ff3e96]/50 border border-white/10" data-filter="clasicas">
+            Pelo a Pelo
+          </button>
+          <button class="filter-btn flex-shrink-0 px-4 py-2 rounded-full font-bold text-xs uppercase tracking-wider transition-all bg-[#1e1622] text-[#d8c4d6] hover:text-white hover:border-[#ff3e96]/50 border border-white/10" data-filter="volumen">
+            Volumen &amp; Cejas
+          </button>
+        </div>
+      </div>
+
+      <!-- Grid Cards de Servicios -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8" id="services-grid">
+        
+        <!-- Card 1 -->
+        <div class="service-item lifting neon-card bg-[#161218] rounded-2xl p-6 sm:p-7 flex flex-col justify-between hover:border-[#ff3e96] transition-all duration-300">
+          <div>
+            <div class="flex justify-between items-start mb-4">
+              <span class="px-3 py-1 rounded-full bg-[#271c2b] text-[#ffaed8] font-bold text-[11px] uppercase tracking-wider border border-[#ff3e96]/30">Lifting &amp; Nutrición</span>
+              <span class="text-xs text-[#d8c4d6]/70 flex items-center gap-1 font-semibold">
+                <span class="material-symbols-outlined text-sm text-[#ff3e96]">schedule</span> 60 min
+              </span>
+            </div>
+            <h3 class="font-display text-xl font-bold text-white mb-2">Lifting de Pestañas + Nutrición Keratina</h3>
+            <p class="text-xs text-[#d8c4d6] leading-relaxed mb-6">
+              Eleva tus pestañas naturales desde la raíz con curvatura armónica. Baño botox y keratina para engrosar y dar brillo sin rímel.
+            </p>
+          </div>
+          <div class="pt-4 border-t border-[#382637] flex items-center justify-between">
+            <span class="font-display font-bold text-lg text-[#ffaed8]">$18.500</span>
+            <button class="inline-flex items-center gap-1.5 bg-[#1e1622] hover:bg-[#ff2d85] hover:text-white text-[#ffaed8] px-4 py-2 rounded-full font-bold text-xs uppercase tracking-wider transition-colors border border-[#ff3e96]/40 active:scale-95" onclick="prefillBooking('Lifting de Pestañas + Nutrición con Keratina')">
+              <span>Reservar</span>
+              <span class="material-symbols-outlined text-sm">arrow_forward</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="service-item clasicas neon-card bg-[#161218] rounded-2xl p-6 sm:p-7 flex flex-col justify-between hover:border-[#ff3e96] transition-all duration-300">
+          <div>
+            <div class="flex justify-between items-start mb-4">
+              <span class="px-3 py-1 rounded-full bg-[#271c2b] text-[#ffaed8] font-bold text-[11px] uppercase tracking-wider border border-[#ff3e96]/30">Pelo a Pelo</span>
+              <span class="text-xs text-[#d8c4d6]/70 flex items-center gap-1 font-semibold">
+                <span class="material-symbols-outlined text-sm text-[#ff3e96]">schedule</span> 90-120 min
+              </span>
+            </div>
+            <h3 class="font-display text-xl font-bold text-white mb-2">Extensiones Pelo a Pelo Clásicas</h3>
+            <p class="text-xs text-[#d8c4d6] leading-relaxed mb-6">
+              Una extensión suave adherida por cada pestaña sana. Logra el aspecto de máscara perfecta, mirada abierta y ordenada sin recargar.
+            </p>
+          </div>
+          <div class="pt-4 border-t border-[#382637] flex items-center justify-between">
+            <span class="font-display font-bold text-lg text-[#ffaed8]">$24.000</span>
+            <button class="inline-flex items-center gap-1.5 bg-[#1e1622] hover:bg-[#ff2d85] hover:text-white text-[#ffaed8] px-4 py-2 rounded-full font-bold text-xs uppercase tracking-wider transition-colors border border-[#ff3e96]/40 active:scale-95" onclick="prefillBooking('Extensiones Pelo a Pelo Clásicas')">
+              <span>Reservar</span>
+              <span class="material-symbols-outlined text-sm">arrow_forward</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="service-item volumen neon-card bg-[#161218] rounded-2xl p-6 sm:p-7 flex flex-col justify-between hover:border-[#ff3e96] transition-all duration-300">
+          <div>
+            <div class="flex justify-between items-start mb-4">
+              <span class="px-3 py-1 rounded-full bg-[#271c2b] text-[#ffaed8] font-bold text-[11px] uppercase tracking-wider border border-[#ff3e96]/30">Volumen Suave</span>
+              <span class="text-xs text-[#d8c4d6]/70 flex items-center gap-1 font-semibold">
+                <span class="material-symbols-outlined text-sm text-[#ff3e96]">schedule</span> 120 min
+              </span>
+            </div>
+            <h3 class="font-display text-xl font-bold text-white mb-2">Volumen Híbrido / Light Russian</h3>
+            <p class="text-xs text-[#d8c4d6] leading-relaxed mb-6">
+              Abanicos ultralivianos armados en el momento combinados con técnica individual. Densidad esponjosa, dimensión glam y acabado aterciopelado.
+            </p>
+          </div>
+          <div class="pt-4 border-t border-[#382637] flex items-center justify-between">
+            <span class="font-display font-bold text-lg text-[#ffaed8]">$28.000</span>
+            <button class="inline-flex items-center gap-1.5 bg-[#1e1622] hover:bg-[#ff2d85] hover:text-white text-[#ffaed8] px-4 py-2 rounded-full font-bold text-xs uppercase tracking-wider transition-colors border border-[#ff3e96]/40 active:scale-95" onclick="prefillBooking('Volumen Híbrido / Light Russian')">
+              <span>Reservar</span>
+              <span class="material-symbols-outlined text-sm">arrow_forward</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="service-item volumen neon-card bg-[#161218] rounded-2xl p-6 sm:p-7 flex flex-col justify-between hover:border-[#ff3e96] transition-all duration-300">
+          <div>
+            <div class="flex justify-between items-start mb-4">
+              <span class="px-3 py-1 rounded-full bg-[#271c2b] text-[#ffaed8] font-bold text-[11px] uppercase tracking-wider border border-[#ff3e96]/30">Cejas VIP</span>
+              <span class="text-xs text-[#d8c4d6]/70 flex items-center gap-1 font-semibold">
+                <span class="material-symbols-outlined text-sm text-[#ff3e96]">schedule</span> 45 min
+              </span>
+            </div>
+            <h3 class="font-display text-xl font-bold text-white mb-2">Laminado &amp; Perfilado de Cejas</h3>
+            <p class="text-xs text-[#d8c4d6] leading-relaxed mb-6">
+              Direcciona y fija cada vello para enmarcar el rostro con simetría orgánica. Incluye diseño personalizado con pinza e hidratación.
+            </p>
+          </div>
+          <div class="pt-4 border-t border-[#382637] flex items-center justify-between">
+            <span class="font-display font-bold text-lg text-[#ffaed8]">$12.000</span>
+            <button class="inline-flex items-center gap-1.5 bg-[#1e1622] hover:bg-[#ff2d85] hover:text-white text-[#ffaed8] px-4 py-2 rounded-full font-bold text-xs uppercase tracking-wider transition-colors border border-[#ff3e96]/40 active:scale-95" onclick="prefillBooking('Laminado &amp; Perfilado de Cejas')">
+              <span>Reservar</span>
+              <span class="material-symbols-outlined text-sm">arrow_forward</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="service-item clasicas volumen neon-card bg-[#161218] rounded-2xl p-6 sm:p-7 flex flex-col justify-between hover:border-[#ff3e96] transition-all duration-300">
+          <div>
+            <div class="flex justify-between items-start mb-4">
+              <span class="px-3 py-1 rounded-full bg-[#271c2b] text-[#ffaed8] font-bold text-[11px] uppercase tracking-wider border border-[#ff3e96]/30">Service Mensual</span>
+              <span class="text-xs text-[#d8c4d6]/70 flex items-center gap-1 font-semibold">
+                <span class="material-symbols-outlined text-sm text-[#ff3e96]">schedule</span> 60 min
+              </span>
+            </div>
+            <h3 class="font-display text-xl font-bold text-white mb-2">Mantenimiento de Extensiones</h3>
+            <p class="text-xs text-[#d8c4d6] leading-relaxed mb-6">
+              Reemplazo de pestañas regeneradas para mantener el diseño simétrico, fresco y limpio de forma continua cada 2 a 3 semanas.
+            </p>
+          </div>
+          <div class="pt-4 border-t border-[#382637] flex items-center justify-between">
+            <span class="font-display font-bold text-lg text-[#ffaed8]">$18.000</span>
+            <button class="inline-flex items-center gap-1.5 bg-[#1e1622] hover:bg-[#ff2d85] hover:text-white text-[#ffaed8] px-4 py-2 rounded-full font-bold text-xs uppercase tracking-wider transition-colors border border-[#ff3e96]/40 active:scale-95" onclick="prefillBooking('Mantenimiento de Extensiones')">
+              <span>Reservar</span>
+              <span class="material-symbols-outlined text-sm">arrow_forward</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Card Asesoramiento VIP -->
+        <div class="neon-card bg-gradient-to-br from-[#27122b] to-[#161218] rounded-2xl p-6 sm:p-7 flex flex-col justify-between border-dashed">
+          <div>
+            <span class="material-symbols-outlined text-[#ff3e96] text-3xl mb-3">chat_bubble_outline</span>
+            <h3 class="font-display text-xl font-bold text-white mb-2">¿Dudas de cuál técnica elegir?</h3>
+            <p class="text-xs text-[#d8c4d6] leading-relaxed">
+              Escribime directo con una foto de tus pestañas sin maquillar y te aconsejo el largo, grosor y efecto ideal para tu tipo de ojo.
+            </p>
+          </div>
+          <div class="pt-6">
+            <a class="w-full inline-flex justify-center items-center gap-2 border border-[#ff3e96] text-[#ffaed8] hover:bg-[#ff2d85] hover:text-white px-4 py-3 rounded-full font-bold text-xs uppercase tracking-wider transition-colors active:scale-95" href="https://wa.me/5492914491141?text=Hola%20Mica,%20quiero%20hacerte%20una%20consulta%20para%20saber%20qué%20servicio%20de%20pestañas%20me%20conviene." target="_blank">
+              <span>Pedir Asesoramiento Gratis</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= GALERÍA DE RESULTADOS ================= -->
+  <section class="py-16 sm:py-20 md:py-28 bg-[#120d15] border-t border-[#ff3e96]/20" id="galeria">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-12">
+      
+      <div class="text-center max-w-2xl mx-auto mb-10 sm:mb-14 space-y-3">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1e1622] border border-[#ff3e96]/30 text-xs text-[#ffaed8] font-bold tracking-widest uppercase">
+          <span class="text-[#ff3e96]">♡</span> Trabajos Reales <span class="text-[#ff3e96]">♡</span>
+        </div>
+        <h2 class="font-display text-2xl sm:text-3xl md:text-5xl font-bold text-white">
+          Galería de Miradas
+        </h2>
+        <p class="text-[#d8c4d6] text-xs sm:text-sm md:text-base">
+          Aislación milimétrica, cero grumos y terminación de alta gama en cada sesión. Tocá para ver en detalle.
+        </p>
+      </div>
+
+      <!-- Bento Grid Galería -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        
+        <!-- Gallery 1 -->
+        <div class="relative group cursor-pointer overflow-hidden rounded-2xl neon-card bg-[#161218]" onclick="openLightbox('https://lh3.googleusercontent.com/aida-public/AB6AXuBP7yC6j1Z4VV_n2cPGs8YE7jNeH42d8dwm_2KImcA_DUQDqI5FZdQrVAKNHaKUPmYLec_kk4PmCj-lYSVmxBYHywQakifsLVk1G44znxwV29H0OS0TCyrAw3rAKpRma8-soinZSvauEbxcqqMYzJN-vB1Rc13qH-b9AeXzdpWaKadE2NZ0gcBapPJfROHHLQtRxHRe0Why0sqvDM4wbKu2lDqWpt59W_oPRKAGi58zMJv222ePtAQz', 'Lifting de Pestañas &amp; Tinte Profundo', 'Curvatura natural que abre la mirada por completo con efecto máscara limpio.')">
+          <img class="w-full h-64 sm:h-80 object-cover transition-transform duration-500 group-hover:scale-110" alt="Lifting de Pestañas" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBP7yC6j1Z4VV_n2cPGs8YE7jNeH42d8dwm_2KImcA_DUQDqI5FZdQrVAKNHaKUPmYLec_kk4PmCj-lYSVmxBYHywQakifsLVk1G44znxwV29H0OS0TCyrAw3rAKpRma8-soinZSvauEbxcqqMYzJN-vB1Rc13qH-b9AeXzdpWaKadE2NZ0gcBapPJfROHHLQtRxHRe0Why0sqvDM4wbKu2lDqWpt59W_oPRKAGi58zMJv222ePtAQz"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-[#0d0a0f] via-black/40 to-transparent opacity-90 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4 sm:p-5">
+            <span class="text-[11px] font-bold text-[#ff3e96] uppercase tracking-widest">Lifting Natural</span>
+            <p class="font-display text-white text-base sm:text-lg font-bold">Curvatura y Nutrición</p>
+          </div>
+        </div>
+
+        <!-- Gallery 2 -->
+        <div class="relative group cursor-pointer overflow-hidden rounded-2xl neon-card bg-[#161218]" onclick="openLightbox('https://lh3.googleusercontent.com/aida-public/AB6AXuDuB8FkY9QqHmmM3TABeQ5OZrEvnqoTxJOS3UTeLLJuk_RoC-WblFUPlVadjlyI_gJVorIUqqEimIv8AXg_fX9R8HvdJmlE8afhFhQ7GtxCI7-jxXFQmANw0NU52wEz9jQqMcQ4DpJNlyQYMART_E8Q8DticjSkEemyr3t8oSIKXGrssAvRRBkiVlrpkh0mP_BJ7_9VtuKxW4sDHn6BIraVk9tQrl2pl3mZHHQWPbbNYnTvqc-uXrb7', 'Extensiones Clásicas Efecto Rímel', 'Aislación 1 a 1 milimétrica para un orden suave y duradero.')">
+          <img class="w-full h-64 sm:h-80 object-cover transition-transform duration-500 group-hover:scale-110" alt="Extensiones Clásicas 1 a 1" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuB8FkY9QqHmmM3TABeQ5OZrEvnqoTxJOS3UTeLLJuk_RoC-WblFUPlVadjlyI_gJVorIUqqEimIv8AXg_fX9R8HvdJmlE8afhFhQ7GtxCI7-jxXFQmANw0NU52wEz9jQqMcQ4DpJNlyQYMART_E8Q8DticjSkEemyr3t8oSIKXGrssAvRRBkiVlrpkh0mP_BJ7_9VtuKxW4sDHn6BIraVk9tQrl2pl3mZHHQWPbbNYnTvqc-uXrb7"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-[#0d0a0f] via-black/40 to-transparent opacity-90 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4 sm:p-5">
+            <span class="text-[11px] font-bold text-[#ff3e96] uppercase tracking-widest">Clásicas 1:1</span>
+            <p class="font-display text-white text-base sm:text-lg font-bold">Elegancia Cotidiana</p>
+          </div>
+        </div>
+
+        <!-- Gallery 3 -->
+        <div class="relative group cursor-pointer overflow-hidden rounded-2xl neon-card bg-[#161218]" onclick="openLightbox('https://lh3.googleusercontent.com/aida-public/AB6AXuBNDWGmxxkvtJoRoMkFBKY5nkiwBshfIvYJOsvflKKK5NLqRQ31sUPbMyLUkjlT5y4EGMnnJw6ox4E2ZvfeHs4-PQECvxfrfICysI75zWcYM3n-w1m7FOZhH893rd5jsL6p0yCX6zShUKlvpC52IIC5bKcU4CVc6xK-NkHkgGmZuaiKK2cgfCMXc5KGOaSIUaz84kpi19N5WJ-AGjgtmXzuUTYD6j9GohCjebAUNB3h8TCz_FfdQoC2', 'Volumen Híbrido Esponjoso', 'Transición suave de densidad en abanicos ligeros sin sobrecargar el ojo.')">
+          <img class="w-full h-64 sm:h-80 object-cover transition-transform duration-500 group-hover:scale-110" alt="Volumen Híbrido" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNDWGmxxkvtJoRoMkFBKY5nkiwBshfIvYJOsvflKKK5NLqRQ31sUPbMyLUkjlT5y4EGMnnJw6ox4E2ZvfeHs4-PQECvxfrfICysI75zWcYM3n-w1m7FOZhH893rd5jsL6p0yCX6zShUKlvpC52IIC5bKcU4CVc6xK-NkHkgGmZuaiKK2cgfCMXc5KGOaSIUaz84kpi19N5WJ-AGjgtmXzuUTYD6j9GohCjebAUNB3h8TCz_FfdQoC2"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-[#0d0a0f] via-black/40 to-transparent opacity-90 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4 sm:p-5">
+            <span class="text-[11px] font-bold text-[#ff3e96] uppercase tracking-widest">Híbridas Suaves</span>
+            <p class="font-display text-white text-base sm:text-lg font-bold">Densidad y Textura</p>
+          </div>
+        </div>
+
+        <!-- Gallery 4 -->
+        <div class="relative group cursor-pointer overflow-hidden rounded-2xl neon-card bg-[#161218]" onclick="openLightbox('https://lh3.googleusercontent.com/aida-public/AB6AXuCiUQhhkOUcWZv6ttsvAAKgCL6Jhe5-a3mfSiS1xSQZMRs_g115QhuJdJbfno6cMojPUI_XLB1A4yyDs2RgO9MOwBHpoXnJTreMG72d53wclX4gB2wVnOGaFD3WqToCsrhAOounkJ5jECgdV_OMkPabTmsiRIb3MFI2lx0_f5CRLgzL4JQz1N5jB9iBjGSgZIJzSce5lhZXM5jAty1ahU2ahYIVF7ZHoj26DyhjX9c-QpJdcEXN9yQT', 'Laminado &amp; Diseño de Cejas', 'Pelo cepillado hacia arriba con simetría orgánica y aspecto denso.')">
+          <img class="w-full h-64 sm:h-80 object-cover transition-transform duration-500 group-hover:scale-110" alt="Laminado de Cejas" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCiUQhhkOUcWZv6ttsvAAKgCL6Jhe5-a3mfSiS1xSQZMRs_g115QhuJdJbfno6cMojPUI_XLB1A4yyDs2RgO9MOwBHpoXnJTreMG72d53wclX4gB2wVnOGaFD3WqToCsrhAOounkJ5jECgdV_OMkPabTmsiRIb3MFI2lx0_f5CRLgzL4JQz1N5jB9iBjGSgZIJzSce5lhZXM5jAty1ahU2ahYIVF7ZHoj26DyhjX9c-QpJdcEXN9yQT"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-[#0d0a0f] via-black/40 to-transparent opacity-90 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4 sm:p-5">
+            <span class="text-[11px] font-bold text-[#ff3e96] uppercase tracking-widest">Cejas Orgánicas</span>
+            <p class="font-display text-white text-base sm:text-lg font-bold">Laminado &amp; Simetría</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Enlace a Instagram -->
+      <div class="mt-10 text-center">
+        <a class="inline-flex items-center gap-2 text-[#ffaed8] hover:text-white font-bold text-xs sm:text-sm transition-colors border border-[#ff3e96]/40 px-5 sm:px-6 py-3 rounded-full hover:bg-[#ff3e96]/20 active:scale-95" href="https://instagram.com/mica.lashart" rel="noopener noreferrer" target="_blank">
+          <span>Ver más de 150 trabajos en Instagram @mica.lashart</span>
+          <span class="material-symbols-outlined text-sm">open_in_new</span>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= SOBRE MICA ================= -->
+  <section class="py-16 sm:py-20 md:py-28" id="sobre-mica">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+      
+      <!-- Visual Column: Fotos reales de Micaela con intercalado responsivo por tamaño de pantalla -->
+      <div class="lg:col-span-5 order-2 lg:order-1 lg:sticky lg:top-24">
+        <div class="relative max-w-sm sm:max-w-md mx-auto">
+          
+          <!-- Marco Neón Glam exterior -->
+          <div class="neon-card-glow rounded-3xl overflow-hidden bg-[#161218] shadow-2xl p-2.5 sm:p-3">
+            <div class="relative rounded-2xl overflow-hidden group">
+              
+              <!-- Responsive Picture Element: Intercala fotos por tamaño de pantalla -->
+              <picture id="mica-bio-picture">
+                <!-- En celulares (hasta 768px): foto en pose frontal -->
+                <source media="(max-width: 768px)" srcset="images/mica-bio-1.jpg"/>
+                <!-- En tablets y pantallas grandes (desde 769px): foto en pose de estudio -->
+                <source media="(min-width: 769px)" srcset="images/mica-bio-2.jpg"/>
+                <img id="mica-bio-img" 
+                  class="w-full h-[400px] sm:h-[480px] lg:h-[560px] object-cover object-top transition-all duration-500 group-hover:scale-105" 
+                  alt="Micaela creadora de Mica Lash Art con pinza gigante" 
+                  src="images/mica-bio-1.jpg"/>
+              </picture>
+
+              <!-- Contrast Scrims -->
+              <div class="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/80 via-black/40 to-transparent pointer-events-none"></div>
+              <div class="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black via-black/70 to-transparent pointer-events-none"></div>
+
+              <!-- Top Floating Badge -->
+              <div class="absolute top-3 left-3 z-10">
+                <span class="px-3.5 py-1.5 rounded-full bg-[#070509] border-2 border-[#ff3e96] text-white text-xs font-black flex items-center gap-1.5 shadow-[0_4px_15px_rgba(0,0,0,0.9)]">
+                  <span class="text-[#ff3e96]">👑</span>
+                  <span>Lashista &amp; Maquilladora desde 2016</span>
+                </span>
+              </div>
+
+              <!-- Bottom Floating Signature Card con selector de foto interactivo -->
+              <div class="absolute bottom-3 left-3 right-3 p-3.5 rounded-xl bg-[#08050a]/95 border-2 border-[#ff3e96] flex items-center justify-between shadow-2xl z-10 backdrop-blur-md">
+                <div>
+                  <div class="flex items-center gap-1.5">
+                    <p class="font-display font-extrabold text-base sm:text-lg text-white">Micaela</p>
+                    <span class="text-[#ff3e96] text-sm">♡</span>
+                  </div>
+                  <p class="text-[11px] sm:text-xs text-[#ff6ea7] font-bold">Creadora de Mica Lash Art • Bahía Blanca</p>
+                  <p class="text-[10px] text-gray-200 mt-0.5">Atención VIP &amp; Capacitaciones</p>
+                </div>
+                <!-- Selector manual de foto para intercalar en cualquier dispositivo -->
+                <div class="flex items-center gap-1 bg-[#161218] p-1 rounded-full border border-white/10">
+                  <button type="button" onclick="toggleMicaPhoto(1)" id="btn-photo-1" class="w-7 h-7 rounded-full bg-[#ff2d85] text-white text-xs font-bold flex items-center justify-center transition-all shadow" title="Ver foto 1">1</button>
+                  <button type="button" onclick="toggleMicaPhoto(2)" id="btn-photo-2" class="w-7 h-7 rounded-full bg-transparent text-[#d8c4d6] hover:text-white text-xs font-bold flex items-center justify-center transition-all" title="Ver foto 2">2</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Micro-stats badges under photo -->
+          <div class="mt-4 grid grid-cols-2 gap-3 text-center">
+            <div class="p-3 rounded-2xl bg-[#161218] border border-[#ff3e96]/30 shadow-md">
+              <p class="font-display font-black text-xl text-white text-glow">9+ Años</p>
+              <p class="text-[11px] text-[#ffaed8] font-bold uppercase tracking-wider">De Experiencia (2016)</p>
+            </div>
+            <div class="p-3 rounded-2xl bg-[#161218] border border-[#ff3e96]/30 shadow-md">
+              <p class="font-display font-black text-xl text-white text-glow">+150</p>
+              <p class="text-[11px] text-[#ffaed8] font-bold uppercase tracking-wider">Clientas &amp; Alumnas</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Narrative Column: Bio Oficial de Micaela -->
+      <div class="lg:col-span-7 space-y-6 order-1 lg:order-2 text-left">
+        
+        <!-- Header Pill Oficial -->
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#1e1622] border-2 border-[#ff3e96] text-xs sm:text-sm text-[#ffaed8] font-black tracking-wider uppercase shadow-lg shadow-[#ff3e96]/20">
+          <span>🎀✨ ¡HOLA, SOY MICA! BIENVENIDAS A MI MUNDO ✨🎀</span>
+        </div>
+
+        <!-- Headline & Subtitle -->
+        <div class="space-y-2">
+          <h2 class="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold text-white leading-tight">
+            "Hacer de mi pasión mi profesión." 👑
+          </h2>
+          <p class="font-script text-2xl sm:text-3xl text-[#ffaed8] italic leading-relaxed">
+            Si todavía no me conocés, ¡me presento! 💗
+          </p>
+        </div>
+
+        <!-- Story Presentation -->
+        <div class="space-y-4 text-sm sm:text-base text-[#f5edf5] leading-relaxed">
+          <p class="bg-[#161218]/80 p-4 sm:p-5 rounded-2xl border border-white/5">
+            Soy <strong>Micaela</strong>, creadora de <strong>Mica Lash Art</strong>, lashista desde 2016, maquilladora y apasionada por el mundo de la belleza. 🦋💄
+          </p>
+          <p class="text-[#d8c4d6]">
+            A lo largo de los años fui aprendiendo, capacitándome y sumando nuevos servicios para ofrecerles una experiencia cada vez más completa, siempre con amor, dedicación y atención a cada detalle. 🩷
+          </p>
+        </div>
+
+        <!-- Services Box: ¿Qué podés encontrar en Mica Lash Art? -->
+        <div class="p-5 sm:p-7 rounded-3xl bg-gradient-to-br from-[#1e1622] via-[#161218] to-[#120d15] border-2 border-[#ff3e96]/50 shadow-2xl space-y-4">
+          <div class="flex items-center gap-2 border-b border-white/10 pb-3">
+            <span class="text-xl">✨</span>
+            <h3 class="font-display text-lg sm:text-xl font-bold text-white tracking-wide">
+              ¿Qué podés encontrar en Mica Lash Art?
+            </h3>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm">
+            <div class="flex items-center gap-3 p-3 rounded-xl bg-[#0d0a0f] border border-[#ff3e96]/30 hover:border-[#ff3e96] transition-colors">
+              <span class="text-lg">🎀</span>
+              <span class="font-bold text-white">Extensiones de pestañas y diseños personalizados</span>
+            </div>
+            <div class="flex items-center gap-3 p-3 rounded-xl bg-[#0d0a0f] border border-[#ff3e96]/30 hover:border-[#ff3e96] transition-colors">
+              <span class="text-lg">🤍</span>
+              <span class="font-bold text-white">Lifting de pestañas</span>
+            </div>
+            <div class="flex items-center gap-3 p-3 rounded-xl bg-[#0d0a0f] border border-[#ff3e96]/30 hover:border-[#ff3e96] transition-colors">
+              <span class="text-lg">🦋</span>
+              <span class="font-bold text-white">Diseño y perfilado de cejas</span>
+            </div>
+            <div class="flex items-center gap-3 p-3 rounded-xl bg-[#0d0a0f] border border-[#ff3e96]/30 hover:border-[#ff3e96] transition-colors">
+              <span class="text-lg">🌸</span>
+              <span class="font-bold text-white">Depilación</span>
+            </div>
+            <div class="flex items-center gap-3 p-3 rounded-xl bg-[#0d0a0f] border border-[#ff3e96]/30 hover:border-[#ff3e96] transition-colors">
+              <span class="text-lg">💄</span>
+              <span class="font-bold text-white">Maquillaje profesional</span>
+            </div>
+            <div class="flex items-center gap-3 p-3 rounded-xl bg-[#0d0a0f] border border-[#ff3e96]/30 hover:border-[#ff3e96] transition-colors">
+              <span class="text-lg">✨</span>
+              <span class="font-bold text-white">Electroestimulación corporal</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filosofía & Agradecimiento Personal -->
+        <div class="space-y-3.5 text-xs sm:text-sm text-[#d8c4d6] leading-relaxed">
+          <p class="text-sm sm:text-base text-white font-medium italic border-l-2 border-[#ff3e96] pl-4 py-1">
+            "Cada servicio tiene su magia, pero todos comparten lo mismo: las ganas de ayudarte a resaltar tu belleza y que te sientas hermosa, cómoda y segura de vos misma. 🫶🏻"
+          </p>
+          <p>
+            Detrás de esta marca hay años de trabajo, esfuerzo, aprendizaje y muchísimos sueños por cumplir. Y esto es solo el comienzo… 💫
+          </p>
+          <p class="text-white/95">
+            Gracias a cada clienta y alumna que confía en mí, recomienda mi trabajo y me acompaña en este camino. Ustedes son una parte muy importante de todo lo que estoy construyendo. 🥹💕
+          </p>
+          <p class="font-display text-base sm:text-lg text-[#ffaed8] font-bold">
+            Bienvenidas a mi espacio, a mi trabajo y a este sueño llamado <span class="text-white uppercase tracking-wider text-glow">MICA LASH ART</span>. 🎀🩷
+          </p>
+        </div>
+
+        <!-- CTA Directo con WhatsApp para Turnos, Consultas & Capacitaciones -->
+        <div class="pt-3 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+          <a class="inline-flex justify-center items-center gap-2.5 bg-gradient-to-r from-[#25D366] to-[#128C7E] hover:from-[#20bd5a] hover:to-[#0f7a6e] text-white px-7 py-4 rounded-full font-bold text-sm sm:text-base shadow-xl shadow-[#25D366]/30 active:scale-95 transition-all text-center" href="https://wa.me/5492914491141?text=Hola%20Mica!%20Te%20escribo%20por%20turnos,%20consultas%20o%20capacitaciones%20de%20Mica%20Lash%20Art" target="_blank">
+            <svg class="w-5 h-5 fill-current" viewbox="0 0 24 24">
+              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"></path>
+            </svg>
+            <span>💌 Turnos, Consultas &amp; Capacitaciones</span>
+          </a>
+          <a class="inline-flex justify-center items-center gap-2 bg-[#1e1622] hover:bg-[#271c2b] border border-[#ff3e96]/40 text-[#ffaed8] px-6 py-4 rounded-full font-bold text-xs uppercase tracking-wider transition-all" href="https://instagram.com/mica.lashart" target="_blank">
+            <span class="material-symbols-outlined text-base">photo_camera</span>
+            <span>Instagram @mica.lashart</span>
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= MÓDULO DE RESERVA & ASISTENTE DIRECTO ================= -->
+  <section class="py-16 sm:py-20 md:py-28 bg-[#120d15] border-y border-[#ff3e96]/20 relative" id="reservas">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 md:px-12">
+      
+      <div class="text-center max-w-xl mx-auto mb-10 sm:mb-12 space-y-3">
+        <div class="brush-ribbon px-4 sm:px-5 py-2 rounded inline-block text-xs font-bold text-white tracking-widest uppercase mb-1">
+          RESERVÁ TU TURNO CON MICA LASH ART ♡
+        </div>
+        <h2 class="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-white">
+          Consulta y Reserva Inmediata
+        </h2>
+        <p class="text-[#d8c4d6] text-xs sm:text-sm md:text-base">
+          Completá tus preferencias y se enviará tu mensaje listo a nuestro WhatsApp oficial: <strong>291 449 1141</strong>.
+        </p>
+      </div>
+
+      <!-- Booking Card -->
+      <div class="neon-card-glow rounded-3xl bg-[#161218] p-5 sm:p-8 md:p-10 shadow-2xl">
+        <form class="space-y-5 sm:space-y-6" id="booking-form" onsubmit="event.preventDefault(); sendWhatsAppBooking();">
+          
+          <!-- Tratamiento -->
+          <div class="space-y-1.5">
+            <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8]">
+              1. Seleccioná tu tratamiento o promo
+            </label>
+            <select class="w-full bg-[#0d0a0f] border border-[#ff3e96]/40 rounded-xl px-4 py-3.5 text-white focus:outline-none focus:border-[#ff3e96] focus:ring-1 focus:ring-[#ff3e96] text-base sm:text-sm" id="booking-service">
+              <option value="Promo: Lifting + Botox + Perfilado ($22.000)">Promo: Lifting + Botox + Perfilado ($22.000)</option>
+              <option value="Promo VIP: Extensiones Híbridas/Rusas + Cejas ($34.000)">Promo VIP: Extensiones Híbridas/Rusas + Cejas ($34.000)</option>
+              <option value="Lifting de Pestañas + Nutrición con Keratina ($18.500)">Lifting de Pestañas + Nutrición con Keratina ($18.500)</option>
+              <option value="Extensiones Pelo a Pelo Clásicas ($24.000)">Extensiones Pelo a Pelo Clásicas ($24.000)</option>
+              <option value="Volumen Híbrido / Light Russian ($28.000)">Volumen Híbrido / Light Russian ($28.000)</option>
+              <option value="Laminado &amp; Perfilado de Cejas ($12.000)">Laminado &amp; Perfilado de Cejas ($12.000)</option>
+              <option value="Service &amp; Mantenimiento de Extensiones ($18.000)">Service &amp; Mantenimiento de Extensiones ($18.000)</option>
+              <option value="Quiero asesorarme primero con Mica">No sé cuál elegir, quiero asesoramiento</option>
+            </select>
+          </div>
+
+          <!-- Nombre y Horario -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
+            <div class="space-y-1.5">
+              <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8]">
+                2. Tu Nombre y Apellido
+              </label>
+              <input class="w-full bg-[#0d0a0f] border border-[#ff3e96]/40 rounded-xl px-4 py-3.5 text-white focus:outline-none focus:border-[#ff3e96] text-base sm:text-sm placeholder:text-white/30" id="booking-name" placeholder="Ej. Valentina Gómez" required="" type="text"/>
+            </div>
+            <div class="space-y-1.5">
+              <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8]">
+                3. Preferencia de Horario
+              </label>
+              <select class="w-full bg-[#0d0a0f] border border-[#ff3e96]/40 rounded-xl px-4 py-3.5 text-white focus:outline-none focus:border-[#ff3e96] text-base sm:text-sm" id="booking-time">
+                <option value="Turno Mañana (10:00 a 13:00 hs)">Turno Mañana (10:00 a 13:00 hs)</option>
+                <option value="Turno Tarde (14:00 a 19:30 hs)">Turno Tarde (14:00 a 19:30 hs)</option>
+                <option value="Preferencia día Sábado">Preferencia día Sábado</option>
+                <option value="Cualquier horario disponible">Cualquier horario disponible</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Consulta extra -->
+          <div class="space-y-1.5">
+            <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8]">
+              Nota adicional / Pregunta (Opcional)
+            </label>
+            <input class="w-full bg-[#0d0a0f] border border-[#ff3e96]/40 rounded-xl px-4 py-3.5 text-white focus:outline-none focus:border-[#ff3e96] text-base sm:text-sm placeholder:text-white/30" id="booking-notes" placeholder="Ej. Tengo extensiones previas de otro estudio / Ojos sensibles..." type="text"/>
+          </div>
+
+          <!-- Datos clave -->
+          <div class="p-3.5 sm:p-4 rounded-xl bg-[#0d0a0f]/80 border border-[#ff3e96]/30 text-xs text-[#d8c4d6] space-y-1.5">
+            <p class="font-bold text-white flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-sm text-[#ff3e96]">info</span>
+              Confirmación de turno en Mica Lash Art:
+            </p>
+            <p>• Los turnos se reservan con una pequeña seña previa para congelar tu lugar exclusivo.</p>
+            <p>• Ubicación: Zona Hospital Penna - Villa Cerrito - Bahía Blanca (dirección exacta confirmada con la seña).</p>
+          </div>
+
+          <!-- Botón WhatsApp -->
+          <div>
+            <button class="w-full inline-flex justify-center items-center gap-3 bg-gradient-to-r from-[#25D366] to-[#128C7E] hover:from-[#20bd5a] hover:to-[#0f7a6e] text-white py-3.5 sm:py-4 px-6 rounded-full font-bold text-sm sm:text-base shadow-xl shadow-[#25D366]/30 transition-all active:scale-[0.98]" type="submit">
+              <svg class="w-5 h-5 sm:w-6 sm:h-6 fill-current flex-shrink-0" viewbox="0 0 24 24">
+                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"></path>
+              </svg>
+              <span>Enviar WhatsApp al 291 449 1141</span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= UBICACIÓN & CONTACTO GLAM ================= -->
+  <section class="py-16 sm:py-20 md:py-28" id="ubicacion">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-12">
+      <div class="neon-card rounded-3xl p-6 sm:p-8 md:p-14 bg-[#161218] grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+        
+        <div class="lg:col-span-6 space-y-5 sm:space-y-6">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1e1622] border border-[#ff3e96]/30 text-xs text-[#ffaed8] font-bold tracking-widest uppercase">
+            <span class="text-[#ff3e96]">♡</span> Estudio Privado <span class="text-[#ff3e96]">♡</span>
+          </div>
+          <h2 class="font-display text-2xl sm:text-3xl md:text-5xl font-bold text-white">
+            Visitanos en Bahía Blanca
+          </h2>
+          <p class="text-xs sm:text-sm md:text-base text-[#d8c4d6] leading-relaxed">
+            Atención en estudio privado climatizado, sin esperas ni ruido exterior. Tu sesión es 100% personalizada.
+          </p>
+
+          <div class="space-y-3.5 pt-2">
+            <div class="flex items-start gap-3.5">
+              <span class="material-symbols-outlined text-[#ff3e96] text-xl sm:text-2xl mt-0.5">location_on</span>
+              <div>
+                <p class="font-bold text-white text-sm sm:text-base">Ubicación</p>
+                <p class="text-xs sm:text-sm text-[#d8c4d6]">Zona Htal. Penna - Villa Cerrito - Bahía Blanca</p>
+                <p class="text-[11px] sm:text-xs text-[#ff6ea7] mt-0.5">Dirección exacta enviada por WhatsApp al confirmar seña</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3.5">
+              <span class="material-symbols-outlined text-[#ff3e96] text-xl sm:text-2xl mt-0.5">chat</span>
+              <div>
+                <p class="font-bold text-white text-sm sm:text-base">WhatsApp de Turnos</p>
+                <a class="text-xs sm:text-sm text-[#25D366] font-bold hover:underline" href="https://wa.me/5492914491141" target="_blank">
+                  +54 9 291 449-1141
+                </a>
+              </div>
+            </div>
+            <div class="flex items-start gap-3.5">
+              <span class="material-symbols-outlined text-[#ff3e96] text-xl sm:text-2xl mt-0.5">schedule</span>
+              <div>
+                <p class="font-bold text-white text-sm sm:text-base">Días &amp; Horarios</p>
+                <p class="text-xs sm:text-sm text-[#d8c4d6]">Lunes a Viernes: 10:00 a 19:30 hs</p>
+                <p class="text-xs sm:text-sm text-[#d8c4d6]">Sábados: 10:00 a 16:00 hs (Cupos limitados)</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap gap-3 pt-2">
+            <a class="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-bold text-xs uppercase tracking-wider shadow-lg transition-all active:scale-95" href="https://wa.me/5492914491141?text=Hola%20Mica!%20Quiero%20saber%20turnos%20disponibles" target="_blank">
+              <span class="material-symbols-outlined text-base">chat</span>
+              <span>291 449 1141</span>
+            </a>
+            <a class="inline-flex items-center gap-2 bg-[#1e1622] hover:bg-[#271c2b] border border-[#ff3e96]/40 text-[#ffaed8] px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-bold text-xs uppercase tracking-wider transition-all active:scale-95" href="https://instagram.com/mica.lashart" target="_blank">
+              <span class="material-symbols-outlined text-base">photo_camera</span>
+              <span>@mica.lashart</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="lg:col-span-6">
+          <div class="neon-card-glow rounded-2xl overflow-hidden bg-[#0d0a0f] p-2">
+            <img class="w-full h-64 sm:h-80 object-cover rounded-xl" alt="Studio Mica Lash Art" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAp2Q72K77kC0Z7Igcfx4xmvY0THVkxv5crIrZoy60B8GcFGVuDOHLg4OYyTbyqt4isX5-L-3AMXgnn9BroPbMn2Xqo5MmOjPCdxRY9jLmMAYHJ_o-vHi2nMjgsc24nDd3I_Q_2gdUzPWmZv6BH5jISF5t9OF-JfcKzdq-iHIN9Btd5B1-bKZFJSg0jtzakaO93yf8CNKKxsvBUVaZSQXO8EyN0NCv8W31p9pD33MwrXJMkXInbYfs-"/>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PREGUNTAS FRECUENTES ================= -->
+  <section class="py-16 sm:py-20 md:py-28 bg-[#120d15] border-t border-[#ff3e96]/20" id="faqs">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 md:px-12">
+      
+      <div class="text-center max-w-xl mx-auto mb-10 sm:mb-14 space-y-3">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1e1622] border border-[#ff3e96]/30 text-xs text-[#ffaed8] font-bold tracking-widest uppercase">
+          <span class="text-[#ff3e96]">♡</span> Información Útil <span class="text-[#ff3e96]">♡</span>
+        </div>
+        <h2 class="font-display text-2xl sm:text-3xl md:text-5xl font-bold text-white">
+          Preguntas Frecuentes
+        </h2>
+        <p class="text-[#d8c4d6] text-xs sm:text-sm md:text-base">
+          Todo lo que tenés que saber antes de tu cita en el estudio.
+        </p>
+      </div>
+
+      <!-- Acordeón -->
+      <div class="space-y-3.5" id="faq-accordion">
+        <div class="neon-card rounded-2xl bg-[#161218] overflow-hidden">
+          <button class="faq-toggle w-full px-5 sm:px-6 py-4 sm:py-5 text-left flex items-center justify-between gap-4 font-bold text-white hover:text-[#ff3e96] transition-colors text-sm sm:text-base">
+            <span>¿Duelen las extensiones o el lifting?</span>
+            <span class="material-symbols-outlined text-[#ff3e96] transition-transform duration-300 transform faq-icon">expand_more</span>
+          </button>
+          <div class="faq-content hidden px-5 sm:px-6 pb-5 pt-1 text-xs sm:text-sm text-[#d8c4d6] border-t border-white/5">
+            Para nada. Es un proceso 100% indoloro, no invasivo y muy relajante. La mayoría de las clientas se duerme plácidamente durante la sesión sobre nuestra camilla ergonómica.
+          </div>
+        </div>
+        <div class="neon-card rounded-2xl bg-[#161218] overflow-hidden">
+          <button class="faq-toggle w-full px-5 sm:px-6 py-4 sm:py-5 text-left flex items-center justify-between gap-4 font-bold text-white hover:text-[#ff3e96] transition-colors text-sm sm:text-base">
+            <span>¿Cuánto duran las extensiones de pestañas?</span>
+            <span class="material-symbols-outlined text-[#ff3e96] transition-transform duration-300 transform faq-icon">expand_more</span>
+          </button>
+          <div class="faq-content hidden px-5 sm:px-6 pb-5 pt-1 text-xs sm:text-sm text-[#d8c4d6] border-t border-white/5">
+            Acompañan el ciclo biológico natural de tu pestaña (4 a 6 semanas). Para mantenerlas siempre tupidas y prolijas, se sugiere realizar el service de mantenimiento cada 2 a 3 semanas.
+          </div>
+        </div>
+        <div class="neon-card rounded-2xl bg-[#161218] overflow-hidden">
+          <button class="faq-toggle w-full px-5 sm:px-6 py-4 sm:py-5 text-left flex items-center justify-between gap-4 font-bold text-white hover:text-[#ff3e96] transition-colors text-sm sm:text-base">
+            <span>¿Cómo llego a mi turno y cómo preparo mis pestañas?</span>
+            <span class="material-symbols-outlined text-[#ff3e96] transition-transform duration-300 transform faq-icon">expand_more</span>
+          </button>
+          <div class="faq-content hidden px-5 sm:px-6 pb-5 pt-1 text-xs sm:text-sm text-[#d8c4d6] border-t border-white/5">
+            Es fundamental asistir con los ojos completamente libres de maquillaje, rímel y sombras, y sin cremas en el contorno de ojos para garantizar la máxima adherencia y duración.
+          </div>
+        </div>
+        <div class="neon-card rounded-2xl bg-[#161218] overflow-hidden">
+          <button class="faq-toggle w-full px-5 sm:px-6 py-4 sm:py-5 text-left flex items-center justify-between gap-4 font-bold text-white hover:text-[#ff3e96] transition-colors text-sm sm:text-base">
+            <span>¿Cómo se confirma el turno en el estudio?</span>
+            <span class="material-symbols-outlined text-[#ff3e96] transition-transform duration-300 transform faq-icon">expand_more</span>
+          </button>
+          <div class="faq-content hidden px-5 sm:px-6 pb-5 pt-1 text-xs sm:text-sm text-[#d8c4d6] border-t border-white/5">
+            El turno se reserva formalmente mediante transferencia bancaria de una seña. Una vez recibida, te enviamos la confirmación del horario y la dirección exacta en Zona Htal. Penna - Villa Cerrito.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-[#0a070c] border-t border-[#ff3e96]/30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-10 sm:py-12 flex flex-col md:flex-row justify-between items-center gap-6">
+      
+      <div class="flex flex-col items-center md:items-start text-center md:text-left">
+        <div class="flex items-center gap-2">
+          <span class="font-display font-bold text-xl sm:text-2xl text-white tracking-wider">MICA LASH ART</span>
+          <span class="text-[#ff3e96]">♡</span>
+        </div>
+        <p class="text-xs text-[#d8c4d6] mt-1">
+          Zona Htal. Penna - Villa Cerrito - Bahía Blanca • WhatsApp 291 449 1141
+        </p>
+        <p class="text-[11px] text-[#ff6ea7] mt-1 font-semibold">
+          © 2025 Mica Lash Art. Todos los derechos reservados.
+        </p>
+      </div>
+
+      <div class="flex flex-wrap justify-center gap-4 sm:gap-6 text-xs font-semibold text-[#d8c4d6]">
+        <a class="hover:text-[#ff3e96] transition-colors" href="#promos">Precios &amp; Promos</a>
+        <a class="hover:text-[#ff3e96] transition-colors" href="#servicios">Servicios</a>
+        <a class="hover:text-[#ff3e96] transition-colors" href="#galeria">Galería</a>
+        <a class="hover:text-[#ff3e96] transition-colors" href="#ubicacion">Ubicación</a>
+        <a class="hover:text-[#25D366] transition-colors flex items-center gap-1" href="https://wa.me/5492914491141" target="_blank">
+          <span class="text-[#25D366]">WhatsApp 291 449 1141</span>
+        </a>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ================= FLOATING MOBILE VIP ACTION BAR ================= -->
+  <div class="fixed bottom-0 left-0 right-0 z-40 bg-[#0d0a0f]/95 backdrop-blur-xl border-t border-[#ff3e96]/35 px-4 py-2.5 sm:hidden shadow-[0_-10px_25px_rgba(0,0,0,0.8)]">
+    <div class="flex items-center gap-2.5">
+      <a href="#promos" class="flex-1 inline-flex justify-center items-center gap-1.5 bg-[#1e1622] border border-[#ff3e96]/50 text-[#ffaed8] py-2.5 px-3 rounded-full font-bold text-xs uppercase tracking-wider transition-colors active:scale-95">
+        <span class="material-symbols-outlined text-sm text-[#ff3e96]">local_offer</span>
+        <span>Promos</span>
+      </a>
+      <a href="https://wa.me/5492914491141?text=Hola%20Mica!%20Quiero%20consultar%20turnos%20disponibles" target="_blank" class="flex-[2] inline-flex justify-center items-center gap-2 bg-gradient-to-r from-[#25D366] to-[#128C7E] text-white py-2.5 px-4 rounded-full font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#25D366]/30 transition-all active:scale-95">
+        <svg class="w-4 h-4 fill-current flex-shrink-0" viewbox="0 0 24 24">
+          <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"></path>
+        </svg>
+        <span>Pedir Turno</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ================= LIGHTBOX MODAL ================= -->
+  <div class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden items-center justify-center p-3 sm:p-4" id="lightbox-modal">
+    <div class="relative max-w-3xl w-full bg-[#161218] rounded-3xl overflow-hidden neon-card-glow max-h-[92vh] flex flex-col">
+      <button class="absolute top-3 right-3 z-10 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/70 flex items-center justify-center text-white hover:text-[#ff3e96] transition-colors border border-white/20 active:scale-95" onclick="closeLightbox()" aria-label="Cerrar">
+        <span class="material-symbols-outlined text-lg sm:text-xl">close</span>
+      </button>
+      <div class="overflow-hidden flex-1 flex items-center justify-center bg-black">
+        <img alt="Detalle de pestañas" class="max-h-[60vh] sm:max-h-[70vh] w-auto max-w-full object-contain" id="lightbox-img" src=""/>
+      </div>
+      <div class="p-4 sm:p-6 bg-[#161218] border-t border-white/10">
+        <h3 class="font-display font-bold text-lg sm:text-xl text-white" id="lightbox-title">Título</h3>
+        <p class="text-xs sm:text-sm text-[#d8c4d6] mt-1" id="lightbox-desc">Descripción</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= JAVASCRIPT ================= -->
+  <script>
+    // 1. Hero Dynamic Style Switcher ("que el hero cambie")
+    const heroStyles = [{"id":"glam","name":"Signature Glam","badge":"★ Look Más Pedido","title":"Volumen Híbrido Glam","detail":"Densidad suave, textura aterciopelada y abanicos ultralivianos","price":"$34.000","time":"120 min","cdnUrl":"https://lh3.googleusercontent.com/aida-public/AB6AXuBv0rL3kbn14-9ggz-f3oR_MQJEjBMgCLanS27bqrl8snwyoasvn78Aa9L_4AEkHwXmArrVYdfCgGHZRDhBmOVFQdbbzAalNFwEe_A-1zQ1WZjz3IvuVcCGwuQQor-U9nTzsMz_0dMqVacs8arA4_e7v_Ud2VUgP9u3N_DdxKiPYQbQt2kTIeXC6QNT7Im9fDIBTny8X5WXrKskNeH6p8Oterrf29L2d1B3XxM2iQVy-nQzgq8kN5qd","localUrl":"images/hero-eyelash-extensions.jpg","img":"https://lh3.googleusercontent.com/aida-public/AB6AXuBv0rL3kbn14-9ggz-f3oR_MQJEjBMgCLanS27bqrl8snwyoasvn78Aa9L_4AEkHwXmArrVYdfCgGHZRDhBmOVFQdbbzAalNFwEe_A-1zQ1WZjz3IvuVcCGwuQQor-U9nTzsMz_0dMqVacs8arA4_e7v_Ud2VUgP9u3N_DdxKiPYQbQt2kTIeXC6QNT7Im9fDIBTny8X5WXrKskNeH6p8Oterrf29L2d1B3XxM2iQVy-nQzgq8kN5qd"},{"id":"lifting","name":"Lifting & Botox","badge":"🌿 100% Natural","title":"Lifting con Keratina","detail":"Eleva tus pestañas naturales desde la raíz con nutrición botox","price":"$18.500","time":"60 min","cdnUrl":"https://lh3.googleusercontent.com/aida-public/AB6AXuBP7yC6j1Z4VV_n2cPGs8YE7jNeH42d8dwm_2KImcA_DUQDqI5FZdQrVAKNHaKUPmYLec_kk4PmCj-lYSVmxBYHywQakifsLVk1G44znxwV29H0OS0TCyrAw3rAKpRma8-soinZSvauEbxcqqMYzJN-vB1Rc13qH-b9AeXzdpWaKadE2NZ0gcBapPJfROHHLQtRxHRe0Why0sqvDM4wbKu2lDqWpt59W_oPRKAGi58zMJv222ePtAQz","localUrl":"images/gallery-1-lash-lift.jpg","img":"https://lh3.googleusercontent.com/aida-public/AB6AXuBP7yC6j1Z4VV_n2cPGs8YE7jNeH42d8dwm_2KImcA_DUQDqI5FZdQrVAKNHaKUPmYLec_kk4PmCj-lYSVmxBYHywQakifsLVk1G44znxwV29H0OS0TCyrAw3rAKpRma8-soinZSvauEbxcqqMYzJN-vB1Rc13qH-b9AeXzdpWaKadE2NZ0gcBapPJfROHHLQtRxHRe0Why0sqvDM4wbKu2lDqWpt59W_oPRKAGi58zMJv222ePtAQz"},{"id":"clasicas","name":"Pelo a Pelo","badge":"✨ Efecto Rímel","title":"Extensiones Clásicas 1:1","detail":"Aislación milimétrica individual para una mirada abierta y limpia","price":"$24.000","time":"90 min","cdnUrl":"https://lh3.googleusercontent.com/aida-public/AB6AXuDuB8FkY9QqHmmM3TABeQ5OZrEvnqoTxJOS3UTeLLJuk_RoC-WblFUPlVadjlyI_gJVorIUqqEimIv8AXg_fX9R8HvdJmlE8afhFhQ7GtxCI7-jxXFQmANw0NU52wEz9jQqMcQ4DpJNlyQYMART_E8Q8DticjSkEemyr3t8oSIKXGrssAvRRBkiVlrpkh0mP_BJ7_9VtuKxW4sDHn6BIraVk9tQrl2pl3mZHHQWPbbNYnTvqc-uXrb7","localUrl":"images/gallery-2-classic-extensions.jpg","img":"https://lh3.googleusercontent.com/aida-public/AB6AXuDuB8FkY9QqHmmM3TABeQ5OZrEvnqoTxJOS3UTeLLJuk_RoC-WblFUPlVadjlyI_gJVorIUqqEimIv8AXg_fX9R8HvdJmlE8afhFhQ7GtxCI7-jxXFQmANw0NU52wEz9jQqMcQ4DpJNlyQYMART_E8Q8DticjSkEemyr3t8oSIKXGrssAvRRBkiVlrpkh0mP_BJ7_9VtuKxW4sDHn6BIraVk9tQrl2pl3mZHHQWPbbNYnTvqc-uXrb7"}];
+    let currentHeroIdx = 0;
+    let heroAutoTimer = null;
+
+    function setHeroStyle(idx) {
+      if (idx < 0) idx = heroStyles.length - 1;
+      if (idx >= heroStyles.length) idx = 0;
+      currentHeroIdx = idx;
+      const data = heroStyles[idx];
+
+      const imgEl = document.getElementById('hero-dynamic-img');
+      const badgeEl = document.getElementById('hero-badge-text');
+      const titleEl = document.getElementById('hero-card-title');
+      const detailEl = document.getElementById('hero-card-detail');
+      const priceEl = document.getElementById('hero-card-price');
+      const timeEl = document.getElementById('hero-card-time');
+
+      if (imgEl) {
+        imgEl.style.opacity = '0.4';
+        imgEl.style.transform = 'scale(0.98)';
+        setTimeout(() => {
+          imgEl.src = data.img;
+          imgEl.style.opacity = '1';
+          imgEl.style.transform = 'scale(1)';
+        }, 150);
+      }
+
+      if (badgeEl) badgeEl.textContent = data.badge;
+      if (titleEl) titleEl.textContent = data.title;
+      if (detailEl) detailEl.textContent = data.detail;
+      if (priceEl) priceEl.textContent = data.price;
+      if (timeEl) timeEl.innerHTML = '<span class="material-symbols-outlined text-[13px] text-[#ffaed8]">schedule</span> ' + data.time;
+
+      // Update pills
+      document.querySelectorAll('.hero-pill-btn').forEach((btn, i) => {
+        if (i === idx) {
+          btn.classList.add('bg-[#ff2d85]', 'text-white', 'shadow-md', 'shadow-[#ff2d85]/40', 'border-[#ff3e96]');
+          btn.classList.remove('bg-[#1e1622]', 'text-[#d8c4d6]', 'border-white/10');
+        } else {
+          btn.classList.remove('bg-[#ff2d85]', 'text-white', 'shadow-md', 'shadow-[#ff2d85]/40', 'border-[#ff3e96]');
+          btn.classList.add('bg-[#1e1622]', 'text-[#d8c4d6]', 'border-white/10');
+        }
+      });
+
+      // Update dots
+      document.querySelectorAll('.hero-dot').forEach((dot, i) => {
+        if (i === idx) {
+          dot.classList.add('w-6', 'bg-[#ff3e96]');
+          dot.classList.remove('w-2', 'bg-white/30');
+        } else {
+          dot.classList.remove('w-6', 'bg-[#ff3e96]');
+          dot.classList.add('w-2', 'bg-white/30');
+        }
+      });
+    }
+
+    function resetHeroAutoCycle() {
+      if (heroAutoTimer) clearInterval(heroAutoTimer);
+      heroAutoTimer = setInterval(() => {
+        setHeroStyle(currentHeroIdx + 1);
+      }, 5000);
+    }
+
+    // Attach pill events
+    document.querySelectorAll('.hero-pill-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const idx = parseInt(btn.getAttribute('data-hero-idx'), 10);
+        setHeroStyle(idx);
+        resetHeroAutoCycle();
+      });
+    });
+
+    // Attach dot events
+    document.querySelectorAll('.hero-dot').forEach(dot => {
+      dot.addEventListener('click', () => {
+        const idx = parseInt(dot.getAttribute('data-dot-idx'), 10);
+        setHeroStyle(idx);
+        resetHeroAutoCycle();
+      });
+    });
+
+    // Prev / Next arrows
+    const prevBtn = document.getElementById('hero-prev-btn');
+    const nextBtn = document.getElementById('hero-next-btn');
+    if (prevBtn) {
+      prevBtn.addEventListener('click', () => {
+        setHeroStyle(currentHeroIdx - 1);
+        resetHeroAutoCycle();
+      });
+    }
+    if (nextBtn) {
+      nextBtn.addEventListener('click', () => {
+        setHeroStyle(currentHeroIdx + 1);
+        resetHeroAutoCycle();
+      });
+    }
+
+    // Start auto cycle
+    resetHeroAutoCycle();
+
+    // 2. Mobile Menu Toggle
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIcon = document.getElementById('menu-icon');
+
+    if (mobileBtn && mobileMenu) {
+      mobileBtn.addEventListener('click', () => {
+        const isHidden = mobileMenu.classList.contains('hidden');
+        if (isHidden) {
+          mobileMenu.classList.remove('hidden');
+          menuIcon.textContent = 'close';
+        } else {
+          mobileMenu.classList.add('hidden');
+          menuIcon.textContent = 'menu';
+        }
+      });
+
+      document.querySelectorAll('.mobile-nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+          mobileMenu.classList.add('hidden');
+          menuIcon.textContent = 'menu';
+        });
+      });
+    }
+
+    // 3. Prefill Booking
+    function prefillBooking(serviceName) {
+      const select = document.getElementById('booking-service');
+      if (select) {
+        let found = false;
+        for (let i = 0; i < select.options.length; i++) {
+          if (select.options[i].value.includes(serviceName) || serviceName.includes(select.options[i].text)) {
+            select.selectedIndex = i;
+            found = true;
+            break;
+          }
+        }
+        if (!found) {
+          select.value = serviceName;
+        }
+      }
+      const reservas = document.getElementById('reservas');
+      if (reservas) {
+        reservas.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    // 4. WhatsApp Directo al 291 449 1141
+    function sendWhatsAppBooking() {
+      const service = document.getElementById('booking-service').value;
+      const name = document.getElementById('booking-name').value.trim();
+      const time = document.getElementById('booking-time').value;
+      const notes = document.getElementById('booking-notes').value.trim();
+
+      let message = `¡Hola Mica! ♡ Mi nombre es *${name}* y me gustaría reservar un turno en tu estudio de Bahía Blanca:\n• *Tratamiento:* ${service}\n• *Horario deseado:* ${time}`;
+
+      if (notes) {
+        message += `\n• *Consulta/Detalle:* ${notes}`;
+      }
+
+      message += `\n\n¿Tenés disponibilidad próxima? ¡Muchas gracias!`;
+
+      const encoded = encodeURIComponent(message);
+      const whatsappUrl = `https://wa.me/5492914491141?text=${encoded}`;
+      window.open(whatsappUrl, '_blank');
+    }
+
+    // 5. Filtros de Servicios
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => {
+          b.classList.remove('bg-[#ff2d85]', 'text-white', 'shadow-md', 'active-filter');
+          b.classList.add('bg-[#1e1622]', 'text-[#d8c4d6]');
+        });
+        btn.classList.add('bg-[#ff2d85]', 'text-white', 'shadow-md', 'active-filter');
+        btn.classList.remove('bg-[#1e1622]', 'text-[#d8c4d6]');
+
+        const filter = btn.getAttribute('data-filter');
+        document.querySelectorAll('.service-item').forEach(item => {
+          if (filter === 'all' || item.classList.contains(filter)) {
+            item.style.display = 'flex';
+          } else {
+            item.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    // 6. Acordeón FAQs
+    document.querySelectorAll('.faq-toggle').forEach(toggle => {
+      toggle.addEventListener('click', () => {
+        const content = toggle.nextElementSibling;
+        const icon = toggle.querySelector('.faq-icon');
+        const isHidden = content.classList.contains('hidden');
+
+        document.querySelectorAll('.faq-content').forEach(c => c.classList.add('hidden'));
+        document.querySelectorAll('.faq-icon').forEach(i => i.classList.remove('rotate-180'));
+
+        if (isHidden) {
+          content.classList.remove('hidden');
+          icon.classList.add('rotate-180');
+        }
+      });
+    });
+
+    // 7. Lightbox
+    function openLightbox(src, title, desc) {
+      const modal = document.getElementById('lightbox-modal');
+      document.getElementById('lightbox-img').src = src;
+      document.getElementById('lightbox-title').textContent = title;
+      document.getElementById('lightbox-desc').textContent = desc;
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      const modal = document.getElementById('lightbox-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+
+    document.getElementById('lightbox-modal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeLightbox();
+      }
+    });
+
+    // 8. Toggle Fotos de Mica
+    function toggleMicaPhoto(num) {
+      const img = document.getElementById('mica-bio-img');
+      const b1 = document.getElementById('btn-photo-1');
+      const b2 = document.getElementById('btn-photo-2');
+      if (img) {
+        img.style.opacity = '0.3';
+        img.style.transform = 'scale(0.98)';
+        setTimeout(() => {
+          img.src = num === 1 ? 'images/mica-bio-1.jpg' : 'images/mica-bio-2.jpg';
+          img.style.opacity = '1';
+          img.style.transform = 'scale(1)';
+        }, 150);
+      }
+      if (b1 && b2) {
+        if (num === 1) {
+          b1.className = 'w-7 h-7 rounded-full bg-[#ff2d85] text-white text-xs font-bold flex items-center justify-center transition-all shadow';
+          b2.className = 'w-7 h-7 rounded-full bg-transparent text-[#d8c4d6] hover:text-white text-xs font-bold flex items-center justify-center transition-all';
+        } else {
+          b2.className = 'w-7 h-7 rounded-full bg-[#ff2d85] text-white text-xs font-bold flex items-center justify-center transition-all shadow';
+          b1.className = 'w-7 h-7 rounded-full bg-transparent text-[#d8c4d6] hover:text-white text-xs font-bold flex items-center justify-center transition-all';
+        }
+      }
+    }
+  </script>
+</body>
+</html>
