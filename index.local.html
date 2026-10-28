@@ -113,105 +113,179 @@
     .hero-img-transition {
       transition: opacity 0.4s ease-in-out, transform 0.6s ease-out;
     }
+
+    /* ================= ESTILOS PROYECTO VASCA: CALENDARIO & TURNOS ================= */
+    .cal-day {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.75rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: #f5edf5;
+      background: #161218;
+      border: 1px solid rgba(255, 62, 150, 0.15);
+      user-select: none;
+    }
+    .cal-day:hover:not(.disabled):not(.empty) {
+      background: rgba(255, 62, 150, 0.25);
+      border-color: #ff3e96;
+      color: #fff;
+      transform: translateY(-1px);
+    }
+    .cal-day.today {
+      border: 2px solid #ffaed8;
+      color: #ffaed8;
+      font-weight: 800;
+    }
+    .cal-day.selected {
+      background: linear-gradient(135deg, #ff2d85 0%, #ff6ea7 100%) !important;
+      color: #fff !important;
+      border-color: #ffffff !important;
+      box-shadow: 0 4px 15px rgba(255, 45, 133, 0.6);
+      font-weight: 900;
+      transform: scale(1.05);
+    }
+    .cal-day.disabled {
+      opacity: 0.22;
+      cursor: not-allowed;
+      pointer-events: none;
+      background: transparent;
+      border-color: transparent;
+      color: #7a6275;
+    }
+    .cal-day.empty {
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .slot-btn {
+      padding: 0.65rem 0.75rem;
+      border-radius: 0.75rem;
+      background: #0d0a0f;
+      border: 1px solid rgba(255, 62, 150, 0.35);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .slot-btn:hover {
+      background: rgba(255, 62, 150, 0.2);
+      border-color: #ff3e96;
+      transform: translateY(-1px);
+    }
+    .slot-btn.selected {
+      background: linear-gradient(135deg, #ff2d85 0%, #ff6ea7 100%);
+      border-color: #ffffff;
+      box-shadow: 0 4px 15px rgba(255, 45, 133, 0.5);
+      color: #fff;
+    }
+    .vasca-step {
+      transition: all 0.35s ease;
+    }
+    .vasca-step.hidden {
+      display: none;
+    }
   </style>
 </head>
 <body class="bg-[#0d0a0f] text-[#f5edf5] font-body text-sm md:text-base antialiased selection:bg-[#ff3e96] selection:text-white pb-20 md:pb-0 overflow-x-hidden">
 
 
-  <!-- ================= TOP NAVIGATION BAR ================= -->
-  <header class="sticky top-0 z-50 bg-[#0d0a0f]/95 backdrop-blur-md border-b border-[#ff3e96]/25 shadow-lg shadow-black/60">
-    <div class="flex justify-between items-center max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-3">
+  <!-- ================= TOP NAVIGATION BAR (MINIMALISTA & ELEGANTE) ================= -->
+  <header class="sticky top-0 z-50 bg-[#0d0a0f]/90 backdrop-blur-xl border-b border-[#ff3e96]/20 shadow-lg shadow-black/50">
+    <div class="flex justify-between items-center max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-3.5">
       
-      <!-- Brand Logo Anchor -->
-      <a class="flex flex-col group" href="#inicio">
-        <div class="flex items-center gap-1.5">
-          <span class="font-display font-bold text-lg sm:text-xl md:text-2xl tracking-wider text-white uppercase group-hover:text-[#ff3e96] transition-colors">
-            MICA LASH ART
-          </span>
-          <span class="text-[#ff3e96] text-xs">♡</span>
-        </div>
-        <span class="text-[9px] sm:text-[10px] uppercase font-bold tracking-[0.2em] sm:tracking-[0.25em] text-[#ff6ea7] -mt-1">
-          Estudio de Miradas • Bahía Blanca
+      <!-- Brand Logo -->
+      <a class="flex items-center gap-2 group" href="#inicio">
+        <span class="font-display font-bold text-lg sm:text-xl tracking-wider text-white uppercase group-hover:text-[#ff3e96] transition-colors">
+          MICA LASH ART
         </span>
+        <span class="text-[#ff3e96] text-xs">♡</span>
       </a>
 
-      <!-- Desktop Links -->
-      <nav class="hidden md:flex items-center space-x-6 lg:space-x-7 text-sm font-semibold">
-        <a class="text-[#d8c4d6] hover:text-[#ff3e96] hover:text-glow transition-all" href="#promos">Precios &amp; Promos</a>
+      <!-- Desktop Links (Esenciales y Limpios) -->
+      <nav class="hidden md:flex items-center space-x-7 lg:space-x-9 text-sm font-medium">
         <a class="text-[#d8c4d6] hover:text-[#ff3e96] hover:text-glow transition-all" href="#servicios">Servicios</a>
-        <a class="text-[#d8c4d6] hover:text-[#ff3e96] hover:text-glow transition-all" href="#galeria">Trabajos</a>
+        <a class="text-[#d8c4d6] hover:text-[#ff3e96] hover:text-glow transition-all" href="#cursos">Cursos</a>
+        <a class="text-[#d8c4d6] hover:text-[#ff3e96] hover:text-glow transition-all" href="#galeria">Galería</a>
         <a class="text-[#d8c4d6] hover:text-[#ff3e96] hover:text-glow transition-all" href="#sobre-mica">Sobre Mica</a>
-        <a class="text-[#d8c4d6] hover:text-[#ff3e96] hover:text-glow transition-all" href="#ubicacion">Ubicación</a>
-        <a class="text-[#d8c4d6] hover:text-[#ff3e96] hover:text-glow transition-all" href="#faqs">FAQs</a>
       </nav>
 
       <!-- Trailing Action CTA & Mobile Hamburger -->
-      <div class="flex items-center space-x-2 sm:space-x-3">
-        <a class="text-[#f5edf5] hover:text-[#ff3e96] p-2 rounded-full border border-white/10 hover:border-[#ff3e96]/50 bg-white/5 transition-all" href="https://instagram.com/mica.lashart" rel="noopener noreferrer" target="_blank" title="Instagram @mica.lashart">
+      <div class="flex items-center space-x-2.5">
+        <a class="hidden sm:inline-flex text-[#f5edf5] hover:text-[#ff3e96] p-2 rounded-full border border-white/10 hover:border-[#ff3e96]/40 bg-white/5 transition-all" href="https://instagram.com/mica.lashart" rel="noopener noreferrer" target="_blank" title="Instagram @mica.lashart">
           <svg class="w-4 h-4 fill-current" viewbox="0 0 24 24">
             <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path>
           </svg>
         </a>
 
-        <!-- Desktop Booking Button -->
-        <a class="hidden sm:inline-flex items-center space-x-1.5 sm:space-x-2 bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] text-white px-3.5 sm:px-5 py-2 rounded-full font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#ff2d85]/40 hover:brightness-110 active:scale-95 transition-all" href="https://wa.me/5492914491141?text=Hola%20Mica!%20Quiero%20reservar%20un%20turno%20en%20el%20estudio" target="_blank">
-          <span class="material-symbols-outlined text-sm">calendar_month</span>
-          <span>Reservar Turno</span>
+        <!-- Iniciar Sesión Link -->
+        <a class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/10 hover:border-[#ff3e96]/50 bg-white/5 text-[#d8c4d6] hover:text-white text-xs font-semibold transition-all" href="login.html" title="Iniciar Sesión Clientas">
+          <span class="material-symbols-outlined text-sm text-[#ff3e96]">person</span>
+          <span>Ingresar</span>
         </a>
 
-        <!-- Mobile Hamburger Toggle Button -->
-        <button id="mobile-menu-btn" class="md:hidden p-2 rounded-xl border border-[#ff3e96]/40 bg-[#1e1622] text-[#ffaed8] hover:text-white transition-colors focus:outline-none" aria-label="Abrir Menú">
+        <!-- Desktop Booking Button -->
+        <a class="inline-flex items-center space-x-1.5 bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] text-white px-4 sm:px-5 py-2 rounded-full font-bold text-xs uppercase tracking-wider shadow-md shadow-[#ff2d85]/30 hover:brightness-110 active:scale-95 transition-all" href="turnos.html">
+          <span class="material-symbols-outlined text-sm">calendar_month</span>
+          <span>Pedir Turno</span>
+        </a>
+
+        <!-- Mobile Hamburger Button -->
+        <button id="mobile-menu-btn" class="md:hidden p-2 rounded-xl border border-[#ff3e96]/30 bg-[#161218] text-[#ffaed8] hover:text-white transition-colors focus:outline-none" aria-label="Abrir Menú">
           <span id="menu-icon" class="material-symbols-outlined text-2xl">menu</span>
         </button>
       </div>
     </div>
 
-    <!-- Mobile Drawer Menu -->
-    <div id="mobile-menu" class="hidden md:hidden bg-[#0d0a0f]/98 border-b border-[#ff3e96]/30 px-6 py-6 space-y-4 shadow-2xl backdrop-blur-2xl animate-fadeIn">
-      <div class="flex flex-col space-y-3 font-semibold text-sm">
-        <a class="mobile-nav-link flex items-center justify-between text-[#d8c4d6] hover:text-[#ff3e96] py-2 border-b border-white/5" href="#promos">
-          <span class="flex items-center gap-2.5">
-            <span class="material-symbols-outlined text-[#ff3e96] text-lg">local_offer</span> Precios &amp; Promos
+    <!-- Mobile Drawer Menu (Limpio y Despejado) -->
+    <div id="mobile-menu" class="hidden md:hidden bg-[#0d0a0f]/98 border-b border-[#ff3e96]/20 px-6 py-5 space-y-4 shadow-2xl backdrop-blur-2xl animate-fadeIn">
+      <div class="flex flex-col space-y-1 font-medium text-sm">
+        <a class="mobile-nav-link flex items-center justify-between text-[#d8c4d6] hover:text-[#ff3e96] py-2.5 border-b border-white/5" href="#servicios">
+          <span class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-[#ff3e96] text-lg">spa</span> Servicios &amp; Promos
           </span>
-          <span class="text-xs text-[#ff6ea7] font-bold">Ver</span>
         </a>
-        <a class="mobile-nav-link flex items-center justify-between text-[#d8c4d6] hover:text-[#ff3e96] py-2 border-b border-white/5" href="#servicios">
-          <span class="flex items-center gap-2.5">
-            <span class="material-symbols-outlined text-[#ff3e96] text-lg">spa</span> Servicios &amp; Técnicas
+        <a class="mobile-nav-link flex items-center justify-between text-[#d8c4d6] hover:text-[#ff3e96] py-2.5 border-b border-white/5" href="#cursos">
+          <span class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-[#ff3e96] text-lg">school</span> Cursos &amp; Academia
           </span>
-          <span class="material-symbols-outlined text-sm text-white/40">chevron_right</span>
         </a>
-        <a class="mobile-nav-link flex items-center justify-between text-[#d8c4d6] hover:text-[#ff3e96] py-2 border-b border-white/5" href="#galeria">
-          <span class="flex items-center gap-2.5">
+        <a class="mobile-nav-link flex items-center justify-between text-[#d8c4d6] hover:text-[#ff3e96] py-2.5 border-b border-white/5" href="#galeria">
+          <span class="flex items-center gap-3">
             <span class="material-symbols-outlined text-[#ff3e96] text-lg">photo_camera</span> Trabajos Reales
           </span>
-          <span class="material-symbols-outlined text-sm text-white/40">chevron_right</span>
         </a>
-        <a class="mobile-nav-link flex items-center justify-between text-[#d8c4d6] hover:text-[#ff3e96] py-2 border-b border-white/5" href="#sobre-mica">
-          <span class="flex items-center gap-2.5">
+        <a class="mobile-nav-link flex items-center justify-between text-[#d8c4d6] hover:text-[#ff3e96] py-2.5 border-b border-white/5" href="#sobre-mica">
+          <span class="flex items-center gap-3">
             <span class="material-symbols-outlined text-[#ff3e96] text-lg">person</span> Sobre Mica
           </span>
-          <span class="material-symbols-outlined text-sm text-white/40">chevron_right</span>
         </a>
-        <a class="mobile-nav-link flex items-center justify-between text-[#d8c4d6] hover:text-[#ff3e96] py-2 border-b border-white/5" href="#ubicacion">
-          <span class="flex items-center gap-2.5">
-            <span class="material-symbols-outlined text-[#ff3e96] text-lg">location_on</span> Ubicación
+        <a class="mobile-nav-link flex items-center justify-between text-[#d8c4d6] hover:text-[#ff3e96] py-2.5 border-b border-white/5" href="turnos.html">
+          <span class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-[#ff3e96] text-lg">calendar_month</span> Turnos Online
           </span>
-          <span class="text-xs text-[#ffaed8]">Bahía Blanca</span>
         </a>
-        <a class="mobile-nav-link flex items-center justify-between text-[#d8c4d6] hover:text-[#ff3e96] py-2 border-b border-white/5" href="#faqs">
-          <span class="flex items-center gap-2.5">
-            <span class="material-symbols-outlined text-[#ff3e96] text-lg">help_outline</span> Preguntas Frecuentes
+        <a class="mobile-nav-link flex items-center justify-between text-[#d8c4d6] hover:text-[#ff3e96] py-2.5 border-b border-white/5" href="login.html">
+          <span class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-[#ff3e96] text-lg">login</span> Iniciar Sesión / Cuenta
           </span>
-          <span class="material-symbols-outlined text-sm text-white/40">chevron_right</span>
         </a>
       </div>
 
       <!-- Quick Action Inside Mobile Menu -->
-      <div class="pt-2">
-        <a class="w-full inline-flex justify-center items-center gap-2.5 bg-gradient-to-r from-[#25D366] to-[#128C7E] text-white py-3.5 rounded-full font-bold text-sm shadow-lg shadow-[#25D366]/30" href="https://wa.me/5492914491141?text=Hola%20Mica!%20Quiero%20reservar%20un%20turno" target="_blank">
-          <span class="material-symbols-outlined text-lg">chat</span>
-          <span>WhatsApp: 291 449 1141</span>
+      <div class="pt-2 flex flex-col gap-2.5">
+        <a class="w-full inline-flex justify-center items-center gap-2 bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] text-white py-3 rounded-full font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#ff2d85]/30" href="turnos.html">
+          <span class="material-symbols-outlined text-sm">calendar_month</span>
+          <span>Pedir Turno Online</span>
+        </a>
+        <a class="w-full inline-flex justify-center items-center gap-2 bg-[#1e1622] hover:bg-[#271c2b] border border-[#ff3e96]/40 text-[#ffaed8] py-2.5 rounded-full font-bold text-xs uppercase tracking-wider" href="https://wa.me/5492914491141?text=Hola%20Mica!%20Quiero%20hacerte%20una%20consulta" target="_blank">
+          <span class="material-symbols-outlined text-base">chat</span>
+          <span>WhatsApp Directo</span>
         </a>
       </div>
     </div>
@@ -311,7 +385,7 @@
               <svg class="w-5 h-5 fill-current" viewbox="0 0 24 24">
                 <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"></path>
               </svg>
-              <span>Turnos WhatsApp: 291 449 1141</span>
+              <span>Pedir Turno por WhatsApp</span>
             </a>
             <a class="inline-flex justify-center items-center gap-2 bg-[#1e1622] hover:bg-[#271c2b] border border-[#ff3e96]/40 hover:border-[#ff3e96] text-[#ffaed8] px-5 sm:px-6 py-3.5 sm:py-4 rounded-full font-bold text-sm transition-all" href="#promos">
               <span>Ver Precios &amp; Promos</span>
@@ -542,7 +616,7 @@
           </div>
           <div>
             <p class="text-xs uppercase font-extrabold tracking-widest text-[#ff6ea7]">Consultas Directas &amp; Turnos</p>
-            <p class="font-display text-xl sm:text-2xl md:text-3xl font-bold text-white">WhatsApp: 291 449 1141</p>
+            <p class="font-display text-xl sm:text-2xl md:text-3xl font-bold text-white">Atención Personalizada por WhatsApp</p>
             <p class="text-xs text-[#d8c4d6]">Zona Htal. Penna - Villa Cerrito - Bahía Blanca</p>
           </div>
         </div>
@@ -799,7 +873,7 @@
   <section class="py-16 sm:py-20 md:py-28" id="sobre-mica">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
       
-      <!-- Visual Column: Fotos reales de Micaela con intercalado responsivo por tamaño de pantalla -->
+      <!-- Visual Column: Foto oficial de Micaela -->
       <div class="lg:col-span-5 order-2 lg:order-1 lg:sticky lg:top-24">
         <div class="relative max-w-sm sm:max-w-md mx-auto">
           
@@ -807,17 +881,11 @@
           <div class="neon-card-glow rounded-3xl overflow-hidden bg-[#161218] shadow-2xl p-2.5 sm:p-3">
             <div class="relative rounded-2xl overflow-hidden group">
               
-              <!-- Responsive Picture Element: Intercala fotos por tamaño de pantalla -->
-              <picture id="mica-bio-picture">
-                <!-- En celulares (hasta 768px): foto en pose frontal -->
-                <source media="(max-width: 768px)" srcset="images/mica-bio-1.jpg"/>
-                <!-- En tablets y pantallas grandes (desde 769px): foto en pose de estudio -->
-                <source media="(min-width: 769px)" srcset="images/mica-bio-2.jpg"/>
-                <img id="mica-bio-img" 
-                  class="w-full h-[400px] sm:h-[480px] lg:h-[560px] object-cover object-top transition-all duration-500 group-hover:scale-105" 
-                  alt="Micaela creadora de Mica Lash Art con pinza gigante" 
-                  src="images/mica-bio-1.jpg"/>
-              </picture>
+              <!-- Foto única de Mica -->
+              <img id="mica-bio-img" 
+                class="w-full h-[400px] sm:h-[480px] lg:h-[560px] object-cover object-top transition-transform duration-700 group-hover:scale-105" 
+                alt="Micaela creadora de Mica Lash Art" 
+                src="images/mica-bio-1.jpg"/>
 
               <!-- Contrast Scrims -->
               <div class="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/80 via-black/40 to-transparent pointer-events-none"></div>
@@ -831,7 +899,7 @@
                 </span>
               </div>
 
-              <!-- Bottom Floating Signature Card con selector de foto interactivo -->
+              <!-- Bottom Floating Signature Card -->
               <div class="absolute bottom-3 left-3 right-3 p-3.5 rounded-xl bg-[#08050a]/95 border-2 border-[#ff3e96] flex items-center justify-between shadow-2xl z-10 backdrop-blur-md">
                 <div>
                   <div class="flex items-center gap-1.5">
@@ -841,10 +909,8 @@
                   <p class="text-[11px] sm:text-xs text-[#ff6ea7] font-bold">Creadora de Mica Lash Art • Bahía Blanca</p>
                   <p class="text-[10px] text-gray-200 mt-0.5">Atención VIP &amp; Capacitaciones</p>
                 </div>
-                <!-- Selector manual de foto para intercalar en cualquier dispositivo -->
-                <div class="flex items-center gap-1 bg-[#161218] p-1 rounded-full border border-white/10">
-                  <button type="button" onclick="toggleMicaPhoto(1)" id="btn-photo-1" class="w-7 h-7 rounded-full bg-[#ff2d85] text-white text-xs font-bold flex items-center justify-center transition-all shadow" title="Ver foto 1">1</button>
-                  <button type="button" onclick="toggleMicaPhoto(2)" id="btn-photo-2" class="w-7 h-7 rounded-full bg-transparent text-[#d8c4d6] hover:text-white text-xs font-bold flex items-center justify-center transition-all" title="Ver foto 2">2</button>
+                <div class="w-8 h-8 rounded-full bg-[#ff2d85]/20 border border-[#ff3e96] flex items-center justify-center text-white">
+                  <span class="material-symbols-outlined text-sm text-[#ffaed8]">auto_awesome</span>
                 </div>
               </div>
 
@@ -966,92 +1032,316 @@
     </div>
   </section>
 
-  <!-- ================= MÓDULO DE RESERVA & ASISTENTE DIRECTO ================= -->
-  <section class="py-16 sm:py-20 md:py-28 bg-[#120d15] border-y border-[#ff3e96]/20 relative" id="reservas">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 md:px-12">
+    <!-- ================= SECCIÓN CURSOS & CAPACITACIONES (ACADEMIA) ================= -->
+  <section class="py-16 sm:py-20 md:py-28 bg-[#0d0a0f] border-t border-[#ff3e96]/20 relative overflow-hidden" id="cursos">
+    <!-- Ambient glow orbs -->
+    <div class="absolute top-1/3 left-10 w-96 h-96 bg-[#ff2d85]/10 blur-[130px] rounded-full pointer-events-none"></div>
+    <div class="absolute bottom-10 right-10 w-80 h-80 bg-[#722e57]/20 blur-[110px] rounded-full pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 relative z-10">
       
-      <div class="text-center max-w-xl mx-auto mb-10 sm:mb-12 space-y-3">
-        <div class="brush-ribbon px-4 sm:px-5 py-2 rounded inline-block text-xs font-bold text-white tracking-widest uppercase mb-1">
-          RESERVÁ TU TURNO CON MICA LASH ART ♡
+      <!-- Section Header -->
+      <div class="text-center max-w-2xl mx-auto mb-12 sm:mb-16 space-y-3">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#1e1622] border-2 border-[#ff3e96] text-xs font-black text-[#ffaed8] tracking-widest uppercase shadow-lg shadow-[#ff3e96]/20">
+          <span>🎓 ACADEMIA MICA LASH ART ♡ CAPACITACIONES 🎓</span>
         </div>
-        <h2 class="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-white">
-          Consulta y Reserva Inmediata
+        <h2 class="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold text-white leading-tight">
+          Cursos Profesionales &amp; Masterclasses
         </h2>
-        <p class="text-[#d8c4d6] text-xs sm:text-sm md:text-base">
-          Completá tus preferencias y se enviará tu mensaje listo a nuestro WhatsApp oficial: <strong>291 449 1141</strong>.
+        <p class="text-xs sm:text-sm md:text-base text-[#d8c4d6] leading-relaxed">
+          Aprendé las técnicas más solicitadas del mercado de la mano de <span class="text-white font-bold">Micaela</span> (lashista y educadora desde 2016). Formación personalizada con práctica en modelo real, kit profesional completo y doble certificación.
         </p>
       </div>
 
-      <!-- Booking Card -->
-      <div class="neon-card-glow rounded-3xl bg-[#161218] p-5 sm:p-8 md:p-10 shadow-2xl">
-        <form class="space-y-5 sm:space-y-6" id="booking-form" onsubmit="event.preventDefault(); sendWhatsAppBooking();">
-          
-          <!-- Tratamiento -->
-          <div class="space-y-1.5">
-            <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8]">
-              1. Seleccioná tu tratamiento o promo
-            </label>
-            <select class="w-full bg-[#0d0a0f] border border-[#ff3e96]/40 rounded-xl px-4 py-3.5 text-white focus:outline-none focus:border-[#ff3e96] focus:ring-1 focus:ring-[#ff3e96] text-base sm:text-sm" id="booking-service">
-              <option value="Promo: Lifting + Botox + Perfilado ($22.000)">Promo: Lifting + Botox + Perfilado ($22.000)</option>
-              <option value="Promo VIP: Extensiones Híbridas/Rusas + Cejas ($34.000)">Promo VIP: Extensiones Híbridas/Rusas + Cejas ($34.000)</option>
-              <option value="Lifting de Pestañas + Nutrición con Keratina ($18.500)">Lifting de Pestañas + Nutrición con Keratina ($18.500)</option>
-              <option value="Extensiones Pelo a Pelo Clásicas ($24.000)">Extensiones Pelo a Pelo Clásicas ($24.000)</option>
-              <option value="Volumen Híbrido / Light Russian ($28.000)">Volumen Híbrido / Light Russian ($28.000)</option>
-              <option value="Laminado &amp; Perfilado de Cejas ($12.000)">Laminado &amp; Perfilado de Cejas ($12.000)</option>
-              <option value="Service &amp; Mantenimiento de Extensiones ($18.000)">Service &amp; Mantenimiento de Extensiones ($18.000)</option>
-              <option value="Quiero asesorarme primero con Mica">No sé cuál elegir, quiero asesoramiento</option>
-            </select>
-          </div>
+      <!-- Filter Tabs Cursos -->
+      <div class="flex justify-center gap-2 sm:gap-3 mb-10 overflow-x-auto no-scrollbar pb-2">
+        <button type="button" class="course-filter-btn px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#ff2d85] text-white shadow-lg shadow-[#ff2d85]/40 transition-all" data-course-filter="all">
+          Todos los Cursos
+        </button>
+        <button type="button" class="course-filter-btn px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#1e1622] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 transition-all" data-course-filter="presencial">
+          Presenciales VIP
+        </button>
+        <button type="button" class="course-filter-btn px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#1e1622] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 transition-all" data-course-filter="online">
+          Online / Perfeccionamiento
+        </button>
+      </div>
 
-          <!-- Nombre y Horario -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
-            <div class="space-y-1.5">
-              <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8]">
-                2. Tu Nombre y Apellido
-              </label>
-              <input class="w-full bg-[#0d0a0f] border border-[#ff3e96]/40 rounded-xl px-4 py-3.5 text-white focus:outline-none focus:border-[#ff3e96] text-base sm:text-sm placeholder:text-white/30" id="booking-name" placeholder="Ej. Valentina Gómez" required="" type="text"/>
+      <!-- Course Cards Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8" id="courses-grid">
+        
+        <!-- Curso 1: Inicial Clásicas -->
+        <article class="course-card presencial flex flex-col justify-between bg-[#161218] border-2 border-[#ff3e96]/40 hover:border-[#ff3e96] rounded-3xl p-6 sm:p-7 shadow-2xl transition-all duration-300 hover:-translate-y-1.5 neon-card">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between gap-2">
+              <span class="px-3 py-1 rounded-full bg-[#ff2d85]/20 border border-[#ff3e96] text-[#ffaed8] text-[11px] font-black uppercase tracking-wider">
+                ★ El Más Elegido
+              </span>
+              <span class="text-xs text-white/70 font-semibold flex items-center gap-1">
+                <span class="material-symbols-outlined text-sm text-[#ff3e96]">schedule</span> 2 Jornadas
+              </span>
             </div>
-            <div class="space-y-1.5">
-              <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8]">
-                3. Preferencia de Horario
-              </label>
-              <select class="w-full bg-[#0d0a0f] border border-[#ff3e96]/40 rounded-xl px-4 py-3.5 text-white focus:outline-none focus:border-[#ff3e96] text-base sm:text-sm" id="booking-time">
-                <option value="Turno Mañana (10:00 a 13:00 hs)">Turno Mañana (10:00 a 13:00 hs)</option>
-                <option value="Turno Tarde (14:00 a 19:30 hs)">Turno Tarde (14:00 a 19:30 hs)</option>
-                <option value="Preferencia día Sábado">Preferencia día Sábado</option>
-                <option value="Cualquier horario disponible">Cualquier horario disponible</option>
-              </select>
+
+            <div class="space-y-1">
+              <h3 class="font-display text-xl sm:text-2xl font-bold text-white tracking-wide">
+                Curso Inicial: Clásicas 1 a 1
+              </h3>
+              <p class="text-xs text-[#ff6ea7] font-semibold">Extensiones Pelo a Pelo • Nivel Inicial sin experiencia previa</p>
             </div>
-          </div>
 
-          <!-- Consulta extra -->
-          <div class="space-y-1.5">
-            <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8]">
-              Nota adicional / Pregunta (Opcional)
-            </label>
-            <input class="w-full bg-[#0d0a0f] border border-[#ff3e96]/40 rounded-xl px-4 py-3.5 text-white focus:outline-none focus:border-[#ff3e96] text-base sm:text-sm placeholder:text-white/30" id="booking-notes" placeholder="Ej. Tengo extensiones previas de otro estudio / Ojos sensibles..." type="text"/>
-          </div>
-
-          <!-- Datos clave -->
-          <div class="p-3.5 sm:p-4 rounded-xl bg-[#0d0a0f]/80 border border-[#ff3e96]/30 text-xs text-[#d8c4d6] space-y-1.5">
-            <p class="font-bold text-white flex items-center gap-1.5">
-              <span class="material-symbols-outlined text-sm text-[#ff3e96]">info</span>
-              Confirmación de turno en Mica Lash Art:
+            <p class="text-xs sm:text-sm text-[#d8c4d6] leading-relaxed">
+              El curso base fundamental para insertarte en el mundo lash. Aprendé desde cero anatomía ocular, bioseguridad, dirección de postura, aislación milimétrica y mapping adaptado a cada ojo.
             </p>
-            <p>• Los turnos se reservan con una pequeña seña previa para congelar tu lugar exclusivo.</p>
-            <p>• Ubicación: Zona Hospital Penna - Villa Cerrito - Bahía Blanca (dirección exacta confirmada con la seña).</p>
+
+            <!-- Temario / Puntos destacados -->
+            <div class="space-y-2 pt-2 border-t border-white/10 text-xs text-[#f5edf5]">
+              <div class="flex items-center gap-2">
+                <span class="text-[#25D366] text-sm font-bold">✓</span>
+                <span>Práctica real en cabeza técnica y modelo viva</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-[#25D366] text-sm font-bold">✓</span>
+                <span><strong>Kit profesional completo</strong> (pinzas, adhesivo, blíster)</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-[#25D366] text-sm font-bold">✓</span>
+                <span>Manual teórico encuadernado y certificado oficial</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-[#25D366] text-sm font-bold">✓</span>
+                <span>Seguimiento y asesoría post-curso de por vida</span>
+              </div>
+            </div>
           </div>
 
-          <!-- Botón WhatsApp -->
-          <div>
-            <button class="w-full inline-flex justify-center items-center gap-3 bg-gradient-to-r from-[#25D366] to-[#128C7E] hover:from-[#20bd5a] hover:to-[#0f7a6e] text-white py-3.5 sm:py-4 px-6 rounded-full font-bold text-sm sm:text-base shadow-xl shadow-[#25D366]/30 transition-all active:scale-[0.98]" type="submit">
-              <svg class="w-5 h-5 sm:w-6 sm:h-6 fill-current flex-shrink-0" viewbox="0 0 24 24">
+          <div class="pt-6 mt-6 border-t border-white/10 flex flex-col gap-3">
+            <div class="flex items-baseline justify-between">
+              <span class="text-xs uppercase font-bold text-gray-400">Inversión</span>
+              <div class="text-right">
+                <span class="font-display font-extrabold text-2xl sm:text-3xl text-white">$75.000</span>
+                <p class="text-[10px] text-[#ffaed8]">Opciones en cuotas • Seña previa</p>
+              </div>
+            </div>
+
+            <a href="https://wa.me/5492914491141?text=Hola%20Mica!%20Quiero%20info%20y%20temario%20del%20Curso%20Inicial%20de%20Clásicas%20Pelo%20a%20Pelo" target="_blank" class="w-full inline-flex justify-center items-center gap-2 bg-gradient-to-r from-[#25D366] to-[#128C7E] hover:from-[#20bd5a] hover:to-[#0f7a6e] text-white py-3.5 px-4 rounded-full font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#25D366]/30 active:scale-95 transition-all">
+              <svg class="w-4 h-4 fill-current" viewbox="0 0 24 24">
                 <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"></path>
               </svg>
-              <span>Enviar WhatsApp al 291 449 1141</span>
-            </button>
+              <span>Consultar por WhatsApp</span>
+            </a>
           </div>
-        </form>
+        </article>
+
+        <!-- Curso 2: Perfeccionamiento Volumen Ruso -->
+        <article class="course-card presencial online flex flex-col justify-between bg-[#161218] border-2 border-[#ff3e96]/40 hover:border-[#ff3e96] rounded-3xl p-6 sm:p-7 shadow-2xl transition-all duration-300 hover:-translate-y-1.5 neon-card">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between gap-2">
+              <span class="px-3 py-1 rounded-full bg-[#ff3e96]/20 border border-[#ff3e96] text-[#ffaed8] text-[11px] font-black uppercase tracking-wider">
+                👑 Especialización Avanzada
+              </span>
+              <span class="text-xs text-white/70 font-semibold flex items-center gap-1">
+                <span class="material-symbols-outlined text-sm text-[#ff3e96]">schedule</span> 1 Jornada VIP
+              </span>
+            </div>
+
+            <div class="space-y-1">
+              <h3 class="font-display text-xl sm:text-2xl font-bold text-white tracking-wide">
+                Masterclass: Volumen Ruso &amp; Mega
+              </h3>
+              <p class="text-xs text-[#ff6ea7] font-semibold">Técnicas Rusas • Armado manual de abanicos 2D a 6D</p>
+            </div>
+
+            <p class="text-xs sm:text-sm text-[#d8c4d6] leading-relaxed">
+              Llevá tu técnica al máximo nivel. Dominá el armado de abanicos en tira y pinza, retención blindada (hasta 6 semanas), mapping avanzado (Fox, Wet, Kim) y química del adhesivo.
+            </p>
+
+            <div class="space-y-2 pt-2 border-t border-white/10 text-xs text-[#f5edf5]">
+              <div class="flex items-center gap-2">
+                <span class="text-[#25D366] text-sm font-bold">✓</span>
+                <span>Técnica artesanal sin abanicos prearmados</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-[#25D366] text-sm font-bold">✓</span>
+                <span>Secretos de retención extrema y control de humedad</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-[#25D366] text-sm font-bold">✓</span>
+                <span>Módulo de fotografía y edición para Instagram</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-[#25D366] text-sm font-bold">✓</span>
+                <span>Certificado de Master Lashista en Volumen</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-6 mt-6 border-t border-white/10 flex flex-col gap-3">
+            <div class="flex items-baseline justify-between">
+              <span class="text-xs uppercase font-bold text-gray-400">Inversión</span>
+              <div class="text-right">
+                <span class="font-display font-extrabold text-2xl sm:text-3xl text-white">$88.000</span>
+                <p class="text-[10px] text-[#ffaed8]">Cupos ultra limitados (1 a 1)</p>
+              </div>
+            </div>
+
+            <a href="https://wa.me/5492914491141?text=Hola%20Mica!%20Quiero%20info%20y%20fechas%20de%20la%20Masterclass%20de%20Volumen%20Ruso" target="_blank" class="w-full inline-flex justify-center items-center gap-2 bg-gradient-to-r from-[#25D366] to-[#128C7E] hover:from-[#20bd5a] hover:to-[#0f7a6e] text-white py-3.5 px-4 rounded-full font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#25D366]/30 active:scale-95 transition-all">
+              <svg class="w-4 h-4 fill-current" viewbox="0 0 24 24">
+                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"></path>
+              </svg>
+              <span>Consultar por WhatsApp</span>
+            </a>
+          </div>
+        </article>
+
+        <!-- Curso 3: Lifting + Laminado de Cejas -->
+        <article class="course-card presencial online flex flex-col justify-between bg-[#161218] border-2 border-[#ff3e96]/40 hover:border-[#ff3e96] rounded-3xl p-6 sm:p-7 shadow-2xl transition-all duration-300 hover:-translate-y-1.5 neon-card">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between gap-2">
+              <span class="px-3 py-1 rounded-full bg-[#ff6ea7]/20 border border-[#ff6ea7] text-[#ffaed8] text-[11px] font-black uppercase tracking-wider">
+                🌿 Rápida Salida Laboral
+              </span>
+              <span class="text-xs text-white/70 font-semibold flex items-center gap-1">
+                <span class="material-symbols-outlined text-sm text-[#ff3e96]">schedule</span> 1 Día Intensivo
+              </span>
+            </div>
+
+            <div class="space-y-1">
+              <h3 class="font-display text-xl sm:text-2xl font-bold text-white tracking-wide">
+                Taller Dual: Lifting &amp; Laminado
+              </h3>
+              <p class="text-xs text-[#ff6ea7] font-semibold">Lifting con Keratina + Laminado &amp; Perfilado de Cejas</p>
+            </div>
+
+            <p class="text-xs sm:text-sm text-[#d8c4d6] leading-relaxed">
+              Combiná los dos tratamientos naturales más pedidos en una sola capacitación. Aprendé tiempos exactos de exposición, elección de moldes según el párpado, tinte y nutrición botox.
+            </p>
+
+            <div class="space-y-2 pt-2 border-t border-white/10 text-xs text-[#f5edf5]">
+              <div class="flex items-center gap-2">
+                <span class="text-[#25D366] text-sm font-bold">✓</span>
+                <span>Modalidad Presencial VIP u Online en Video HD</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-[#25D366] text-sm font-bold">✓</span>
+                <span>Visagismo y perfilado de cejas con hilo y pinza</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-[#25D366] text-sm font-bold">✓</span>
+                <span>Dossier descargable y lista de proveedores directos</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-[#25D366] text-sm font-bold">✓</span>
+                <span>Doble Certificación Oficial incluida</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-6 mt-6 border-t border-white/10 flex flex-col gap-3">
+            <div class="flex items-baseline justify-between">
+              <span class="text-xs uppercase font-bold text-gray-400">Inversión</span>
+              <div class="text-right">
+                <span class="font-display font-extrabold text-2xl sm:text-3xl text-white">$48.000</span>
+                <p class="text-[10px] text-[#ffaed8]">Online: $28.000 • Material incluido</p>
+              </div>
+            </div>
+
+            <a href="https://wa.me/5492914491141?text=Hola%20Mica!%20Quiero%20info%20del%20Taller%20Dual%20de%20Lifting%20y%20Laminado%20de%20Cejas" target="_blank" class="w-full inline-flex justify-center items-center gap-2 bg-gradient-to-r from-[#25D366] to-[#128C7E] hover:from-[#20bd5a] hover:to-[#0f7a6e] text-white py-3.5 px-4 rounded-full font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#25D366]/30 active:scale-95 transition-all">
+              <svg class="w-4 h-4 fill-current" viewbox="0 0 24 24">
+                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"></path>
+              </svg>
+              <span>Consultar por WhatsApp</span>
+            </a>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- Trust Badges Bar -->
+      <div class="mt-12 p-6 rounded-2xl bg-[#161218]/90 border border-[#ff3e96]/30 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+        <div class="space-y-1">
+          <span class="text-2xl">🎓</span>
+          <p class="font-bold text-white text-xs sm:text-sm">Certificado Oficial</p>
+          <p class="text-[10px] text-[#ffaed8]">Válido para inserción profesional</p>
+        </div>
+        <div class="space-y-1">
+          <span class="text-2xl">📦</span>
+          <p class="font-bold text-white text-xs sm:text-sm">Kit Completo Incluido</p>
+          <p class="text-[10px] text-[#ffaed8]">Materiales profesionales importados</p>
+        </div>
+        <div class="space-y-1">
+          <span class="text-2xl">👁️</span>
+          <p class="font-bold text-white text-xs sm:text-sm">Práctica Real Supervisada</p>
+          <p class="text-[10px] text-[#ffaed8]">Atención paso a paso con modelo</p>
+        </div>
+        <div class="space-y-1">
+          <span class="text-2xl">💬</span>
+          <p class="font-bold text-white text-xs sm:text-sm">Mentoría Permanente</p>
+          <p class="text-[10px] text-[#ffaed8]">Canal directo de consultas con Mica</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= SECCIÓN RESERVAS & AGENDA VIP ================= -->
+  <section class="py-16 sm:py-20 md:py-28 bg-[#120d15] border-y border-[#ff3e96]/20 relative overflow-hidden" id="reservas">
+    <!-- Ambient light glow -->
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#ff2d85]/10 blur-[140px] rounded-full pointer-events-none"></div>
+
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 md:px-12 relative z-10">
+      
+      <div class="neon-card-glow rounded-3xl bg-gradient-to-br from-[#1e1622] via-[#161218] to-[#0f0a13] p-8 sm:p-12 md:p-14 text-center space-y-6 shadow-2xl border-2 border-[#ff3e96]">
+        
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0d0a0f] border border-[#ff3e96]/50 text-xs font-black text-[#ffaed8] tracking-widest uppercase shadow-md">
+          <span>✨ AGENDA ONLINE EN TIEMPO REAL ✨</span>
+        </div>
+
+        <div class="space-y-3 max-w-2xl mx-auto">
+          <h2 class="font-display text-3xl sm:text-4xl md:text-5xl font-black text-white leading-tight">
+            Reservá Tu Turno en Pocos Clics
+          </h2>
+          <p class="text-xs sm:text-sm md:text-base text-[#d8c4d6] leading-relaxed">
+            Accedé a nuestra aplicación exclusiva de turnos. Seleccioná tu tratamiento favorito, elegí el día en el calendario interactivo y asegurá tu horario sin esperas.
+          </p>
+        </div>
+
+        <!-- Botones de Acción Principales -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-2 max-w-lg mx-auto">
+          <a href="turnos.html" class="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] hover:brightness-110 text-white px-8 py-4 rounded-full font-bold text-xs sm:text-sm uppercase tracking-wider shadow-xl shadow-[#ff2d85]/40 transition-all active:scale-95">
+            <span class="material-symbols-outlined text-base">calendar_month</span>
+            <span>Abrir Agenda de Turnos</span>
+          </a>
+
+          <a href="login.html" class="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-[#0d0a0f] hover:bg-[#1e1622] border-2 border-[#ff3e96]/50 text-[#ffaed8] hover:text-white px-6 py-4 rounded-full font-bold text-xs sm:text-sm uppercase tracking-wider transition-all active:scale-95">
+            <span class="material-symbols-outlined text-base">person</span>
+            <span>Iniciar Sesión Clientas</span>
+          </a>
+        </div>
+
+        <!-- 3 Feature Highlights -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-white/10 text-left">
+          <div class="flex items-start gap-3 p-3.5 rounded-2xl bg-[#0d0a0f]/60 border border-white/5">
+            <span class="text-xl">🗓️</span>
+            <div>
+              <p class="font-bold text-white text-xs">Calendario Interactivo</p>
+              <p class="text-[11px] text-[#d8c4d6]">Elegí tu fecha y hora exacta disponible en vivo.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3 p-3.5 rounded-2xl bg-[#0d0a0f]/60 border border-white/5">
+            <span class="text-xl">💬</span>
+            <div>
+              <p class="font-bold text-white text-xs">Confirmación WhatsApp</p>
+              <p class="text-[11px] text-[#d8c4d6]">Mensaje pre-cargado listo para enviar a Mica.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3 p-3.5 rounded-2xl bg-[#0d0a0f]/60 border border-white/5">
+            <span class="text-xl">📅</span>
+            <div>
+              <p class="font-bold text-white text-xs">Google Calendar</p>
+              <p class="text-[11px] text-[#d8c4d6]">Sincronizá tu cita directo en tu celular.</p>
+            </div>
+          </div>
+        </div>
+
       </div>
 
     </div>
@@ -1086,8 +1376,9 @@
               <span class="material-symbols-outlined text-[#ff3e96] text-xl sm:text-2xl mt-0.5">chat</span>
               <div>
                 <p class="font-bold text-white text-sm sm:text-base">WhatsApp de Turnos</p>
-                <a class="text-xs sm:text-sm text-[#25D366] font-bold hover:underline" href="https://wa.me/5492914491141" target="_blank">
-                  +54 9 291 449-1141
+                <a class="inline-flex items-center gap-1.5 text-xs sm:text-sm text-[#25D366] font-bold hover:underline" href="https://wa.me/5492914491141" target="_blank">
+                  <span>Abrir chat de WhatsApp</span>
+                  <span class="material-symbols-outlined text-sm">open_in_new</span>
                 </a>
               </div>
             </div>
@@ -1104,7 +1395,7 @@
           <div class="flex flex-wrap gap-3 pt-2">
             <a class="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-bold text-xs uppercase tracking-wider shadow-lg transition-all active:scale-95" href="https://wa.me/5492914491141?text=Hola%20Mica!%20Quiero%20saber%20turnos%20disponibles" target="_blank">
               <span class="material-symbols-outlined text-base">chat</span>
-              <span>291 449 1141</span>
+              <span>WhatsApp Oficial</span>
             </a>
             <a class="inline-flex items-center gap-2 bg-[#1e1622] hover:bg-[#271c2b] border border-[#ff3e96]/40 text-[#ffaed8] px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-bold text-xs uppercase tracking-wider transition-all active:scale-95" href="https://instagram.com/mica.lashart" target="_blank">
               <span class="material-symbols-outlined text-base">photo_camera</span>
@@ -1192,7 +1483,7 @@
           <span class="text-[#ff3e96]">♡</span>
         </div>
         <p class="text-xs text-[#d8c4d6] mt-1">
-          Zona Htal. Penna - Villa Cerrito - Bahía Blanca • WhatsApp 291 449 1141
+          Zona Htal. Penna - Villa Cerrito - Bahía Blanca • Atención Personalizada por WhatsApp
         </p>
         <p class="text-[11px] text-[#ff6ea7] mt-1 font-semibold">
           © 2025 Mica Lash Art. Todos los derechos reservados.
@@ -1205,7 +1496,7 @@
         <a class="hover:text-[#ff3e96] transition-colors" href="#galeria">Galería</a>
         <a class="hover:text-[#ff3e96] transition-colors" href="#ubicacion">Ubicación</a>
         <a class="hover:text-[#25D366] transition-colors flex items-center gap-1" href="https://wa.me/5492914491141" target="_blank">
-          <span class="text-[#25D366]">WhatsApp 291 449 1141</span>
+          <span class="text-[#25D366]">WhatsApp Oficial</span>
         </a>
       </div>
 
@@ -1372,49 +1663,18 @@
       });
     }
 
-    // 3. Prefill Booking
-    function prefillBooking(serviceName) {
-      const select = document.getElementById('booking-service');
-      if (select) {
-        let found = false;
-        for (let i = 0; i < select.options.length; i++) {
-          if (select.options[i].value.includes(serviceName) || serviceName.includes(select.options[i].text)) {
-            select.selectedIndex = i;
-            found = true;
-            break;
-          }
-        }
-        if (!found) {
-          select.value = serviceName;
-        }
-      }
-      const reservas = document.getElementById('reservas');
-      if (reservas) {
-        reservas.scrollIntoView({ behavior: 'smooth' });
-      }
+    // 3. Prefill Booking (Redirección directa a turnos.html)
+    function prefillBooking(serviceNameOrId) {
+      window.location.href = 'turnos.html?service=' + encodeURIComponent(serviceNameOrId);
     }
 
-    // 4. WhatsApp Directo al 291 449 1141
+    // 4. WhatsApp Directo
     function sendWhatsAppBooking() {
-      const service = document.getElementById('booking-service').value;
-      const name = document.getElementById('booking-name').value.trim();
-      const time = document.getElementById('booking-time').value;
-      const notes = document.getElementById('booking-notes').value.trim();
-
-      let message = `¡Hola Mica! ♡ Mi nombre es *${name}* y me gustaría reservar un turno en tu estudio de Bahía Blanca:\n• *Tratamiento:* ${service}\n• *Horario deseado:* ${time}`;
-
-      if (notes) {
-        message += `\n• *Consulta/Detalle:* ${notes}`;
-      }
-
-      message += `\n\n¿Tenés disponibilidad próxima? ¡Muchas gracias!`;
-
-      const encoded = encodeURIComponent(message);
-      const whatsappUrl = `https://wa.me/5492914491141?text=${encoded}`;
-      window.open(whatsappUrl, '_blank');
+      const message = '¡Hola Mica! ♡ Quiero consultar sobre turnos disponibles en el estudio de Bahía Blanca.';
+      window.open('https://wa.me/5492914491141?text=' + encodeURIComponent(message), '_blank');
     }
 
-    // 5. Filtros de Servicios
+    // 5. Filtros de Servicios del Catálogo
     document.querySelectorAll('.filter-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.filter-btn').forEach(b => {
@@ -1435,7 +1695,28 @@
       });
     });
 
-    // 6. Acordeón FAQs
+    // 6. Filtros de la Sección Cursos
+    document.querySelectorAll('.course-filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.course-filter-btn').forEach(b => {
+          b.classList.remove('bg-[#ff2d85]', 'text-white', 'shadow-lg');
+          b.classList.add('bg-[#1e1622]', 'text-[#d8c4d6]');
+        });
+        btn.classList.add('bg-[#ff2d85]', 'text-white', 'shadow-lg');
+        btn.classList.remove('bg-[#1e1622]', 'text-[#d8c4d6]');
+
+        const filter = btn.getAttribute('data-course-filter');
+        document.querySelectorAll('.course-card').forEach(card => {
+          if (filter === 'all' || card.classList.contains(filter)) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    // 7. Acordeón FAQs
     document.querySelectorAll('.faq-toggle').forEach(toggle => {
       toggle.addEventListener('click', () => {
         const content = toggle.nextElementSibling;
@@ -1452,7 +1733,7 @@
       });
     });
 
-    // 7. Lightbox
+    // 8. Lightbox
     function openLightbox(src, title, desc) {
       const modal = document.getElementById('lightbox-modal');
       document.getElementById('lightbox-img').src = src;
@@ -1475,31 +1756,8 @@
         closeLightbox();
       }
     });
-
-    // 8. Toggle Fotos de Mica
-    function toggleMicaPhoto(num) {
-      const img = document.getElementById('mica-bio-img');
-      const b1 = document.getElementById('btn-photo-1');
-      const b2 = document.getElementById('btn-photo-2');
-      if (img) {
-        img.style.opacity = '0.3';
-        img.style.transform = 'scale(0.98)';
-        setTimeout(() => {
-          img.src = num === 1 ? 'images/mica-bio-1.jpg' : 'images/mica-bio-2.jpg';
-          img.style.opacity = '1';
-          img.style.transform = 'scale(1)';
-        }, 150);
-      }
-      if (b1 && b2) {
-        if (num === 1) {
-          b1.className = 'w-7 h-7 rounded-full bg-[#ff2d85] text-white text-xs font-bold flex items-center justify-center transition-all shadow';
-          b2.className = 'w-7 h-7 rounded-full bg-transparent text-[#d8c4d6] hover:text-white text-xs font-bold flex items-center justify-center transition-all';
-        } else {
-          b2.className = 'w-7 h-7 rounded-full bg-[#ff2d85] text-white text-xs font-bold flex items-center justify-center transition-all shadow';
-          b1.className = 'w-7 h-7 rounded-full bg-transparent text-[#d8c4d6] hover:text-white text-xs font-bold flex items-center justify-center transition-all';
-        }
-      }
-    }
   </script>
+</body>
+</html>
 </body>
 </html>

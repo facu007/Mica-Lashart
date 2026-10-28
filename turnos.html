@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mica Lash Art | Turnos Online & Reservas</title>
+  <meta name="description" content="Pedí tu turno online en Mica Lash Art con calendario interactivo en tiempo real.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            background: "#0d0a0f",
+            surface: "#161218",
+            primary: "#ff3e96",
+            "primary-bright": "#ff2d85",
+            "primary-light": "#ffaed8",
+            secondary: "#ff6ea7",
+          },
+          fontFamily: {
+            display: ["'Bodoni Moda'", "serif"],
+            body: ["'Plus Jakarta Sans'", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    .neon-card-glow {
+      border: 1.5px solid rgba(255, 62, 150, 0.5);
+      box-shadow: 0 0 35px 2px rgba(255, 62, 150, 0.25), inset 0 0 25px rgba(255, 62, 150, 0.08);
+    }
+    .brush-ribbon {
+      background: linear-gradient(90deg, #ff2d85 0%, #ff529c 48%, #ff2d85 100%);
+      box-shadow: 0 4px 20px rgba(255, 45, 133, 0.45);
+      clip-path: polygon(3% 0%, 98% 3%, 97% 96%, 1% 92%);
+    }
+    /* Estilos Vasca: Calendario & Turnos */
+    .cal-day {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.75rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: #f5edf5;
+      background: #161218;
+      border: 1px solid rgba(255, 62, 150, 0.15);
+      user-select: none;
+    }
+    .cal-day:hover:not(.disabled):not(.empty) {
+      background: rgba(255, 62, 150, 0.25);
+      border-color: #ff3e96;
+      color: #fff;
+      transform: translateY(-1px);
+    }
+    .cal-day.today {
+      border: 2px solid #ffaed8;
+      color: #ffaed8;
+      font-weight: 800;
+    }
+    .cal-day.selected {
+      background: linear-gradient(135deg, #ff2d85 0%, #ff6ea7 100%) !important;
+      color: #fff !important;
+      border-color: #ffffff !important;
+      box-shadow: 0 4px 15px rgba(255, 45, 133, 0.6);
+      font-weight: 900;
+      transform: scale(1.05);
+    }
+    .cal-day.disabled {
+      opacity: 0.22;
+      cursor: not-allowed;
+      pointer-events: none;
+      background: transparent;
+      border-color: transparent;
+      color: #7a6275;
+    }
+    .cal-day.empty {
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .slot-btn {
+      padding: 0.65rem 0.75rem;
+      border-radius: 0.75rem;
+      background: #0d0a0f;
+      border: 1px solid rgba(255, 62, 150, 0.35);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .slot-btn:hover {
+      background: rgba(255, 62, 150, 0.2);
+      border-color: #ff3e96;
+      transform: translateY(-1px);
+    }
+    .slot-btn.selected {
+      background: linear-gradient(135deg, #ff2d85 0%, #ff6ea7 100%);
+      border-color: #ffffff;
+      box-shadow: 0 4px 15px rgba(255, 45, 133, 0.5);
+      color: #fff;
+    }
+  </style>
+</head>
+<body class="bg-[#0d0a0f] text-[#f5edf5] font-body min-h-screen relative overflow-x-hidden selection:bg-[#ff3e96] selection:text-white">
+
+  <!-- ================= TOPBAR TURNOS ================= -->
+  <header class="sticky top-0 z-50 bg-[#0d0a0f]/90 backdrop-blur-xl border-b border-[#ff3e96]/20 shadow-lg shadow-black/50">
+    <div class="flex justify-between items-center max-w-5xl mx-auto px-4 sm:px-6 py-3.5">
+      <a class="flex items-center gap-2 group" href="index.html">
+        <span class="font-display font-bold text-lg sm:text-xl tracking-wider text-white uppercase group-hover:text-[#ff3e96] transition-colors">
+          MICA LASH ART
+        </span>
+        <span class="text-[#ff3e96] text-xs">♡</span>
+      </a>
+
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="inline-flex items-center gap-1 text-xs text-[#d8c4d6] hover:text-[#ff3e96] font-medium transition-colors">
+          <span class="material-symbols-outlined text-sm">home</span>
+          <span>Sitio</span>
+        </a>
+
+        <!-- User Auth Status Button -->
+        <div id="auth-status-container">
+          <a href="login.html" id="auth-link-btn" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#1e1622] border border-[#ff3e96]/40 text-xs font-bold text-[#ffaed8] hover:bg-[#ff2d85] hover:text-white transition-all">
+            <span class="material-symbols-outlined text-sm">login</span>
+            <span>Iniciar Sesión</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= MAIN BOOKING APP (ESTILO PROYECTO VASCA) ================= -->
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12 relative z-10 space-y-8">
+    
+    <!-- Hero / Header de Turnos -->
+    <div class="text-center max-w-xl mx-auto space-y-3">
+      <div class="brush-ribbon px-4 sm:px-5 py-2 rounded inline-block text-xs font-bold text-white tracking-widest uppercase mb-1 shadow-md">
+        AGENDA ONLINE • MICA LASH ART ♡
+      </div>
+      <h1 class="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold text-white">
+        Pedir Turno
+      </h1>
+      <p class="text-xs sm:text-sm text-[#d8c4d6] leading-relaxed">
+        Elegí tu tratamiento, seleccioná fecha en el calendario y asegurá tu horario en tiempo real.
+      </p>
+
+      <!-- Tabs Principales: Reservar vs Mis Turnos (Estilo Vasca) -->
+      <div class="flex items-center justify-center gap-2 pt-3">
+        <button type="button" id="tab-btn-book" onclick="vascaBooking.switchTab('book')" class="px-5 sm:px-6 py-2.5 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] text-white shadow-lg shadow-[#ff2d85]/40 transition-all">
+          <span class="flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-sm">calendar_month</span>
+            <span>Reservar Turno</span>
+          </span>
+        </button>
+        <button type="button" id="tab-btn-mine" onclick="vascaBooking.switchTab('mine')" class="px-5 sm:px-6 py-2.5 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#1e1622] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 transition-all">
+          <span class="flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-sm">event_available</span>
+            <span>Mis Turnos</span>
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <!-- VISTA 1: WIZARD DE RESERVA PASO A PASO -->
+    <div id="view-booking-wizard" class="space-y-8">
+      
+      <!-- STEP 1: Elegí el servicio -->
+      <section class="neon-card-glow rounded-3xl bg-[#161218] p-5 sm:p-7 md:p-8 shadow-2xl space-y-5" id="step-service">
+        <div class="flex items-center justify-between border-b border-white/10 pb-4">
+          <div class="flex items-center gap-3">
+            <span class="w-8 h-8 rounded-full bg-[#ff2d85] text-white font-extrabold text-sm flex items-center justify-center shadow">1</span>
+            <div>
+              <h2 class="font-display font-bold text-lg sm:text-xl text-white">Elegí tu servicio</h2>
+              <p class="text-xs text-[#d8c4d6]">Hacé clic en el tratamiento que deseás realizarte</p>
+            </div>
+          </div>
+          <span class="text-xs text-[#ffaed8] font-bold uppercase tracking-wider hidden sm:block">Paso 1 de 4</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5" id="vasca-services-list">
+          <!-- Renderizado dinámicamente -->
+        </div>
+      </section>
+
+      <!-- STEP 2: Profesional -->
+      <section class="neon-card rounded-3xl bg-[#161218] p-5 sm:p-7 shadow-2xl space-y-4" id="step-professional">
+        <div class="flex items-center justify-between border-b border-white/10 pb-4">
+          <div class="flex items-center gap-3">
+            <span class="w-8 h-8 rounded-full bg-[#ff2d85] text-white font-extrabold text-sm flex items-center justify-center shadow">2</span>
+            <div>
+              <h2 class="font-display font-bold text-lg sm:text-xl text-white">Profesional a cargo</h2>
+              <p class="text-xs text-[#d8c4d6]">Atención 100% personalizada y dedicada</p>
+            </div>
+          </div>
+          <span class="text-xs text-[#ffaed8] font-bold uppercase tracking-wider hidden sm:block">Paso 2 de 4</span>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-gradient-to-r from-[#1e1622] to-[#120d15] border-2 border-[#ff3e96] flex items-center justify-between shadow-lg">
+          <div class="flex items-center gap-3.5">
+            <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-[#ffaed8] flex-shrink-0">
+              <img src="images/mica-bio-1.jpg" alt="Micaela" class="w-full h-full object-cover object-top">
+            </div>
+            <div>
+              <div class="flex items-center gap-1.5">
+                <p class="font-display font-bold text-base text-white">Micaela</p>
+                <span class="text-[#ff3e96] text-xs">👑</span>
+              </div>
+              <p class="text-xs text-[#ff6ea7] font-semibold">Master Lash Artist &amp; Educadora (Desde 2016)</p>
+              <p class="text-[11px] text-gray-300">Bahía Blanca • Atención VIP</p>
+            </div>
+          </div>
+          <span class="px-3 py-1 rounded-full bg-[#25D366]/20 border border-[#25D366] text-[#25D366] text-xs font-bold flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#25D366] animate-pulse"></span>
+            Disponible
+          </span>
+        </div>
+      </section>
+
+      <!-- STEP 3: Elegí fecha y hora (CALENDARIO INTERACTIVO VASCA) -->
+      <section class="neon-card-glow rounded-3xl bg-[#161218] p-5 sm:p-7 md:p-8 shadow-2xl space-y-6" id="step-datetime">
+        <div class="flex items-center justify-between border-b border-white/10 pb-4">
+          <div class="flex items-center gap-3">
+            <span class="w-8 h-8 rounded-full bg-[#ff2d85] text-white font-extrabold text-sm flex items-center justify-center shadow">3</span>
+            <div>
+              <h2 class="font-display font-bold text-lg sm:text-xl text-white">Elegí fecha y horario</h2>
+              <p class="text-xs text-[#d8c4d6]">Hacé clic en un día disponible para ver sus horarios libres</p>
+            </div>
+          </div>
+          <span class="text-xs text-[#ffaed8] font-bold uppercase tracking-wider hidden sm:block">Paso 3 de 4</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+          
+          <!-- Calendario Interactivo -->
+          <div class="md:col-span-7 p-4 sm:p-5 rounded-2xl bg-[#0d0a0f] border border-[#ff3e96]/30 shadow-inner">
+            <div class="flex items-center justify-between mb-4">
+              <button type="button" id="cal-prev" onclick="vascaBooking.changeMonth(-1)" class="w-8 h-8 rounded-full bg-[#1e1622] hover:bg-[#ff2d85] text-white border border-white/10 flex items-center justify-center transition-all" aria-label="Mes anterior">
+                <span class="material-symbols-outlined text-base">chevron_left</span>
+              </button>
+              <span id="cal-month-year" class="font-display font-extrabold text-base sm:text-lg text-white tracking-wide">
+                Cargando...
+              </span>
+              <button type="button" id="cal-next" onclick="vascaBooking.changeMonth(1)" class="w-8 h-8 rounded-full bg-[#1e1622] hover:bg-[#ff2d85] text-white border border-white/10 flex items-center justify-center transition-all" aria-label="Mes siguiente">
+                <span class="material-symbols-outlined text-base">chevron_right</span>
+              </button>
+            </div>
+
+            <div class="grid grid-cols-7 gap-1 text-center text-xs font-bold text-[#ff6ea7] mb-2">
+              <span>Do</span><span>Lu</span><span>Ma</span><span>Mi</span><span>Ju</span><span>Vi</span><span>Sa</span>
+            </div>
+
+            <div class="grid grid-cols-7 gap-1.5" id="calendar-grid">
+              <!-- Renderizado por vascaBooking.renderCalendar() -->
+            </div>
+
+            <input type="hidden" id="book-date" value="">
+          </div>
+
+          <!-- Columna Horarios Disponibles -->
+          <div class="md:col-span-5 p-4 sm:p-5 rounded-2xl bg-[#0d0a0f] border border-[#ff3e96]/30 flex flex-col justify-between h-full min-h-[300px]">
+            <div>
+              <div class="flex items-center justify-between mb-3 border-b border-white/10 pb-2">
+                <p class="font-display font-bold text-sm text-white">Horarios Disponibles</p>
+                <span id="selected-date-badge" class="text-[11px] text-[#ffaed8] font-semibold">Elegí un día</span>
+              </div>
+
+              <div class="grid grid-cols-2 gap-2" id="time-slots">
+                <p class="text-xs text-gray-400 col-span-2 py-8 text-center italic">
+                  Seleccioná un día en el calendario para ver los horarios libres.
+                </p>
+              </div>
+            </div>
+
+            <div class="pt-4 border-t border-white/10 mt-4 text-[11px] text-[#d8c4d6] flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-sm text-[#ff3e96]">schedule</span>
+              <span>Atención: Mar a Sáb 10:00 a 19:30 hs</span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- STEP 4: Tus datos personales & Resumen -->
+      <section class="neon-card-glow rounded-3xl bg-[#161218] p-5 sm:p-7 md:p-8 shadow-2xl space-y-6" id="step-info">
+        <div class="flex items-center justify-between border-b border-white/10 pb-4">
+          <div class="flex items-center gap-3">
+            <span class="w-8 h-8 rounded-full bg-[#ff2d85] text-white font-extrabold text-sm flex items-center justify-center shadow">4</span>
+            <div>
+              <h2 class="font-display font-bold text-lg sm:text-xl text-white">Tus datos de reserva</h2>
+              <p class="text-xs text-[#d8c4d6]">Ingresá tus datos para agendar el turno</p>
+            </div>
+          </div>
+          <span class="text-xs text-[#ffaed8] font-bold uppercase tracking-wider hidden sm:block">Paso 4 de 4</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="space-y-1.5">
+            <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8]">
+              Nombre completo *
+            </label>
+            <input type="text" id="book-name" required placeholder="Ej. Valentina Gómez" oninput="vascaBooking.checkShowSummary()" class="w-full bg-[#0d0a0f] border border-[#ff3e96]/40 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#ff3e96] text-sm placeholder:text-white/30">
+          </div>
+
+          <div class="space-y-1.5">
+            <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8]">
+              Teléfono / WhatsApp *
+            </label>
+            <input type="tel" id="book-phone" required placeholder="Ej. 291 1234567" oninput="vascaBooking.checkShowSummary()" class="w-full bg-[#0d0a0f] border border-[#ff3e96]/40 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#ff3e96] text-sm placeholder:text-white/30">
+          </div>
+
+          <div class="space-y-1.5">
+            <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8]">
+              Instagram (Opcional)
+            </label>
+            <input type="text" id="book-ig" placeholder="@tu_usuario" class="w-full bg-[#0d0a0f] border border-[#ff3e96]/40 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#ff3e96] text-sm placeholder:text-white/30">
+          </div>
+
+          <div class="space-y-1.5">
+            <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8]">
+              Email (Opcional)
+            </label>
+            <input type="email" id="book-email" placeholder="tu@email.com" class="w-full bg-[#0d0a0f] border border-[#ff3e96]/40 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#ff3e96] text-sm placeholder:text-white/30">
+          </div>
+
+          <div class="space-y-1.5 sm:col-span-2">
+            <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8]">
+              Notas u Observaciones (Opcional)
+            </label>
+            <textarea id="book-notes" rows="2" placeholder="Ej. Tengo extensiones previas de otro estudio / Ojos sensibles..." class="w-full bg-[#0d0a0f] border border-[#ff3e96]/40 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#ff3e96] text-sm placeholder:text-white/30"></textarea>
+          </div>
+        </div>
+
+        <!-- RESUMEN EN VIVO (SUMMARY CARD PROYECTO VASCA) -->
+        <div id="booking-summary-box" class="p-5 rounded-2xl bg-[#0d0a0f] border-2 border-[#ff3e96] shadow-xl space-y-4">
+          <div class="flex items-center justify-between border-b border-white/10 pb-3">
+            <h4 class="font-display font-bold text-base text-white flex items-center gap-2">
+              <span>📋</span> Resumen de tu Turno
+            </h4>
+            <span class="px-2.5 py-0.5 rounded-full bg-[#ff2d85]/20 text-[#ffaed8] text-[11px] font-bold">Por Confirmar</span>
+          </div>
+
+          <div class="space-y-2 text-xs sm:text-sm text-[#d8c4d6]" id="summary-details">
+            <!-- Renderizado en vivo por vascaBooking.renderSummary() -->
+          </div>
+
+          <div class="pt-3">
+            <button type="button" id="btn-confirm-booking" onclick="vascaBooking.confirmBooking()" class="w-full inline-flex justify-center items-center gap-2.5 bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] hover:brightness-110 text-white py-4 px-6 rounded-full font-bold text-sm uppercase tracking-wider shadow-xl shadow-[#ff2d85]/40 transition-all active:scale-[0.98]">
+              <span class="material-symbols-outlined text-lg">check_circle</span>
+              <span>Confirmar y Agendar Turno</span>
+            </button>
+            <div id="booking-status-msg" class="text-center text-xs mt-2 font-semibold"></div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- STEP 5: ÉXITO Y CONFIRMACIÓN (PROYECTO VASCA) -->
+      <section class="hidden neon-card-glow rounded-3xl bg-[#161218] p-6 sm:p-10 text-center space-y-6 shadow-2xl" id="step-success">
+        <div class="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-full bg-[#25D366]/20 border-2 border-[#25D366] flex items-center justify-center text-[#25D366] text-3xl sm:text-4xl shadow-xl shadow-[#25D366]/30">
+          ✓
+        </div>
+
+        <div class="space-y-2 max-w-md mx-auto">
+          <h2 class="font-display text-2xl sm:text-3xl font-extrabold text-white">
+            ¡Turno Agendado con Éxito!
+          </h2>
+          <p id="success-msg" class="text-sm sm:text-base text-[#ffaed8] font-bold"></p>
+          <p class="text-xs text-[#d8c4d6]">
+            Tu turno quedó guardado en tu dispositivo. Para asegurar tu lugar, te dejamos los dos accesos directos:
+          </p>
+        </div>
+
+        <!-- Botones de Acción de Éxito -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5 max-w-lg mx-auto pt-2">
+          <!-- 1. Enviar a WhatsApp con mensaje pre-armado -->
+          <a id="success-wpp-btn" href="#" target="_blank" class="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-gradient-to-r from-[#25D366] to-[#128C7E] hover:from-[#20bd5a] hover:to-[#0f7a6e] text-white py-3.5 px-6 rounded-full font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#25D366]/30 transition-all active:scale-95">
+            <svg class="w-4 h-4 fill-current" viewbox="0 0 24 24">
+              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"></path>
+            </svg>
+            <span>Confirmar por WhatsApp</span>
+          </a>
+
+          <!-- 2. Agregar a Google Calendar -->
+          <a id="success-cal-btn" href="#" target="_blank" class="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-[#1e1622] hover:bg-[#271c2b] border border-[#ff3e96]/50 text-[#ffaed8] py-3.5 px-6 rounded-full font-bold text-xs uppercase tracking-wider transition-all active:scale-95">
+            <span class="material-symbols-outlined text-sm text-[#ff3e96]">calendar_today</span>
+            <span>Sumar a Google Calendar</span>
+          </a>
+        </div>
+
+        <div class="pt-4 border-t border-white/10 flex items-center justify-center gap-4">
+          <button type="button" onclick="vascaBooking.resetBooking()" class="text-xs text-[#d8c4d6] hover:text-[#ff3e96] underline">
+            Reservar otro turno
+          </button>
+          <span class="text-white/20">•</span>
+          <button type="button" onclick="vascaBooking.switchTab('mine')" class="text-xs text-[#ffaed8] font-bold hover:underline">
+            Ver mis turnos agendados
+          </button>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- VISTA 2: MIS TURNOS AGENDADOS (PROYECTO VASCA) -->
+    <div id="view-my-appointments" class="hidden space-y-6">
+      <section class="neon-card rounded-3xl bg-[#161218] p-5 sm:p-7 md:p-8 shadow-2xl space-y-6">
+        <div class="flex items-center justify-between border-b border-white/10 pb-4">
+          <div>
+            <h2 class="font-display font-bold text-lg sm:text-xl text-white">Mis Reservas Activas</h2>
+            <p class="text-xs text-[#d8c4d6]">Turnos agendados desde este dispositivo</p>
+          </div>
+          <button type="button" onclick="vascaBooking.switchTab('book')" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#1e1622] border border-[#ff3e96]/40 text-xs font-bold text-[#ffaed8] hover:bg-[#ff2d85] hover:text-white transition-all">
+            <span class="material-symbols-outlined text-sm">add</span>
+            <span>Nuevo Turno</span>
+          </button>
+        </div>
+
+        <div id="my-appointments-list" class="space-y-3.5">
+          <!-- Renderizado por vascaBooking.loadMyBookings() -->
+        </div>
+      </section>
+    </div>
+
+  </main>
+
+  <!-- ================= JAVASCRIPT ================= -->
+  <script>
+    const vascaBooking = {
+      services: [
+        {
+          id: 'clasicas',
+          name: 'Extensiones Clásicas 1:1 (Pelo a Pelo)',
+          duration: 90,
+          price: 24000,
+          desc: 'Aislación milimétrica individual para una mirada abierta, ordenada y elegante.',
+          badge: 'Efecto Rímel',
+          icon: '👁️'
+        },
+        {
+          id: 'hibridas',
+          name: 'Volumen Híbrido Glam',
+          duration: 120,
+          price: 34000,
+          desc: 'Mix perfecto de clásica y abanicos livianos, densidad suave aterciopelada.',
+          badge: '★ Look Más Pedido',
+          icon: '✨'
+        },
+        {
+          id: 'ruso',
+          name: 'Volumen Ruso / Mega Volumen',
+          duration: 135,
+          price: 39000,
+          desc: 'Abanicos artesanales hechos a mano 2D a 6D, máxima tupidez y retención.',
+          badge: '👑 Máximo Volumen',
+          icon: '💎'
+        },
+        {
+          id: 'lifting',
+          name: 'Lifting de Pestañas + Keratina Botox',
+          duration: 60,
+          price: 18500,
+          desc: 'Curvatura natural desde la raíz con nutrición profunda y tinte negro azabache.',
+          badge: '🌿 100% Natural',
+          icon: '🤍'
+        },
+        {
+          id: 'laminado',
+          name: 'Laminado & Diseño de Cejas',
+          duration: 50,
+          price: 16000,
+          desc: 'Alisado de vello rebelde con visagismo y perfilado orgánico simétrico.',
+          badge: '🦋 Simetría Orgánica',
+          icon: '🌸'
+        },
+        {
+          id: 'combo_vip',
+          name: 'Combo Total Mirada VIP (Lifting + Cejas)',
+          duration: 90,
+          price: 32000,
+          desc: 'Lifting completo con nutrición botox + laminado y perfilado de cejas.',
+          badge: '🎀 Promo Estrella',
+          icon: '👑'
+        }
+      ],
+
+      professional: {
+        id: 'mica',
+        name: 'Micaela',
+        role: 'Master Lash Artist & Creadora',
+        location: 'Zona Hospital Penna, Bahía Blanca'
+      },
+
+      selected: {
+        service: null,
+        date: null,
+        time: null,
+        endTime: null
+      },
+
+      currentCalDate: new Date(),
+
+      init() {
+        this.checkAuth();
+        this.renderServices();
+        
+        // URL param selector si viene de un link específico (ej. ?service=lifting)
+        const urlParams = new URLSearchParams(window.location.search);
+        const requestedService = urlParams.get('service');
+        if (requestedService) {
+          this.selectServiceByName(requestedService);
+        } else {
+          this.selectService(this.services[1].id); // Híbridas por defecto
+        }
+
+        this.renderCalendar();
+        this.loadMyBookings();
+      },
+
+      checkAuth() {
+        const savedUserStr = localStorage.getItem('mica_current_user');
+        const container = document.getElementById('auth-status-container');
+        if (savedUserStr && container) {
+          try {
+            const user = JSON.parse(savedUserStr);
+            if (user && user.name) {
+              container.innerHTML = `
+                <div class="flex items-center gap-2">
+                  <span class="text-xs text-[#ffaed8] font-bold hidden sm:inline">Hola, ${user.name}</span>
+                  <button type="button" onclick="vascaBooking.logout()" class="px-2.5 py-1 rounded-full bg-white/5 hover:bg-white/10 text-[11px] text-gray-300 hover:text-white transition-all">
+                    Salir
+                  </button>
+                </div>
+              `;
+
+              // Pre-fill datos automáticamente
+              const nameField = document.getElementById('book-name');
+              const phoneField = document.getElementById('book-phone');
+              const emailField = document.getElementById('book-email');
+
+              if (nameField && user.name) nameField.value = user.name;
+              if (phoneField && user.phone) phoneField.value = user.phone;
+              if (emailField && user.email) emailField.value = user.email;
+            }
+          } catch(e) {}
+        }
+      },
+
+      logout() {
+        localStorage.removeItem('mica_current_user');
+        localStorage.removeItem('vasca_token');
+        window.location.reload();
+      },
+
+      switchTab(tab) {
+        const wizard = document.getElementById('view-booking-wizard');
+        const myAppts = document.getElementById('view-my-appointments');
+        const btnBook = document.getElementById('tab-btn-book');
+        const btnMine = document.getElementById('tab-btn-mine');
+
+        if (tab === 'book') {
+          if (wizard) wizard.classList.remove('hidden');
+          if (myAppts) myAppts.classList.add('hidden');
+          if (btnBook) {
+            btnBook.className = 'px-5 sm:px-6 py-2.5 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] text-white shadow-lg shadow-[#ff2d85]/40 transition-all';
+          }
+          if (btnMine) {
+            btnMine.className = 'px-5 sm:px-6 py-2.5 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#1e1622] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 transition-all';
+          }
+        } else {
+          if (wizard) wizard.classList.add('hidden');
+          if (myAppts) myAppts.classList.remove('hidden');
+          if (btnMine) {
+            btnMine.className = 'px-5 sm:px-6 py-2.5 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] text-white shadow-lg shadow-[#ff2d85]/40 transition-all';
+          }
+          if (btnBook) {
+            btnBook.className = 'px-5 sm:px-6 py-2.5 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#1e1622] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 transition-all';
+          }
+          this.loadMyBookings();
+        }
+      },
+
+      renderServices() {
+        const container = document.getElementById('vasca-services-list');
+        if (!container) return;
+
+        container.innerHTML = this.services.map(svc => `
+          <div class="vasca-svc-card cursor-pointer p-4 rounded-2xl bg-[#0d0a0f] border-2 border-white/10 hover:border-[#ff3e96]/80 transition-all duration-200 ${this.selected.service && this.selected.service.id === svc.id ? 'border-[#ff3e96] bg-[#1e1622]/90 shadow-lg shadow-[#ff3e96]/20' : ''}" 
+               data-id="${svc.id}" 
+               onclick="vascaBooking.selectService('${svc.id}')">
+            <div class="flex items-center justify-between gap-2 mb-1.5">
+              <span class="text-xs font-black text-[#ffaed8] px-2.5 py-0.5 rounded-full bg-[#ff2d85]/20 border border-[#ff3e96]/40">
+                ${svc.badge}
+              </span>
+              <span class="text-xs text-white/60 font-semibold flex items-center gap-1">
+                <span class="material-symbols-outlined text-[13px] text-[#ff6ea7]">schedule</span> ${svc.duration} min
+              </span>
+            </div>
+            <h3 class="font-display font-bold text-sm sm:text-base text-white tracking-wide flex items-center gap-1.5">
+              <span>${svc.icon}</span> ${svc.name}
+            </h3>
+            <p class="text-xs text-[#d8c4d6] mt-1 line-clamp-2 leading-relaxed">
+              ${svc.desc}
+            </p>
+            <div class="flex items-center justify-between pt-3 mt-2 border-t border-white/5">
+              <span class="font-display font-black text-sm sm:text-base text-white">$${svc.price.toLocaleString('es-AR')}</span>
+              <span class="text-xs text-[#ff3e96] font-bold flex items-center gap-0.5">
+                Seleccionar <span class="material-symbols-outlined text-xs">arrow_forward</span>
+              </span>
+            </div>
+          </div>
+        `).join('');
+      },
+
+      selectService(id) {
+        this.selected.service = this.services.find(s => s.id === id);
+        document.querySelectorAll('.vasca-svc-card').forEach(card => {
+          const isSelected = card.dataset.id === id;
+          card.classList.toggle('border-[#ff3e96]', isSelected);
+          card.classList.toggle('bg-[#1e1622]/90', isSelected);
+          card.classList.toggle('shadow-lg', isSelected);
+          card.classList.toggle('shadow-[#ff3e96]/20', isSelected);
+          card.classList.toggle('border-white/10', !isSelected);
+        });
+
+        if (this.selected.date) {
+          this.loadSlots();
+        }
+        this.checkShowSummary();
+      },
+
+      selectServiceByName(namePart) {
+        const found = this.services.find(s => 
+          s.name.toLowerCase().includes(namePart.toLowerCase()) || 
+          s.id.toLowerCase().includes(namePart.toLowerCase())
+        );
+        if (found) {
+          this.selectService(found.id);
+        }
+      },
+
+      renderCalendar() {
+        const grid = document.getElementById('calendar-grid');
+        const monthYear = document.getElementById('cal-month-year');
+        if (!grid || !monthYear) return;
+
+        grid.innerHTML = '';
+        const year = this.currentCalDate.getFullYear();
+        const month = this.currentCalDate.getMonth();
+
+        const monthNames = [
+          'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+          'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+        ];
+        monthYear.textContent = `${monthNames[month]} ${year}`;
+
+        const firstDay = new Date(year, month, 1).getDay(); // 0 = Domingo
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        for (let i = 0; i < firstDay; i++) {
+          const empty = document.createElement('div');
+          empty.className = 'cal-day empty';
+          grid.appendChild(empty);
+        }
+
+        const now = new Date();
+        const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+
+        for (let day = 1; day <= daysInMonth; day++) {
+          const cell = document.createElement('div');
+          const cellDateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+          const dayOfWeek = new Date(year, month, day).getDay();
+
+          cell.className = 'cal-day';
+          cell.textContent = day;
+
+          if (cellDateStr === todayStr) {
+            cell.classList.add('today');
+          }
+
+          if (cellDateStr < todayStr || dayOfWeek === 0) {
+            cell.classList.add('disabled');
+            if (dayOfWeek === 0) cell.title = 'Estudio cerrado los domingos';
+          } else {
+            if (this.selected.date === cellDateStr) {
+              cell.classList.add('selected');
+            }
+            cell.addEventListener('click', () => {
+              this.selected.date = cellDateStr;
+              document.querySelectorAll('.cal-day.selected').forEach(el => el.classList.remove('selected'));
+              cell.classList.add('selected');
+
+              const inputDate = document.getElementById('book-date');
+              if (inputDate) inputDate.value = cellDateStr;
+
+              this.loadSlots();
+            });
+          }
+          grid.appendChild(cell);
+        }
+      },
+
+      changeMonth(offset) {
+        this.currentCalDate.setMonth(this.currentCalDate.getMonth() + offset);
+        this.renderCalendar();
+      },
+
+      formatDate(dateStr) {
+        if (!dateStr) return '';
+        const [year, month, day] = dateStr.split('-').map(Number);
+        const d = new Date(year, month - 1, day, 12, 0, 0);
+        return d.toLocaleDateString('es-AR', {
+          weekday: 'long',
+          day: 'numeric',
+          month: 'long'
+        });
+      },
+
+      loadSlots() {
+        const slotsContainer = document.getElementById('time-slots');
+        const badge = document.getElementById('selected-date-badge');
+        if (!slotsContainer) return;
+
+        if (!this.selected.date) {
+          slotsContainer.innerHTML = '<p class="text-xs text-gray-400 col-span-2 py-8 text-center italic">Seleccioná un día en el calendario.</p>';
+          return;
+        }
+
+        if (badge) {
+          badge.textContent = this.formatDate(this.selected.date);
+        }
+
+        const baseSlots = ['10:00', '11:30', '14:00', '15:30', '17:00', '18:30'];
+
+        slotsContainer.innerHTML = baseSlots.map(time => `
+          <button type="button" 
+                  class="slot-btn ${this.selected.time === time ? 'selected' : ''}" 
+                  onclick="vascaBooking.selectTime('${time}')">
+            ${time} hs
+          </button>
+        `).join('');
+      },
+
+      selectTime(time) {
+        this.selected.time = time;
+        const duration = this.selected.service ? this.selected.service.duration : 90;
+        
+        const [h, m] = time.split(':').map(Number);
+        const totalMinutes = h * 60 + m + duration;
+        const endH = Math.floor(totalMinutes / 60);
+        const endM = totalMinutes % 60;
+        this.selected.endTime = `${String(endH).padStart(2, '0')}:${String(endM).padStart(2, '0')}`;
+
+        document.querySelectorAll('.slot-btn').forEach(btn => {
+          btn.classList.toggle('selected', btn.textContent.trim().startsWith(time));
+        });
+
+        this.checkShowSummary();
+
+        const infoEl = document.getElementById('step-info');
+        if (infoEl) {
+          infoEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      },
+
+      checkShowSummary() {
+        const summaryBox = document.getElementById('booking-summary-box');
+        if (summaryBox) {
+          this.renderSummary();
+        }
+      },
+
+      renderSummary() {
+        const summaryDetails = document.getElementById('summary-details');
+        if (!summaryDetails) return;
+
+        const svc = this.selected.service || this.services[0];
+        const dateFormatted = this.selected.date ? this.formatDate(this.selected.date) : 'A seleccionar';
+        const timeFormatted = this.selected.time ? `${this.selected.time} a ${this.selected.endTime || '---'} hs` : 'A seleccionar';
+
+        summaryDetails.innerHTML = `
+          <div class="flex items-center justify-between py-1.5 border-b border-white/5">
+            <span class="text-gray-400">Tratamiento:</span>
+            <span class="font-bold text-white">${svc.name}</span>
+          </div>
+          <div class="flex items-center justify-between py-1.5 border-b border-white/5">
+            <span class="text-gray-400">Especialista:</span>
+            <span class="font-bold text-[#ffaed8]">${this.professional.name} (Master Artist)</span>
+          </div>
+          <div class="flex items-center justify-between py-1.5 border-b border-white/5">
+            <span class="text-gray-400">Fecha elegida:</span>
+            <span class="font-bold text-white capitalize">${dateFormatted}</span>
+          </div>
+          <div class="flex items-center justify-between py-1.5 border-b border-white/5">
+            <span class="text-gray-400">Horario de cita:</span>
+            <span class="font-bold text-[#ffaed8]">${timeFormatted}</span>
+          </div>
+          <div class="flex items-center justify-between py-2 border-b border-white/10 text-sm sm:text-base">
+            <span class="font-bold text-white">Inversión Total:</span>
+            <span class="font-display font-extrabold text-[#ffaed8]">$${svc.price.toLocaleString('es-AR')}</span>
+          </div>
+        `;
+      },
+
+      confirmBooking() {
+        const nameInput = document.getElementById('book-name');
+        const phoneInput = document.getElementById('book-phone');
+        const igInput = document.getElementById('book-ig');
+        const emailInput = document.getElementById('book-email');
+        const notesInput = document.getElementById('book-notes');
+        const statusMsg = document.getElementById('booking-status-msg');
+
+        const name = nameInput ? nameInput.value.trim() : '';
+        const phone = phoneInput ? phoneInput.value.trim() : '';
+
+        if (!this.selected.service) {
+          statusMsg.textContent = 'Por favor, seleccioná un servicio.';
+          statusMsg.className = 'text-center text-xs mt-2 text-[#ff2d85] font-bold';
+          return;
+        }
+
+        if (!this.selected.date) {
+          statusMsg.textContent = 'Por favor, elegí un día en el calendario.';
+          statusMsg.className = 'text-center text-xs mt-2 text-[#ff2d85] font-bold';
+          return;
+        }
+
+        if (!this.selected.time) {
+          statusMsg.textContent = 'Por favor, elegí un horario disponible.';
+          statusMsg.className = 'text-center text-xs mt-2 text-[#ff2d85] font-bold';
+          return;
+        }
+
+        if (!name || !phone) {
+          statusMsg.textContent = 'Por favor, completá tu nombre y teléfono / WhatsApp.';
+          statusMsg.className = 'text-center text-xs mt-2 text-[#ff2d85] font-bold';
+          if (!name && nameInput) nameInput.focus();
+          else if (phoneInput) phoneInput.focus();
+          return;
+        }
+
+        statusMsg.textContent = '';
+
+        const appointment = {
+          id: 'apt_' + Date.now(),
+          service: this.selected.service.name,
+          serviceId: this.selected.service.id,
+          price: this.selected.service.price,
+          duration: this.selected.service.duration,
+          date: this.selected.date,
+          time: this.selected.time,
+          endTime: this.selected.endTime,
+          professional: this.professional.name,
+          clientName: name,
+          clientPhone: phone,
+          clientIg: igInput ? igInput.value.trim() : '',
+          clientEmail: emailInput ? emailInput.value.trim() : '',
+          clientNotes: notesInput ? notesInput.value.trim() : '',
+          createdAt: new Date().toISOString()
+        };
+
+        const existing = JSON.parse(localStorage.getItem('mica_lashart_turnos') || '[]');
+        existing.unshift(appointment);
+        localStorage.setItem('mica_lashart_turnos', JSON.stringify(existing));
+
+        // Preparar Google Calendar URL
+        const calStart = `${this.selected.date.replace(/-/g, '')}T${this.selected.time.replace(':', '')}00`;
+        const calEnd = `${this.selected.date.replace(/-/g, '')}T${this.selected.endTime.replace(':', '')}00`;
+        const calText = encodeURIComponent(`Turno: ${this.selected.service.name} - Mica Lash Art`);
+        const calDetails = encodeURIComponent(`Turno de belleza con Micaela en Mica Lash Art. Clienta: ${name}. Tel: ${phone}.`);
+        const calLocation = encodeURIComponent('Zona Hospital Penna - Villa Cerrito, Bahía Blanca');
+        const calUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${calText}&dates=${calStart}/${calEnd}&details=${calDetails}&location=${calLocation}`;
+
+        const calBtn = document.getElementById('success-cal-btn');
+        if (calBtn) calBtn.href = calUrl;
+
+        // Preparar WhatsApp pre-cargado
+        const dateFormatted = this.formatDate(this.selected.date);
+        let wppMsg = `¡Hola Mica! ♡ Acabo de agendar un turno desde tu web para *${this.selected.service.name}*:\n\n📅 *Día:* ${dateFormatted}\n⏰ *Horario:* ${this.selected.time} a ${this.selected.endTime} hs\n👤 *Nombre:* ${name}\n📱 *WhatsApp:* ${phone}`;
+        
+        if (appointment.clientIg) {
+          wppMsg += `\n📸 *Instagram:* ${appointment.clientIg}`;
+        }
+        if (appointment.clientNotes) {
+          wppMsg += `\n💬 *Nota/Consulta:* ${appointment.clientNotes}`;
+        }
+        wppMsg += `\n\n¿Me confirmás los datos de transferencia para enviar la seña? ¡Muchas gracias!`;
+
+        const wppUrl = `https://wa.me/5492914491141?text=${encodeURIComponent(wppMsg)}`;
+        const wppBtn = document.getElementById('success-wpp-btn');
+        if (wppBtn) wppBtn.href = wppUrl;
+
+        const successMsg = document.getElementById('success-msg');
+        if (successMsg) {
+          successMsg.textContent = `${this.selected.service.name} • ${dateFormatted} a las ${this.selected.time} hs`;
+        }
+
+        document.getElementById('step-service').classList.add('hidden');
+        document.getElementById('step-professional').classList.add('hidden');
+        document.getElementById('step-datetime').classList.add('hidden');
+        document.getElementById('step-info').classList.add('hidden');
+        
+        const successStep = document.getElementById('step-success');
+        if (successStep) {
+          successStep.classList.remove('hidden');
+          successStep.scrollIntoView({ behavior: 'smooth' });
+        }
+      },
+
+      resetBooking() {
+        document.getElementById('step-service').classList.remove('hidden');
+        document.getElementById('step-professional').classList.remove('hidden');
+        document.getElementById('step-datetime').classList.remove('hidden');
+        document.getElementById('step-info').classList.remove('hidden');
+        document.getElementById('step-success').classList.add('hidden');
+
+        this.selected.time = null;
+        this.selected.endTime = null;
+        document.querySelectorAll('.slot-btn.selected').forEach(b => b.classList.remove('selected'));
+        this.checkShowSummary();
+
+        const step1 = document.getElementById('step-service');
+        if (step1) step1.scrollIntoView({ behavior: 'smooth' });
+      },
+
+      loadMyBookings() {
+        const container = document.getElementById('my-appointments-list');
+        if (!container) return;
+
+        const appointments = JSON.parse(localStorage.getItem('mica_lashart_turnos') || '[]');
+
+        if (!appointments.length) {
+          container.innerHTML = `
+            <div class="text-center py-10 space-y-3">
+              <span class="text-4xl">🗓️</span>
+              <p class="text-sm font-bold text-white">Todavía no tenés turnos agendados en este dispositivo.</p>
+              <p class="text-xs text-[#d8c4d6]">Reservá tu turno desde la pestaña superior para tener tu lugar exclusivo.</p>
+              <button type="button" onclick="vascaBooking.switchTab('book')" class="inline-flex items-center gap-2 bg-[#ff2d85] hover:bg-[#ff529c] text-white px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all shadow-md">
+                <span>Reservar Ahora</span>
+              </button>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = appointments.map(apt => {
+          const calStart = apt.date ? `${apt.date.replace(/-/g, '')}T${apt.time.replace(':', '')}00` : '';
+          const calEnd = apt.date && apt.endTime ? `${apt.date.replace(/-/g, '')}T${apt.endTime.replace(':', '')}00` : '';
+          const calText = encodeURIComponent(`Turno: ${apt.service} - Mica Lash Art`);
+          const calDetails = encodeURIComponent(`Turno agendado en Mica Lash Art para ${apt.clientName}.`);
+          const calUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${calText}&dates=${calStart}/${calEnd}&details=${calDetails}&location=${encodeURIComponent('Zona Hospital Penna, Bahía Blanca')}`;
+
+          return `
+            <div class="p-4 sm:p-5 rounded-2xl bg-[#0d0a0f] border border-[#ff3e96]/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-md">
+              <div class="space-y-1">
+                <div class="flex items-center gap-2">
+                  <span class="px-2.5 py-0.5 rounded-full bg-[#25D366]/20 border border-[#25D366] text-[#25D366] text-[10px] font-black uppercase">
+                    Agendado
+                  </span>
+                  <span class="text-xs font-bold text-white capitalize">${this.formatDate(apt.date)}</span>
+                </div>
+                <h4 class="font-display font-bold text-base text-white">${apt.service}</h4>
+                <p class="text-xs text-[#ffaed8]">⏰ Horario: ${apt.time} a ${apt.endTime || '---'} hs • Profesional: ${apt.professional}</p>
+                <p class="text-[11px] text-gray-400">A nombre de: ${apt.clientName} (${apt.clientPhone})</p>
+              </div>
+
+              <div class="flex items-center gap-2 flex-wrap">
+                <a href="${calUrl}" target="_blank" class="p-2 sm:px-3 sm:py-2 rounded-xl bg-[#1e1622] hover:bg-[#ff2d85] text-white border border-white/10 text-xs font-bold transition-all flex items-center gap-1.5" title="Sincronizar calendario">
+                  <span class="material-symbols-outlined text-sm">calendar_today</span>
+                  <span class="hidden sm:inline">Calendario</span>
+                </a>
+                <a href="https://wa.me/5492914491141?text=${encodeURIComponent(`Hola Mica! Te consulto por mi turno de ${apt.service} el día ${this.formatDate(apt.date)} a las ${apt.time}hs`)}" target="_blank" class="p-2 sm:px-3 sm:py-2 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs font-bold transition-all flex items-center gap-1.5" title="Consultar por WhatsApp">
+                  <span class="material-symbols-outlined text-sm">chat</span>
+                  <span class="hidden sm:inline">WhatsApp</span>
+                </a>
+                <button type="button" onclick="vascaBooking.cancelBooking('${apt.id}')" class="p-2 rounded-xl bg-red-950/40 hover:bg-red-600/60 text-red-300 border border-red-500/30 text-xs transition-all" title="Eliminar de mi lista">
+                  <span class="material-symbols-outlined text-sm">delete</span>
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('');
+      },
+
+      cancelBooking(id) {
+        if (!confirm('¿Deseás remover este turno de tu lista guardada?')) return;
+        let existing = JSON.parse(localStorage.getItem('mica_lashart_turnos') || '[]');
+        existing = existing.filter(a => a.id !== id);
+        localStorage.setItem('mica_lashart_turnos', JSON.stringify(existing));
+        this.loadMyBookings();
+      }
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      vascaBooking.init();
+    });
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      vascaBooking.init();
+    }
+  </script>
+</body>
+</html>

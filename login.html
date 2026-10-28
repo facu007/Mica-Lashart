@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mica Lash Art | Iniciar Sesión</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            background: "#0d0a0f",
+            surface: "#161218",
+            primary: "#ff3e96",
+            "primary-bright": "#ff2d85",
+            "primary-light": "#ffaed8",
+            secondary: "#ff6ea7",
+          },
+          fontFamily: {
+            display: ["'Bodoni Moda'", "serif"],
+            body: ["'Plus Jakarta Sans'", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    .neon-card-glow {
+      border: 1.5px solid rgba(255, 62, 150, 0.5);
+      box-shadow: 0 0 35px 2px rgba(255, 62, 150, 0.25), inset 0 0 25px rgba(255, 62, 150, 0.08);
+    }
+  </style>
+</head>
+<body class="bg-[#0d0a0f] text-[#f5edf5] font-body min-h-screen flex items-center justify-center p-4 relative overflow-x-hidden selection:bg-[#ff3e96] selection:text-white">
+  
+  <!-- Ambient background glow -->
+  <div class="absolute top-10 left-1/2 -translate-x-1/2 w-96 h-96 bg-[#ff2d85]/15 blur-[120px] rounded-full pointer-events-none"></div>
+
+  <div class="w-full max-w-md relative z-10 space-y-6">
+    
+    <!-- Header de Marca -->
+    <div class="text-center space-y-2">
+      <a href="index.html" class="inline-flex items-center gap-2 group">
+        <span class="font-display font-bold text-2xl sm:text-3xl tracking-wider text-white uppercase group-hover:text-[#ff3e96] transition-colors">
+          MICA LASH ART
+        </span>
+        <span class="text-[#ff3e96] text-sm">♡</span>
+      </a>
+      <p class="text-xs uppercase font-bold tracking-widest text-[#ff6ea7]">
+        Estudio de Miradas • Bahía Blanca
+      </p>
+      <p class="text-xs text-[#d8c4d6] pt-1">
+        Ingresá para gestionar tus turnos, compras e inscripciones
+      </p>
+    </div>
+
+    <!-- Card Principal -->
+    <div class="neon-card-glow bg-[#161218] rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
+      
+      <!-- Tabs Iniciar Sesión / Registrarse -->
+      <div class="flex p-1 bg-[#0d0a0f] rounded-2xl border border-white/10">
+        <button type="button" id="tab-login" onclick="switchAuthTab('login')" class="flex-1 py-2.5 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider transition-all bg-[#ff2d85] text-white shadow-md">
+          Iniciar Sesión
+        </button>
+        <button type="button" id="tab-register" onclick="switchAuthTab('register')" class="flex-1 py-2.5 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider transition-all text-[#d8c4d6] hover:text-white">
+          Registrarse
+        </button>
+      </div>
+
+      <!-- Formulario 1: Login -->
+      <form id="form-login" onsubmit="handleLogin(event)" class="space-y-4">
+        <div class="space-y-1.5">
+          <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8]">
+            Email
+          </label>
+          <input type="email" id="login-email" required placeholder="tu@email.com" class="w-full bg-[#0d0a0f] border border-[#ff3e96]/40 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#ff3e96] text-sm placeholder:text-white/30">
+        </div>
+
+        <div class="space-y-1.5">
+          <div class="flex items-center justify-between">
+            <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8]">
+              Contraseña
+            </label>
+            <a href="#" onclick="alert('Podés ingresar con cualquier contraseña para la demo o crear una cuenta nueva.'); return false;" class="text-[11px] text-[#ff6ea7] hover:underline">
+              ¿Olvidaste tu clave?
+            </a>
+          </div>
+          <input type="password" id="login-password" required placeholder="••••••••" class="w-full bg-[#0d0a0f] border border-[#ff3e96]/40 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#ff3e96] text-sm placeholder:text-white/30">
+        </div>
+
+        <button type="submit" id="btn-submit-login" class="w-full inline-flex justify-center items-center gap-2 bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] hover:brightness-110 text-white py-3.5 px-4 rounded-full font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#ff2d85]/30 transition-all active:scale-[0.98]">
+          <span class="material-symbols-outlined text-base">login</span>
+          <span>Ingresar a Mis Turnos</span>
+        </button>
+
+        <div id="login-status" class="text-center text-xs min-h-[1.2rem] font-semibold"></div>
+      </form>
+
+      <!-- Formulario 2: Registro -->
+      <form id="form-register" onsubmit="handleRegister(event)" class="space-y-4 hidden">
+        <div class="space-y-1.5">
+          <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8]">
+            Nombre completo *
+          </label>
+          <input type="text" id="reg-name" required placeholder="Ej. Valentina Gómez" class="w-full bg-[#0d0a0f] border border-[#ff3e96]/40 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#ff3e96] text-sm placeholder:text-white/30">
+        </div>
+
+        <div class="space-y-1.5">
+          <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8]">
+            Teléfono / WhatsApp *
+          </label>
+          <input type="tel" id="reg-phone" required placeholder="Ej. 291 1234567" class="w-full bg-[#0d0a0f] border border-[#ff3e96]/40 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#ff3e96] text-sm placeholder:text-white/30">
+        </div>
+
+        <div class="space-y-1.5">
+          <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8]">
+            Email *
+          </label>
+          <input type="email" id="reg-email" required placeholder="tu@email.com" class="w-full bg-[#0d0a0f] border border-[#ff3e96]/40 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#ff3e96] text-sm placeholder:text-white/30">
+        </div>
+
+        <div class="space-y-1.5">
+          <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8]">
+            Crear Contraseña *
+          </label>
+          <input type="password" id="reg-password" required minlength="4" placeholder="Mínimo 4 caracteres" class="w-full bg-[#0d0a0f] border border-[#ff3e96]/40 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#ff3e96] text-sm placeholder:text-white/30">
+        </div>
+
+        <button type="submit" id="btn-submit-reg" class="w-full inline-flex justify-center items-center gap-2 bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] hover:brightness-110 text-white py-3.5 px-4 rounded-full font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#ff2d85]/30 transition-all active:scale-[0.98]">
+          <span class="material-symbols-outlined text-base">person_add</span>
+          <span>Crear Cuenta y Continuar</span>
+        </button>
+
+        <div id="reg-status" class="text-center text-xs min-h-[1.2rem] font-semibold"></div>
+      </form>
+
+      <!-- Divisor o Invitada -->
+      <div class="pt-2 border-t border-white/10 text-center space-y-3">
+        <p class="text-xs text-[#d8c4d6]">
+          ¿Solo querés reservar sin registrarte?
+        </p>
+        <a href="turnos.html" class="inline-flex items-center gap-1.5 text-xs text-[#ffaed8] hover:text-white font-bold underline transition-colors">
+          <span>Continuar como invitada a pedir turno</span>
+          <span class="material-symbols-outlined text-sm">arrow_forward</span>
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Volver al sitio -->
+    <div class="text-center">
+      <a href="index.html" class="inline-flex items-center gap-1 text-xs text-[#d8c4d6] hover:text-[#ff3e96] transition-colors">
+        <span class="material-symbols-outlined text-sm">arrow_back</span>
+        <span>Volver a la página principal</span>
+      </a>
+    </div>
+
+  </div>
+
+  <script>
+    function switchAuthTab(tab) {
+      const loginForm = document.getElementById('form-login');
+      const regForm = document.getElementById('form-register');
+      const tabLogin = document.getElementById('tab-login');
+      const tabReg = document.getElementById('tab-register');
+
+      if (tab === 'login') {
+        loginForm.classList.remove('hidden');
+        regForm.classList.add('hidden');
+        tabLogin.className = 'flex-1 py-2.5 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider transition-all bg-[#ff2d85] text-white shadow-md';
+        tabReg.className = 'flex-1 py-2.5 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider transition-all text-[#d8c4d6] hover:text-white';
+      } else {
+        loginForm.classList.add('hidden');
+        regForm.classList.remove('hidden');
+        tabReg.className = 'flex-1 py-2.5 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider transition-all bg-[#ff2d85] text-white shadow-md';
+        tabLogin.className = 'flex-1 py-2.5 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider transition-all text-[#d8c4d6] hover:text-white';
+      }
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value.trim();
+      const status = document.getElementById('login-status');
+      
+      status.textContent = 'Verificando sesión...';
+      status.className = 'text-center text-xs mt-2 text-[#ffaed8]';
+
+      setTimeout(() => {
+        // Guardar sesión de usuario para persistencia tipo Vasca
+        const existingUsers = JSON.parse(localStorage.getItem('mica_users') || '{}');
+        const user = existingUsers[email] || {
+          name: email.split('@')[0],
+          email: email,
+          phone: ''
+        };
+
+        localStorage.setItem('mica_current_user', JSON.stringify(user));
+        localStorage.setItem('vasca_token', 'token_' + Date.now());
+
+        status.textContent = '¡Bienvenida! Redirigiendo a turnos...';
+        status.className = 'text-center text-xs mt-2 text-[#25D366] font-bold';
+
+        setTimeout(() => {
+          window.location.href = 'turnos.html';
+        }, 600);
+      }, 500);
+    }
+
+    function handleRegister(e) {
+      e.preventDefault();
+      const name = document.getElementById('reg-name').value.trim();
+      const phone = document.getElementById('reg-phone').value.trim();
+      const email = document.getElementById('reg-email').value.trim();
+      const status = document.getElementById('reg-status');
+
+      status.textContent = 'Creando tu cuenta...';
+      status.className = 'text-center text-xs mt-2 text-[#ffaed8]';
+
+      setTimeout(() => {
+        const user = { name, phone, email };
+        const existingUsers = JSON.parse(localStorage.getItem('mica_users') || '{}');
+        existingUsers[email] = user;
+        localStorage.setItem('mica_users', JSON.stringify(existingUsers));
+
+        localStorage.setItem('mica_current_user', JSON.stringify(user));
+        localStorage.setItem('vasca_token', 'token_' + Date.now());
+
+        status.textContent = '¡Cuenta creada con éxito! Redirigiendo...';
+        status.className = 'text-center text-xs mt-2 text-[#25D366] font-bold';
+
+        setTimeout(() => {
+          window.location.href = 'turnos.html';
+        }, 600);
+      }, 500);
+    }
+
+    // Prefill si ya había un usuario registrado previamente
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedUser = localStorage.getItem('mica_current_user');
+      if (savedUser) {
+        try {
+          const user = JSON.parse(savedUser);
+          if (user.email && document.getElementById('login-email')) {
+            document.getElementById('login-email').value = user.email;
+          }
+        } catch(err) {}
+      }
+    });
+  </script>
+</body>
+</html>
