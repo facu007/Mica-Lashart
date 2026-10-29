@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="supabase-client.js"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -125,6 +126,9 @@
       </a>
 
       <div class="flex items-center gap-3">
+        <!-- Supabase Status Badge -->
+        <div id="supabase-status-badge"></div>
+
         <a href="index.html" class="inline-flex items-center gap-1 text-xs text-[#d8c4d6] hover:text-[#ff3e96] font-medium transition-colors">
           <span class="material-symbols-outlined text-sm">home</span>
           <span>Sitio</span>
@@ -510,8 +514,18 @@
 
       currentCalDate: new Date(),
 
-      init() {
+      async init() {
         this.checkAuth();
+
+        if (window.MicaBackend) {
+          try {
+            const fetched = await window.MicaBackend.getServices();
+            if (fetched && fetched.length) {
+              this.services = fetched;
+            }
+          } catch(e) {}
+        }
+
         this.renderServices();
         
         // URL param selector si viene de un link específico (ej. ?service=lifting)
@@ -534,8 +548,14 @@
           try {
             const user = JSON.parse(savedUserStr);
             if (user && user.name) {
+              const isAdmin = user.role === 'admin' || user.email?.includes('admin') || user.email?.includes('mica');
               container.innerHTML = `
                 <div class="flex items-center gap-2">
+                  ${isAdmin ? `
+                    <a href="admin.html" class="px-2.5 py-1 rounded-full bg-[#ff2d85]/20 border border-[#ff3e96]/50 text-[#ffaed8] text-[11px] font-bold hover:bg-[#ff2d85] hover:text-white transition-all">
+                      Panel Admin
+                    </a>
+                  ` : ''}
                   <span class="text-xs text-[#ffaed8] font-bold hidden sm:inline">Hola, ${user.name}</span>
                   <button type="button" onclick="vascaBooking.logout()" class="px-2.5 py-1 rounded-full bg-white/5 hover:bg-white/10 text-[11px] text-gray-300 hover:text-white transition-all">
                     Salir
@@ -726,7 +746,7 @@
         });
       },
 
-      loadSlots() {
+      async loadSlots() {
         const slotsContainer = document.getElementById('time-slots');
         const badge = document.getElementById('selected-date-badge');
         if (!slotsContainer) return;
@@ -740,15 +760,36 @@
           badge.textContent = this.formatDate(this.selected.date);
         }
 
-        const baseSlots = ['10:00', '11:30', '14:00', '15:30', '17:00', '18:30'];
+        slotsContainer.innerHTML = '<p class="text-xs text-[#ffaed8] col-span-2 py-6 text-center italic">Consultando disponibilidad en Supabase...</p>';
 
-        slotsContainer.innerHTML = baseSlots.map(time => `
-          <button type="button" 
-                  class="slot-btn ${this.selected.time === time ? 'selected' : ''}" 
-                  onclick="vascaBooking.selectTime('${time}')">
-            ${time} hs
-          </button>
-        `).join('');
+        let slotsData = [];
+        if (window.MicaBackend) {
+          try {
+            slotsData = await window.MicaBackend.getAvailableSlots(this.selected.date, this.selected.service ? this.selected.service.id : null);
+          } catch(e) {}
+        }
+
+        if (!slotsData || !slotsData.length) {
+          const baseSlots = ['10:00', '11:30', '14:00', '15:30', '17:00', '18:30'];
+          slotsData = baseSlots.map(time => ({ time, available: true }));
+        }
+
+        slotsContainer.innerHTML = slotsData.map(slot => {
+          if (!slot.available) {
+            return `
+              <button type="button" disabled class="slot-btn opacity-30 cursor-not-allowed border-dashed bg-black/40 text-gray-500">
+                ${slot.time} hs (Ocupado)
+              </button>
+            `;
+          }
+          return `
+            <button type="button" 
+                    class="slot-btn ${this.selected.time === slot.time ? 'selected' : ''}" 
+                    onclick="vascaBooking.selectTime('${slot.time}')">
+              ${slot.time} hs
+            </button>
+          `;
+        }).join('');
       },
 
       selectTime(time) {
@@ -812,7 +853,7 @@
         `;
       },
 
-      confirmBooking() {
+      async confirmBooking() {
         const nameInput = document.getElementById('book-name');
         const phoneInput = document.getElementById('book-phone');
         const igInput = document.getElementById('book-ig');
@@ -849,11 +890,11 @@
           return;
         }
 
-        statusMsg.textContent = '';
+        statusMsg.textContent = 'Registrando tu turno en la base de datos...';
+        statusMsg.className = 'text-center text-xs mt-2 text-[#ffaed8]';
 
         const appointment = {
-          id: 'apt_' + Date.now(),
-          service: this.selected.service.name,
+          service: this.selected.service,
           serviceId: this.selected.service.id,
           price: this.selected.service.price,
           duration: this.selected.service.duration,
@@ -861,17 +902,20 @@
           time: this.selected.time,
           endTime: this.selected.endTime,
           professional: this.professional.name,
-          clientName: name,
-          clientPhone: phone,
+          name: name,
+          phone: phone,
           clientIg: igInput ? igInput.value.trim() : '',
-          clientEmail: emailInput ? emailInput.value.trim() : '',
-          clientNotes: notesInput ? notesInput.value.trim() : '',
-          createdAt: new Date().toISOString()
+          email: emailInput ? emailInput.value.trim() : '',
+          notes: (notesInput ? notesInput.value.trim() : '') + (igInput && igInput.value ? ` [IG: ${igInput.value.trim()}]` : '')
         };
 
-        const existing = JSON.parse(localStorage.getItem('mica_lashart_turnos') || '[]');
-        existing.unshift(appointment);
-        localStorage.setItem('mica_lashart_turnos', JSON.stringify(existing));
+        if (window.MicaBackend) {
+          try {
+            await window.MicaBackend.createAppointment(appointment);
+          } catch(e) {
+            console.warn('Booking backend sync error:', e);
+          }
+        }
 
         // Preparar Google Calendar URL
         const calStart = `${this.selected.date.replace(/-/g, '')}T${this.selected.time.replace(':', '')}00`;
@@ -891,8 +935,8 @@
         if (appointment.clientIg) {
           wppMsg += `\n📸 *Instagram:* ${appointment.clientIg}`;
         }
-        if (appointment.clientNotes) {
-          wppMsg += `\n💬 *Nota/Consulta:* ${appointment.clientNotes}`;
+        if (appointment.notes) {
+          wppMsg += `\n💬 *Nota/Consulta:* ${appointment.notes}`;
         }
         wppMsg += `\n\n¿Me confirmás los datos de transferencia para enviar la seña? ¡Muchas gracias!`;
 
@@ -933,11 +977,26 @@
         if (step1) step1.scrollIntoView({ behavior: 'smooth' });
       },
 
-      loadMyBookings() {
+      async loadMyBookings() {
         const container = document.getElementById('my-appointments-list');
         if (!container) return;
 
-        const appointments = JSON.parse(localStorage.getItem('mica_lashart_turnos') || '[]');
+        container.innerHTML = `
+          <div class="py-8 text-center text-xs text-gray-400">
+            <span class="material-symbols-outlined text-2xl animate-spin text-[#ff3e96]">progress_activity</span>
+            <p class="mt-1">Cargando tus citas...</p>
+          </div>
+        `;
+
+        let appointments = [];
+        if (window.MicaBackend) {
+          try {
+            appointments = await window.MicaBackend.getMyAppointments();
+          } catch(e) {}
+        }
+        if (!appointments || !appointments.length) {
+          appointments = JSON.parse(localStorage.getItem('mica_lashart_turnos') || '[]');
+        }
 
         if (!appointments.length) {
           container.innerHTML = `
@@ -956,22 +1015,23 @@
         container.innerHTML = appointments.map(apt => {
           const calStart = apt.date ? `${apt.date.replace(/-/g, '')}T${apt.time.replace(':', '')}00` : '';
           const calEnd = apt.date && apt.endTime ? `${apt.date.replace(/-/g, '')}T${apt.endTime.replace(':', '')}00` : '';
-          const calText = encodeURIComponent(`Turno: ${apt.service} - Mica Lash Art`);
-          const calDetails = encodeURIComponent(`Turno agendado en Mica Lash Art para ${apt.clientName}.`);
+          const serviceName = apt.service?.name || apt.service || 'Tratamiento de Pestañas';
+          const calText = encodeURIComponent(`Turno: ${serviceName} - Mica Lash Art`);
+          const calDetails = encodeURIComponent(`Turno agendado en Mica Lash Art para ${apt.clientName || ''}.`);
           const calUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${calText}&dates=${calStart}/${calEnd}&details=${calDetails}&location=${encodeURIComponent('Zona Hospital Penna, Bahía Blanca')}`;
 
           return `
             <div class="p-4 sm:p-5 rounded-2xl bg-[#0d0a0f] border border-[#ff3e96]/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-md">
               <div class="space-y-1">
                 <div class="flex items-center gap-2">
-                  <span class="px-2.5 py-0.5 rounded-full bg-[#25D366]/20 border border-[#25D366] text-[#25D366] text-[10px] font-black uppercase">
-                    Agendado
+                  <span class="px-2.5 py-0.5 rounded-full ${apt.status === 'confirmed' ? 'bg-[#25D366]/20 border border-[#25D366] text-[#25D366]' : 'bg-[#ff2d85]/20 border border-[#ff3e96] text-[#ffaed8]'} text-[10px] font-black uppercase">
+                    ${apt.status === 'confirmed' ? 'Confirmado' : 'Agendado'}
                   </span>
                   <span class="text-xs font-bold text-white capitalize">${this.formatDate(apt.date)}</span>
                 </div>
-                <h4 class="font-display font-bold text-base text-white">${apt.service}</h4>
-                <p class="text-xs text-[#ffaed8]">⏰ Horario: ${apt.time} a ${apt.endTime || '---'} hs • Profesional: ${apt.professional}</p>
-                <p class="text-[11px] text-gray-400">A nombre de: ${apt.clientName} (${apt.clientPhone})</p>
+                <h4 class="font-display font-bold text-base text-white">${serviceName}</h4>
+                <p class="text-xs text-[#ffaed8]">⏰ Horario: ${apt.time} a ${apt.endTime || '---'} hs • Profesional: Micaela</p>
+                <p class="text-[11px] text-gray-400">A nombre de: ${apt.clientName || 'Clienta'} (${apt.clientPhone || ''})</p>
               </div>
 
               <div class="flex items-center gap-2 flex-wrap">
@@ -979,7 +1039,7 @@
                   <span class="material-symbols-outlined text-sm">calendar_today</span>
                   <span class="hidden sm:inline">Calendario</span>
                 </a>
-                <a href="https://wa.me/5492914491141?text=${encodeURIComponent(`Hola Mica! Te consulto por mi turno de ${apt.service} el día ${this.formatDate(apt.date)} a las ${apt.time}hs`)}" target="_blank" class="p-2 sm:px-3 sm:py-2 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs font-bold transition-all flex items-center gap-1.5" title="Consultar por WhatsApp">
+                <a href="https://wa.me/5492914491141?text=${encodeURIComponent(`Hola Mica! Te consulto por mi turno de ${serviceName} el día ${this.formatDate(apt.date)} a las ${apt.time}hs`)}" target="_blank" class="p-2 sm:px-3 sm:py-2 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs font-bold transition-all flex items-center gap-1.5" title="Consultar por WhatsApp">
                   <span class="material-symbols-outlined text-sm">chat</span>
                   <span class="hidden sm:inline">WhatsApp</span>
                 </a>
@@ -992,8 +1052,13 @@
         }).join('');
       },
 
-      cancelBooking(id) {
-        if (!confirm('¿Deseás remover este turno de tu lista guardada?')) return;
+      async cancelBooking(id) {
+        if (!confirm('¿Deseás remover o cancelar este turno?')) return;
+        if (window.MicaBackend) {
+          try {
+            await window.MicaBackend.cancelAppointment(id);
+          } catch(e) {}
+        }
         let existing = JSON.parse(localStorage.getItem('mica_lashart_turnos') || '[]');
         existing = existing.filter(a => a.id !== id);
         localStorage.setItem('mica_lashart_turnos', JSON.stringify(existing));

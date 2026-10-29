@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mica Lash Art | Panel de Administración VIP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            background: "#0d0a0f",
+            surface: "#161218",
+            primary: "#ff3e96",
+            "primary-bright": "#ff2d85",
+            "primary-light": "#ffaed8",
+            secondary: "#ff6ea7",
+          },
+          fontFamily: {
+            display: ["'Bodoni Moda'", "serif"],
+            body: ["'Plus Jakarta Sans'", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    .neon-card-glow {
+      border: 1.5px solid rgba(255, 62, 150, 0.5);
+      box-shadow: 0 0 35px 2px rgba(255, 62, 150, 0.25), inset 0 0 25px rgba(255, 62, 150, 0.08);
+    }
+  </style>
+  <script src="supabase-client.js"></script>
+</head>
+<body class="bg-[#0d0a0f] text-[#f5edf5] font-body min-h-screen flex flex-col antialiased selection:bg-[#ff3e96] selection:text-white">
+
+  <!-- ================= TOP ADMIN BAR ================= -->
+  <header class="sticky top-0 z-50 bg-[#0d0a0f]/95 backdrop-blur-xl border-b border-[#ff3e96]/30 shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
+      
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="flex items-center gap-2 group">
+          <span class="font-display font-bold text-lg sm:text-xl text-white uppercase group-hover:text-[#ff3e96] transition-colors">
+            MICA LASH ART
+          </span>
+          <span class="text-[#ff3e96] text-xs">♡</span>
+        </a>
+        <span class="px-2.5 py-0.5 rounded-full bg-[#ff2d85]/20 border border-[#ff3e96]/40 text-[#ffaed8] text-[11px] font-black uppercase tracking-wider">
+          Admin Portal
+        </span>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <div id="supabase-status-badge">
+          <!-- Renderizado dinámicamente por supabase-client.js -->
+        </div>
+
+        <a href="turnos.html" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#1e1622] hover:bg-[#271c2b] border border-white/10 text-xs font-semibold text-gray-300 hover:text-white transition-all">
+          <span class="material-symbols-outlined text-sm">open_in_new</span>
+          <span>Ver Turnos en Vivo</span>
+        </a>
+
+        <button type="button" onclick="handleLogout()" class="p-1.5 sm:px-3 sm:py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-xs font-medium text-gray-300 hover:text-white transition-all flex items-center gap-1">
+          <span class="material-symbols-outlined text-base">logout</span>
+          <span class="hidden sm:inline">Salir</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ================= MAIN DASHBOARD ================= -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6">
+    
+    <!-- Header de Bienvenida & Controles de Fecha -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2 border-b border-white/10">
+      <div>
+        <h1 class="font-display text-2xl sm:text-3xl font-extrabold text-white">
+          Gestión de Turnos & Agenda
+        </h1>
+        <p class="text-xs sm:text-sm text-[#d8c4d6] mt-0.5">
+          Control de citas, confirmaciones por WhatsApp y base de clientas sincronizada con Supabase.
+        </p>
+      </div>
+
+      <!-- Filtro de Estado -->
+      <div class="flex items-center gap-2 overflow-x-auto pb-1">
+        <button type="button" onclick="setFilter('all')" id="flt-all" class="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-[#ff2d85] text-white shadow transition-all">
+          Todos
+        </button>
+        <button type="button" onclick="setFilter('pending')" id="flt-pending" class="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-[#1e1622] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 transition-all">
+          Pendientes
+        </button>
+        <button type="button" onclick="setFilter('confirmed')" id="flt-confirmed" class="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-[#1e1622] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 transition-all">
+          Confirmados
+        </button>
+        <button type="button" onclick="setFilter('completed')" id="flt-completed" class="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-[#1e1622] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 transition-all">
+          Completados
+        </button>
+      </div>
+    </div>
+
+    <!-- 4 Métricas Clave -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+      <div class="p-4 sm:p-5 rounded-2xl bg-[#161218] border border-white/10 shadow-lg space-y-1">
+        <span class="text-xs font-bold uppercase text-[#ffaed8]">Turnos Agendados</span>
+        <p class="font-display text-2xl sm:text-3xl font-black text-white" id="stat-total">0</p>
+        <span class="text-[11px] text-[#d8c4d6]">En base de datos</span>
+      </div>
+
+      <div class="p-4 sm:p-5 rounded-2xl bg-[#161218] border border-amber-500/30 shadow-lg space-y-1">
+        <span class="text-xs font-bold uppercase text-amber-300">Pendientes de Seña</span>
+        <p class="font-display text-2xl sm:text-3xl font-black text-amber-300" id="stat-pending">0</p>
+        <span class="text-[11px] text-gray-400">Por confirmar</span>
+      </div>
+
+      <div class="p-4 sm:p-5 rounded-2xl bg-[#161218] border border-[#25D366]/30 shadow-lg space-y-1">
+        <span class="text-xs font-bold uppercase text-[#25D366]">Confirmados</span>
+        <p class="font-display text-2xl sm:text-3xl font-black text-[#25D366]" id="stat-confirmed">0</p>
+        <span class="text-[11px] text-gray-400">Listos en agenda</span>
+      </div>
+
+      <div class="p-4 sm:p-5 rounded-2xl bg-[#161218] border border-[#ff3e96]/30 shadow-lg space-y-1">
+        <span class="text-xs font-bold uppercase text-[#ff6ea7]">Ingresos Estimados</span>
+        <p class="font-display text-2xl sm:text-3xl font-black text-white" id="stat-revenue">$0</p>
+        <span class="text-[11px] text-[#d8c4d6]">Monto total en ARS</span>
+      </div>
+    </div>
+
+    <!-- Lista de Turnos -->
+    <div class="neon-card-glow rounded-3xl bg-[#161218] p-5 sm:p-7 shadow-2xl space-y-5">
+      <div class="flex items-center justify-between border-b border-white/10 pb-4">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-[#ff3e96] text-xl">event_note</span>
+          <h2 class="font-display font-bold text-lg text-white">Listado de Citas</h2>
+        </div>
+        <button type="button" onclick="loadAppointments()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-xs text-gray-300 hover:text-white transition-all">
+          <span class="material-symbols-outlined text-sm">refresh</span>
+          <span>Actualizar</span>
+        </button>
+      </div>
+
+      <div id="appointments-container" class="space-y-3.5">
+        <div class="py-12 text-center text-gray-400">
+          <span class="material-symbols-outlined text-3xl animate-spin text-[#ff3e96]">progress_activity</span>
+          <p class="text-xs mt-2 font-medium">Cargando turnos desde Supabase...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Guía de Conexión a Supabase -->
+    <div class="p-5 sm:p-6 rounded-2xl bg-[#1e1622]/80 border border-[#ff3e96]/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div class="space-y-1">
+        <div class="flex items-center gap-2">
+          <span class="text-lg">⚡</span>
+          <h3 class="font-display font-bold text-base text-white">Configuración del Backend Supabase</h3>
+        </div>
+        <p class="text-xs text-[#d8c4d6] max-w-2xl leading-relaxed">
+          Para conectar una base de datos PostgreSQL en la nube, ejecutá el script <code class="text-[#ffaed8] font-bold">supabase-schema.sql</code> en tu panel de Supabase y agregá las claves a tu archivo <code class="text-[#ffaed8] font-bold">.env</code>.
+        </p>
+      </div>
+      <a href="https://supabase.com/dashboard" target="_blank" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#0d0a0f] hover:bg-black border border-[#ff3e96]/50 text-white text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap shadow-md">
+        <span>Abrir Supabase</span>
+        <span class="material-symbols-outlined text-sm">open_in_new</span>
+      </a>
+    </div>
+
+  </main>
+
+  <script>
+    let currentFilter = 'all';
+    let allAppointments = [];
+
+    async function loadAppointments() {
+      const container = document.getElementById('appointments-container');
+      container.innerHTML = `
+        <div class="py-12 text-center text-gray-400">
+          <span class="material-symbols-outlined text-3xl animate-spin text-[#ff3e96]">progress_activity</span>
+          <p class="text-xs mt-2 font-medium">Cargando turnos...</p>
+        </div>
+      `;
+
+      try {
+        allAppointments = await window.MicaBackend.admin.getAppointments('all');
+        updateStats();
+        renderFiltered();
+      } catch (err) {
+        container.innerHTML = `
+          <div class="py-8 text-center text-red-400 space-y-2">
+            <span class="material-symbols-outlined text-3xl">error</span>
+            <p class="text-sm">Error al cargar citas: ${err.message}</p>
+          </div>
+        `;
+      }
+    }
+
+    function updateStats() {
+      const total = allAppointments.length;
+      const pending = allAppointments.filter(a => a.status === 'pending').length;
+      const confirmed = allAppointments.filter(a => a.status === 'confirmed').length;
+      const revenue = allAppointments
+        .filter(a => a.status !== 'cancelled')
+        .reduce((sum, a) => sum + (Number(a.price) || 0), 0);
+
+      document.getElementById('stat-total').textContent = total;
+      document.getElementById('stat-pending').textContent = pending;
+      document.getElementById('stat-confirmed').textContent = confirmed;
+      document.getElementById('stat-revenue').textContent = '$' + revenue.toLocaleString('es-AR');
+    }
+
+    function setFilter(filter) {
+      currentFilter = filter;
+      ['all', 'pending', 'confirmed', 'completed'].forEach(f => {
+        const btn = document.getElementById('flt-' + f);
+        if (btn) {
+          if (f === filter) {
+            btn.className = 'px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-[#ff2d85] text-white shadow transition-all';
+          } else {
+            btn.className = 'px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-[#1e1622] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 transition-all';
+          }
+        }
+      });
+      renderFiltered();
+    }
+
+    function renderFiltered() {
+      const container = document.getElementById('appointments-container');
+      let filtered = allAppointments;
+      if (currentFilter !== 'all') {
+        filtered = filtered.filter(a => a.status === currentFilter);
+      }
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="py-12 text-center text-gray-400 space-y-2">
+            <span class="material-symbols-outlined text-4xl text-[#ff3e96]/40">event_busy</span>
+            <p class="text-sm font-semibold text-gray-300">No hay turnos con este filtro</p>
+            <p class="text-xs text-gray-500">Probá seleccionando "Todos" para revisar el historial completo.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(app => {
+        const statusMap = {
+          pending: { label: 'Pendiente', color: 'bg-amber-500/20 text-amber-300 border-amber-500/40' },
+          confirmed: { label: 'Confirmado', color: 'bg-[#25D366]/20 text-[#25D366] border-[#25D366]/40' },
+          completed: { label: 'Completado', color: 'bg-blue-500/20 text-blue-300 border-blue-500/40' },
+          cancelled: { label: 'Cancelado', color: 'bg-red-500/20 text-red-400 border-red-500/40' }
+        };
+        const st = statusMap[app.status] || statusMap.pending;
+        const serviceName = app.service?.name || (app.clientNotes && app.clientNotes.includes('Tratamiento:') ? app.clientNotes.split('Tratamiento:')[1].split('\n')[0].trim() : 'Tratamiento de Pestañas');
+        const phoneClean = (app.clientPhone || '').replace(/\D/g, '');
+
+        return `
+          <div class="p-4 sm:p-5 rounded-2xl bg-[#0d0a0f] border border-white/10 hover:border-[#ff3e96]/50 transition-all flex flex-col md:flex-row md:items-center justify-between gap-4">
+            
+            <div class="space-y-1.5 flex-1">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold border ${st.color}">
+                  ${st.label}
+                </span>
+                <span class="text-xs text-white/60">
+                  Fecha: <strong class="text-white">${app.date}</strong> a las <strong class="text-white">${app.time} hs</strong>
+                </span>
+                <span class="text-xs font-black text-[#ffaed8]">
+                  $${(Number(app.price) || 0).toLocaleString('es-AR')}
+                </span>
+              </div>
+
+              <div class="flex items-center gap-2 text-sm sm:text-base font-display font-bold text-white">
+                <span>${app.clientName || 'Clienta'}</span>
+                <span class="text-xs font-body font-normal text-gray-400">• ${serviceName}</span>
+              </div>
+
+              <div class="flex items-center gap-3 text-xs text-gray-300 flex-wrap">
+                <span class="flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm text-[#25D366]">call</span>
+                  ${app.clientPhone || 'Sin teléfono'}
+                </span>
+                ${app.clientEmail ? `<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm text-gray-400">mail</span> ${app.clientEmail}</span>` : ''}
+              </div>
+
+              ${app.clientNotes ? `<p class="text-[11px] text-gray-400 italic bg-white/5 p-2 rounded-lg mt-1 border border-white/5">Nota: ${app.clientNotes}</p>` : ''}
+            </div>
+
+            <!-- Acciones -->
+            <div class="flex items-center gap-2 flex-wrap border-t md:border-t-0 pt-3 md:pt-0 border-white/5">
+              ${phoneClean ? `
+                <a href="https://wa.me/${phoneClean.startsWith('54') ? phoneClean : '549' + phoneClean}?text=Hola%20${encodeURIComponent(app.clientName)}!%20Te%20escribo%20de%20Mica%20Lash%20Art%20para%20confirmar%20tu%20turno%20del%20${app.date}%20a%20las%20${app.time}%20hs." target="_blank" class="p-2 sm:px-3 sm:py-2 rounded-xl bg-[#25D366]/20 hover:bg-[#25D366]/30 text-[#25D366] text-xs font-bold flex items-center gap-1 transition-all" title="WhatsApp a la clienta">
+                  <span class="material-symbols-outlined text-base">chat</span>
+                  <span class="hidden sm:inline">WhatsApp</span>
+                </a>
+              ` : ''}
+
+              ${app.status !== 'confirmed' ? `
+                <button type="button" onclick="changeStatus('${app.id}', 'confirmed')" class="px-3 py-2 rounded-xl bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] text-white text-xs font-bold uppercase tracking-wider hover:brightness-110 active:scale-95 transition-all">
+                  Confirmar
+                </button>
+              ` : ''}
+
+              ${app.status !== 'completed' ? `
+                <button type="button" onclick="changeStatus('${app.id}', 'completed')" class="px-3 py-2 rounded-xl bg-blue-600/30 hover:bg-blue-600/40 text-blue-200 text-xs font-bold transition-all">
+                  Completado
+                </button>
+              ` : ''}
+
+              ${app.status !== 'cancelled' ? `
+                <button type="button" onclick="changeStatus('${app.id}', 'cancelled')" class="px-3 py-2 rounded-xl bg-red-600/20 hover:bg-red-600/30 text-red-300 text-xs font-bold transition-all">
+                  Cancelar
+                </button>
+              ` : ''}
+            </div>
+
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function changeStatus(id, newStatus) {
+      try {
+        await window.MicaBackend.admin.updateAppointmentStatus(id, newStatus);
+        const item = allAppointments.find(a => a.id === id);
+        if (item) item.status = newStatus;
+        updateStats();
+        renderFiltered();
+      } catch (e) {
+        alert('Error al actualizar turno: ' + e.message);
+      }
+    }
+
+    function handleLogout() {
+      window.MicaBackend.auth.logout();
+      window.location.href = 'login.html';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadAppointments();
+    });
+  </script>
+</body>
+</html>

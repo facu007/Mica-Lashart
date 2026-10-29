@@ -162,6 +162,7 @@
 
   </div>
 
+  <script src="supabase-client.js"></script>
   <script>
     function switchAuthTab(tab) {
       const loginForm = document.getElementById('form-login');
@@ -182,73 +183,69 @@
       }
     }
 
-    function handleLogin(e) {
+    async function handleLogin(e) {
       e.preventDefault();
       const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
       const status = document.getElementById('login-status');
+      const btn = document.getElementById('btn-submit-login');
       
-      status.textContent = 'Verificando sesión...';
+      btn.disabled = true;
+      status.textContent = 'Verificando con Supabase...';
       status.className = 'text-center text-xs mt-2 text-[#ffaed8]';
 
-      setTimeout(() => {
-        // Guardar sesión de usuario para persistencia tipo Vasca
-        const existingUsers = JSON.parse(localStorage.getItem('mica_users') || '{}');
-        const user = existingUsers[email] || {
-          name: email.split('@')[0],
-          email: email,
-          phone: ''
-        };
-
-        localStorage.setItem('mica_current_user', JSON.stringify(user));
-        localStorage.setItem('vasca_token', 'token_' + Date.now());
-
-        status.textContent = '¡Bienvenida! Redirigiendo a turnos...';
+      try {
+        const res = await window.MicaBackend.login(email, password);
+        status.textContent = '¡Bienvenida! Redirigiendo...';
         status.className = 'text-center text-xs mt-2 text-[#25D366] font-bold';
 
         setTimeout(() => {
-          window.location.href = 'turnos.html';
-        }, 600);
-      }, 500);
+          if (res.user && res.user.role === 'admin') {
+            window.location.href = 'admin.html';
+          } else {
+            window.location.href = 'turnos.html';
+          }
+        }, 500);
+      } catch (err) {
+        btn.disabled = false;
+        status.textContent = err.message || 'Error al iniciar sesión.';
+        status.className = 'text-center text-xs mt-2 text-red-400 font-bold';
+      }
     }
 
-    function handleRegister(e) {
+    async function handleRegister(e) {
       e.preventDefault();
       const name = document.getElementById('reg-name').value.trim();
       const phone = document.getElementById('reg-phone').value.trim();
       const email = document.getElementById('reg-email').value.trim();
+      const password = document.getElementById('reg-password').value;
       const status = document.getElementById('reg-status');
+      const btn = document.getElementById('btn-submit-reg');
 
-      status.textContent = 'Creando tu cuenta...';
+      btn.disabled = true;
+      status.textContent = 'Registrando cuenta en Supabase...';
       status.className = 'text-center text-xs mt-2 text-[#ffaed8]';
 
-      setTimeout(() => {
-        const user = { name, phone, email };
-        const existingUsers = JSON.parse(localStorage.getItem('mica_users') || '{}');
-        existingUsers[email] = user;
-        localStorage.setItem('mica_users', JSON.stringify(existingUsers));
-
-        localStorage.setItem('mica_current_user', JSON.stringify(user));
-        localStorage.setItem('vasca_token', 'token_' + Date.now());
-
+      try {
+        await window.MicaBackend.register({ name, phone, email, password });
         status.textContent = '¡Cuenta creada con éxito! Redirigiendo...';
         status.className = 'text-center text-xs mt-2 text-[#25D366] font-bold';
 
         setTimeout(() => {
           window.location.href = 'turnos.html';
-        }, 600);
-      }, 500);
+        }, 500);
+      } catch (err) {
+        btn.disabled = false;
+        status.textContent = err.message || 'Error al crear la cuenta.';
+        status.className = 'text-center text-xs mt-2 text-red-400 font-bold';
+      }
     }
 
     // Prefill si ya había un usuario registrado previamente
     document.addEventListener('DOMContentLoaded', () => {
-      const savedUser = localStorage.getItem('mica_current_user');
-      if (savedUser) {
-        try {
-          const user = JSON.parse(savedUser);
-          if (user.email && document.getElementById('login-email')) {
-            document.getElementById('login-email').value = user.email;
-          }
-        } catch(err) {}
+      const savedUser = window.MicaBackend.getCurrentUser();
+      if (savedUser && savedUser.email && document.getElementById('login-email')) {
+        document.getElementById('login-email').value = savedUser.email;
       }
     });
   </script>

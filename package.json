@@ -1,0 +1,26 @@
+{
+  "name": "mica-lashart",
+  "version": "1.0.0",
+  "description": "\"# Mica-Lashart\"",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/facu007/Mica-Lashart.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/facu007/Mica-Lashart/issues"
+  },
+  "homepage": "https://github.com/facu007/Mica-Lashart#readme",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.118.0",
+    "dotenv": "^18.0.9"
+  }
+}
