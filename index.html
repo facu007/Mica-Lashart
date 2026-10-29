@@ -361,19 +361,25 @@
                 <button type="button" 
                   class="hero-pill-btn bg-[#ff2d85] text-white shadow-md shadow-[#ff2d85]/40 border-[#ff3e96] px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border transition-all active:scale-95 flex items-center gap-1.5" 
                   data-hero-idx="0">
-                  <span>Signature Glam</span>
+                  <span>Volumen Híbrido</span>
                 </button>
               
                 <button type="button" 
                   class="hero-pill-btn bg-[#1e1622] text-[#d8c4d6] border-white/10 hover:border-[#ff3e96]/50 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border transition-all active:scale-95 flex items-center gap-1.5" 
                   data-hero-idx="1">
-                  <span>Lifting & Botox</span>
+                  <span>Lifting &amp; Botox</span>
                 </button>
               
                 <button type="button" 
                   class="hero-pill-btn bg-[#1e1622] text-[#d8c4d6] border-white/10 hover:border-[#ff3e96]/50 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border transition-all active:scale-95 flex items-center gap-1.5" 
                   data-hero-idx="2">
-                  <span>Pelo a Pelo</span>
+                  <span>Comparativa Real</span>
+                </button>
+
+                <button type="button" 
+                  class="hero-pill-btn bg-[#1e1622] text-[#d8c4d6] border-white/10 hover:border-[#ff3e96]/50 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border transition-all active:scale-95 flex items-center gap-1.5" 
+                  data-hero-idx="3">
+                  <span>Volumen Ruso</span>
                 </button>
               
             </div>
@@ -418,11 +424,11 @@
             <div class="neon-card-glow pulse-neon rounded-3xl p-2.5 sm:p-3 bg-[#161218] backdrop-blur-xl">
               <div class="relative rounded-2xl overflow-hidden group shadow-2xl">
                 
-                <!-- Main Dynamic Hero Image -->
+                <!-- Main Dynamic Hero Image (Foto Real de Estudio) -->
                 <img id="hero-dynamic-img" 
                   class="w-full h-[320px] sm:h-[400px] lg:h-[460px] object-cover hero-img-transition group-hover:scale-105" 
-                  alt="Mica Lash Art Trabajo de pestañas" 
-                  src="images/hero-eyelash-extensions.jpg"/>
+                  alt="Mica Lash Art Trabajo real de pestañas" 
+                  src="images/ej-volumen-hibrido.jpg"/>
 
                 <!-- Top & Bottom Contrast Scrims (Garantizan lectura óptima sobre cualquier foto) -->
                 <div class="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/85 via-black/40 to-transparent pointer-events-none z-[5]"></div>
@@ -454,7 +460,7 @@
                       <span class="text-[#ff3e96] text-xs">♡</span>
                     </div>
                     <p id="hero-card-detail" class="text-xs sm:text-sm text-gray-100 font-medium line-clamp-1 mt-0.5 drop-shadow-sm">
-                      Densidad suave, textura aterciopelada y abanicos ultralivianos
+                      Densidad suave, textura aterciopelada y abanicos ultralivianos en camilla
                     </p>
                     <div class="flex items-center gap-2 mt-1.5">
                       <span id="hero-card-price" class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-gradient-to-r from-[#ff2d85] to-[#ff529c] text-white font-black text-xs shadow-md">
@@ -474,15 +480,12 @@
 
               </div>
 
-              <!-- Indicators dots underneath hero image -->
+              <!-- Indicators dots underneath hero image (4 estilos reales) -->
               <div class="flex justify-center items-center gap-2 pt-2.5 pb-1" id="hero-dots">
-                
-                  <button type="button" aria-label="Ir a estilo 1" class="hero-dot w-2 h-2 rounded-full transition-all w-6 bg-[#ff3e96]" data-dot-idx="0"></button>
-                
-                  <button type="button" aria-label="Ir a estilo 2" class="hero-dot w-2 h-2 rounded-full transition-all bg-white/30" data-dot-idx="1"></button>
-                
-                  <button type="button" aria-label="Ir a estilo 3" class="hero-dot w-2 h-2 rounded-full transition-all bg-white/30" data-dot-idx="2"></button>
-                
+                <button type="button" aria-label="Ir a estilo 1" class="hero-dot w-6 h-2 rounded-full transition-all bg-[#ff3e96]" data-dot-idx="0"></button>
+                <button type="button" aria-label="Ir a estilo 2" class="hero-dot w-2 h-2 rounded-full transition-all bg-white/30" data-dot-idx="1"></button>
+                <button type="button" aria-label="Ir a estilo 3" class="hero-dot w-2 h-2 rounded-full transition-all bg-white/30" data-dot-idx="2"></button>
+                <button type="button" aria-label="Ir a estilo 4" class="hero-dot w-2 h-2 rounded-full transition-all bg-white/30" data-dot-idx="3"></button>
               </div>
 
             </div>
@@ -817,42 +820,84 @@
         </p>
       </div>
 
-      <!-- Bento Grid Galería -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+      <!-- Bento Grid Galería con Fotos Reales del Estudio -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
         
-        <!-- Gallery 1 -->
-        <div class="relative group cursor-pointer overflow-hidden rounded-2xl neon-card bg-[#161218]" onclick="openLightbox('images/gallery-1-lash-lift.jpg', 'Lifting de Pestañas &amp; Tinte Profundo', 'Curvatura natural que abre la mirada por completo con efecto máscara limpio.')">
-          <img class="w-full h-64 sm:h-80 object-cover transition-transform duration-500 group-hover:scale-110" alt="Lifting de Pestañas" src="images/gallery-1-lash-lift.jpg"/>
-          <div class="absolute inset-0 bg-gradient-to-t from-[#0d0a0f] via-black/40 to-transparent opacity-90 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4 sm:p-5">
-            <span class="text-[11px] font-bold text-[#ff3e96] uppercase tracking-widest">Lifting Natural</span>
-            <p class="font-display text-white text-base sm:text-lg font-bold">Curvatura y Nutrición</p>
+        <!-- Gallery 1: Volumen Híbrido Glam -->
+        <div class="relative group cursor-pointer overflow-hidden rounded-2xl neon-card bg-[#161218] shadow-lg hover:shadow-[#ff3e96]/20 transition-all" onclick="openLightbox('images/ej-volumen-hibrido.jpg', 'Volumen Híbrido Glam', 'Densidad suave, textura esponjosa y abanicos ultralivianos realizados a medida de la mirada.')">
+          <img class="w-full h-72 sm:h-80 object-cover transition-transform duration-500 group-hover:scale-105" alt="Volumen Híbrido Glam" src="images/ej-volumen-hibrido.jpg"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-[#0d0a0f] via-black/30 to-transparent opacity-95 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex flex-col justify-end p-5">
+            <span class="text-[11px] font-bold text-[#ff3e96] uppercase tracking-widest flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#ff3e96]"></span>
+              Look Más Pedido
+            </span>
+            <p class="font-display text-white text-lg font-bold">Volumen Híbrido Glam</p>
+            <p class="text-xs text-[#d8c4d6] line-clamp-1 mt-0.5">Densidad suave y textura esponjosa</p>
           </div>
         </div>
 
-        <!-- Gallery 2 -->
-        <div class="relative group cursor-pointer overflow-hidden rounded-2xl neon-card bg-[#161218]" onclick="openLightbox('images/gallery-2-classic-extensions.jpg', 'Extensiones Clásicas Efecto Rímel', 'Aislación 1 a 1 milimétrica para un orden suave y duradero.')">
-          <img class="w-full h-64 sm:h-80 object-cover transition-transform duration-500 group-hover:scale-110" alt="Extensiones Clásicas 1 a 1" src="images/gallery-2-classic-extensions.jpg"/>
-          <div class="absolute inset-0 bg-gradient-to-t from-[#0d0a0f] via-black/40 to-transparent opacity-90 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4 sm:p-5">
-            <span class="text-[11px] font-bold text-[#ff3e96] uppercase tracking-widest">Clásicas 1:1</span>
-            <p class="font-display text-white text-base sm:text-lg font-bold">Elegancia Cotidiana</p>
+        <!-- Gallery 2: Lifting de Pestañas + Botox -->
+        <div class="relative group cursor-pointer overflow-hidden rounded-2xl neon-card bg-[#161218] shadow-lg hover:shadow-[#ff3e96]/20 transition-all" onclick="openLightbox('images/ej-lifting-botox.jpg', 'Lifting de Pestañas &amp; Nutrición Botox', 'Elevación desde la raíz de la pestaña natural, nutrición profunda con botox y tinte negro azabache.')">
+          <img class="w-full h-72 sm:h-80 object-cover transition-transform duration-500 group-hover:scale-105" alt="Lifting de Pestañas y Botox" src="images/ej-lifting-botox.jpg"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-[#0d0a0f] via-black/30 to-transparent opacity-95 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex flex-col justify-end p-5">
+            <span class="text-[11px] font-bold text-[#ff3e96] uppercase tracking-widest flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#ff3e96]"></span>
+              100% Pestaña Natural
+            </span>
+            <p class="font-display text-white text-lg font-bold">Lifting &amp; Nutrición Botox</p>
+            <p class="text-xs text-[#d8c4d6] line-clamp-1 mt-0.5">Curvatura impecable y baño de keratina</p>
           </div>
         </div>
 
-        <!-- Gallery 3 -->
-        <div class="relative group cursor-pointer overflow-hidden rounded-2xl neon-card bg-[#161218]" onclick="openLightbox('images/gallery-3-volume-hybrid.jpg', 'Volumen Híbrido Esponjoso', 'Transición suave de densidad en abanicos ligeros sin sobrecargar el ojo.')">
-          <img class="w-full h-64 sm:h-80 object-cover transition-transform duration-500 group-hover:scale-110" alt="Volumen Híbrido" src="images/gallery-3-volume-hybrid.jpg"/>
-          <div class="absolute inset-0 bg-gradient-to-t from-[#0d0a0f] via-black/40 to-transparent opacity-90 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4 sm:p-5">
-            <span class="text-[11px] font-bold text-[#ff3e96] uppercase tracking-widest">Híbridas Suaves</span>
-            <p class="font-display text-white text-base sm:text-lg font-bold">Densidad y Textura</p>
+        <!-- Gallery 3: Laminado y Perfilado de Cejas HD -->
+        <div class="relative group cursor-pointer overflow-hidden rounded-2xl neon-card bg-[#161218] shadow-lg hover:shadow-[#ff3e96]/20 transition-all" onclick="openLightbox('images/ej-laminado-cejas.jpg', 'Laminado &amp; Perfilado de Cejas HD', 'Antes y después real. Direccionamiento folicular orgánico, perfilado con pinza y nutrición.')">
+          <img class="w-full h-72 sm:h-80 object-cover transition-transform duration-500 group-hover:scale-105" alt="Laminado y Perfilado de Cejas" src="images/ej-laminado-cejas.jpg"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-[#0d0a0f] via-black/30 to-transparent opacity-95 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex flex-col justify-end p-5">
+            <span class="text-[11px] font-bold text-[#ff3e96] uppercase tracking-widest flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#ff3e96]"></span>
+              Antes &amp; Después HD
+            </span>
+            <p class="font-display text-white text-lg font-bold">Laminado &amp; Perfilado Cejas</p>
+            <p class="text-xs text-[#d8c4d6] line-clamp-1 mt-0.5">Efecto orgánico y simetría de diseño</p>
           </div>
         </div>
 
-        <!-- Gallery 4 -->
-        <div class="relative group cursor-pointer overflow-hidden rounded-2xl neon-card bg-[#161218]" onclick="openLightbox('images/gallery-4-brow-lamination.jpg', 'Laminado &amp; Diseño de Cejas', 'Pelo cepillado hacia arriba con simetría orgánica y aspecto denso.')">
-          <img class="w-full h-64 sm:h-80 object-cover transition-transform duration-500 group-hover:scale-110" alt="Laminado de Cejas" src="images/gallery-4-brow-lamination.jpg"/>
-          <div class="absolute inset-0 bg-gradient-to-t from-[#0d0a0f] via-black/40 to-transparent opacity-90 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4 sm:p-5">
-            <span class="text-[11px] font-bold text-[#ff3e96] uppercase tracking-widest">Cejas Orgánicas</span>
-            <p class="font-display text-white text-base sm:text-lg font-bold">Laminado &amp; Simetría</p>
+        <!-- Gallery 4: Comparativa Real Ojo Natural vs Extensiones -->
+        <div class="relative group cursor-pointer overflow-hidden rounded-2xl neon-card bg-[#161218] shadow-lg hover:shadow-[#ff3e96]/20 transition-all" onclick="openLightbox('images/ej-comparativa-real.jpg', 'Comparativa Real en Camilla', 'Impacto visual directo: ojo con pestaña aplicada vs ojo natural sin intervenir. Resalta la luminosidad y apertura de la mirada.')">
+          <img class="w-full h-72 sm:h-80 object-cover transition-transform duration-500 group-hover:scale-105" alt="Comparativa Real en Camilla" src="images/ej-comparativa-real.jpg"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-[#0d0a0f] via-black/30 to-transparent opacity-95 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex flex-col justify-end p-5">
+            <span class="text-[11px] font-bold text-[#ff3e96] uppercase tracking-widest flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#ff3e96]"></span>
+              Comparativa en Directo
+            </span>
+            <p class="font-display text-white text-lg font-bold">Ojo Real vs Natural</p>
+            <p class="text-xs text-[#d8c4d6] line-clamp-1 mt-0.5">Apertura y alargamiento visible al instante</p>
+          </div>
+        </div>
+
+        <!-- Gallery 5: Mega Volumen Ruso -->
+        <div class="relative group cursor-pointer overflow-hidden rounded-2xl neon-card bg-[#161218] shadow-lg hover:shadow-[#ff3e96]/20 transition-all" onclick="openLightbox('images/ej-volumen-ruso.jpg', 'Mega Volumen Ruso 3D-5D', 'Máxima densidad aterciopelada con abanicos hechos a mano. Cero peso sobre la raíz.')">
+          <img class="w-full h-72 sm:h-80 object-cover transition-transform duration-500 group-hover:scale-105" alt="Mega Volumen Ruso" src="images/ej-volumen-ruso.jpg"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-[#0d0a0f] via-black/30 to-transparent opacity-95 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex flex-col justify-end p-5">
+            <span class="text-[11px] font-bold text-[#ff3e96] uppercase tracking-widest flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#ff3e96]"></span>
+              Máxima Densidad
+            </span>
+            <p class="font-display text-white text-lg font-bold">Volumen Ruso 3D-5D</p>
+            <p class="text-xs text-[#d8c4d6] line-clamp-1 mt-0.5">Intensidad dramática y acabado mate</p>
+          </div>
+        </div>
+
+        <!-- Gallery 6: Aislación y Curvatura de Perfil -->
+        <div class="relative group cursor-pointer overflow-hidden rounded-2xl neon-card bg-[#161218] shadow-lg hover:shadow-[#ff3e96]/20 transition-all" onclick="openLightbox('images/ej-perfil-curvatura.jpg', 'Aislación Milimétrica &amp; Curvatura', 'Vista de perfil de alta definición. Curvatura uniforme, raíz limpia sin exceso de adhesivo y separación perfecta.')">
+          <img class="w-full h-72 sm:h-80 object-cover transition-transform duration-500 group-hover:scale-105" alt="Aislación Milimétrica y Curvatura" src="images/ej-perfil-curvatura.jpg"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-[#0d0a0f] via-black/30 to-transparent opacity-95 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex flex-col justify-end p-5">
+            <span class="text-[11px] font-bold text-[#ff3e96] uppercase tracking-widest flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#ff3e96]"></span>
+              Técnica de Precisión
+            </span>
+            <p class="font-display text-white text-lg font-bold">Perfil &amp; Curvatura C/D</p>
+            <p class="text-xs text-[#d8c4d6] line-clamp-1 mt-0.5">Aislación milimétrica y cero grumos</p>
           </div>
         </div>
 
@@ -1538,7 +1583,48 @@
   <!-- ================= JAVASCRIPT ================= -->
   <script>
     // 1. Hero Dynamic Style Switcher ("que el hero cambie")
-    const heroStyles = [{"id":"glam","name":"Signature Glam","badge":"★ Look Más Pedido","title":"Volumen Híbrido Glam","detail":"Densidad suave, textura aterciopelada y abanicos ultralivianos","price":"$34.000","time":"120 min","cdnUrl":"https://lh3.googleusercontent.com/aida-public/AB6AXuBv0rL3kbn14-9ggz-f3oR_MQJEjBMgCLanS27bqrl8snwyoasvn78Aa9L_4AEkHwXmArrVYdfCgGHZRDhBmOVFQdbbzAalNFwEe_A-1zQ1WZjz3IvuVcCGwuQQor-U9nTzsMz_0dMqVacs8arA4_e7v_Ud2VUgP9u3N_DdxKiPYQbQt2kTIeXC6QNT7Im9fDIBTny8X5WXrKskNeH6p8Oterrf29L2d1B3XxM2iQVy-nQzgq8kN5qd","localUrl":"images/hero-eyelash-extensions.jpg","img":"images/hero-eyelash-extensions.jpg"},{"id":"lifting","name":"Lifting & Botox","badge":"🌿 100% Natural","title":"Lifting con Keratina","detail":"Eleva tus pestañas naturales desde la raíz con nutrición botox","price":"$18.500","time":"60 min","cdnUrl":"https://lh3.googleusercontent.com/aida-public/AB6AXuBP7yC6j1Z4VV_n2cPGs8YE7jNeH42d8dwm_2KImcA_DUQDqI5FZdQrVAKNHaKUPmYLec_kk4PmCj-lYSVmxBYHywQakifsLVk1G44znxwV29H0OS0TCyrAw3rAKpRma8-soinZSvauEbxcqqMYzJN-vB1Rc13qH-b9AeXzdpWaKadE2NZ0gcBapPJfROHHLQtRxHRe0Why0sqvDM4wbKu2lDqWpt59W_oPRKAGi58zMJv222ePtAQz","localUrl":"images/gallery-1-lash-lift.jpg","img":"images/gallery-1-lash-lift.jpg"},{"id":"clasicas","name":"Pelo a Pelo","badge":"✨ Efecto Rímel","title":"Extensiones Clásicas 1:1","detail":"Aislación milimétrica individual para una mirada abierta y limpia","price":"$24.000","time":"90 min","cdnUrl":"https://lh3.googleusercontent.com/aida-public/AB6AXuDuB8FkY9QqHmmM3TABeQ5OZrEvnqoTxJOS3UTeLLJuk_RoC-WblFUPlVadjlyI_gJVorIUqqEimIv8AXg_fX9R8HvdJmlE8afhFhQ7GtxCI7-jxXFQmANw0NU52wEz9jQqMcQ4DpJNlyQYMART_E8Q8DticjSkEemyr3t8oSIKXGrssAvRRBkiVlrpkh0mP_BJ7_9VtuKxW4sDHn6BIraVk9tQrl2pl3mZHHQWPbbNYnTvqc-uXrb7","localUrl":"images/gallery-2-classic-extensions.jpg","img":"images/gallery-2-classic-extensions.jpg"}];
+    const heroStyles = [
+      {
+        id: "hibrido",
+        name: "Volumen Híbrido",
+        badge: "★ Look Más Pedido",
+        title: "Volumen Híbrido Glam",
+        detail: "Densidad suave, textura aterciopelada y abanicos ultralivianos en camilla",
+        price: "$34.000",
+        time: "120 min",
+        img: "images/ej-volumen-hibrido.jpg"
+      },
+      {
+        id: "lifting",
+        name: "Lifting & Botox",
+        badge: "🌿 100% Pestaña Natural",
+        title: "Lifting con Keratina Botox",
+        detail: "Eleva tus pestañas naturales desde la raíz con nutrición botox y tinte negro",
+        price: "$18.500",
+        time: "60 min",
+        img: "images/ej-lifting-botox.jpg"
+      },
+      {
+        id: "comparativa",
+        name: "Comparativa Real",
+        badge: "✨ Ojo Real vs Natural",
+        title: "Antes vs Después en Directo",
+        detail: "Apertura total de mirada comprobada en sesión real con máxima fijación",
+        price: "$32.000",
+        time: "110 min",
+        img: "images/ej-comparativa-real.jpg"
+      },
+      {
+        id: "ruso",
+        name: "Volumen Ruso",
+        badge: "🔥 Máxima Densidad 3D-5D",
+        title: "Mega Volumen Ruso",
+        detail: "Abanicos artesanales abiertos a mano, negro carbón y acabado aterciopelado",
+        price: "$38.000",
+        time: "135 min",
+        img: "images/ej-volumen-ruso.jpg"
+      }
+    ];
     let currentHeroIdx = 0;
     let heroAutoTimer = null;
 
