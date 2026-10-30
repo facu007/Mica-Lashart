@@ -18,7 +18,8 @@
     REFRESH: 'vasca_refresh',
     USER: 'mica_current_user',
     LOCAL_TURNOS: 'mica_lashart_turnos',
-    LOCAL_USERS: 'mica_users_db'
+    LOCAL_USERS: 'mica_users_db',
+    GALLERY: 'mica_gallery_photos'
   };
 
   // Servicios oficiales por defecto (garantiza funcionamiento sin demoras)
@@ -121,6 +122,14 @@
       this.admin = {
         getAppointments: this.getAdminAppointments.bind(this),
         updateAppointmentStatus: this.updateAppointmentStatus.bind(this)
+      };
+      this.gallery = {
+        getPhotos: this.getGalleryPhotos.bind(this),
+        addPhoto: this.addGalleryPhoto.bind(this),
+        updatePhoto: this.updateGalleryPhoto.bind(this),
+        deletePhoto: this.deleteGalleryPhoto.bind(this),
+        uploadImage: this.uploadGalleryImage.bind(this),
+        resetToDefaults: this.resetGalleryDefaults.bind(this)
       };
     }
 
@@ -739,6 +748,378 @@
         turnos[idx] = turno;
         localStorage.setItem(STORAGE_KEYS.LOCAL_TURNOS, JSON.stringify(turnos));
       }
+    }
+
+    // =========================================================================
+    // MÉTODOS DE GESTIÓN DE FOTOS DE EJEMPLO & GALERÍA (ADMIN & FRONTEND)
+    // =========================================================================
+
+    _getDefaultGalleryPhotos() {
+      return [
+        {
+          id: "photo_1",
+          title: "Volumen Híbrido Glam",
+          badge: "★ Look Más Pedido",
+          category: "volumen",
+          description: "Densidad suave, textura esponjosa y abanicos ultralivianos realizados a medida de la mirada.",
+          imageUrl: "images/ej-volumen-hibrido.jpg",
+          isFeatured: true,
+          isHero: true,
+          sortOrder: 1
+        },
+        {
+          id: "photo_2",
+          title: "Lifting de Pestañas & Nutrición Botox",
+          badge: "🌿 100% Pestaña Natural",
+          category: "lifting",
+          description: "Elevación desde la raíz de la pestaña natural, nutrición profunda con botox y tinte negro azabache.",
+          imageUrl: "images/ej-lifting-botox.jpg",
+          isFeatured: true,
+          isHero: true,
+          sortOrder: 2
+        },
+        {
+          id: "photo_3",
+          title: "Laminado & Perfilado de Cejas HD",
+          badge: "✨ Antes & Después HD",
+          category: "cejas",
+          description: "Antes y después real. Direccionamiento folicular orgánico, perfilado con pinza y nutrición.",
+          imageUrl: "images/ej-laminado-cejas.jpg",
+          isFeatured: false,
+          isHero: false,
+          sortOrder: 3
+        },
+        {
+          id: "photo_4",
+          title: "Comparativa Real en Camilla",
+          badge: "👁️ Comparativa en Directo",
+          category: "comparativa",
+          description: "Impacto visual directo: ojo con pestaña aplicada vs ojo natural sin intervenir. Resalta la luminosidad y apertura de la mirada.",
+          imageUrl: "images/ej-comparativa-real.jpg",
+          isFeatured: true,
+          isHero: true,
+          sortOrder: 4
+        },
+        {
+          id: "photo_5",
+          title: "Mega Volumen Ruso 3D-5D",
+          badge: "🔥 Máxima Densidad",
+          category: "volumen",
+          description: "Máxima densidad aterciopelada con abanicos hechos a mano. Cero peso sobre la raíz.",
+          imageUrl: "images/ej-volumen-ruso.jpg",
+          isFeatured: true,
+          isHero: true,
+          sortOrder: 5
+        },
+        {
+          id: "photo_6",
+          title: "Aislación Milimétrica & Curvatura",
+          badge: "🔬 Técnica de Precisión",
+          category: "clasicas",
+          description: "Vista de perfil de alta definición. Curvatura uniforme, raíz limpia sin exceso de adhesivo y separación perfecta.",
+          imageUrl: "images/ej-perfil-curvatura.jpg",
+          isFeatured: false,
+          isHero: false,
+          sortOrder: 6
+        }
+      ];
+    }
+
+    async getGalleryPhotos() {
+      await this.init();
+
+      // 1. Intentar desde backend server /api/gallery
+      try {
+        const res = await fetch('/api/gallery');
+        if (res.ok) {
+          const data = await res.json();
+          if (data && Array.isArray(data.photos) && data.photos.length > 0) {
+            localStorage.setItem(STORAGE_KEYS.GALLERY, JSON.stringify(data.photos));
+            return data.photos;
+          }
+        }
+      } catch (e) {
+        // Fallback a Supabase o localStorage
+      }
+
+      // 2. Intentar Supabase directamente si configurado
+      if (this.config.isConfigured) {
+        try {
+          const res = await fetch(`${this.config.supabaseUrl}/rest/v1/gallery_photos?select=*&order=sort_order.asc`, {
+            headers: {
+              apikey: this.config.supabaseAnonKey,
+              Authorization: `Bearer ${this.config.supabaseAnonKey}`
+            }
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (Array.isArray(data) && data.length > 0) {
+              const mapped = data.map(r => ({
+                id: r.id,
+                title: r.title,
+                badge: r.badge,
+                category: r.category,
+                description: r.description,
+                imageUrl: r.image_url,
+                isFeatured: r.is_featured,
+                isHero: r.is_hero,
+                sortOrder: r.sort_order
+              }));
+              localStorage.setItem(STORAGE_KEYS.GALLERY, JSON.stringify(mapped));
+              return mapped;
+            }
+          }
+        } catch (e) {
+          console.warn('Error fetching gallery from Supabase:', e);
+        }
+      }
+
+      // 3. Fallback a LocalStorage
+      try {
+        const local = localStorage.getItem(STORAGE_KEYS.GALLERY);
+        if (local) {
+          const parsed = JSON.parse(local);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        }
+      } catch (e) {}
+
+      // 4. Default 6 fotos
+      const def = this._getDefaultGalleryPhotos();
+      localStorage.setItem(STORAGE_KEYS.GALLERY, JSON.stringify(def));
+      return def;
+    }
+
+    async addGalleryPhoto(photoData) {
+      await this.init();
+
+      // 1. Intentar backend /api/gallery
+      try {
+        const res = await fetch('/api/gallery', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(photoData)
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.photo) {
+            const current = await this.getGalleryPhotos();
+            // Evitar duplicados
+            if (!current.some(p => p.id === data.photo.id)) {
+              current.push(data.photo);
+              localStorage.setItem(STORAGE_KEYS.GALLERY, JSON.stringify(current));
+            }
+            return data.photo;
+          }
+        }
+      } catch (e) {
+        console.warn('Backend addGalleryPhoto error, falling back:', e);
+      }
+
+      // 2. Fallback Supabase
+      if (this.config.isConfigured) {
+        try {
+          const res = await fetch(`${this.config.supabaseUrl}/rest/v1/gallery_photos`, {
+            method: 'POST',
+            headers: {
+              apikey: this.config.supabaseAnonKey,
+              Authorization: `Bearer ${localStorage.getItem(STORAGE_KEYS.TOKEN) || this.config.supabaseAnonKey}`,
+              'Content-Type': 'application/json',
+              Prefer: 'return=representation'
+            },
+            body: JSON.stringify({
+              title: photoData.title,
+              badge: photoData.badge || 'Look Más Pedido',
+              category: photoData.category || 'volumen',
+              description: photoData.description || '',
+              image_url: photoData.imageUrl,
+              is_featured: !!photoData.isFeatured,
+              is_hero: !!photoData.isHero,
+              sort_order: photoData.sortOrder || 99
+            })
+          });
+          if (res.ok) {
+            const createdArr = await res.json();
+            if (Array.isArray(createdArr) && createdArr.length > 0) {
+              const r = createdArr[0];
+              const mapped = {
+                id: r.id,
+                title: r.title,
+                badge: r.badge,
+                category: r.category,
+                description: r.description,
+                imageUrl: r.image_url,
+                isFeatured: r.is_featured,
+                isHero: r.is_hero,
+                sortOrder: r.sort_order
+              };
+              const current = await this.getGalleryPhotos();
+              current.push(mapped);
+              localStorage.setItem(STORAGE_KEYS.GALLERY, JSON.stringify(current));
+              return mapped;
+            }
+          }
+        } catch (e) {
+          console.warn('Supabase addGalleryPhoto error:', e);
+        }
+      }
+
+      // 3. Fallback Local
+      const localPhoto = {
+        id: 'photo_' + Date.now(),
+        ...photoData
+      };
+      const current = await this.getGalleryPhotos();
+      current.push(localPhoto);
+      localStorage.setItem(STORAGE_KEYS.GALLERY, JSON.stringify(current));
+      return localPhoto;
+    }
+
+    async updateGalleryPhoto(id, photoData) {
+      await this.init();
+
+      // 1. Backend /api/gallery/:id
+      try {
+        const res = await fetch(`/api/gallery/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(photoData)
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.photo) {
+            this._updateLocalGalleryItem(data.photo);
+            return data.photo;
+          }
+        }
+      } catch (e) {
+        console.warn('Backend updateGalleryPhoto error:', e);
+      }
+
+      // 2. Supabase
+      if (this.config.isConfigured) {
+        try {
+          const updateObj = {};
+          if (photoData.title !== undefined) updateObj.title = photoData.title;
+          if (photoData.badge !== undefined) updateObj.badge = photoData.badge;
+          if (photoData.category !== undefined) updateObj.category = photoData.category;
+          if (photoData.description !== undefined) updateObj.description = photoData.description;
+          if (photoData.imageUrl !== undefined) updateObj.image_url = photoData.imageUrl;
+          if (photoData.isFeatured !== undefined) updateObj.is_featured = photoData.isFeatured;
+          if (photoData.isHero !== undefined) updateObj.is_hero = photoData.isHero;
+          if (photoData.sortOrder !== undefined) updateObj.sort_order = photoData.sortOrder;
+
+          await fetch(`${this.config.supabaseUrl}/rest/v1/gallery_photos?id=eq.${id}`, {
+            method: 'PATCH',
+            headers: {
+              apikey: this.config.supabaseAnonKey,
+              Authorization: `Bearer ${localStorage.getItem(STORAGE_KEYS.TOKEN) || this.config.supabaseAnonKey}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updateObj)
+          });
+        } catch (e) {
+          console.warn('Supabase updateGalleryPhoto error:', e);
+        }
+      }
+
+      // 3. Local update
+      const updated = { ...photoData, id };
+      this._updateLocalGalleryItem(updated);
+      return updated;
+    }
+
+    async deleteGalleryPhoto(id) {
+      await this.init();
+
+      // 1. Backend /api/gallery/:id
+      try {
+        await fetch(`/api/gallery/${id}`, { method: 'DELETE' });
+      } catch (e) {
+        console.warn('Backend deleteGalleryPhoto error:', e);
+      }
+
+      // 2. Supabase
+      if (this.config.isConfigured) {
+        try {
+          await fetch(`${this.config.supabaseUrl}/rest/v1/gallery_photos?id=eq.${id}`, {
+            method: 'DELETE',
+            headers: {
+              apikey: this.config.supabaseAnonKey,
+              Authorization: `Bearer ${localStorage.getItem(STORAGE_KEYS.TOKEN) || this.config.supabaseAnonKey}`
+            }
+          });
+        } catch (e) {
+          console.warn('Supabase deleteGalleryPhoto error:', e);
+        }
+      }
+
+      // 3. Local delete
+      try {
+        const raw = localStorage.getItem(STORAGE_KEYS.GALLERY);
+        if (raw) {
+          const list = JSON.parse(raw).filter(p => p.id !== id);
+          localStorage.setItem(STORAGE_KEYS.GALLERY, JSON.stringify(list));
+        }
+      } catch (e) {}
+
+      return true;
+    }
+
+    async resetGalleryDefaults() {
+      await this.init();
+      try {
+        await fetch('/api/gallery/reset', { method: 'POST' });
+      } catch (e) {}
+
+      const def = this._getDefaultGalleryPhotos();
+      localStorage.setItem(STORAGE_KEYS.GALLERY, JSON.stringify(def));
+      return def;
+    }
+
+    async uploadGalleryImage(file) {
+      if (!file) throw new Error('No se seleccionó ningún archivo de imagen.');
+
+      const base64 = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = err => reject(err);
+        reader.readAsDataURL(file);
+      });
+
+      try {
+        const res = await fetch('/api/gallery/upload', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            filename: file.name,
+            data: base64
+          })
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.url) return data.url;
+        }
+      } catch (e) {
+        console.warn('Upload endpoint error, using data URL fallback:', e);
+      }
+
+      // Fallback a data URL Base64
+      return base64;
+    }
+
+    _updateLocalGalleryItem(item) {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEYS.GALLERY);
+        if (raw) {
+          const list = JSON.parse(raw);
+          const idx = list.findIndex(p => p.id === item.id);
+          if (idx !== -1) {
+            list[idx] = { ...list[idx], ...item };
+            localStorage.setItem(STORAGE_KEYS.GALLERY, JSON.stringify(list));
+          }
+        }
+      } catch (e) {}
     }
   }
 

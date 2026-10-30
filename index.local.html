@@ -16,6 +16,7 @@
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script src="supabase-client.js"></script>
   <script id="tailwind-config">
     tailwind.config = {
       darkMode: "class",
@@ -821,7 +822,7 @@
       </div>
 
       <!-- Bento Grid Galería con Fotos Reales del Estudio (Sin animación de zoom al pasar el ratón) -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+      <div id="gallery-bento-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
         
         <!-- Gallery 1: Volumen Híbrido Glam -->
         <div class="relative cursor-pointer overflow-hidden rounded-2xl neon-card bg-[#161218] shadow-lg hover:border-[#ff3e96] transition-colors" onclick="openLightbox('images/ej-volumen-hibrido.jpg', 'Volumen Híbrido Glam', 'Densidad suave, textura esponjosa y abanicos ultralivianos realizados a medida de la mirada.')">
@@ -1837,13 +1838,50 @@
       document.body.style.overflow = '';
     }
 
-    document.getElementById('lightbox-modal').addEventListener('click', function(e) {
-      if (e.target === this) {
-        closeLightbox();
+    const lightboxModalEl = document.getElementById('lightbox-modal');
+    if (lightboxModalEl) {
+      lightboxModalEl.addEventListener('click', function(e) {
+        if (e.target === this) closeLightbox();
+      });
+    }
+
+    // 9. Cargar Galería Dinámica desde MicaBackend (sincronizada con el panel de Admin)
+    async function hydrateDynamicGallery() {
+      const grid = document.getElementById('gallery-bento-grid');
+      if (!grid || !window.MicaBackend || !window.MicaBackend.gallery) return;
+
+      try {
+        const photos = await window.MicaBackend.gallery.getPhotos();
+        if (photos && Array.isArray(photos) && photos.length > 0) {
+          grid.innerHTML = photos.map(photo => {
+            const safeTitle = (photo.title || 'Trabajo de Pestañas').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+            const safeDesc = (photo.description || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+            const safeBadge = photo.badge || 'Look Más Pedido';
+            const safeImg = photo.imageUrl || 'images/ej-volumen-hibrido.jpg';
+
+            return `
+              <div class="relative cursor-pointer overflow-hidden rounded-2xl neon-card bg-[#161218] shadow-lg hover:border-[#ff3e96] transition-colors" onclick="openLightbox('${safeImg}', '${safeTitle}', '${safeDesc}')">
+                <img class="w-full h-72 sm:h-80 object-cover" alt="${safeTitle}" src="${safeImg}"/>
+                <div class="absolute inset-0 bg-gradient-to-t from-[#0d0a0f] via-black/30 to-transparent flex flex-col justify-end p-5">
+                  <span class="text-[11px] font-bold text-[#ff3e96] uppercase tracking-widest flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#ff3e96]"></span>
+                    ${safeBadge}
+                  </span>
+                  <p class="font-display text-white text-lg font-bold">${photo.title}</p>
+                  <p class="text-xs text-[#d8c4d6] line-clamp-1 mt-0.5">${photo.description || ''}</p>
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+      } catch (e) {
+        console.warn('Error hydrating dynamic gallery:', e);
       }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      hydrateDynamicGallery();
     });
   </script>
-</body>
-</html>
 </body>
 </html>

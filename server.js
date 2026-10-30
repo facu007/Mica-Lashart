@@ -91,8 +91,33 @@ const localDatabase = {
       deposit_ars: 4000,
       category: 'cejas'
     }
-  ]
+  ],
+  gallery: []
 };
+
+// Cargar y persistir fotos de ejemplo de la galería
+const GALLERY_FILE = path.join(dir, 'gallery-data.json');
+function loadGalleryData() {
+  try {
+    if (fs.existsSync(GALLERY_FILE)) {
+      const content = fs.readFileSync(GALLERY_FILE, 'utf-8');
+      return JSON.parse(content);
+    }
+  } catch (e) {
+    console.warn('[Gallery] Error al leer gallery-data.json:', e.message);
+  }
+  return [];
+}
+
+function saveGalleryData(items) {
+  try {
+    fs.writeFileSync(GALLERY_FILE, JSON.stringify(items, null, 2), 'utf-8');
+  } catch (e) {
+    console.warn('[Gallery] Error al escribir gallery-data.json:', e.message);
+  }
+}
+
+localDatabase.gallery = loadGalleryData();
 
 const mimeTypes = {
   '.html': 'text/html; charset=utf-8',
@@ -107,15 +132,15 @@ const mimeTypes = {
   '.ico': 'image/x-icon'
 };
 
-// Helper para parsear JSON body en requests POST/PATCH
+// Helper para parsear JSON body en requests POST/PATCH/PUT (soporta fotos hasta 10MB)
 function parseJsonBody(req) {
   return new Promise((resolve, reject) => {
     let body = '';
     req.on('data', chunk => {
       body += chunk.toString();
-      if (body.length > 1e6) { // 1MB limit
+      if (body.length > 1.2e7) { // ~12MB limit para fotos HD en Base64
         req.destroy();
-        reject(new Error('Payload too large'));
+        reject(new Error('Payload too large (máximo 10MB)'));
       }
     });
     req.on('end', () => {
@@ -394,6 +419,320 @@ async function handleApiRequest(req, res, pathname, queryParams) {
       };
       localDatabase.enrollments.push(localEnrollment);
       return sendJson(res, 201, { success: true, enrollment: localEnrollment });
+    } catch (err) {
+      return sendJson(res, 500, { error: err.message });
+    }
+  }
+
+  // 9. GET /api/gallery (Listado de fotos de ejemplo para la web)
+  if (req.method === 'GET' && pathname === '/api/gallery') {
+    if (supabase) {
+      try {
+        const { data, error } = await supabase
+          .from('gallery_photos')
+          .select('*')
+          .order('sort_order', { ascending: true });
+
+        if (!error && data && data.length > 0) {
+          const mapped = data.map(row => ({
+            id: row.id,
+            title: row.title,
+            badge: row.badge,
+            category: row.category,
+            description: row.description,
+            imageUrl: row.image_url,
+            isFeatured: row.is_featured,
+            isHero: row.is_hero,
+            sortOrder: row.sort_order
+          }));
+          return sendJson(res, 200, { photos: mapped });
+        }
+      } catch (e) {
+        console.warn('[Supabase] Error consultando gallery_photos:', e.message);
+      }
+    }
+    // Asegurar que siempre hay datos cargados
+    if (!localDatabase.gallery || localDatabase.gallery.length === 0) {
+      localDatabase.gallery = loadGalleryData();
+    }
+    return sendJson(res, 200, { photos: localDatabase.gallery });
+  }
+
+  // 10. POST /api/gallery/upload (Subir archivo de imagen para los ejemplos)
+  if (req.method === 'POST' && pathname === '/api/gallery/upload') {
+    try {
+      const body = await parseJsonBody(req);
+      if (!body.data) {
+        return sendJson(res, 400, { error: 'Falta la imagen codificada en Base64 (body.data).' });
+      }
+
+      const uploadsDir = path.join(dir, 'images', 'uploads');
+      if (!fs.existsSync(uploadsDir)) {
+        fs.mkdirSync(uploadsDir, { recursive: true });
+      }
+
+      const rawBase64 = body.data.replace(/^data:image\/\w+;base64,/, '');
+      const buffer = Buffer.from(rawBase64, 'base64');
+      
+      let ext = '.jpg';
+      if (body.filename) {
+        const parsedExt = path.extname(body.filename).toLowerCase();
+        if (['.jpg', '.jpeg', '.png', '.webp'].includes(parsedExt)) {
+          ext = parsedExt;
+        }
+      }
+
+      const safeBase = (body.filename ? path.basename(body.filename, ext) : 'foto')
+        .toLowerCase()
+        .replace(/[^a-z0-9_-]/g, '-');
+      const filename = `ej-${Date.now()}-${safeBase}${ext}`;
+      const targetPath = path.join(uploadsDir, filename);
+
+      fs.writeFileSync(targetPath, buffer);
+      const publicUrl = `images/uploads/${filename}`;
+
+      return sendJson(res, 201, {
+        success: true,
+        url: publicUrl,
+        filename
+      });
+    } catch (err) {
+      return sendJson(res, 500, { error: err.message });
+    }
+  }
+
+  // 11. POST /api/gallery (Crear nueva foto de ejemplo)
+  if (req.method === 'POST' && pathname === '/api/gallery') {
+    try {
+      const body = await parseJsonBody(req);
+      const { title, badge, category, description, imageUrl, isFeatured, isHero, sortOrder } = body;
+
+      if (!title || !imageUrl) {
+        return sendJson(res, 400, { error: 'Título e imagen son obligatorios.' });
+      }
+
+      let created = null;
+
+      if (supabase) {
+        try {
+          const { data, error } = await supabase
+            .from('gallery_photos')
+            .insert({
+              title,
+              badge: badge || 'Look Más Pedido',
+              category: category || 'volumen',
+              description: description || '',
+              image_url: imageUrl,
+              is_featured: !!isFeatured,
+              is_hero: !!isHero,
+              sort_order: sortOrder || (localDatabase.gallery.length + 1)
+            })
+            .select()
+            .single();
+
+          if (!error && data) {
+            created = {
+              id: data.id,
+              title: data.title,
+              badge: data.badge,
+              category: data.category,
+              description: data.description,
+              imageUrl: data.image_url,
+              isFeatured: data.is_featured,
+              isHero: data.is_hero,
+              sortOrder: data.sort_order
+            };
+          }
+        } catch (e) {
+          console.warn('[Supabase] Error insertando en gallery_photos:', e.message);
+        }
+      }
+
+      if (!created) {
+        created = {
+          id: 'photo_' + Date.now(),
+          title,
+          badge: badge || 'Look Más Pedido',
+          category: category || 'volumen',
+          description: description || '',
+          imageUrl,
+          isFeatured: !!isFeatured,
+          isHero: !!isHero,
+          sortOrder: sortOrder || (localDatabase.gallery.length + 1)
+        };
+      }
+
+      localDatabase.gallery.push(created);
+      saveGalleryData(localDatabase.gallery);
+
+      return sendJson(res, 201, { success: true, photo: created });
+    } catch (err) {
+      return sendJson(res, 500, { error: err.message });
+    }
+  }
+
+  // 12. PUT /api/gallery/:id (Actualizar foto de ejemplo existente)
+  if ((req.method === 'PUT' || req.method === 'PATCH') && pathname.startsWith('/api/gallery/')) {
+    const id = pathname.replace('/api/gallery/', '');
+    try {
+      const body = await parseJsonBody(req);
+      let updated = null;
+
+      if (supabase) {
+        try {
+          const updateObj = {};
+          if (body.title !== undefined) updateObj.title = body.title;
+          if (body.badge !== undefined) updateObj.badge = body.badge;
+          if (body.category !== undefined) updateObj.category = body.category;
+          if (body.description !== undefined) updateObj.description = body.description;
+          if (body.imageUrl !== undefined) updateObj.image_url = body.imageUrl;
+          if (body.isFeatured !== undefined) updateObj.is_featured = body.isFeatured;
+          if (body.isHero !== undefined) updateObj.is_hero = body.isHero;
+          if (body.sortOrder !== undefined) updateObj.sort_order = body.sortOrder;
+
+          const { data, error } = await supabase
+            .from('gallery_photos')
+            .update(updateObj)
+            .eq('id', id)
+            .select();
+
+          if (!error && data && data.length > 0) {
+            const row = data[0];
+            updated = {
+              id: row.id,
+              title: row.title,
+              badge: row.badge,
+              category: row.category,
+              description: row.description,
+              imageUrl: row.image_url,
+              isFeatured: row.is_featured,
+              isHero: row.is_hero,
+              sortOrder: row.sort_order
+            };
+          }
+        } catch (e) {
+          console.warn('[Supabase] Error actualizando gallery_photos:', e.message);
+        }
+      }
+
+      const idx = localDatabase.gallery.findIndex(p => p.id === id);
+      if (idx !== -1) {
+        localDatabase.gallery[idx] = {
+          ...localDatabase.gallery[idx],
+          ...body,
+          id // garantizar id constante
+        };
+        saveGalleryData(localDatabase.gallery);
+        if (!updated) updated = localDatabase.gallery[idx];
+      }
+
+      if (updated) {
+        return sendJson(res, 200, { success: true, photo: updated });
+      }
+
+      return sendJson(res, 404, { error: 'Foto de ejemplo no encontrada' });
+    } catch (err) {
+      return sendJson(res, 500, { error: err.message });
+    }
+  }
+
+  // 13. DELETE /api/gallery/:id (Eliminar foto de ejemplo)
+  if (req.method === 'DELETE' && pathname.startsWith('/api/gallery/')) {
+    const id = pathname.replace('/api/gallery/', '');
+    try {
+      if (supabase) {
+        try {
+          await supabase.from('gallery_photos').delete().eq('id', id);
+        } catch (e) {
+          console.warn('[Supabase] Error borrando de gallery_photos:', e.message);
+        }
+      }
+
+      localDatabase.gallery = localDatabase.gallery.filter(p => p.id !== id);
+      saveGalleryData(localDatabase.gallery);
+
+      return sendJson(res, 200, { success: true, id });
+    } catch (err) {
+      return sendJson(res, 500, { error: err.message });
+    }
+  }
+
+  // 14. POST /api/gallery/reset (Restablecer a las 6 fotos originales)
+  if (req.method === 'POST' && pathname === '/api/gallery/reset') {
+    try {
+      const defaultPhotos = [
+        {
+          id: "photo_1",
+          title: "Volumen Híbrido Glam",
+          badge: "★ Look Más Pedido",
+          category: "volumen",
+          description: "Densidad suave, textura esponjosa y abanicos ultralivianos realizados a medida de la mirada.",
+          imageUrl: "images/ej-volumen-hibrido.jpg",
+          isFeatured: true,
+          isHero: true,
+          sortOrder: 1
+        },
+        {
+          id: "photo_2",
+          title: "Lifting de Pestañas & Nutrición Botox",
+          badge: "🌿 100% Pestaña Natural",
+          category: "lifting",
+          description: "Elevación desde la raíz de la pestaña natural, nutrición profunda con botox y tinte negro azabache.",
+          imageUrl: "images/ej-lifting-botox.jpg",
+          isFeatured: true,
+          isHero: true,
+          sortOrder: 2
+        },
+        {
+          id: "photo_3",
+          title: "Laminado & Perfilado de Cejas HD",
+          badge: "✨ Antes & Después HD",
+          category: "cejas",
+          description: "Antes y después real. Direccionamiento folicular orgánico, perfilado con pinza y nutrición.",
+          imageUrl: "images/ej-laminado-cejas.jpg",
+          isFeatured: false,
+          isHero: false,
+          sortOrder: 3
+        },
+        {
+          id: "photo_4",
+          title: "Comparativa Real en Camilla",
+          badge: "👁️ Comparativa en Directo",
+          category: "comparativa",
+          description: "Impacto visual directo: ojo con pestaña aplicada vs ojo natural sin intervenir. Resalta la luminosidad y apertura de la mirada.",
+          imageUrl: "images/ej-comparativa-real.jpg",
+          isFeatured: true,
+          isHero: true,
+          sortOrder: 4
+        },
+        {
+          id: "photo_5",
+          title: "Mega Volumen Ruso 3D-5D",
+          badge: "🔥 Máxima Densidad",
+          category: "volumen",
+          description: "Máxima densidad aterciopelada con abanicos hechos a mano. Cero peso sobre la raíz.",
+          imageUrl: "images/ej-volumen-ruso.jpg",
+          isFeatured: true,
+          isHero: true,
+          sortOrder: 5
+        },
+        {
+          id: "photo_6",
+          title: "Aislación Milimétrica & Curvatura",
+          badge: "🔬 Técnica de Precisión",
+          category: "clasicas",
+          description: "Vista de perfil de alta definición. Curvatura uniforme, raíz limpia sin exceso de adhesivo y separación perfecta.",
+          imageUrl: "images/ej-perfil-curvatura.jpg",
+          isFeatured: false,
+          isHero: false,
+          sortOrder: 6
+        }
+      ];
+
+      localDatabase.gallery = defaultPhotos;
+      saveGalleryData(defaultPhotos);
+
+      return sendJson(res, 200, { success: true, photos: defaultPhotos });
     } catch (err) {
       return sendJson(res, 500, { error: err.message });
     }

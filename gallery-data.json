@@ -1,0 +1,79 @@
+[
+  {
+    "id": "photo_1",
+    "title": "Volumen Híbrido Glam",
+    "badge": "★ Look Más Pedido",
+    "category": "volumen",
+    "description": "Densidad suave, textura esponjosa y abanicos ultralivianos realizados a medida de la mirada.",
+    "imageUrl": "images/ej-volumen-hibrido.jpg",
+    "isFeatured": true,
+    "isHero": true,
+    "sortOrder": 1
+  },
+  {
+    "id": "photo_2",
+    "title": "Lifting de Pestañas & Nutrición Botox",
+    "badge": "🌿 100% Pestaña Natural",
+    "category": "lifting",
+    "description": "Elevación desde la raíz de la pestaña natural, nutrición profunda con botox y tinte negro azabache.",
+    "imageUrl": "images/ej-lifting-botox.jpg",
+    "isFeatured": true,
+    "isHero": true,
+    "sortOrder": 2
+  },
+  {
+    "id": "photo_3",
+    "title": "Laminado & Perfilado de Cejas HD",
+    "badge": "✨ Antes & Después HD",
+    "category": "cejas",
+    "description": "Antes y después real. Direccionamiento folicular orgánico, perfilado con pinza y nutrición.",
+    "imageUrl": "images/ej-laminado-cejas.jpg",
+    "isFeatured": false,
+    "isHero": false,
+    "sortOrder": 3
+  },
+  {
+    "id": "photo_4",
+    "title": "Comparativa Real en Camilla",
+    "badge": "👁️ Comparativa en Directo",
+    "category": "comparativa",
+    "description": "Impacto visual directo: ojo con pestaña aplicada vs ojo natural sin intervenir. Resalta la luminosidad y apertura de la mirada.",
+    "imageUrl": "images/ej-comparativa-real.jpg",
+    "isFeatured": true,
+    "isHero": true,
+    "sortOrder": 4
+  },
+  {
+    "id": "photo_5",
+    "title": "Mega Volumen Ruso 3D-5D",
+    "badge": "🔥 Máxima Densidad",
+    "category": "volumen",
+    "description": "Máxima densidad aterciopelada con abanicos hechos a mano. Cero peso sobre la raíz.",
+    "imageUrl": "images/ej-volumen-ruso.jpg",
+    "isFeatured": true,
+    "isHero": true,
+    "sortOrder": 5
+  },
+  {
+    "id": "photo_6",
+    "title": "Aislación Milimétrica & Curvatura",
+    "badge": "🔬 Técnica de Precisión",
+    "category": "clasicas",
+    "description": "Vista de perfil de alta definición. Curvatura uniforme, raíz limpia sin exceso de adhesivo y separación perfecta.",
+    "imageUrl": "images/ej-perfil-curvatura.jpg",
+    "isFeatured": false,
+    "isHero": false,
+    "sortOrder": 6
+  },
+  {
+    "id": "photo_1793364892266",
+    "title": "Cat Eye Glam Exclusivo",
+    "badge": "★ Look Más Pedido",
+    "category": "volumen",
+    "description": "Efecto rasgado estilo foxy/cat-eye para mirada seductora.",
+    "imageUrl": "images/ej-volumen-hibrido.jpg",
+    "isFeatured": true,
+    "isHero": true,
+    "sortOrder": 7
+  }
+]

@@ -534,5 +534,125 @@ ON CONFLICT (key) DO UPDATE
 SET value = EXCLUDED.value;
 
 -- ==============================================================================
+-- 10. TABLA: gallery_photos (Ejemplos & Galería de Trabajos Reales)
+-- ==============================================================================
+CREATE TABLE IF NOT EXISTS gallery_photos (
+  id              UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  title           TEXT NOT NULL,
+  badge           TEXT DEFAULT 'Look Más Pedido',
+  category        TEXT DEFAULT 'hibrido',
+  description     TEXT,
+  image_url       TEXT NOT NULL,
+  is_featured     BOOLEAN DEFAULT FALSE,
+  is_hero         BOOLEAN DEFAULT FALSE,
+  sort_order      INT DEFAULT 0,
+  created_at      TIMESTAMPTZ DEFAULT NOW(),
+  updated_at      TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Trigger de updated_at para gallery_photos
+DROP TRIGGER IF EXISTS trg_gallery_photos_updated_at ON gallery_photos;
+CREATE TRIGGER trg_gallery_photos_updated_at
+BEFORE UPDATE ON gallery_photos
+FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+
+-- Habilitar RLS
+ALTER TABLE gallery_photos ENABLE ROW LEVEL SECURITY;
+
+-- Políticas de RLS para gallery_photos
+CREATE POLICY "Lectura pública de fotos de la galería"
+ON gallery_photos FOR SELECT
+USING (TRUE);
+
+CREATE POLICY "Inserción de fotos por administradores"
+ON gallery_photos FOR INSERT
+WITH CHECK (auth.role() = 'authenticated' OR auth.role() = 'service_role');
+
+CREATE POLICY "Modificación de fotos por administradores"
+ON gallery_photos FOR UPDATE
+USING (auth.role() = 'authenticated' OR auth.role() = 'service_role')
+WITH CHECK (auth.role() = 'authenticated' OR auth.role() = 'service_role');
+
+CREATE POLICY "Eliminación de fotos por administradores"
+ON gallery_photos FOR DELETE
+USING (auth.role() = 'authenticated' OR auth.role() = 'service_role');
+
+-- Datos Iniciales de Fotos de Ejemplo (6 fotos reales del estudio)
+INSERT INTO gallery_photos (id, title, badge, category, description, image_url, is_featured, is_hero, sort_order)
+VALUES
+  (
+    '44444444-4444-4444-4444-444444444401',
+    'Volumen Híbrido Glam',
+    '★ Look Más Pedido',
+    'volumen',
+    'Densidad suave, textura esponjosa y abanicos ultralivianos realizados a medida de la mirada.',
+    'images/ej-volumen-hibrido.jpg',
+    TRUE,
+    TRUE,
+    1
+  ),
+  (
+    '44444444-4444-4444-4444-444444444402',
+    'Lifting de Pestañas & Nutrición Botox',
+    '🌿 100% Pestaña Natural',
+    'lifting',
+    'Elevación desde la raíz de la pestaña natural, nutrición profunda con botox y tinte negro azabache.',
+    'images/ej-lifting-botox.jpg',
+    TRUE,
+    TRUE,
+    2
+  ),
+  (
+    '44444444-4444-4444-4444-444444444403',
+    'Laminado & Perfilado de Cejas HD',
+    '✨ Antes & Después HD',
+    'cejas',
+    'Antes y después real. Direccionamiento folicular orgánico, perfilado con pinza y nutrición.',
+    'images/ej-laminado-cejas.jpg',
+    FALSE,
+    FALSE,
+    3
+  ),
+  (
+    '44444444-4444-4444-4444-444444444404',
+    'Comparativa Real en Camilla',
+    '👁️ Comparativa en Directo',
+    'comparativa',
+    'Impacto visual directo: ojo con pestaña aplicada vs ojo natural sin intervenir. Resalta la luminosidad y apertura de la mirada.',
+    'images/ej-comparativa-real.jpg',
+    TRUE,
+    TRUE,
+    4
+  ),
+  (
+    '44444444-4444-4444-4444-444444444405',
+    'Mega Volumen Ruso 3D-5D',
+    '🔥 Máxima Densidad',
+    'volumen',
+    'Máxima densidad aterciopelada con abanicos hechos a mano. Cero peso sobre la raíz.',
+    'images/ej-volumen-ruso.jpg',
+    TRUE,
+    TRUE,
+    5
+  ),
+  (
+    '44444444-4444-4444-4444-444444444406',
+    'Aislación Milimétrica & Curvatura',
+    '🔬 Técnica de Precisión',
+    'clasicas',
+    'Vista de perfil de alta definición. Curvatura uniforme, raíz limpia sin exceso de adhesivo y separación perfecta.',
+    'images/ej-perfil-curvatura.jpg',
+    FALSE,
+    FALSE,
+    6
+  )
+ON CONFLICT (id) DO UPDATE
+SET title = EXCLUDED.title,
+    badge = EXCLUDED.badge,
+    description = EXCLUDED.description,
+    image_url = EXCLUDED.image_url;
+
+-- ==============================================================================
 -- FIN DEL SCRIPT SQL PARA SUPABASE
 -- ==============================================================================
+

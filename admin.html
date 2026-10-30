@@ -77,105 +77,349 @@
   <!-- ================= MAIN DASHBOARD ================= -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6">
     
-    <!-- Header de Bienvenida & Controles de Fecha -->
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2 border-b border-white/10">
-      <div>
-        <h1 class="font-display text-2xl sm:text-3xl font-extrabold text-white">
-          Gestión de Turnos & Agenda
-        </h1>
-        <p class="text-xs sm:text-sm text-[#d8c4d6] mt-0.5">
-          Control de citas, confirmaciones por WhatsApp y base de clientas sincronizada con Supabase.
-        </p>
-      </div>
+    <!-- Pestañas Principales: Turnos vs Fotos de Ejemplos -->
+    <div class="flex items-center gap-3 border-b border-white/10 pb-4 overflow-x-auto no-scrollbar">
+      <button type="button" id="tab-btn-turnos" onclick="switchMainTab('turnos')" class="px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#ff2d85] text-white shadow-lg shadow-[#ff2d85]/30 flex items-center gap-2 transition-all">
+        <span class="material-symbols-outlined text-base">calendar_month</span>
+        <span>Turnos &amp; Agenda</span>
+      </button>
 
-      <!-- Filtro de Estado -->
-      <div class="flex items-center gap-2 overflow-x-auto pb-1">
-        <button type="button" onclick="setFilter('all')" id="flt-all" class="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-[#ff2d85] text-white shadow transition-all">
-          Todos
-        </button>
-        <button type="button" onclick="setFilter('pending')" id="flt-pending" class="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-[#1e1622] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 transition-all">
-          Pendientes
-        </button>
-        <button type="button" onclick="setFilter('confirmed')" id="flt-confirmed" class="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-[#1e1622] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 transition-all">
-          Confirmados
-        </button>
-        <button type="button" onclick="setFilter('completed')" id="flt-completed" class="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-[#1e1622] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 transition-all">
-          Completados
-        </button>
-      </div>
+      <button type="button" id="tab-btn-gallery" onclick="switchMainTab('gallery')" class="px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#161218] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 hover:text-white flex items-center gap-2 transition-all">
+        <span class="material-symbols-outlined text-base">photo_library</span>
+        <span>Fotos de Ejemplos &amp; Galería</span>
+        <span id="gallery-badge-count" class="px-2 py-0.5 rounded-full bg-[#ff3e96]/20 text-[#ffaed8] text-[10px] font-black border border-[#ff3e96]/40">6</span>
+      </button>
     </div>
 
-    <!-- 4 Métricas Clave -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-      <div class="p-4 sm:p-5 rounded-2xl bg-[#161218] border border-white/10 shadow-lg space-y-1">
-        <span class="text-xs font-bold uppercase text-[#ffaed8]">Turnos Agendados</span>
-        <p class="font-display text-2xl sm:text-3xl font-black text-white" id="stat-total">0</p>
-        <span class="text-[11px] text-[#d8c4d6]">En base de datos</span>
-      </div>
-
-      <div class="p-4 sm:p-5 rounded-2xl bg-[#161218] border border-amber-500/30 shadow-lg space-y-1">
-        <span class="text-xs font-bold uppercase text-amber-300">Pendientes de Seña</span>
-        <p class="font-display text-2xl sm:text-3xl font-black text-amber-300" id="stat-pending">0</p>
-        <span class="text-[11px] text-gray-400">Por confirmar</span>
-      </div>
-
-      <div class="p-4 sm:p-5 rounded-2xl bg-[#161218] border border-[#25D366]/30 shadow-lg space-y-1">
-        <span class="text-xs font-bold uppercase text-[#25D366]">Confirmados</span>
-        <p class="font-display text-2xl sm:text-3xl font-black text-[#25D366]" id="stat-confirmed">0</p>
-        <span class="text-[11px] text-gray-400">Listos en agenda</span>
-      </div>
-
-      <div class="p-4 sm:p-5 rounded-2xl bg-[#161218] border border-[#ff3e96]/30 shadow-lg space-y-1">
-        <span class="text-xs font-bold uppercase text-[#ff6ea7]">Ingresos Estimados</span>
-        <p class="font-display text-2xl sm:text-3xl font-black text-white" id="stat-revenue">$0</p>
-        <span class="text-[11px] text-[#d8c4d6]">Monto total en ARS</span>
-      </div>
-    </div>
-
-    <!-- Lista de Turnos -->
-    <div class="neon-card-glow rounded-3xl bg-[#161218] p-5 sm:p-7 shadow-2xl space-y-5">
-      <div class="flex items-center justify-between border-b border-white/10 pb-4">
-        <div class="flex items-center gap-2">
-          <span class="material-symbols-outlined text-[#ff3e96] text-xl">event_note</span>
-          <h2 class="font-display font-bold text-lg text-white">Listado de Citas</h2>
+    <!-- ================= SECCIÓN 1: TURNOS & AGENDA ================= -->
+    <div id="section-turnos" class="space-y-6">
+      <!-- Header de Bienvenida & Controles de Fecha -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2 border-b border-white/10">
+        <div>
+          <h1 class="font-display text-2xl sm:text-3xl font-extrabold text-white">
+            Gestión de Turnos &amp; Agenda
+          </h1>
+          <p class="text-xs sm:text-sm text-[#d8c4d6] mt-0.5">
+            Control de citas, confirmaciones por WhatsApp y base de clientas sincronizada con Supabase.
+          </p>
         </div>
-        <button type="button" onclick="loadAppointments()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-xs text-gray-300 hover:text-white transition-all">
-          <span class="material-symbols-outlined text-sm">refresh</span>
-          <span>Actualizar</span>
-        </button>
+
+        <!-- Filtro de Estado -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-1">
+          <button type="button" onclick="setFilter('all')" id="flt-all" class="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-[#ff2d85] text-white shadow transition-all">
+            Todos
+          </button>
+          <button type="button" onclick="setFilter('pending')" id="flt-pending" class="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-[#1e1622] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 transition-all">
+            Pendientes
+          </button>
+          <button type="button" onclick="setFilter('confirmed')" id="flt-confirmed" class="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-[#1e1622] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 transition-all">
+            Confirmados
+          </button>
+          <button type="button" onclick="setFilter('completed')" id="flt-completed" class="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-[#1e1622] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 transition-all">
+            Completados
+          </button>
+        </div>
       </div>
 
-      <div id="appointments-container" class="space-y-3.5">
-        <div class="py-12 text-center text-gray-400">
+      <!-- 4 Métricas Clave -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <div class="p-4 sm:p-5 rounded-2xl bg-[#161218] border border-white/10 shadow-lg space-y-1">
+          <span class="text-xs font-bold uppercase text-[#ffaed8]">Turnos Agendados</span>
+          <p class="font-display text-2xl sm:text-3xl font-black text-white" id="stat-total">0</p>
+          <span class="text-[11px] text-[#d8c4d6]">En base de datos</span>
+        </div>
+
+        <div class="p-4 sm:p-5 rounded-2xl bg-[#161218] border border-amber-500/30 shadow-lg space-y-1">
+          <span class="text-xs font-bold uppercase text-amber-300">Pendientes de Seña</span>
+          <p class="font-display text-2xl sm:text-3xl font-black text-amber-300" id="stat-pending">0</p>
+          <span class="text-[11px] text-gray-400">Por confirmar</span>
+        </div>
+
+        <div class="p-4 sm:p-5 rounded-2xl bg-[#161218] border border-[#25D366]/30 shadow-lg space-y-1">
+          <span class="text-xs font-bold uppercase text-[#25D366]">Confirmados</span>
+          <p class="font-display text-2xl sm:text-3xl font-black text-[#25D366]" id="stat-confirmed">0</p>
+          <span class="text-[11px] text-gray-400">Listos en agenda</span>
+        </div>
+
+        <div class="p-4 sm:p-5 rounded-2xl bg-[#161218] border border-[#ff3e96]/30 shadow-lg space-y-1">
+          <span class="text-xs font-bold uppercase text-[#ff6ea7]">Ingresos Estimados</span>
+          <p class="font-display text-2xl sm:text-3xl font-black text-white" id="stat-revenue">$0</p>
+          <span class="text-[11px] text-[#d8c4d6]">Monto total en ARS</span>
+        </div>
+      </div>
+
+      <!-- Lista de Turnos -->
+      <div class="neon-card-glow rounded-3xl bg-[#161218] p-5 sm:p-7 shadow-2xl space-y-5">
+        <div class="flex items-center justify-between border-b border-white/10 pb-4">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-[#ff3e96] text-xl">event_note</span>
+            <h2 class="font-display font-bold text-lg text-white">Listado de Citas</h2>
+          </div>
+          <button type="button" onclick="loadAppointments()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-xs text-gray-300 hover:text-white transition-all">
+            <span class="material-symbols-outlined text-sm">refresh</span>
+            <span>Actualizar</span>
+          </button>
+        </div>
+
+        <div id="appointments-container" class="space-y-3.5">
+          <div class="py-12 text-center text-gray-400">
+            <span class="material-symbols-outlined text-3xl animate-spin text-[#ff3e96]">progress_activity</span>
+            <p class="text-xs mt-2 font-medium">Cargando turnos desde Supabase...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Guía de Conexión a Supabase -->
+      <div class="p-5 sm:p-6 rounded-2xl bg-[#1e1622]/80 border border-[#ff3e96]/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div class="space-y-1">
+          <div class="flex items-center gap-2">
+            <span class="text-lg">⚡</span>
+            <h3 class="font-display font-bold text-base text-white">Configuración del Backend Supabase</h3>
+          </div>
+          <p class="text-xs text-[#d8c4d6] max-w-2xl leading-relaxed">
+            Para conectar una base de datos PostgreSQL en la nube, ejecutá el script <code class="text-[#ffaed8] font-bold">supabase-schema.sql</code> en tu panel de Supabase y agregá las claves a tu archivo <code class="text-[#ffaed8] font-bold">.env</code>.
+          </p>
+        </div>
+        <a href="https://supabase.com/dashboard" target="_blank" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#0d0a0f] hover:bg-black border border-[#ff3e96]/50 text-white text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap shadow-md">
+          <span>Abrir Supabase</span>
+          <span class="material-symbols-outlined text-sm">open_in_new</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ================= SECCIÓN 2: GESTIÓN DE FOTOS DE EJEMPLOS & GALERÍA ================= -->
+    <div id="section-gallery" class="hidden space-y-6">
+      
+      <!-- Header de Fotos & Botones de Acción -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-white/10">
+        <div>
+          <h1 class="font-display text-2xl sm:text-3xl font-extrabold text-white flex items-center gap-2">
+            <span>Fotos de Ejemplos &amp; Galería</span>
+            <span class="text-[#ff3e96] text-lg">♡</span>
+          </h1>
+          <p class="text-xs sm:text-sm text-[#d8c4d6] mt-0.5">
+            Cambiá, agregá o eliminá fotos de trabajos reales que se muestran a tus clientas en la web y el Lightbox.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-2 flex-wrap">
+          <button type="button" onclick="openPhotoModal()" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] hover:brightness-110 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#ff2d85]/40 active:scale-95 transition-all">
+            <span class="material-symbols-outlined text-base">add_photo_alternate</span>
+            <span>+ Agregar Foto</span>
+          </button>
+
+          <button type="button" onclick="confirmResetGallery()" class="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-full bg-[#1e1622] hover:bg-[#271c2b] text-gray-300 hover:text-white border border-white/10 text-xs font-semibold transition-all" title="Restablecer a las 6 fotos originales">
+            <span class="material-symbols-outlined text-sm text-[#ffaed8]">restart_alt</span>
+            <span class="hidden md:inline">Restablecer</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Barra de Filtros de Galería -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#161218] p-3 rounded-2xl border border-white/10">
+        <div class="flex items-center gap-2 overflow-x-auto no-scrollbar">
+          <span class="text-xs font-bold text-[#ffaed8] uppercase px-2 hidden md:inline">Filtrar:</span>
+          <button type="button" onclick="filterGalleryCategory('all')" id="gal-flt-all" class="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-[#ff2d85] text-white shadow transition-all">
+            Todas
+          </button>
+          <button type="button" onclick="filterGalleryCategory('volumen')" id="gal-flt-volumen" class="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-[#1e1622] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 transition-all">
+            Volumen
+          </button>
+          <button type="button" onclick="filterGalleryCategory('lifting')" id="gal-flt-lifting" class="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-[#1e1622] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 transition-all">
+            Lifting
+          </button>
+          <button type="button" onclick="filterGalleryCategory('cejas')" id="gal-flt-cejas" class="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-[#1e1622] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 transition-all">
+            Cejas
+          </button>
+          <button type="button" onclick="filterGalleryCategory('comparativa')" id="gal-flt-comparativa" class="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-[#1e1622] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 transition-all">
+            Comparativas
+          </button>
+        </div>
+
+        <div class="text-xs text-gray-400 px-2 flex items-center justify-between sm:justify-end gap-2">
+          <span>Mostrando: <strong class="text-white" id="gallery-shown-count">0</strong> fotos</span>
+          <button type="button" onclick="loadGalleryPhotos()" class="p-1 hover:text-[#ff3e96] transition-colors" title="Refrescar lista">
+            <span class="material-symbols-outlined text-base">refresh</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Grid de Tarjetas de Fotos -->
+      <div id="gallery-cards-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+        <div class="col-span-full py-16 text-center text-gray-400">
           <span class="material-symbols-outlined text-3xl animate-spin text-[#ff3e96]">progress_activity</span>
-          <p class="text-xs mt-2 font-medium">Cargando turnos desde Supabase...</p>
+          <p class="text-xs mt-2 font-medium">Cargando fotos de ejemplo...</p>
         </div>
       </div>
-    </div>
 
-    <!-- Guía de Conexión a Supabase -->
-    <div class="p-5 sm:p-6 rounded-2xl bg-[#1e1622]/80 border border-[#ff3e96]/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-      <div class="space-y-1">
-        <div class="flex items-center gap-2">
-          <span class="text-lg">⚡</span>
-          <h3 class="font-display font-bold text-base text-white">Configuración del Backend Supabase</h3>
-        </div>
-        <p class="text-xs text-[#d8c4d6] max-w-2xl leading-relaxed">
-          Para conectar una base de datos PostgreSQL en la nube, ejecutá el script <code class="text-[#ffaed8] font-bold">supabase-schema.sql</code> en tu panel de Supabase y agregá las claves a tu archivo <code class="text-[#ffaed8] font-bold">.env</code>.
-        </p>
-      </div>
-      <a href="https://supabase.com/dashboard" target="_blank" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#0d0a0f] hover:bg-black border border-[#ff3e96]/50 text-white text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap shadow-md">
-        <span>Abrir Supabase</span>
-        <span class="material-symbols-outlined text-sm">open_in_new</span>
-      </a>
     </div>
 
   </main>
+
+  <!-- ================= MODAL AGREGAR / EDITAR FOTO DE EJEMPLO ================= -->
+  <div id="photo-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div class="relative max-w-2xl w-full bg-[#161218] rounded-3xl p-6 sm:p-8 neon-card-glow border border-[#ff3e96]/60 shadow-2xl my-8">
+      
+      <!-- Close button -->
+      <button type="button" onclick="closePhotoModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/60 hover:bg-[#ff2d85] text-white flex items-center justify-center border border-white/20 transition-all active:scale-95" aria-label="Cerrar modal">
+        <span class="material-symbols-outlined text-lg">close</span>
+      </button>
+
+      <!-- Modal Title -->
+      <div class="flex items-center gap-2 mb-6">
+        <span class="material-symbols-outlined text-[#ff3e96] text-2xl" id="photo-modal-icon">add_photo_alternate</span>
+        <h3 class="font-display text-xl sm:text-2xl font-bold text-white" id="photo-modal-title">
+          Agregar Nueva Foto de Ejemplo
+        </h3>
+      </div>
+
+      <form id="photo-form" onsubmit="handlePhotoFormSubmit(event)" class="space-y-5">
+        <input type="hidden" id="photo-edit-id" value="">
+
+        <!-- Título -->
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1.5" for="photo-title-input">
+            Título del Look / Técnica *
+          </label>
+          <input type="text" id="photo-title-input" required placeholder="Ej: Volumen Híbrido Glam, Lifting & Botox..." class="w-full bg-[#0d0a0f] border border-white/20 focus:border-[#ff3e96] rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none transition-colors">
+        </div>
+
+        <!-- Badge & Categoría -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1.5" for="photo-badge-input">
+              Etiqueta / Badge Destacado
+            </label>
+            <input type="text" id="photo-badge-input" placeholder="Ej: ★ Look Más Pedido" class="w-full bg-[#0d0a0f] border border-white/20 focus:border-[#ff3e96] rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none transition-colors">
+            
+            <!-- Quick Chips -->
+            <div class="flex flex-wrap gap-1 mt-2">
+              <button type="button" onclick="setBadge('★ Look Más Pedido')" class="text-[10px] px-2 py-0.5 rounded-full bg-white/5 hover:bg-[#ff2d85]/30 text-[#ffaed8] border border-white/10 transition-colors">★ Más Pedido</button>
+              <button type="button" onclick="setBadge('🌿 100% Pestaña Natural')" class="text-[10px] px-2 py-0.5 rounded-full bg-white/5 hover:bg-[#ff2d85]/30 text-[#ffaed8] border border-white/10 transition-colors">🌿 Natural</button>
+              <button type="button" onclick="setBadge('✨ Antes & Después HD')" class="text-[10px] px-2 py-0.5 rounded-full bg-white/5 hover:bg-[#ff2d85]/30 text-[#ffaed8] border border-white/10 transition-colors">✨ Antes/Después</button>
+              <button type="button" onclick="setBadge('🔥 Máxima Densidad')" class="text-[10px] px-2 py-0.5 rounded-full bg-white/5 hover:bg-[#ff2d85]/30 text-[#ffaed8] border border-white/10 transition-colors">🔥 Densidad</button>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1.5" for="photo-category-input">
+              Categoría
+            </label>
+            <select id="photo-category-input" class="w-full bg-[#0d0a0f] border border-white/20 focus:border-[#ff3e96] rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none transition-colors">
+              <option value="volumen">Volumen (Ruso, Híbrido, Mega)</option>
+              <option value="lifting">Lifting &amp; Botox</option>
+              <option value="cejas">Laminado &amp; Perfilado Cejas</option>
+              <option value="clasicas">Pelo a Pelo Clásicas</option>
+              <option value="comparativa">Comparativa en Camilla</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Descripción -->
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1.5" for="photo-desc-input">
+            Descripción Detallada (visible en tarjeta y Lightbox)
+          </label>
+          <textarea id="photo-desc-input" rows="2" placeholder="Explicá el acabado, textura y técnica empleada..." class="w-full bg-[#0d0a0f] border border-white/20 focus:border-[#ff3e96] rounded-xl p-3 text-sm text-white placeholder-gray-500 focus:outline-none transition-colors resize-none"></textarea>
+        </div>
+
+        <!-- Origen de la Imagen: Subir archivo o URL existente -->
+        <div class="space-y-3 pt-2 border-t border-white/10">
+          <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8]">
+            Seleccionar Imagen *
+          </label>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <!-- Opción A: Subir desde PC o Celular -->
+            <label class="p-3.5 rounded-2xl bg-[#0d0a0f] border-2 border-dashed border-[#ff3e96]/40 hover:border-[#ff3e96] cursor-pointer flex flex-col items-center justify-center text-center group transition-colors">
+              <span class="material-symbols-outlined text-2xl text-[#ff3e96] group-hover:scale-110 transition-transform">upload_file</span>
+              <span class="text-xs font-bold text-white mt-1">Subir desde dispositivo</span>
+              <span class="text-[10px] text-gray-400">JPG, PNG o WEBP</span>
+              <input type="file" id="photo-file-input" accept="image/*" class="hidden" onchange="handleFileSelected(event)">
+            </label>
+
+            <!-- Opción B: Seleccionar fotos de estudio ya existentes -->
+            <div class="p-3.5 rounded-2xl bg-[#0d0a0f] border border-white/10 flex flex-col justify-center space-y-1.5">
+              <span class="text-[11px] font-bold text-gray-300">O elegir foto de estudio:</span>
+              <select id="photo-preset-select" onchange="handlePresetSelect(this.value)" class="w-full bg-[#161218] border border-white/10 rounded-xl px-2.5 py-1.5 text-xs text-white focus:outline-none">
+                <option value="">-- Fotos de Estudio Disponibles --</option>
+                <option value="images/ej-volumen-hibrido.jpg">Volumen Híbrido Glam (ej-volumen-hibrido.jpg)</option>
+                <option value="images/ej-lifting-botox.jpg">Lifting &amp; Botox Ring Light (ej-lifting-botox.jpg)</option>
+                <option value="images/ej-laminado-cejas.jpg">Laminado Cejas HD (ej-laminado-cejas.jpg)</option>
+                <option value="images/ej-comparativa-real.jpg">Comparativa Real (ej-comparativa-real.jpg)</option>
+                <option value="images/ej-volumen-ruso.jpg">Volumen Ruso 3D-5D (ej-volumen-ruso.jpg)</option>
+                <option value="images/ej-perfil-curvatura.jpg">Perfil Curvatura C/D (ej-perfil-curvatura.jpg)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- URL / Ruta de la Imagen -->
+          <div>
+            <div class="flex items-center justify-between text-[11px] text-gray-400 mb-1">
+              <span>Ruta o URL final de la foto:</span>
+              <span id="upload-status-text" class="text-[#ff3e96] font-bold"></span>
+            </div>
+            <input type="text" id="photo-url-input" required placeholder="images/uploads/foto.jpg o https://..." class="w-full bg-[#0d0a0f] border border-white/20 focus:border-[#ff3e96] rounded-xl px-4 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none font-mono transition-colors" oninput="updateLivePreview()">
+          </div>
+
+          <!-- Vista Previa en Vivo -->
+          <div id="live-preview-box" class="hidden p-3 rounded-2xl bg-[#0d0a0f] border border-[#ff3e96]/30 flex items-center gap-3">
+            <img id="live-preview-img" src="" alt="Preview" class="w-16 h-16 rounded-xl object-cover border border-white/20">
+            <div class="text-xs flex-1 min-w-0">
+              <span class="text-[10px] text-[#ff3e96] font-bold uppercase tracking-wider block" id="live-preview-badge">★ Look Más Pedido</span>
+              <p class="font-bold text-white truncate" id="live-preview-title">Título del Look</p>
+              <p class="text-[11px] text-gray-400 line-clamp-1" id="live-preview-desc">Descripción...</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botones de Acción -->
+        <div class="flex items-center justify-end gap-3 pt-4 border-t border-white/10">
+          <button type="button" onclick="closePhotoModal()" class="px-5 py-2.5 rounded-full bg-white/5 hover:bg-white/10 text-xs font-bold text-gray-300 uppercase tracking-wider transition-colors">
+            Cancelar
+          </button>
+          <button type="submit" id="photo-save-btn" class="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] hover:brightness-110 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#ff2d85]/40 active:scale-95 transition-all flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-base">save</span>
+            <span>Guardar Foto</span>
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
 
   <script>
     let currentFilter = 'all';
     let allAppointments = [];
 
+    // Estado de Galería
+    let currentGalleryCategory = 'all';
+    let allGalleryPhotos = [];
+    let selectedImageFile = null;
+
+    // ================= PESTAÑAS PRINCIPALES =================
+    function switchMainTab(tab) {
+      const tabTurnosBtn = document.getElementById('tab-btn-turnos');
+      const tabGalleryBtn = document.getElementById('tab-btn-gallery');
+      const sectionTurnos = document.getElementById('section-turnos');
+      const sectionGallery = document.getElementById('section-gallery');
+
+      if (tab === 'gallery') {
+        tabTurnosBtn.className = 'px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#161218] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 hover:text-white flex items-center gap-2 transition-all';
+        tabGalleryBtn.className = 'px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#ff2d85] text-white shadow-lg shadow-[#ff2d85]/30 flex items-center gap-2 transition-all';
+        sectionTurnos.classList.add('hidden');
+        sectionGallery.classList.remove('hidden');
+        loadGalleryPhotos();
+      } else {
+        tabTurnosBtn.className = 'px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#ff2d85] text-white shadow-lg shadow-[#ff2d85]/30 flex items-center gap-2 transition-all';
+        tabGalleryBtn.className = 'px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#161218] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 hover:text-white flex items-center gap-2 transition-all';
+        sectionGallery.classList.add('hidden');
+        sectionTurnos.classList.remove('hidden');
+      }
+    }
+
+    // ================= GESTIÓN DE TURNOS =================
     async function loadAppointments() {
       const container = document.getElementById('appointments-container');
       container.innerHTML = `
@@ -334,6 +578,306 @@
       }
     }
 
+    // ================= GESTIÓN DE FOTOS DE EJEMPLO =================
+    async function loadGalleryPhotos() {
+      const container = document.getElementById('gallery-cards-container');
+      container.innerHTML = `
+        <div class="col-span-full py-16 text-center text-gray-400">
+          <span class="material-symbols-outlined text-3xl animate-spin text-[#ff3e96]">progress_activity</span>
+          <p class="text-xs mt-2 font-medium">Cargando fotos de ejemplo...</p>
+        </div>
+      `;
+
+      try {
+        allGalleryPhotos = await window.MicaBackend.gallery.getPhotos();
+        const countBadge = document.getElementById('gallery-badge-count');
+        if (countBadge) countBadge.textContent = allGalleryPhotos.length;
+        renderGalleryCards();
+      } catch (err) {
+        container.innerHTML = `
+          <div class="col-span-full py-10 text-center text-red-400 space-y-2">
+            <span class="material-symbols-outlined text-3xl">error</span>
+            <p class="text-sm">Error al cargar fotos de ejemplo: ${err.message}</p>
+          </div>
+        `;
+      }
+    }
+
+    function filterGalleryCategory(cat) {
+      currentGalleryCategory = cat;
+      ['all', 'volumen', 'lifting', 'cejas', 'comparativa'].forEach(c => {
+        const btn = document.getElementById('gal-flt-' + c);
+        if (btn) {
+          if (c === cat) {
+            btn.className = 'px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-[#ff2d85] text-white shadow transition-all';
+          } else {
+            btn.className = 'px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-[#1e1622] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 transition-all';
+          }
+        }
+      });
+      renderGalleryCards();
+    }
+
+    function renderGalleryCards() {
+      const container = document.getElementById('gallery-cards-container');
+      const shownCountEl = document.getElementById('gallery-shown-count');
+
+      let filtered = allGalleryPhotos;
+      if (currentGalleryCategory !== 'all') {
+        filtered = filtered.filter(p => (p.category || '').toLowerCase() === currentGalleryCategory);
+      }
+
+      if (shownCountEl) shownCountEl.textContent = filtered.length;
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full py-16 text-center text-gray-400 space-y-3">
+            <span class="material-symbols-outlined text-5xl text-[#ff3e96]/40">photo_library</span>
+            <p class="text-sm font-semibold text-gray-300">No hay fotos en esta categoría</p>
+            <button type="button" onclick="openPhotoModal()" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#ff2d85] text-white text-xs font-bold uppercase tracking-wider">
+              <span>+ Agregar la primera</span>
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(photo => {
+        const safeTitle = (photo.title || 'Trabajo de Pestañas').replace(/"/g, '&quot;');
+        const safeDesc = (photo.description || '').replace(/"/g, '&quot;');
+        const safeBadge = (photo.badge || 'Look Más Pedido').replace(/"/g, '&quot;');
+        const safeImg = photo.imageUrl || 'images/ej-volumen-hibrido.jpg';
+
+        return `
+          <div class="rounded-2xl bg-[#161218] border border-white/10 hover:border-[#ff3e96]/60 transition-all shadow-xl overflow-hidden flex flex-col justify-between group">
+            
+            <div>
+              <!-- Imagen Preview fija -->
+              <div class="relative h-60 bg-black overflow-hidden">
+                <img src="${safeImg}" alt="${safeTitle}" class="w-full h-full object-cover">
+                
+                <!-- Badge Superior -->
+                <div class="absolute top-3 left-3 z-10">
+                  <span class="px-3 py-1 rounded-full bg-black/85 border border-[#ff3e96] text-white text-[11px] font-black shadow-md flex items-center gap-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#ff3e96]"></span>
+                    <span>${safeBadge}</span>
+                  </span>
+                </div>
+
+                <!-- Categoría Badge -->
+                <div class="absolute top-3 right-3 z-10">
+                  <span class="px-2.5 py-0.5 rounded-full bg-[#0d0a0f]/90 text-[#ffaed8] text-[10px] font-bold uppercase tracking-wider border border-white/10">
+                    ${photo.category || 'Técnica'}
+                  </span>
+                </div>
+              </div>
+
+              <!-- Info Body -->
+              <div class="p-4 sm:p-5 space-y-1.5">
+                <h3 class="font-display font-bold text-base sm:text-lg text-white group-hover:text-[#ffaed8] transition-colors">
+                  ${photo.title}
+                </h3>
+                <p class="text-xs text-[#d8c4d6] line-clamp-2 leading-relaxed">
+                  ${photo.description || 'Sin descripción detallada.'}
+                </p>
+                <div class="pt-2 text-[10px] font-mono text-gray-500 truncate" title="${safeImg}">
+                  📁 ${safeImg}
+                </div>
+              </div>
+            </div>
+
+            <!-- Botones de Acción (Editar / Eliminar) -->
+            <div class="p-4 pt-0 border-t border-white/5 flex items-center justify-between gap-2 mt-2">
+              <button type="button" onclick="openPhotoModal('${photo.id}')" class="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-[#1e1622] hover:bg-[#ff2d85] text-[#ffaed8] hover:text-white text-xs font-bold transition-all border border-[#ff3e96]/30">
+                <span class="material-symbols-outlined text-sm">edit</span>
+                <span>Editar</span>
+              </button>
+
+              <button type="button" onclick="confirmDeletePhoto('${photo.id}', '${safeTitle}')" class="px-3 py-2 rounded-xl bg-red-600/10 hover:bg-red-600/30 text-red-300 text-xs font-bold transition-all border border-red-500/20" title="Eliminar foto">
+                <span class="material-symbols-outlined text-sm">delete</span>
+              </button>
+            </div>
+
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Modal Control
+    function openPhotoModal(photoId = null) {
+      const modal = document.getElementById('photo-modal');
+      const modalTitle = document.getElementById('photo-modal-title');
+      const editIdInput = document.getElementById('photo-edit-id');
+      const titleInput = document.getElementById('photo-title-input');
+      const badgeInput = document.getElementById('photo-badge-input');
+      const categoryInput = document.getElementById('photo-category-input');
+      const descInput = document.getElementById('photo-desc-input');
+      const urlInput = document.getElementById('photo-url-input');
+      const presetSelect = document.getElementById('photo-preset-select');
+      const uploadStatus = document.getElementById('upload-status-text');
+      const fileInput = document.getElementById('photo-file-input');
+
+      selectedImageFile = null;
+      if (fileInput) fileInput.value = '';
+      if (uploadStatus) uploadStatus.textContent = '';
+      if (presetSelect) presetSelect.value = '';
+
+      if (photoId) {
+        const existing = allGalleryPhotos.find(p => p.id === photoId);
+        if (existing) {
+          modalTitle.textContent = 'Editar Foto de Ejemplo';
+          editIdInput.value = existing.id;
+          titleInput.value = existing.title || '';
+          badgeInput.value = existing.badge || '';
+          categoryInput.value = existing.category || 'volumen';
+          descInput.value = existing.description || '';
+          urlInput.value = existing.imageUrl || '';
+        }
+      } else {
+        modalTitle.textContent = 'Agregar Nueva Foto de Ejemplo';
+        editIdInput.value = '';
+        titleInput.value = '';
+        badgeInput.value = '★ Look Más Pedido';
+        categoryInput.value = 'volumen';
+        descInput.value = '';
+        urlInput.value = 'images/ej-volumen-hibrido.jpg';
+      }
+
+      updateLivePreview();
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closePhotoModal() {
+      const modal = document.getElementById('photo-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function setBadge(text) {
+      document.getElementById('photo-badge-input').value = text;
+      updateLivePreview();
+    }
+
+    function handlePresetSelect(val) {
+      if (!val) return;
+      document.getElementById('photo-url-input').value = val;
+      selectedImageFile = null;
+      document.getElementById('upload-status-text').textContent = 'Foto de estudio seleccionada';
+      updateLivePreview();
+    }
+
+    function handleFileSelected(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      selectedImageFile = file;
+      document.getElementById('upload-status-text').textContent = `Archivo listo: ${file.name}`;
+      
+      // Vista previa local inmediata con FileReader
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        document.getElementById('photo-url-input').value = `[Nuevo archivo: ${file.name}]`;
+        const previewBox = document.getElementById('live-preview-box');
+        const previewImg = document.getElementById('live-preview-img');
+        previewImg.src = e.target.result;
+        previewBox.classList.remove('hidden');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function updateLivePreview() {
+      const title = document.getElementById('photo-title-input').value;
+      const badge = document.getElementById('photo-badge-input').value;
+      const desc = document.getElementById('photo-desc-input').value;
+      const url = document.getElementById('photo-url-input').value;
+
+      const previewBox = document.getElementById('live-preview-box');
+      const previewImg = document.getElementById('live-preview-img');
+      const previewTitle = document.getElementById('live-preview-title');
+      const previewBadge = document.getElementById('live-preview-badge');
+      const previewDesc = document.getElementById('live-preview-desc');
+
+      if (url && !url.startsWith('[Nuevo archivo')) {
+        previewImg.src = url;
+        previewBox.classList.remove('hidden');
+      }
+
+      previewTitle.textContent = title || 'Título del Look';
+      previewBadge.textContent = badge || '★ Look Más Pedido';
+      previewDesc.textContent = desc || 'Descripción del trabajo...';
+    }
+
+    async function handlePhotoFormSubmit(event) {
+      event.preventDefault();
+      const saveBtn = document.getElementById('photo-save-btn');
+      const originalText = saveBtn.innerHTML;
+      saveBtn.disabled = true;
+      saveBtn.innerHTML = `<span class="material-symbols-outlined text-sm animate-spin">progress_activity</span> Guardando...`;
+
+      try {
+        const id = document.getElementById('photo-edit-id').value;
+        const title = document.getElementById('photo-title-input').value.trim();
+        const badge = document.getElementById('photo-badge-input').value.trim() || 'Look Más Pedido';
+        const category = document.getElementById('photo-category-input').value;
+        const description = document.getElementById('photo-desc-input').value.trim();
+        let imageUrl = document.getElementById('photo-url-input').value.trim();
+
+        // Si se seleccionó un archivo nuevo, subirlo al servidor
+        if (selectedImageFile) {
+          imageUrl = await window.MicaBackend.gallery.uploadImage(selectedImageFile);
+        }
+
+        if (!imageUrl || imageUrl.startsWith('[Nuevo archivo')) {
+          throw new Error('Por favor seleccioná o ingresá una imagen válida.');
+        }
+
+        const payload = {
+          title,
+          badge,
+          category,
+          description,
+          imageUrl,
+          isFeatured: true,
+          isHero: category === 'volumen' || category === 'lifting'
+        };
+
+        if (id) {
+          await window.MicaBackend.gallery.updatePhoto(id, payload);
+        } else {
+          await window.MicaBackend.gallery.addPhoto(payload);
+        }
+
+        closePhotoModal();
+        await loadGalleryPhotos();
+      } catch (err) {
+        alert('Error al guardar foto: ' + err.message);
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = originalText;
+      }
+    }
+
+    async function confirmDeletePhoto(id, title) {
+      if (!confirm(`¿Estás segura de eliminar la foto "${title}" de la galería?`)) return;
+      try {
+        await window.MicaBackend.gallery.deletePhoto(id);
+        await loadGalleryPhotos();
+      } catch (err) {
+        alert('Error al eliminar foto: ' + err.message);
+      }
+    }
+
+    async function confirmResetGallery() {
+      if (!confirm('¿Restablecer la galería a las 6 fotos predeterminadas del estudio? Se recuperarán los ejemplos iniciales.')) return;
+      try {
+        await window.MicaBackend.gallery.resetToDefaults();
+        await loadGalleryPhotos();
+      } catch (err) {
+        alert('Error al restablecer: ' + err.message);
+      }
+    }
+
     function handleLogout() {
       window.MicaBackend.auth.logout();
       window.location.href = 'login.html';
@@ -341,6 +885,7 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       loadAppointments();
+      loadGalleryPhotos();
     });
   </script>
 </body>
