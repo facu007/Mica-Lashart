@@ -21,6 +21,7 @@
   "homepage": "https://github.com/facu007/Mica-Lashart#readme",
   "dependencies": {
     "@supabase/supabase-js": "^2.118.0",
-    "dotenv": "^18.0.9"
+    "dotenv": "^18.0.9",
+    "nodemailer": "^10.3.1"
   }
 }

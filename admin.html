@@ -77,17 +77,29 @@
   <!-- ================= MAIN DASHBOARD ================= -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6">
     
-    <!-- Pestañas Principales: Turnos vs Fotos de Ejemplos -->
+    <!-- Pestañas Principales: Turnos, Galería e Historias Instagram -->
     <div class="flex items-center gap-3 border-b border-white/10 pb-4 overflow-x-auto no-scrollbar">
-      <button type="button" id="tab-btn-turnos" onclick="switchMainTab('turnos')" class="px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#ff2d85] text-white shadow-lg shadow-[#ff2d85]/30 flex items-center gap-2 transition-all">
+      <button type="button" id="tab-btn-turnos" onclick="switchMainTab('turnos')" class="px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#ff2d85] text-white shadow-lg shadow-[#ff2d85]/30 flex items-center gap-2 transition-all whitespace-nowrap">
         <span class="material-symbols-outlined text-base">calendar_month</span>
         <span>Turnos &amp; Agenda</span>
       </button>
 
-      <button type="button" id="tab-btn-gallery" onclick="switchMainTab('gallery')" class="px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#161218] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 hover:text-white flex items-center gap-2 transition-all">
+      <button type="button" id="tab-btn-instagram" onclick="switchMainTab('instagram')" class="px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#161218] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 hover:text-white flex items-center gap-2 transition-all whitespace-nowrap">
+        <span class="material-symbols-outlined text-base">publish</span>
+        <span>Subir Horarios &amp; Instagram</span>
+        <span id="published-days-badge" class="hidden px-2 py-0.5 rounded-full bg-[#25D366]/20 text-[#25D366] text-[10px] font-black border border-[#25D366]/40">0</span>
+      </button>
+
+      <button type="button" id="tab-btn-gallery" onclick="switchMainTab('gallery')" class="px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#161218] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 hover:text-white flex items-center gap-2 transition-all whitespace-nowrap">
         <span class="material-symbols-outlined text-base">photo_library</span>
         <span>Fotos de Ejemplos &amp; Galería</span>
         <span id="gallery-badge-count" class="px-2 py-0.5 rounded-full bg-[#ff3e96]/20 text-[#ffaed8] text-[10px] font-black border border-[#ff3e96]/40">6</span>
+      </button>
+
+      <button type="button" id="tab-btn-emails" onclick="switchMainTab('emails')" class="px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#161218] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 hover:text-white flex items-center gap-2 transition-all whitespace-nowrap">
+        <span class="material-symbols-outlined text-base">mail</span>
+        <span>Emails Personalizados</span>
+        <span id="email-provider-pill" class="px-2 py-0.5 rounded-full bg-[#ff3e96]/20 text-[#ffaed8] text-[10px] font-black border border-[#ff3e96]/40">Auto</span>
       </button>
     </div>
 
@@ -100,7 +112,7 @@
             Gestión de Turnos &amp; Agenda
           </h1>
           <p class="text-xs sm:text-sm text-[#d8c4d6] mt-0.5">
-            Control de citas, confirmaciones por WhatsApp y base de clientas sincronizada con Supabase.
+            Control de citas online, estados de agenda y base de clientas sincronizada con Supabase.
           </p>
         </div>
 
@@ -145,6 +157,30 @@
           <span class="text-xs font-bold uppercase text-[#ff6ea7]">Ingresos Estimados</span>
           <p class="font-display text-2xl sm:text-3xl font-black text-white" id="stat-revenue">$0</p>
           <span class="text-[11px] text-[#d8c4d6]">Monto total en ARS</span>
+        </div>
+      </div>
+
+      <!-- Cartelera Rápida: Horarios Subidos & Tachado en Vivo -->
+      <div class="neon-card rounded-3xl bg-[#161218] p-5 sm:p-7 shadow-2xl space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[#ff3e96] text-xl">checklist</span>
+              <h2 class="font-display font-bold text-lg text-white">Horarios Subidos (Tachá a medida que se llenan)</h2>
+            </div>
+            <p class="text-xs text-[#d8c4d6] mt-0.5">
+              Tocá cualquier horario para <strong class="text-[#ffaed8]">tacharlo o habilitarlo al instante</strong> en la web, el turnero y las historias de Instagram.
+            </p>
+          </div>
+
+          <button type="button" onclick="switchMainTab('instagram')" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] hover:brightness-110 text-white text-xs font-bold uppercase tracking-wider shadow-lg shadow-[#ff2d85]/30 active:scale-95 transition-all whitespace-nowrap">
+            <span class="material-symbols-outlined text-sm">add_circle</span>
+            <span>Subir Horarios del Día</span>
+          </button>
+        </div>
+
+        <div id="published-days-quickboard" class="space-y-3">
+          <div class="py-6 text-center text-xs text-gray-400">Cargando horarios publicados...</div>
         </div>
       </div>
 
@@ -225,6 +261,9 @@
           <button type="button" onclick="filterGalleryCategory('volumen')" id="gal-flt-volumen" class="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-[#1e1622] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 transition-all">
             Volumen
           </button>
+          <button type="button" onclick="filterGalleryCategory('clasicas')" id="gal-flt-clasicas" class="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-[#1e1622] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 transition-all">
+            Clásicas
+          </button>
           <button type="button" onclick="filterGalleryCategory('lifting')" id="gal-flt-lifting" class="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-[#1e1622] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 transition-all">
             Lifting
           </button>
@@ -252,6 +291,478 @@
         </div>
       </div>
 
+    </div>
+
+    <!-- ================= SECCIÓN 3: HISTORIAS DE INSTAGRAM & HORARIOS ================= -->
+    <div id="section-instagram" class="hidden space-y-8">
+      <!-- Encabezado -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-3 border-b border-white/10">
+        <div>
+          <h2 class="font-display text-2xl sm:text-3xl font-extrabold text-white flex items-center gap-2.5">
+            <span class="material-symbols-outlined text-[#ff3e96] text-3xl">publish</span>
+            <span>Subir Horarios &amp; Historias Instagram</span>
+          </h2>
+          <p class="text-xs sm:text-sm text-[#d8c4d6] mt-1">
+            Subí los horarios disponibles de cada día, <strong class="text-[#ffaed8]">tachalos con 1 clic a medida que se llenan</strong> y descargá tu historia 9:16 lista para Instagram.
+          </p>
+        </div>
+
+        <button type="button" onclick="refreshInstagramSlotsFromDB(false)" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-[#1e1622] hover:bg-[#271c2b] border border-[#ff3e96]/40 text-xs font-bold text-[#ffaed8] hover:text-white uppercase tracking-wider transition-all active:scale-95">
+          <span class="material-symbols-outlined text-base">sync</span>
+          <span>Sincronizar con Agenda</span>
+        </button>
+      </div>
+
+      <!-- Barra de Días Ya Subidos / Publicados -->
+      <div class="bg-[#161218] rounded-3xl p-4 sm:p-5 border border-[#ff3e96]/30 shadow-xl space-y-3">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-[#25D366] animate-pulse"></span>
+            <h3 class="font-display font-bold text-sm sm:text-base text-white">Días con Horarios Subidos en Vivo</h3>
+          </div>
+          <span class="text-[11px] text-gray-400">Hacé clic en una fecha para editarla, tachar turnos o descargar su historia actualizada</span>
+        </div>
+        <div id="insta-published-days-strip" class="flex flex-wrap gap-2.5">
+          <span class="text-xs text-gray-400 italic">Cargando fechas publicadas...</span>
+        </div>
+      </div>
+
+      <!-- Grid Principal: Controles + Vista Previa 9:16 -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+        <!-- Columna Izquierda: Configuración -->
+        <div class="lg:col-span-7 bg-[#161218] rounded-3xl p-5 sm:p-6 border border-white/10 shadow-xl space-y-5">
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Selector de Fecha -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between gap-2">
+                <label for="insta-date" class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8]">
+                  1. Fecha a subir / gestionar
+                </label>
+                <span id="insta-publish-status-pill" class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-white/10 text-gray-300">Cargando...</span>
+              </div>
+              <input type="date" id="insta-date" onchange="onInstaDateChange()" class="w-full bg-[#0d0a0f] border border-white/20 focus:border-[#ff3e96] rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none transition-colors">
+              <div class="flex flex-wrap gap-1.5">
+                <button type="button" onclick="selectQuickInstaDate(0)" class="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-white/5 hover:bg-[#ff2d85]/25 text-[#d8c4d6] hover:text-white border border-white/10 transition-colors">Hoy</button>
+                <button type="button" onclick="selectQuickInstaDate(1)" class="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-white/5 hover:bg-[#ff2d85]/25 text-[#d8c4d6] hover:text-white border border-white/10 transition-colors">Mañana</button>
+                <button type="button" onclick="selectQuickInstaDate(2)" class="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-white/5 hover:bg-[#ff2d85]/25 text-[#d8c4d6] hover:text-white border border-white/10 transition-colors">Pasado mañana</button>
+              </div>
+            </div>
+
+            <!-- Intervalo de Bloques -->
+            <div class="space-y-2">
+              <label for="insta-interval" class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8]">
+                Plantilla base de horarios
+              </label>
+              <select id="insta-interval" onchange="onInstaIntervalTemplateChange()" class="w-full bg-[#0d0a0f] border border-white/20 focus:border-[#ff3e96] rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none transition-colors">
+                <option value="60">Cada 60 min (Cronograma clásico)</option>
+                <option value="90">Cada 90 min (Turnos largos)</option>
+                <option value="studio">Franjas fijas del Turnero Online</option>
+              </select>
+              <p class="text-[11px] text-gray-400">Podés generar con plantilla o sumar horarios puntuales abajo.</p>
+            </div>
+          </div>
+
+          <!-- GESTIÓN DE HORARIOS DEL DÍA (SUBIR + TACHAR EN VIVO + AGREGAR HORARIO) -->
+          <div class="p-4 rounded-2xl bg-[#0d0a0f]/90 border border-[#ff3e96]/40 space-y-3.5">
+            <div class="flex items-center justify-between flex-wrap gap-2">
+              <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-[#ffaed8] block">
+                  2. Horarios del día • Tachá a medida que se llenan
+                </span>
+                <span class="text-[11px] text-gray-400">
+                  Tocá un horario para <strong class="text-white">tacharlo (ocupado)</strong> o <strong class="text-[#25D366]">liberarlo</strong>. Se guarda en vivo.
+                </span>
+              </div>
+              <span id="insta-slots-summary" class="text-[11px] font-semibold text-[#25D366]">Cargando...</span>
+            </div>
+
+            <div id="insta-slots-chips" class="flex flex-wrap gap-2">
+              <!-- Chips generados dinámicamente -->
+            </div>
+
+            <!-- Agregar horario personalizado + Subir/Publicar -->
+            <div class="pt-3 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div class="flex items-center gap-2">
+                <input type="time" id="custom-slot-time" value="10:30" class="bg-[#161218] border border-white/20 focus:border-[#ff3e96] rounded-xl px-3 py-2 text-xs text-white focus:outline-none">
+                <button type="button" onclick="addCustomInstaSlot()" class="inline-flex items-center gap-1 px-3.5 py-2 rounded-xl bg-[#1e1622] hover:bg-[#ff2d85]/30 border border-[#ff3e96]/40 text-xs font-bold text-[#ffaed8] hover:text-white transition-all">
+                  <span class="material-symbols-outlined text-sm">add</span>
+                  <span>Sumar horario</span>
+                </button>
+              </div>
+
+              <div class="flex items-center gap-2 flex-wrap">
+                <button type="button" id="unpublish-day-btn" onclick="unpublishCurrentInstaDay()" class="hidden px-3.5 py-2.5 rounded-full bg-red-500/15 hover:bg-red-500/25 border border-red-500/30 text-red-300 text-[11px] font-bold uppercase tracking-wider transition-all">
+                  Quitar del Sitio
+                </button>
+                <button type="button" id="publish-day-btn" onclick="publishCurrentInstaDay()" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#25D366] to-[#1da851] hover:brightness-110 text-[#07130b] font-extrabold text-xs uppercase tracking-wider shadow-lg shadow-[#25D366]/25 active:scale-95 transition-all">
+                  <span class="material-symbols-outlined text-base">cloud_upload</span>
+                  <span id="publish-day-btn-label">Subir Horarios a la Web</span>
+                </button>
+              </div>
+            </div>
+
+            <div id="insta-live-toast" class="hidden text-[11px] font-bold text-[#25D366] flex items-center gap-1.5 pt-0.5">
+              <span class="material-symbols-outlined text-sm">check_circle</span>
+              <span id="insta-live-toast-text">Cambios sincronizados en vivo.</span>
+            </div>
+          </div>
+
+          <!-- Foto de Fondo -->
+          <div class="space-y-2.5 pt-2 border-t border-white/10">
+            <div class="flex items-center justify-between">
+              <label for="insta-bg-file" class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8]">
+                3. Foto de fondo para Historia (opcional)
+              </label>
+              <button type="button" onclick="clearInstaBg()" class="text-[11px] text-gray-400 hover:text-[#ff6ea7] underline">
+                Quitar foto y usar degradado
+              </button>
+            </div>
+            <input type="file" id="insta-bg-file" accept="image/*" onchange="onInstaFileChange(event)" class="w-full text-xs text-gray-300 file:mr-3 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-[#ff2d85]/20 file:text-[#ffaed8] hover:file:bg-[#ff2d85]/30 cursor-pointer bg-[#0d0a0f] rounded-xl p-2 border border-white/15">
+            
+            <!-- Fondos rápidos del estudio -->
+            <div class="flex flex-wrap items-center gap-2 pt-1">
+              <span class="text-[11px] text-gray-400">O elegí foto del estudio:</span>
+              <button type="button" onclick="setStudioInstaBg('images/studio-ambiance-vip.jpg')" class="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-white/5 hover:bg-[#ff2d85]/25 text-[#d8c4d6] hover:text-white border border-white/10 transition-colors">✨ Estudio VIP</button>
+              <button type="button" onclick="setStudioInstaBg('images/ej-volumen-hibrido.jpg')" class="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-white/5 hover:bg-[#ff2d85]/25 text-[#d8c4d6] hover:text-white border border-white/10 transition-colors">👁️ Volumen Glam</button>
+              <button type="button" onclick="setStudioInstaBg('images/ej-lifting-botox.jpg')" class="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-white/5 hover:bg-[#ff2d85]/25 text-[#d8c4d6] hover:text-white border border-white/10 transition-colors">🌿 Lifting</button>
+            </div>
+          </div>
+
+          <!-- Fondo Predefinido + Sliders -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2 border-t border-white/10">
+            <div>
+              <label for="insta-bg-preset" class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1.5">
+                4. Estilo de fondo
+              </label>
+              <select id="insta-bg-preset" onchange="renderInstagramCanvas()" class="w-full bg-[#0d0a0f] border border-white/20 focus:border-[#ff3e96] rounded-xl px-3 py-2.5 text-xs sm:text-sm text-white focus:outline-none transition-colors">
+                <option value="mica-neon">Mica Glam Oscuro &amp; Rosa</option>
+                <option value="luxury-dark">Oscuro Elegante (Vasca)</option>
+                <option value="rose-gold">Rose Gold</option>
+                <option value="warm-nude">Nude Cálido</option>
+                <option value="soft-brown">Marrón Suave</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="insta-bg-blur" class="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1.5">
+                <span>Desenfoque</span>
+                <span id="insta-blur-val" class="text-white/70 font-mono text-[11px]">15px</span>
+              </label>
+              <input type="range" id="insta-bg-blur" min="0" max="30" value="15" oninput="document.getElementById('insta-blur-val').textContent = this.value + 'px'; renderInstagramCanvas();" class="w-full accent-[#ff2d85] cursor-pointer mt-2">
+            </div>
+
+            <div>
+              <label for="insta-bg-darken" class="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1.5">
+                <span>Oscurecer</span>
+                <span id="insta-darken-val" class="text-white/70 font-mono text-[11px]">40%</span>
+              </label>
+              <input type="range" id="insta-bg-darken" min="0" max="90" value="40" oninput="document.getElementById('insta-darken-val').textContent = this.value + '%'; renderInstagramCanvas();" class="w-full accent-[#ff2d85] cursor-pointer mt-2">
+            </div>
+          </div>
+
+          <!-- Botones de Descarga / Copiar / Compartir -->
+          <div class="pt-4 border-t border-white/10 flex flex-wrap items-center gap-3">
+            <button type="button" onclick="downloadInstagramStory()" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] hover:brightness-110 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#ff2d85]/40 active:scale-95 transition-all">
+              <span class="material-symbols-outlined text-base">download</span>
+              <span>Descargar Imagen (PNG)</span>
+            </button>
+
+            <button type="button" id="copy-insta-btn" onclick="copyInstagramStory()" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-[#1e1622] hover:bg-[#271c2b] border border-white/15 text-white font-bold text-xs uppercase tracking-wider active:scale-95 transition-all">
+              <span class="material-symbols-outlined text-base">content_copy</span>
+              <span id="copy-insta-label">Copiar al Portapapeles</span>
+            </button>
+
+            <button type="button" onclick="shareInstagramStory()" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-[#ffaed8] font-bold text-xs uppercase tracking-wider active:scale-95 transition-all" title="Compartir directo desde el celular a Instagram Stories">
+              <span class="material-symbols-outlined text-base">ios_share</span>
+              <span>Compartir</span>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Columna Derecha: Vista Previa 9:16 -->
+        <div class="lg:col-span-5 flex flex-col items-center">
+          <div class="w-full max-w-[320px] rounded-[28px] overflow-hidden border-2 border-[#ff3e96]/40 shadow-2xl shadow-[#ff2d85]/20 bg-[#0d0a0f]" style="aspect-ratio: 9 / 16;">
+            <canvas id="instagram-canvas" width="1080" height="1920" class="w-full h-full block"></canvas>
+          </div>
+          <p class="text-[11px] text-gray-400 mt-3 text-center">
+            Resolución real exportada: <strong class="text-white">1080 × 1920 px (Full HD Stories)</strong>
+          </p>
+        </div>
+
+      </div>
+
+      <!-- ================= PANEL DE HORARIOS SEMANALES DE TRABAJO ================= -->
+      <div class="bg-[#161218] rounded-3xl p-5 sm:p-6 border border-white/10 shadow-xl space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-white/10">
+          <div>
+            <h3 class="font-display text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+              <span class="material-symbols-outlined text-[#ff3e96]">schedule</span>
+              <span>Horarios de Trabajo Semanales</span>
+            </h3>
+            <p class="text-xs text-[#d8c4d6] mt-0.5">
+              Configurá los días que atendés, hora de apertura/cierre y corte de almuerzo. Esto alimenta las historias de Instagram.
+            </p>
+          </div>
+
+          <button type="button" id="save-schedule-btn" onclick="saveWeeklySchedule()" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] hover:brightness-110 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#ff2d85]/30 active:scale-95 transition-all">
+            <span class="material-symbols-outlined text-base">save</span>
+            <span>Guardar Horarios</span>
+          </button>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse min-w-[640px]">
+            <thead>
+              <tr class="border-b border-white/10 text-[11px] font-bold uppercase tracking-wider text-[#ffaed8]">
+                <th class="py-2.5 px-3">Día</th>
+                <th class="py-2.5 px-3">¿Trabaja?</th>
+                <th class="py-2.5 px-3">Hora Inicio</th>
+                <th class="py-2.5 px-3">Hora Fin</th>
+                <th class="py-2.5 px-3">Inicio Almuerzo</th>
+                <th class="py-2.5 px-3">Fin Almuerzo</th>
+              </tr>
+            </thead>
+            <tbody id="weekly-schedule-tbody" class="divide-y divide-white/5 text-xs sm:text-sm text-white">
+              <!-- Renderizado dinámicamente -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ================= SECCIÓN 4: EMAILS PERSONALIZADOS (RESERVA & CANCELACIÓN) ================= -->
+    <div id="section-emails" class="hidden space-y-6">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-3 border-b border-white/10">
+        <div>
+          <h1 class="font-display text-2xl sm:text-3xl font-extrabold text-white flex items-center gap-2">
+            <span>Emails Personalizados de Turnos</span>
+            <span class="text-[#ff3e96] text-lg">♡</span>
+          </h1>
+          <p class="text-xs sm:text-sm text-[#d8c4d6] mt-0.5">
+            Personalizá el diseño y texto automático que recibe cada clienta al <strong>reservar</strong> o al <strong>cancelar</strong> un turno.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-2 flex-wrap">
+          <span id="email-status-banner" class="px-3.5 py-1.5 rounded-full bg-[#1e1622] border border-[#ff3e96]/40 text-xs font-bold text-[#ffaed8]">
+            Verificando motor de correo...
+          </span>
+          <button type="button" id="btn-save-email-templates" onclick="saveCustomEmailTemplates()" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] hover:brightness-110 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#ff2d85]/40 active:scale-95 transition-all">
+            <span class="material-symbols-outlined text-base">save</span>
+            <span>Guardar Plantillas</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Variables Dinámicas Disponibles -->
+      <div class="p-4 rounded-2xl bg-[#161218] border border-white/10 flex flex-wrap items-center gap-2 text-xs">
+        <span class="font-bold text-[#ffaed8] mr-1">Variables automáticas (clic para copiar):</span>
+        <button type="button" onclick="copyEmailVar('{{nombre}}')" class="px-2.5 py-1 rounded-lg bg-[#0d0a0f] hover:bg-[#ff2d85]/20 border border-[#ff3e96]/30 font-mono text-[#ffaed8]">{{nombre}}</button>
+        <button type="button" onclick="copyEmailVar('{{primer_nombre}}')" class="px-2.5 py-1 rounded-lg bg-[#0d0a0f] hover:bg-[#ff2d85]/20 border border-[#ff3e96]/30 font-mono text-[#ffaed8]">{{primer_nombre}}</button>
+        <button type="button" onclick="copyEmailVar('{{servicio}}')" class="px-2.5 py-1 rounded-lg bg-[#0d0a0f] hover:bg-[#ff2d85]/20 border border-[#ff3e96]/30 font-mono text-[#ffaed8]">{{servicio}}</button>
+        <button type="button" onclick="copyEmailVar('{{fecha}}')" class="px-2.5 py-1 rounded-lg bg-[#0d0a0f] hover:bg-[#ff2d85]/20 border border-[#ff3e96]/30 font-mono text-[#ffaed8]">{{fecha}}</button>
+        <button type="button" onclick="copyEmailVar('{{hora}}')" class="px-2.5 py-1 rounded-lg bg-[#0d0a0f] hover:bg-[#ff2d85]/20 border border-[#ff3e96]/30 font-mono text-[#ffaed8]">{{hora}}</button>
+        <button type="button" onclick="copyEmailVar('{{precio}}')" class="px-2.5 py-1 rounded-lg bg-[#0d0a0f] hover:bg-[#ff2d85]/20 border border-[#ff3e96]/30 font-mono text-[#ffaed8]">{{precio}}</button>
+        <button type="button" onclick="copyEmailVar('{{ubicacion}}')" class="px-2.5 py-1 rounded-lg bg-[#0d0a0f] hover:bg-[#ff2d85]/20 border border-[#ff3e96]/30 font-mono text-[#ffaed8]">{{ubicacion}}</button>
+        <span id="copy-var-feedback" class="text-[11px] text-[#25D366] font-bold ml-2"></span>
+      </div>
+
+      <!-- Editor + Vista Previa en Vivo -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <!-- Columna Izquierda: Formularios de Plantillas y SMTP -->
+        <div class="lg:col-span-6 space-y-6">
+          <!-- Selector de Plantilla a Editar -->
+          <div class="bg-[#161218] rounded-3xl p-5 sm:p-6 border border-white/10 shadow-xl space-y-5">
+            <div class="flex items-center justify-between gap-2 border-b border-white/10 pb-3">
+              <div class="flex items-center gap-2">
+                <button type="button" id="tpl-tab-booking" onclick="switchEmailTemplateEditor('booking')" class="px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider bg-[#ff2d85] text-white shadow">
+                  ✨ Email de Reserva
+                </button>
+                <button type="button" id="tpl-tab-cancellation" onclick="switchEmailTemplateEditor('cancellation')" class="px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider bg-[#0d0a0f] text-[#d8c4d6] border border-white/10">
+                  🌸 Email de Cancelación
+                </button>
+              </div>
+            </div>
+
+            <!-- Campos Plantilla RESERVA -->
+            <div id="editor-booking-fields" class="space-y-4">
+              <label class="flex items-center gap-2.5 cursor-pointer text-xs font-bold text-white">
+                <input type="checkbox" id="tpl-booking-enabled" checked onchange="scheduleEmailPreviewRefresh()" class="accent-[#ff2d85] w-4 h-4">
+                <span>Enviar email automáticamente cada vez que una clienta reserve turno</span>
+              </label>
+
+              <div class="space-y-1">
+                <label class="text-[11px] font-bold uppercase tracking-wider text-[#ffaed8]">Asunto del Correo (Reserva)</label>
+                <input type="text" id="tpl-booking-subject" oninput="scheduleEmailPreviewRefresh()" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-[#ff3e96]">
+              </div>
+
+              <div class="space-y-1">
+                <label class="text-[11px] font-bold uppercase tracking-wider text-[#ffaed8]">Título Principal</label>
+                <input type="text" id="tpl-booking-heading" oninput="scheduleEmailPreviewRefresh()" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-[#ff3e96]">
+              </div>
+
+              <div class="space-y-1">
+                <label class="text-[11px] font-bold uppercase tracking-wider text-[#ffaed8]">Mensaje de Bienvenida</label>
+                <textarea id="tpl-booking-intro" rows="3" oninput="scheduleEmailPreviewRefresh()" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-[#ff3e96]"></textarea>
+              </div>
+
+              <div class="space-y-1">
+                <label class="text-[11px] font-bold uppercase tracking-wider text-[#ffaed8]">Indicaciones Pre-Turno (Cuidados / Tolerancia / Seña)</label>
+                <textarea id="tpl-booking-tips" rows="4" oninput="scheduleEmailPreviewRefresh()" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-[#ff3e96]"></textarea>
+              </div>
+
+              <div class="space-y-1">
+                <label class="text-[11px] font-bold uppercase tracking-wider text-[#ffaed8]">Despedida al Pie</label>
+                <input type="text" id="tpl-booking-footer" oninput="scheduleEmailPreviewRefresh()" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-[#ff3e96]">
+              </div>
+            </div>
+
+            <!-- Campos Plantilla CANCELACIÓN -->
+            <div id="editor-cancellation-fields" class="hidden space-y-4">
+              <label class="flex items-center gap-2.5 cursor-pointer text-xs font-bold text-white">
+                <input type="checkbox" id="tpl-cancel-enabled" checked onchange="scheduleEmailPreviewRefresh()" class="accent-[#ff2d85] w-4 h-4">
+                <span>Enviar email automáticamente al cancelar un turno (clienta o admin)</span>
+              </label>
+
+              <div class="space-y-1">
+                <label class="text-[11px] font-bold uppercase tracking-wider text-[#ffaed8]">Asunto del Correo (Cancelación)</label>
+                <input type="text" id="tpl-cancel-subject" oninput="scheduleEmailPreviewRefresh()" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-[#ff3e96]">
+              </div>
+
+              <div class="space-y-1">
+                <label class="text-[11px] font-bold uppercase tracking-wider text-[#ffaed8]">Título Principal</label>
+                <input type="text" id="tpl-cancel-heading" oninput="scheduleEmailPreviewRefresh()" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-[#ff3e96]">
+              </div>
+
+              <div class="space-y-1">
+                <label class="text-[11px] font-bold uppercase tracking-wider text-[#ffaed8]">Mensaje de Confirmación de Cancelación</label>
+                <textarea id="tpl-cancel-intro" rows="3" oninput="scheduleEmailPreviewRefresh()" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-[#ff3e96]"></textarea>
+              </div>
+
+              <div class="space-y-1">
+                <label class="text-[11px] font-bold uppercase tracking-wider text-[#ffaed8]">Invitación a Reprogramar</label>
+                <textarea id="tpl-cancel-rebook" rows="3" oninput="scheduleEmailPreviewRefresh()" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-[#ff3e96]"></textarea>
+              </div>
+
+              <div class="space-y-1">
+                <label class="text-[11px] font-bold uppercase tracking-wider text-[#ffaed8]">Despedida al Pie</label>
+                <input type="text" id="tpl-cancel-footer" oninput="scheduleEmailPreviewRefresh()" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-[#ff3e96]">
+              </div>
+            </div>
+
+            <div class="pt-3 border-t border-white/10 grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div class="space-y-1">
+                <label class="text-[11px] font-bold uppercase tracking-wider text-gray-400">Ubicación mostrada en el correo</label>
+                <input type="text" id="tpl-studio-location" oninput="scheduleEmailPreviewRefresh()" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#ff3e96]">
+              </div>
+              <div class="flex items-end pb-1">
+                <label class="flex items-center gap-2 cursor-pointer text-xs text-[#d8c4d6]">
+                  <input type="checkbox" id="tpl-notify-admin" checked class="accent-[#ff2d85] w-4 h-4">
+                  <span>Enviarme copia de aviso al correo del estudio</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Configuración de Envío Real (Gmail SMTP / Resend) -->
+          <div class="bg-[#161218] rounded-3xl p-5 sm:p-6 border border-white/10 shadow-xl space-y-4">
+            <div class="flex items-center justify-between gap-2 border-b border-white/10 pb-3">
+              <div>
+                <h3 class="font-display font-bold text-base sm:text-lg text-white flex items-center gap-2">
+                  <span class="material-symbols-outlined text-[#ff3e96]">settings_ethernet</span>
+                  <span>Conexión de Correo Saliente (Gmail SMTP / Resend)</span>
+                </h3>
+                <p class="text-[11px] text-[#d8c4d6] mt-0.5">
+                  Usá tu cuenta de Gmail con una <strong>Contraseña de Aplicación de 16 letras</strong> (Google Account &gt; Seguridad &gt; Contraseñas de aplicaciones) para envío directo a la bandeja de tus clientas.
+                </p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              <div class="space-y-1">
+                <label class="text-[11px] font-bold uppercase text-[#ffaed8]">Tu Correo Gmail / Usuario SMTP</label>
+                <input type="email" id="smtp-user-input" placeholder="micalashart@gmail.com" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-[#ff3e96]">
+              </div>
+              <div class="space-y-1">
+                <label class="text-[11px] font-bold uppercase text-[#ffaed8]">Contraseña de Aplicación Gmail</label>
+                <input type="password" id="smtp-pass-input" placeholder="xxxx xxxx xxxx xxxx" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-[#ff3e96]">
+              </div>
+              <div class="space-y-1">
+                <label class="text-[11px] font-bold uppercase text-gray-400">Servidor SMTP</label>
+                <input type="text" id="smtp-host-input" value="smtp.gmail.com" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-[#ff3e96]">
+              </div>
+              <div class="space-y-1">
+                <label class="text-[11px] font-bold uppercase text-gray-400">Puerto SMTP</label>
+                <input type="number" id="smtp-port-input" value="465" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-[#ff3e96]">
+              </div>
+              <div class="space-y-1 sm:col-span-2">
+                <label class="text-[11px] font-bold uppercase text-gray-400">Email del Admin (para recibir alertas de reservas)</label>
+                <input type="email" id="smtp-admin-email-input" placeholder="micalashart@gmail.com" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-[#ff3e96]">
+              </div>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
+              <button type="button" id="btn-save-smtp" onclick="saveSmtpConfiguration()" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#1e1622] hover:bg-[#ff2d85] text-[#ffaed8] hover:text-white border border-[#ff3e96]/50 text-xs font-bold uppercase tracking-wider transition-all">
+                <span class="material-symbols-outlined text-sm">key</span>
+                <span>Guardar Conexión de Correo</span>
+              </button>
+              <span id="smtp-save-feedback" class="text-xs font-bold text-[#25D366]"></span>
+            </div>
+
+            <!-- Probador Instantáneo -->
+            <div class="pt-4 border-t border-white/10 space-y-2.5">
+              <label class="text-xs font-bold text-white block">Enviar un Correo de Prueba Ahora:</label>
+              <div class="flex flex-col sm:flex-row gap-2">
+                <input type="email" id="test-email-to" placeholder="Ingresá un email para probar..." class="flex-1 bg-[#0d0a0f] border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-[#ff3e96]">
+                <button type="button" onclick="triggerTestEmail('booking')" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] text-white text-xs font-bold whitespace-nowrap hover:brightness-110">
+                  Probar Reserva
+                </button>
+                <button type="button" onclick="triggerTestEmail('cancellation')" class="px-4 py-2.5 rounded-xl bg-[#29141e] border border-rose-400/40 text-rose-200 text-xs font-bold whitespace-nowrap hover:bg-rose-600/30">
+                  Probar Cancelación
+                </button>
+              </div>
+              <div id="test-email-result" class="text-xs text-[#ffaed8]"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Columna Derecha: Vista Previa Real en Vivo + Historial -->
+        <div class="lg:col-span-6 space-y-6">
+          <div class="bg-[#161218] rounded-3xl p-4 sm:p-5 border border-[#ff3e96]/40 shadow-2xl space-y-3">
+            <div class="flex items-center justify-between gap-2">
+              <div>
+                <span class="text-[11px] font-bold uppercase tracking-wider text-[#ff6ea7]">Vista Previa en Vivo</span>
+                <p id="email-preview-subject" class="text-xs sm:text-sm font-bold text-white truncate max-w-md mt-0.5">Cargando asunto...</p>
+              </div>
+              <span class="px-2.5 py-1 rounded-full bg-[#ff2d85]/20 text-[#ffaed8] text-[10px] font-black uppercase" id="email-preview-badge">Reserva</span>
+            </div>
+
+            <div class="rounded-2xl overflow-hidden border border-white/10 bg-[#0d0a0f]">
+              <iframe id="email-live-preview-frame" title="Vista previa del email personalizado" class="w-full h-[540px] bg-[#0d0a0f]"></iframe>
+            </div>
+          </div>
+
+          <!-- Historial de Últimos Emails Enviados -->
+          <div class="bg-[#161218] rounded-3xl p-5 border border-white/10 shadow-xl space-y-3">
+            <div class="flex items-center justify-between">
+              <h3 class="font-display font-bold text-sm sm:text-base text-white flex items-center gap-2">
+                <span class="material-symbols-outlined text-[#ff3e96] text-lg">history</span>
+                <span>Últimos Correos Generados / Enviados</span>
+              </h3>
+              <button type="button" onclick="loadEmailSettingsSection()" class="text-xs text-[#ffaed8] hover:underline flex items-center gap-1">
+                <span class="material-symbols-outlined text-sm">refresh</span> Actualizar
+              </button>
+            </div>
+            <div id="email-logs-list" class="space-y-2 max-h-64 overflow-y-auto pr-1 text-xs text-gray-400">
+              <p class="italic py-3 text-center">Todavía no hay envíos registrados.</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
   </main>
@@ -400,22 +911,28 @@
 
     // ================= PESTAÑAS PRINCIPALES =================
     function switchMainTab(tab) {
-      const tabTurnosBtn = document.getElementById('tab-btn-turnos');
-      const tabGalleryBtn = document.getElementById('tab-btn-gallery');
-      const sectionTurnos = document.getElementById('section-turnos');
-      const sectionGallery = document.getElementById('section-gallery');
+      const activeCls = 'px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#ff2d85] text-white shadow-lg shadow-[#ff2d85]/30 flex items-center gap-2 transition-all whitespace-nowrap';
+      const inactiveCls = 'px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#161218] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 hover:text-white flex items-center gap-2 transition-all whitespace-nowrap';
+
+      const tabs = ['turnos', 'instagram', 'gallery', 'emails'];
+      tabs.forEach(t => {
+        const btn = document.getElementById('tab-btn-' + t);
+        const sec = document.getElementById('section-' + t);
+        if (btn) btn.className = (t === tab) ? activeCls : inactiveCls;
+        if (sec) {
+          if (t === tab) sec.classList.remove('hidden');
+          else sec.classList.add('hidden');
+        }
+      });
 
       if (tab === 'gallery') {
-        tabTurnosBtn.className = 'px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#161218] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 hover:text-white flex items-center gap-2 transition-all';
-        tabGalleryBtn.className = 'px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#ff2d85] text-white shadow-lg shadow-[#ff2d85]/30 flex items-center gap-2 transition-all';
-        sectionTurnos.classList.add('hidden');
-        sectionGallery.classList.remove('hidden');
         loadGalleryPhotos();
+      } else if (tab === 'instagram') {
+        initInstagramSection();
+      } else if (tab === 'emails') {
+        loadEmailSettingsSection();
       } else {
-        tabTurnosBtn.className = 'px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#ff2d85] text-white shadow-lg shadow-[#ff2d85]/30 flex items-center gap-2 transition-all';
-        tabGalleryBtn.className = 'px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#161218] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 hover:text-white flex items-center gap-2 transition-all';
-        sectionGallery.classList.add('hidden');
-        sectionTurnos.classList.remove('hidden');
+        loadAppointments();
       }
     }
 
@@ -542,6 +1059,13 @@
                 </a>
               ` : ''}
 
+              ${app.clientEmail ? `
+                <button type="button" onclick="resendEmailForTurn('${app.id}', '${app.status}')" class="p-2 sm:px-3 sm:py-2 rounded-xl bg-[#1e1622] hover:bg-[#ff2d85]/30 text-[#ffaed8] border border-[#ff3e96]/30 text-xs font-bold flex items-center gap-1 transition-all" title="Reenviar email personalizado a ${app.clientEmail}">
+                  <span class="material-symbols-outlined text-base">forward_to_inbox</span>
+                  <span class="hidden sm:inline">Email</span>
+                </button>
+              ` : ''}
+
               ${app.status !== 'confirmed' ? `
                 <button type="button" onclick="changeStatus('${app.id}', 'confirmed')" class="px-3 py-2 rounded-xl bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] text-white text-xs font-bold uppercase tracking-wider hover:brightness-110 active:scale-95 transition-all">
                   Confirmar
@@ -567,14 +1091,46 @@
     }
 
     async function changeStatus(id, newStatus) {
+      let cancelReason = '';
+      if (newStatus === 'cancelled') {
+        const targetApp = allAppointments.find(a => a.id === id);
+        const promptMsg = targetApp && targetApp.clientEmail
+          ? `Se cancelará el turno y se enviará un email personalizado a ${targetApp.clientEmail}.\n\nMotivo opcional para incluir en el correo (o dejá vacío):`
+          : '¿Confirmás cancelar este turno? Motivo opcional:';
+        const userReason = prompt(promptMsg, '');
+        if (userReason === null) return; // Canceló el cuadro de diálogo
+        cancelReason = userReason.trim();
+      }
+
       try {
-        await window.MicaBackend.admin.updateAppointmentStatus(id, newStatus);
+        await window.MicaBackend.admin.updateAppointmentStatus(id, newStatus, {
+          cancelledBy: 'admin',
+          cancelReason
+        });
         const item = allAppointments.find(a => a.id === id);
         if (item) item.status = newStatus;
         updateStats();
         renderFiltered();
+        loadPublishedDaysBoard();
       } catch (e) {
         alert('Error al actualizar turno: ' + e.message);
+      }
+    }
+
+    async function resendEmailForTurn(id, currentStatus) {
+      const type = currentStatus === 'cancelled' ? 'cancellation' : 'booking';
+      try {
+        const res = await window.MicaBackend.emails.resendForAppointment(id, type);
+        const info = res.emailNotification || {};
+        if (info.sent) {
+          alert(`¡Email de ${type === 'cancellation' ? 'cancelación' : 'reserva'} enviado con éxito a ${info.to}!`);
+        } else if (info.previewUrl) {
+          window.open(info.previewUrl, '_blank');
+        } else {
+          alert(`Comprobante generado para ${info.to || 'la clienta'} (Modo Vista Previa activo; configurá Gmail SMTP en la pestaña Emails Personalizados para envío directo).`);
+        }
+      } catch (e) {
+        alert('No se pudo reenviar el correo: ' + e.message);
       }
     }
 
@@ -605,7 +1161,7 @@
 
     function filterGalleryCategory(cat) {
       currentGalleryCategory = cat;
-      ['all', 'volumen', 'lifting', 'cejas', 'comparativa'].forEach(c => {
+      ['all', 'volumen', 'clasicas', 'lifting', 'cejas', 'comparativa'].forEach(c => {
         const btn = document.getElementById('gal-flt-' + c);
         if (btn) {
           if (c === cat) {
@@ -878,14 +1434,1106 @@
       }
     }
 
+    // ================= SUBIR HORARIOS, TACHAR EN VIVO & HISTORIAS INSTAGRAM =================
+    let instaInitialized = false;
+    let instaCustomBgImage = null;
+    let publishedDaysCache = [];
+    let liveToastTimer = null;
+    let instaDayState = {
+      date: '',
+      isOpen: true,
+      isPublished: false,
+      slots: [] // [{ time: '10:00', crossedOut: false, autoBooked: false, isBooked: false }]
+    };
+
+    const WEEK_DAYS_ORDER = [
+      { day: 1, name: 'Lunes' },
+      { day: 2, name: 'Martes' },
+      { day: 3, name: 'Miércoles' },
+      { day: 4, name: 'Jueves' },
+      { day: 5, name: 'Viernes' },
+      { day: 6, name: 'Sábado' },
+      { day: 0, name: 'Domingo' }
+    ];
+
+    function formatShortSpanishDate(dateStr) {
+      if (!dateStr) return '';
+      const [y, m, d] = dateStr.split('-').map(Number);
+      const dt = new Date(y, m - 1, d, 12, 0, 0);
+      const raw = dt.toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'short' });
+      return raw.charAt(0).toUpperCase() + raw.slice(1);
+    }
+
+    function showInstaLiveToast(msg) {
+      const box = document.getElementById('insta-live-toast');
+      const txt = document.getElementById('insta-live-toast-text');
+      if (!box || !txt) return;
+      txt.textContent = msg;
+      box.classList.remove('hidden');
+      if (liveToastTimer) clearTimeout(liveToastTimer);
+      liveToastTimer = setTimeout(() => box.classList.add('hidden'), 2800);
+    }
+
+    async function loadPublishedDaysBoard() {
+      try {
+        publishedDaysCache = await window.MicaBackend.schedules.getPublishedDays(true);
+      } catch (e) {
+        publishedDaysCache = [];
+      }
+
+      // Badge en pestaña superior
+      const badge = document.getElementById('published-days-badge');
+      if (badge) {
+        badge.textContent = publishedDaysCache.length;
+        badge.classList.toggle('hidden', publishedDaysCache.length === 0);
+      }
+
+      // 1. Renderizar Cartelera Rápida en Pestaña 1 (Turnos & Agenda)
+      const quickBoard = document.getElementById('published-days-quickboard');
+      if (quickBoard) {
+        if (!publishedDaysCache.length) {
+          quickBoard.innerHTML = `
+            <div class="p-5 rounded-2xl bg-[#0d0a0f]/80 border border-dashed border-white/15 text-center space-y-2">
+              <p class="text-xs sm:text-sm text-[#d8c4d6] font-medium">Todavía no subiste horarios publicados para los próximos días.</p>
+              <p class="text-[11px] text-gray-400">Hacé clic en <strong class="text-[#ffaed8]">"Subir Horarios del Día"</strong> para publicar tus horarios y tacharlos a medida que se llenan.</p>
+            </div>
+          `;
+        } else {
+          quickBoard.innerHTML = publishedDaysCache.map(day => {
+            const slots = day.slots || [];
+            const free = slots.filter(s => !s.isBooked).length;
+            const total = slots.length;
+            return `
+              <div class="p-4 rounded-2xl bg-[#0d0a0f] border border-[#ff3e96]/30 flex flex-col lg:flex-row lg:items-center justify-between gap-3.5">
+                <div class="space-y-1 min-w-[190px]">
+                  <div class="flex items-center gap-2">
+                    <span class="font-display font-bold text-sm sm:text-base text-white">${formatShortSpanishDate(day.date)}</span>
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${free > 0 ? 'bg-[#25D366]/20 text-[#25D366]' : 'bg-red-500/20 text-red-300'}">
+                      ${free > 0 ? `${free}/${total} libres` : 'Completo'}
+                    </span>
+                  </div>
+                  <button type="button" onclick="openPublishedDayInInsta('${day.date}')" class="inline-flex items-center gap-1 text-[11px] font-bold text-[#ffaed8] hover:text-white transition-colors">
+                    <span class="material-symbols-outlined text-xs">photo_camera</span>
+                    <span>Abrir Historia 9:16 de este día →</span>
+                  </button>
+                </div>
+
+                <div class="flex flex-wrap gap-2 flex-1">
+                  ${slots.map(s => {
+                    if (s.isBooked) {
+                      return `
+                        <button type="button"
+                                onclick="toggleQuickBoardSlot('${day.date}', '${s.time}', ${s.crossedOut ? 'false' : 'true'})"
+                                title="${s.autoBooked && !s.crossedOut ? 'Ocupado por reserva online (click para tachar/gestionar)' : 'Click para volver a habilitar este horario'}"
+                                class="px-3 py-1.5 rounded-xl text-xs font-bold bg-red-500/15 text-red-300/85 border border-red-500/35 line-through flex items-center gap-1.5 hover:bg-red-500/25 active:scale-95 transition-all">
+                          <span>${s.time} hs</span>
+                          ${s.autoBooked ? '<span class="text-[9px] uppercase no-underline px-1 rounded bg-red-500/30 text-red-200">Reserva</span>' : '<span class="text-[9px] uppercase no-underline px-1 rounded bg-white/10 text-red-200">Tachado</span>'}
+                        </button>
+                      `;
+                    }
+                    return `
+                      <button type="button"
+                              onclick="toggleQuickBoardSlot('${day.date}', '${s.time}', true)"
+                              title="Click para tachar este turno como lleno"
+                              class="px-3 py-1.5 rounded-xl text-xs font-bold bg-[#ff2d85]/15 text-[#ffaed8] border border-[#ff3e96]/50 hover:bg-[#ff2d85]/30 active:scale-95 transition-all">
+                        ${s.time} hs
+                      </button>
+                    `;
+                  }).join('')}
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+      }
+
+      // 2. Renderizar tira de días publicados en Pestaña Historias & Horarios
+      const strip = document.getElementById('insta-published-days-strip');
+      if (strip) {
+        const currentSel = document.getElementById('insta-date')?.value;
+        if (!publishedDaysCache.length) {
+          strip.innerHTML = `<span class="text-xs text-gray-400 italic">Todavía no hay fechas publicadas. Elegí una fecha abajo y pulsá "Subir Horarios a la Web".</span>`;
+        } else {
+          strip.innerHTML = publishedDaysCache.map(day => {
+            const free = (day.slots || []).filter(s => !s.isBooked).length;
+            const isSelected = currentSel === day.date;
+            return `
+              <button type="button" onclick="openPublishedDayInInsta('${day.date}')" class="px-3.5 py-2 rounded-2xl text-xs font-bold flex items-center gap-2 transition-all border ${isSelected ? 'bg-[#ff2d85] text-white border-[#ff3e96] shadow-lg shadow-[#ff2d85]/30' : 'bg-[#0d0a0f] text-[#d8c4d6] border-white/15 hover:border-[#ff3e96]/60 hover:text-white'}">
+                <span>${formatShortSpanishDate(day.date)}</span>
+                <span class="px-1.5 py-0.5 rounded-full text-[10px] font-extrabold ${isSelected ? 'bg-black/30 text-white' : (free > 0 ? 'bg-[#25D366]/20 text-[#25D366]' : 'bg-red-500/20 text-red-300')}">
+                  ${free} libres
+                </span>
+              </button>
+            `;
+          }).join('');
+        }
+      }
+    }
+
+    async function toggleQuickBoardSlot(dateStr, timeStr, desiredCrossedOut) {
+      try {
+        await window.MicaBackend.schedules.toggleSlotCrossedOut(dateStr, timeStr, desiredCrossedOut);
+        await loadPublishedDaysBoard();
+        const activeInstaDate = document.getElementById('insta-date')?.value;
+        if (activeInstaDate === dateStr) {
+          await refreshInstagramSlotsFromDB(false);
+        }
+      } catch (e) {
+        alert('Error al actualizar el horario: ' + e.message);
+      }
+    }
+
+    async function openPublishedDayInInsta(dateStr) {
+      switchMainTab('instagram');
+      const dateInput = document.getElementById('insta-date');
+      if (dateInput) {
+        dateInput.value = dateStr;
+      }
+      await refreshInstagramSlotsFromDB(false);
+    }
+
+    async function selectQuickInstaDate(offsetDays) {
+      const target = new Date();
+      target.setDate(target.getDate() + offsetDays);
+      const yyyy = target.getFullYear();
+      const mm = String(target.getMonth() + 1).padStart(2, '0');
+      const dd = String(target.getDate()).padStart(2, '0');
+      const dateInput = document.getElementById('insta-date');
+      if (dateInput) {
+        dateInput.value = `${yyyy}-${mm}-${dd}`;
+      }
+      await refreshInstagramSlotsFromDB(false);
+    }
+
+    async function initInstagramSection() {
+      const dateInput = document.getElementById('insta-date');
+      if (dateInput && !dateInput.value) {
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        const yyyy = tomorrow.getFullYear();
+        const mm = String(tomorrow.getMonth() + 1).padStart(2, '0');
+        const dd = String(tomorrow.getDate()).padStart(2, '0');
+        dateInput.value = `${yyyy}-${mm}-${dd}`;
+      }
+
+      if (!instaInitialized) {
+        instaInitialized = true;
+        await loadWeeklySchedule();
+      }
+
+      await loadPublishedDaysBoard();
+      await refreshInstagramSlotsFromDB(false);
+    }
+
+    async function loadWeeklySchedule() {
+      const tbody = document.getElementById('weekly-schedule-tbody');
+      if (!tbody) return;
+
+      try {
+        const scheduleList = await window.MicaBackend.instagram.getSchedule();
+        const byDay = {};
+        (scheduleList || []).forEach(row => {
+          byDay[Number(row.day_of_week)] = row;
+        });
+
+        tbody.innerHTML = WEEK_DAYS_ORDER.map(({ day, name }) => {
+          const d = byDay[day] || {
+            day_of_week: day,
+            is_active: day !== 0,
+            start_time: '09:00',
+            end_time: day === 6 ? '18:00' : '20:00',
+            break_start: day === 6 ? '' : '13:00',
+            break_end: day === 6 ? '' : '14:00'
+          };
+          const cleanTime = (v) => v ? String(v).slice(0, 5) : '';
+
+          return `
+            <tr data-day="${day}" class="hover:bg-white/[0.02] transition-colors">
+              <td class="py-3 px-3 font-bold text-white">${name}</td>
+              <td class="py-3 px-3">
+                <label class="inline-flex items-center gap-2 cursor-pointer">
+                  <input type="checkbox" class="sched-active w-4 h-4 accent-[#ff2d85] rounded cursor-pointer" ${d.is_active ? 'checked' : ''}>
+                  <span class="text-xs text-gray-300">Activo</span>
+                </label>
+              </td>
+              <td class="py-3 px-3">
+                <input type="time" class="sched-start bg-[#0d0a0f] border border-white/15 rounded-lg px-2.5 py-1.5 text-xs text-white focus:border-[#ff3e96] focus:outline-none" value="${cleanTime(d.start_time) || '09:00'}">
+              </td>
+              <td class="py-3 px-3">
+                <input type="time" class="sched-end bg-[#0d0a0f] border border-white/15 rounded-lg px-2.5 py-1.5 text-xs text-white focus:border-[#ff3e96] focus:outline-none" value="${cleanTime(d.end_time) || '20:00'}">
+              </td>
+              <td class="py-3 px-3">
+                <input type="time" class="sched-break-start bg-[#0d0a0f] border border-white/15 rounded-lg px-2.5 py-1.5 text-xs text-white focus:border-[#ff3e96] focus:outline-none" value="${cleanTime(d.break_start)}">
+              </td>
+              <td class="py-3 px-3">
+                <input type="time" class="sched-break-end bg-[#0d0a0f] border border-white/15 rounded-lg px-2.5 py-1.5 text-xs text-white focus:border-[#ff3e96] focus:outline-none" value="${cleanTime(d.break_end)}">
+              </td>
+            </tr>
+          `;
+        }).join('');
+      } catch (err) {
+        console.error('Error cargando horarios semanales:', err);
+      }
+    }
+
+    async function saveWeeklySchedule() {
+      const btn = document.getElementById('save-schedule-btn');
+      const rows = document.querySelectorAll('#weekly-schedule-tbody tr');
+      if (!rows.length) return;
+
+      const days = [];
+      rows.forEach(tr => {
+        days.push({
+          day_of_week: parseInt(tr.getAttribute('data-day'), 10),
+          is_active: tr.querySelector('.sched-active').checked,
+          start_time: tr.querySelector('.sched-start').value || '09:00',
+          end_time: tr.querySelector('.sched-end').value || '20:00',
+          break_start: tr.querySelector('.sched-break-start').value || null,
+          break_end: tr.querySelector('.sched-break-end').value || null
+        });
+      });
+
+      const originalHtml = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = '<span class="material-symbols-outlined text-base animate-spin">progress_activity</span><span>Guardando...</span>';
+
+      try {
+        await window.MicaBackend.instagram.saveSchedule(days);
+        await refreshInstagramSlotsFromDB();
+        btn.innerHTML = '<span class="material-symbols-outlined text-base">check_circle</span><span>¡Horarios Guardados!</span>';
+        setTimeout(() => { btn.innerHTML = originalHtml; }, 2200);
+      } catch (err) {
+        alert('Error al guardar horarios: ' + err.message);
+        btn.innerHTML = originalHtml;
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    async function onInstaDateChange() {
+      await refreshInstagramSlotsFromDB(false);
+      await loadPublishedDaysBoard();
+    }
+
+    async function onInstaIntervalTemplateChange() {
+      await refreshInstagramSlotsFromDB(true);
+    }
+
+    function updateInstaPublishStatusUI() {
+      const statusPill = document.getElementById('insta-publish-status-pill');
+      const pubBtnLabel = document.getElementById('publish-day-btn-label');
+      const unpubBtn = document.getElementById('unpublish-day-btn');
+
+      if (instaDayState.isPublished) {
+        if (statusPill) {
+          statusPill.textContent = '● Publicado en Vivo';
+          statusPill.className = 'text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-[#25D366]/20 text-[#25D366] border border-[#25D366]/40';
+        }
+        if (pubBtnLabel) pubBtnLabel.textContent = 'Actualizar Horarios Subidos';
+        if (unpubBtn) unpubBtn.classList.remove('hidden');
+      } else {
+        if (statusPill) {
+          statusPill.textContent = 'Sin subir aún';
+          statusPill.className = 'text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30';
+        }
+        if (pubBtnLabel) pubBtnLabel.textContent = 'Subir Horarios a la Web';
+        if (unpubBtn) unpubBtn.classList.add('hidden');
+      }
+    }
+
+    async function refreshInstagramSlotsFromDB(forceGenerate = false) {
+      const dateVal = document.getElementById('insta-date')?.value;
+      const intervalVal = document.getElementById('insta-interval')?.value || '60';
+      if (!dateVal) return;
+
+      try {
+        const data = await window.MicaBackend.instagram.getDaySlots(dateVal, intervalVal, forceGenerate);
+        const slotsArr = Array.isArray(data.slots) ? data.slots : [];
+        instaDayState = {
+          date: dateVal,
+          isPublished: Boolean(data.isPublished),
+          isOpen: !data.isBlocked && (!data.noSchedule || slotsArr.length > 0) && (data.isOpen !== false) && slotsArr.length > 0,
+          isBlocked: Boolean(data.isBlocked),
+          slots: slotsArr.map(s => ({
+            time: s.time,
+            crossedOut: Boolean(s.crossedOut),
+            autoBooked: Boolean(s.autoBooked),
+            isBooked: Boolean(s.isBooked || s.crossedOut || s.autoBooked)
+          }))
+        };
+      } catch (err) {
+        console.error('Error obteniendo bloques para Instagram:', err);
+        instaDayState = { date: dateVal, isPublished: false, isOpen: false, slots: [] };
+      }
+
+      updateInstaPublishStatusUI();
+      renderInstaSlotChips();
+      await renderInstagramCanvas();
+    }
+
+    function renderInstaSlotChips() {
+      const chipsContainer = document.getElementById('insta-slots-chips');
+      const summaryEl = document.getElementById('insta-slots-summary');
+      if (!chipsContainer) return;
+
+      if (!instaDayState.slots || instaDayState.slots.length === 0) {
+        if (summaryEl) {
+          summaryEl.textContent = instaDayState.isBlocked ? 'Fecha bloqueada' : 'Sin horarios cargados';
+          summaryEl.className = 'text-[11px] font-semibold text-amber-400';
+        }
+        chipsContainer.innerHTML = `
+          <p class="text-xs text-gray-400 italic py-1">
+            No hay horarios cargados para este día. Podés sumar horarios manualmente abajo o activar el día en "Horarios de Trabajo Semanales".
+          </p>
+        `;
+        return;
+      }
+
+      const freeCount = instaDayState.slots.filter(s => !s.isBooked).length;
+      const bookedCount = instaDayState.slots.length - freeCount;
+
+      if (summaryEl) {
+        summaryEl.textContent = `${freeCount} disponibles • ${bookedCount} tachados/ocupados`;
+        summaryEl.className = freeCount > 0 ? 'text-[11px] font-semibold text-[#25D366]' : 'text-[11px] font-semibold text-[#ff6ea7]';
+      }
+
+      chipsContainer.innerHTML = instaDayState.slots.map((slot, idx) => {
+        if (slot.isBooked) {
+          return `
+            <div class="inline-flex items-center rounded-xl bg-red-500/15 border border-red-500/35 overflow-hidden">
+              <button type="button" onclick="toggleInstaSlot(${idx})" title="Click para volver a habilitar este horario" class="px-3 py-1.5 text-xs font-bold text-red-300/85 line-through flex items-center gap-1.5 hover:bg-red-500/25 transition-all">
+                <span>${slot.time} hs</span>
+                ${slot.autoBooked ? '<span class="text-[9px] uppercase no-underline px-1 rounded bg-red-500/30 text-red-200">Reserva</span>' : '<span class="text-[9px] uppercase no-underline px-1 rounded bg-white/10 text-red-200">Tachado</span>'}
+              </button>
+              <button type="button" onclick="removeInstaSlot(${idx})" title="Quitar este horario de la lista" class="px-2 py-1.5 text-red-300/60 hover:text-white hover:bg-red-500/40 text-xs border-l border-red-500/25 transition-colors">×</button>
+            </div>
+          `;
+        }
+        return `
+          <div class="inline-flex items-center rounded-xl bg-[#ff2d85]/15 border border-[#ff3e96]/50 overflow-hidden">
+            <button type="button" onclick="toggleInstaSlot(${idx})" title="Click para tachar este turno como lleno" class="px-3 py-1.5 text-xs font-bold text-[#ffaed8] hover:bg-[#ff2d85]/30 transition-all">
+              ${slot.time} hs
+            </button>
+            <button type="button" onclick="removeInstaSlot(${idx})" title="Quitar este horario de la lista" class="px-2 py-1.5 text-[#ffaed8]/60 hover:text-white hover:bg-[#ff2d85]/40 text-xs border-l border-[#ff3e96]/30 transition-colors">×</button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function toggleInstaSlot(index) {
+      const slot = instaDayState.slots[index];
+      if (!slot) return;
+
+      const nextCrossed = !slot.isBooked;
+      slot.crossedOut = nextCrossed;
+      slot.isBooked = nextCrossed || Boolean(slot.autoBooked);
+
+      renderInstaSlotChips();
+      renderInstagramCanvas();
+
+      // Guardar inmediatamente en Supabase y Backend para que se tache en tiempo real
+      const dateVal = document.getElementById('insta-date')?.value || instaDayState.date;
+      if (dateVal) {
+        try {
+          const fallbackSlots = instaDayState.slots.map(s => ({ time: s.time, crossedOut: !!s.crossedOut }));
+          const resp = await window.MicaBackend.schedules.toggleSlotCrossedOut(dateVal, slot.time, nextCrossed, fallbackSlots);
+          if (resp && resp.isPublished) {
+            instaDayState.isPublished = true;
+            updateInstaPublishStatusUI();
+          }
+          await loadPublishedDaysBoard();
+          showInstaLiveToast(nextCrossed ? `Horario ${slot.time} hs tachado y guardado en vivo.` : `Horario ${slot.time} hs habilitado nuevamente.`);
+        } catch (e) {
+          console.warn('Error guardando tachado en vivo:', e);
+        }
+      }
+    }
+
+    async function addCustomInstaSlot() {
+      const input = document.getElementById('custom-slot-time');
+      const timeVal = (input?.value || '').trim().slice(0, 5);
+      if (!/^\d{2}:\d{2}$/.test(timeVal)) return;
+
+      if (instaDayState.slots.some(s => s.time === timeVal)) {
+        showInstaLiveToast(`El horario ${timeVal} hs ya está en la lista.`);
+        return;
+      }
+
+      instaDayState.isOpen = true;
+      instaDayState.slots.push({
+        time: timeVal,
+        crossedOut: false,
+        autoBooked: false,
+        isBooked: false
+      });
+      instaDayState.slots.sort((a, b) => a.time.localeCompare(b.time));
+
+      renderInstaSlotChips();
+      renderInstagramCanvas();
+
+      if (instaDayState.isPublished) {
+        await publishCurrentInstaDay(true);
+      } else {
+        showInstaLiveToast(`Horario ${timeVal} hs agregado. Pulsá "Subir Horarios a la Web" para publicarlo.`);
+      }
+    }
+
+    async function removeInstaSlot(index) {
+      const removed = instaDayState.slots[index];
+      if (!removed) return;
+      instaDayState.slots.splice(index, 1);
+      instaDayState.isOpen = instaDayState.slots.length > 0;
+      renderInstaSlotChips();
+      renderInstagramCanvas();
+
+      if (instaDayState.isPublished) {
+        await publishCurrentInstaDay(true);
+      }
+    }
+
+    async function publishCurrentInstaDay(silent = false) {
+      const dateVal = document.getElementById('insta-date')?.value || instaDayState.date;
+      if (!dateVal) return;
+
+      if (!instaDayState.slots || instaDayState.slots.length === 0) {
+        alert('Agregá al menos un horario antes de publicar el día.');
+        return;
+      }
+
+      const btn = document.getElementById('publish-day-btn');
+      const prevHtml = btn ? btn.innerHTML : '';
+      if (btn && !silent) {
+        btn.disabled = true;
+        btn.innerHTML = '<span class="material-symbols-outlined text-base animate-spin">progress_activity</span><span>Subiendo...</span>';
+      }
+
+      try {
+        const payloadSlots = instaDayState.slots.map(s => ({
+          time: s.time,
+          crossedOut: Boolean(s.crossedOut)
+        }));
+        const res = await window.MicaBackend.schedules.publishDaySlots(dateVal, payloadSlots);
+        instaDayState.isPublished = true;
+        if (res && Array.isArray(res.slots)) {
+          instaDayState.slots = res.slots.map(s => ({
+            time: s.time,
+            crossedOut: Boolean(s.crossedOut),
+            autoBooked: Boolean(s.autoBooked),
+            isBooked: Boolean(s.isBooked)
+          }));
+        }
+        updateInstaPublishStatusUI();
+        renderInstaSlotChips();
+        await renderInstagramCanvas();
+        await loadPublishedDaysBoard();
+        showInstaLiveToast('¡Horarios subidos! Ya están visibles en la web y listos para ir tachando.');
+      } catch (err) {
+        if (!silent) alert('Error al subir horarios: ' + err.message);
+      } finally {
+        if (btn && !silent) {
+          btn.disabled = false;
+          btn.innerHTML = prevHtml;
+          updateInstaPublishStatusUI();
+        }
+      }
+    }
+
+    async function unpublishCurrentInstaDay() {
+      const dateVal = document.getElementById('insta-date')?.value || instaDayState.date;
+      if (!dateVal) return;
+      if (!confirm(`¿Quitar los horarios publicados del día ${formatShortSpanishDate(dateVal)} del sitio web?`)) return;
+
+      try {
+        await window.MicaBackend.schedules.unpublishDay(dateVal);
+        instaDayState.isPublished = false;
+        await refreshInstagramSlotsFromDB(true);
+        await loadPublishedDaysBoard();
+        showInstaLiveToast('Publicación del día quitada del sitio.');
+      } catch (err) {
+        alert('Error al quitar horarios: ' + err.message);
+      }
+    }
+
+    function onInstaFileChange(e) {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const img = new Image();
+        img.onload = () => {
+          instaCustomBgImage = img;
+          renderInstagramCanvas();
+        };
+        img.src = ev.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function setStudioInstaBg(srcPath) {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => {
+        instaCustomBgImage = img;
+        const fileInput = document.getElementById('insta-bg-file');
+        if (fileInput) fileInput.value = '';
+        renderInstagramCanvas();
+      };
+      img.src = srcPath;
+    }
+
+    function clearInstaBg() {
+      instaCustomBgImage = null;
+      const fileInput = document.getElementById('insta-bg-file');
+      if (fileInput) fileInput.value = '';
+      renderInstagramCanvas();
+    }
+
+    function drawRoundedRectPath(ctx, x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + w - r, y);
+      ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+      ctx.lineTo(x + w, y + h - r);
+      ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      ctx.lineTo(x + r, y + h);
+      ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+      ctx.lineTo(x, y + r);
+      ctx.quadraticCurveTo(x, y, x + r, y);
+      ctx.closePath();
+    }
+
+    async function renderInstagramCanvas() {
+      const canvas = document.getElementById('instagram-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      const dateVal = document.getElementById('insta-date')?.value;
+      const preset = document.getElementById('insta-bg-preset')?.value || 'mica-neon';
+      const blur = parseInt(document.getElementById('insta-bg-blur')?.value || '15', 10);
+      const darken = parseInt(document.getElementById('insta-bg-darken')?.value || '40', 10);
+
+      if (document.fonts && document.fonts.ready) {
+        try { await document.fonts.ready; } catch (_) {}
+      }
+
+      // 1. Limpiar lienzo 1080x1920
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Paleta según preset (combina la estética de Mica Lash Art + los 4 presets originales de Vasca)
+      const isMicaNeon = preset === 'mica-neon';
+      const accentPrimary = isMicaNeon ? '#ff3e96' : '#ffaed8';
+      const accentGoldOrPink = (preset === 'luxury-dark' || preset === 'warm-nude' || preset === 'soft-brown') ? '#d4af37' : '#ffaed8';
+
+      // 2. Dibujar fondo (Imagen personalizada o Degradado)
+      ctx.save();
+      if (instaCustomBgImage) {
+        const scale = Math.max(canvas.width / instaCustomBgImage.width, canvas.height / instaCustomBgImage.height);
+        const x = (canvas.width / 2) - (instaCustomBgImage.width / 2) * scale;
+        const y = (canvas.height / 2) - (instaCustomBgImage.height / 2) * scale;
+        ctx.filter = `blur(${blur}px) brightness(${Math.max(0.1, 1 - darken / 100)})`;
+        ctx.drawImage(instaCustomBgImage, x - 30, y - 30, instaCustomBgImage.width * scale + 60, instaCustomBgImage.height * scale + 60);
+      } else {
+        const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+        if (preset === 'mica-neon') {
+          grad.addColorStop(0, '#0d0a0f');
+          grad.addColorStop(0.5, '#261123');
+          grad.addColorStop(1, '#120b16');
+        } else if (preset === 'luxury-dark') {
+          grad.addColorStop(0, '#0f0e0d');
+          grad.addColorStop(0.5, '#1f1c1a');
+          grad.addColorStop(1, '#12100e');
+        } else if (preset === 'warm-nude') {
+          grad.addColorStop(0, '#e3d5ca');
+          grad.addColorStop(0.5, '#d5bdaf');
+          grad.addColorStop(1, '#b79ced');
+        } else if (preset === 'rose-gold') {
+          grad.addColorStop(0, '#2c1c24');
+          grad.addColorStop(0.5, '#694252');
+          grad.addColorStop(1, '#1f1419');
+        } else {
+          grad.addColorStop(0, '#3d2c2e');
+          grad.addColorStop(1, '#1c1516');
+        }
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Resplandor sutil superior e inferior
+        const glow = ctx.createRadialGradient(540, 260, 40, 540, 260, 620);
+        glow.addColorStop(0, isMicaNeon ? 'rgba(255, 45, 133, 0.24)' : 'rgba(212, 175, 55, 0.14)');
+        glow.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        ctx.fillStyle = glow;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        if (darken > 0) {
+          ctx.fillStyle = `rgba(0, 0, 0, ${(darken / 100) * 0.65})`;
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+      }
+      ctx.restore();
+
+      // 3. Tarjeta central estilo cristal oscuro (x=100, y=180, w=880, h=1560)
+      ctx.save();
+      drawRoundedRectPath(ctx, 100, 180, 880, 1560, 44);
+      ctx.fillStyle = 'rgba(18, 13, 21, 0.86)';
+      ctx.fill();
+      ctx.lineWidth = 2.5;
+      ctx.strokeStyle = isMicaNeon ? 'rgba(255, 62, 150, 0.45)' : 'rgba(212, 175, 55, 0.35)';
+      ctx.stroke();
+      ctx.restore();
+
+      // 4. Encabezado de Marca
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 68px "Bodoni Moda", Georgia, serif';
+      ctx.fillText('MICA LASH ART', 540, 320);
+
+      ctx.fillStyle = accentGoldOrPink;
+      ctx.font = '600 24px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText('ESTUDIO DE MIRADAS  •  BAHÍA BLANCA', 540, 375);
+
+      // Línea divisoria elegante
+      ctx.beginPath();
+      ctx.moveTo(280, 425);
+      ctx.lineTo(800, 425);
+      ctx.strokeStyle = isMicaNeon ? 'rgba(255, 174, 216, 0.35)' : 'rgba(212, 175, 55, 0.4)';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // 5. Fecha formateada
+      let formattedDate = '';
+      if (dateVal) {
+        const [y, m, d] = dateVal.split('-');
+        const dateObj = new Date(Number(y), Number(m) - 1, Number(d));
+        const raw = dateObj.toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' });
+        formattedDate = raw.charAt(0).toUpperCase() + raw.slice(1);
+      }
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '700 36px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText('TURNOS DISPONIBLES', 540, 495);
+
+      ctx.fillStyle = accentGoldOrPink;
+      ctx.font = 'italic 46px "Bodoni Moda", Georgia, serif';
+      ctx.fillText(formattedDate, 540, 560);
+
+      ctx.fillStyle = '#d8c4d6';
+      ctx.font = '500 27px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText('Con Micaela ♡', 540, 612);
+
+      // 6. Grilla de Horarios en 2 Columnas (disponibles resaltados, ocupados tachados como en Vasca)
+      const slots = instaDayState.slots || [];
+      if (!instaDayState.isOpen || slots.length === 0) {
+        ctx.fillStyle = '#ffaed8';
+        ctx.font = '600 36px "Plus Jakarta Sans", sans-serif';
+        ctx.fillText(instaDayState.isBlocked ? 'Agenda cerrada en esta fecha' : 'Sin horarios disponibles', 540, 1020);
+      } else {
+        const rows = Math.ceil(slots.length / 2);
+        const startY = 670;
+        const slotW = 330;
+        const col1X = 175;
+        const col2X = 575;
+
+        // Ajuste dinámico de altura para que siempre entren prolijos dentro de la tarjeta
+        let slotH = 98;
+        let gapY = 28;
+        if (rows === 6) { slotH = 88; gapY = 22; }
+        else if (rows === 7) { slotH = 78; gapY = 18; }
+        else if (rows >= 8) { slotH = 66; gapY = 14; }
+
+        slots.forEach((slot, index) => {
+          const isCol2 = index % 2 !== 0;
+          const row = Math.floor(index / 2);
+          const x = isCol2 ? col2X : col1X;
+          const y = startY + row * (slotH + gapY);
+
+          ctx.save();
+          drawRoundedRectPath(ctx, x, y, slotW, slotH, 22);
+
+          if (slot.isBooked) {
+            ctx.fillStyle = 'rgba(13, 10, 15, 0.55)';
+            ctx.fill();
+            ctx.lineWidth = 1.5;
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+            ctx.stroke();
+
+            ctx.fillStyle = 'rgba(216, 196, 214, 0.35)';
+            ctx.font = `600 ${slotH >= 80 ? 36 : 31}px "Plus Jakarta Sans", sans-serif`;
+            ctx.fillText(`${slot.time} hs`, x + slotW / 2, y + slotH / 2 + 12);
+
+            // Línea tachada sobre horario ocupado
+            ctx.beginPath();
+            ctx.moveTo(x + 58, y + slotH / 2 + 2);
+            ctx.lineTo(x + slotW - 58, y + slotH / 2 + 2);
+            ctx.strokeStyle = 'rgba(255, 82, 130, 0.78)';
+            ctx.lineWidth = 4;
+            ctx.stroke();
+          } else {
+            ctx.fillStyle = isMicaNeon ? 'rgba(255, 45, 133, 0.16)' : 'rgba(212, 175, 55, 0.14)';
+            ctx.fill();
+            ctx.lineWidth = 2.5;
+            ctx.strokeStyle = isMicaNeon ? accentPrimary : accentGoldOrPink;
+            ctx.stroke();
+
+            ctx.fillStyle = '#ffffff';
+            ctx.font = `700 ${slotH >= 80 ? 38 : 32}px "Plus Jakarta Sans", sans-serif`;
+            ctx.fillText(`${slot.time} hs`, x + slotW / 2, y + slotH / 2 + 13);
+          }
+          ctx.restore();
+        });
+      }
+
+      // 7. Pie de tarjeta con llamado a la acción hacia el Turnero Online
+      ctx.fillStyle = accentGoldOrPink;
+      ctx.font = '700 28px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText('Reservá desde el link en nuestra Bio ✨', 540, 1635);
+
+      ctx.fillStyle = '#d8c4d6';
+      ctx.font = '500 25px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText('@mica.lashart', 540, 1682);
+    }
+
+    function downloadInstagramStory() {
+      const canvas = document.getElementById('instagram-canvas');
+      if (!canvas) return;
+      const dateVal = document.getElementById('insta-date')?.value || 'turnos';
+      const link = document.createElement('a');
+      link.download = `cronograma-mica-lashart-${dateVal}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    function copyInstagramStory() {
+      const canvas = document.getElementById('instagram-canvas');
+      const label = document.getElementById('copy-insta-label');
+      if (!canvas) return;
+
+      canvas.toBlob(async (blob) => {
+        try {
+          await navigator.clipboard.write([
+            new ClipboardItem({ [blob.type]: blob })
+          ]);
+          if (label) {
+            const prev = label.textContent;
+            label.textContent = '¡Copiada al Portapapeles!';
+            setTimeout(() => { label.textContent = prev; }, 2400);
+          }
+        } catch (err) {
+          alert('Tu navegador no permitió copiar directo. Usá el botón "Descargar Imagen (PNG)".');
+        }
+      }, 'image/png');
+    }
+
+    function shareInstagramStory() {
+      const canvas = document.getElementById('instagram-canvas');
+      const dateVal = document.getElementById('insta-date')?.value || 'turnos';
+      if (!canvas) return;
+
+      canvas.toBlob(async (blob) => {
+        if (!blob) return;
+        const file = new File([blob], `cronograma-mica-lashart-${dateVal}.png`, { type: 'image/png' });
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          try {
+            await navigator.share({
+              files: [file],
+              title: 'Horarios Disponibles - Mica Lash Art'
+            });
+            return;
+          } catch (err) {
+            if (err.name === 'AbortError') return;
+          }
+        }
+        downloadInstagramStory();
+      }, 'image/png');
+    }
+
+    // ================= GESTIÓN DE EMAILS PERSONALIZADOS =================
+    let activeEmailEditorTab = 'booking';
+    let emailPreviewDebounce = null;
+    let cachedEmailLogs = [];
+
+    function copyEmailVar(token) {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(token).catch(() => {});
+      }
+      const fb = document.getElementById('copy-var-feedback');
+      if (fb) {
+        fb.textContent = `Copiado: ${token}`;
+        setTimeout(() => { fb.textContent = ''; }, 2000);
+      }
+    }
+
+    function switchEmailTemplateEditor(type) {
+      activeEmailEditorTab = type === 'cancellation' ? 'cancellation' : 'booking';
+      const btnBook = document.getElementById('tpl-tab-booking');
+      const btnCancel = document.getElementById('tpl-tab-cancellation');
+      const fieldsBook = document.getElementById('editor-booking-fields');
+      const fieldsCancel = document.getElementById('editor-cancellation-fields');
+      const badge = document.getElementById('email-preview-badge');
+
+      if (activeEmailEditorTab === 'booking') {
+        if (btnBook) btnBook.className = 'px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider bg-[#ff2d85] text-white shadow';
+        if (btnCancel) btnCancel.className = 'px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider bg-[#0d0a0f] text-[#d8c4d6] border border-white/10';
+        if (fieldsBook) fieldsBook.classList.remove('hidden');
+        if (fieldsCancel) fieldsCancel.classList.add('hidden');
+        if (badge) badge.textContent = 'Reserva';
+      } else {
+        if (btnCancel) btnCancel.className = 'px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider bg-[#ff2d85] text-white shadow';
+        if (btnBook) btnBook.className = 'px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider bg-[#0d0a0f] text-[#d8c4d6] border border-white/10';
+        if (fieldsCancel) fieldsCancel.classList.remove('hidden');
+        if (fieldsBook) fieldsBook.classList.add('hidden');
+        if (badge) badge.textContent = 'Cancelación';
+      }
+
+      refreshLiveEmailPreview();
+    }
+
+    function collectEmailTemplatesFromForm() {
+      return {
+        studioLocation: document.getElementById('tpl-studio-location')?.value || 'Zona Hospital Penna - Villa Cerrito, Bahía Blanca',
+        notifyAdmin: Boolean(document.getElementById('tpl-notify-admin')?.checked),
+        booking: {
+          enabled: Boolean(document.getElementById('tpl-booking-enabled')?.checked),
+          subject: document.getElementById('tpl-booking-subject')?.value || '',
+          heading: document.getElementById('tpl-booking-heading')?.value || '',
+          intro: document.getElementById('tpl-booking-intro')?.value || '',
+          tips: document.getElementById('tpl-booking-tips')?.value || '',
+          footerNote: document.getElementById('tpl-booking-footer')?.value || ''
+        },
+        cancellation: {
+          enabled: Boolean(document.getElementById('tpl-cancel-enabled')?.checked),
+          subject: document.getElementById('tpl-cancel-subject')?.value || '',
+          heading: document.getElementById('tpl-cancel-heading')?.value || '',
+          intro: document.getElementById('tpl-cancel-intro')?.value || '',
+          rebookMessage: document.getElementById('tpl-cancel-rebook')?.value || '',
+          footerNote: document.getElementById('tpl-cancel-footer')?.value || ''
+        }
+      };
+    }
+
+    function scheduleEmailPreviewRefresh() {
+      if (emailPreviewDebounce) clearTimeout(emailPreviewDebounce);
+      emailPreviewDebounce = setTimeout(() => {
+        refreshLiveEmailPreview();
+      }, 280);
+    }
+
+    async function refreshLiveEmailPreview() {
+      try {
+        const templates = collectEmailTemplatesFromForm();
+        const res = await window.MicaBackend.emails.preview(activeEmailEditorTab, templates);
+        const subjEl = document.getElementById('email-preview-subject');
+        const frame = document.getElementById('email-live-preview-frame');
+        if (subjEl && res.subject) subjEl.textContent = res.subject;
+        if (frame && res.html) frame.srcdoc = res.html;
+      } catch (e) {}
+    }
+
+    function updateEmailProviderBadges(provider) {
+      const pill = document.getElementById('email-provider-pill');
+      const banner = document.getElementById('email-status-banner');
+      if (!provider) return;
+
+      if (provider.configured) {
+        if (pill) {
+          pill.textContent = 'Activo';
+          pill.className = 'px-2 py-0.5 rounded-full bg-[#25D366]/20 text-[#25D366] text-[10px] font-black border border-[#25D366]/40';
+        }
+        if (banner) {
+          banner.textContent = `● ${provider.label}`;
+          banner.className = 'px-3.5 py-1.5 rounded-full bg-[#25D366]/15 border border-[#25D366]/40 text-xs font-bold text-[#25D366]';
+        }
+      } else {
+        if (pill) {
+          pill.textContent = 'Vista Previa';
+          pill.className = 'px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-[10px] font-black border border-amber-500/40';
+        }
+        if (banner) {
+          banner.textContent = `● ${provider.label}`;
+          banner.className = 'px-3.5 py-1.5 rounded-full bg-amber-500/15 border border-amber-500/40 text-xs font-bold text-amber-300';
+        }
+      }
+    }
+
+    function renderEmailLogs(logs) {
+      cachedEmailLogs = Array.isArray(logs) ? logs : [];
+      const list = document.getElementById('email-logs-list');
+      if (!list) return;
+      if (!cachedEmailLogs.length) {
+        list.innerHTML = '<p class="italic py-3 text-center text-gray-500">Todavía no se registraron correos enviados.</p>';
+        return;
+      }
+
+      list.innerHTML = cachedEmailLogs.map((log, idx) => {
+        const isBook = log.type === 'booking';
+        const statusColor = log.status === 'sent'
+          ? 'text-[#25D366]'
+          : (log.status === 'error' ? 'text-red-400' : 'text-amber-300');
+        const statusLabel = log.status === 'sent'
+          ? 'Enviado'
+          : (log.status === 'error' ? 'Error' : 'Vista Previa');
+        const dateStr = log.createdAt ? new Date(log.createdAt).toLocaleString('es-AR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '';
+
+        return `
+          <div class="p-3 rounded-xl bg-[#0d0a0f] border border-white/10 flex items-center justify-between gap-3">
+            <div class="min-w-0">
+              <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase ${isBook ? 'bg-[#ff2d85]/20 text-[#ffaed8]' : 'bg-rose-500/20 text-rose-300'}">
+                  ${isBook ? 'Reserva' : 'Cancelación'}
+                </span>
+                <span class="font-bold text-white truncate">${log.to}</span>
+                <span class="text-[10px] font-bold ${statusColor}">• ${statusLabel}</span>
+              </div>
+              <p class="text-[11px] text-gray-400 truncate mt-0.5">${log.subject || ''} (${dateStr})</p>
+            </div>
+            <button type="button" onclick="previewLoggedEmail(${idx})" class="px-2.5 py-1.5 rounded-lg bg-[#1e1622] hover:bg-[#ff2d85] text-[#ffaed8] hover:text-white text-[11px] font-bold whitespace-nowrap transition-all">
+              Ver
+            </button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function previewLoggedEmail(idx) {
+      const item = cachedEmailLogs[idx];
+      if (!item) return;
+      const frame = document.getElementById('email-live-preview-frame');
+      const subjEl = document.getElementById('email-preview-subject');
+      if (subjEl) subjEl.textContent = item.subject || '';
+      if (frame && item.html) {
+        frame.srcdoc = item.html;
+        frame.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else if (item.previewUrl) {
+        window.open(item.previewUrl, '_blank');
+      }
+    }
+
+    async function loadEmailSettingsSection() {
+      try {
+        const data = await window.MicaBackend.emails.getSettings();
+        const t = data.templates || {};
+        const b = t.booking || {};
+        const c = t.cancellation || {};
+        const p = data.provider || {};
+
+        document.getElementById('tpl-booking-enabled').checked = b.enabled !== false;
+        document.getElementById('tpl-booking-subject').value = b.subject || '';
+        document.getElementById('tpl-booking-heading').value = b.heading || '';
+        document.getElementById('tpl-booking-intro').value = b.intro || '';
+        document.getElementById('tpl-booking-tips').value = b.tips || '';
+        document.getElementById('tpl-booking-footer').value = b.footerNote || '';
+
+        document.getElementById('tpl-cancel-enabled').checked = c.enabled !== false;
+        document.getElementById('tpl-cancel-subject').value = c.subject || '';
+        document.getElementById('tpl-cancel-heading').value = c.heading || '';
+        document.getElementById('tpl-cancel-intro').value = c.intro || '';
+        document.getElementById('tpl-cancel-rebook').value = c.rebookMessage || '';
+        document.getElementById('tpl-cancel-footer').value = c.footerNote || '';
+
+        document.getElementById('tpl-studio-location').value = t.studioLocation || '';
+        document.getElementById('tpl-notify-admin').checked = t.notifyAdmin !== false;
+
+        document.getElementById('smtp-user-input').value = p.smtpUser || '';
+        document.getElementById('smtp-pass-input').value = p.hasSmtpPass ? '••••••••' : '';
+        document.getElementById('smtp-host-input').value = p.smtpHost || 'smtp.gmail.com';
+        document.getElementById('smtp-port-input').value = p.smtpPort || 465;
+        document.getElementById('smtp-admin-email-input').value = p.adminEmail || '';
+
+        updateEmailProviderBadges(p);
+        renderEmailLogs(data.logs || []);
+        await refreshLiveEmailPreview();
+      } catch (e) {
+        console.warn('Error cargando sección de emails:', e);
+      }
+    }
+
+    async function saveCustomEmailTemplates() {
+      const btn = document.getElementById('btn-save-email-templates');
+      const prevHtml = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = '<span>Guardando...</span>';
+      try {
+        const payload = collectEmailTemplatesFromForm();
+        await window.MicaBackend.emails.saveTemplates(payload);
+        await refreshLiveEmailPreview();
+        btn.innerHTML = '<span class="material-symbols-outlined text-base">check_circle</span><span>¡Plantillas Guardadas!</span>';
+        setTimeout(() => { btn.innerHTML = prevHtml; }, 2200);
+      } catch (err) {
+        alert('Error guardando plantillas: ' + err.message);
+        btn.innerHTML = prevHtml;
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    async function saveSmtpConfiguration() {
+      const fb = document.getElementById('smtp-save-feedback');
+      const smtpUser = document.getElementById('smtp-user-input').value.trim();
+      const smtpPass = document.getElementById('smtp-pass-input').value.trim();
+      const smtpHost = document.getElementById('smtp-host-input').value.trim() || 'smtp.gmail.com';
+      const smtpPort = Number(document.getElementById('smtp-port-input').value || 465);
+      const adminEmail = document.getElementById('smtp-admin-email-input').value.trim() || smtpUser;
+
+      try {
+        const res = await window.MicaBackend.emails.saveProvider({
+          smtpHost,
+          smtpPort,
+          smtpUser,
+          smtpPass,
+          emailFrom: smtpUser ? `"Mica Lash Art ♡" <${smtpUser}>` : '',
+          adminEmail
+        });
+        updateEmailProviderBadges(res.provider);
+        if (fb) {
+          fb.textContent = res.provider?.configured ? '✓ ¡Correo conectado y listo!' : '✓ Configuración actualizada';
+          setTimeout(() => { fb.textContent = ''; }, 3500);
+        }
+      } catch (err) {
+        alert('Error guardando conexión SMTP: ' + err.message);
+      }
+    }
+
+    async function triggerTestEmail(type) {
+      const toInput = document.getElementById('test-email-to');
+      const resultEl = document.getElementById('test-email-result');
+      const to = toInput ? toInput.value.trim() : '';
+      if (!to) {
+        if (toInput) toInput.focus();
+        if (resultEl) resultEl.textContent = 'Ingresá un correo de destino arriba para enviar la prueba.';
+        return;
+      }
+
+      if (resultEl) resultEl.textContent = 'Enviando correo personalizado de prueba...';
+      try {
+        await window.MicaBackend.emails.saveTemplates(collectEmailTemplatesFromForm());
+        const res = await window.MicaBackend.emails.sendTest(to, type);
+        await loadEmailSettingsSection();
+        if (res.sent) {
+          resultEl.innerHTML = `✅ Correo real enviado con éxito a <strong>${to}</strong>. Revisá tu bandeja de entrada.`;
+        } else if (res.previewUrl) {
+          resultEl.innerHTML = `✨ Correo generado en Modo Vista Previa para <strong>${to}</strong>. <a href="${res.previewUrl}" target="_blank" class="underline font-bold text-[#ff3e96]">Abrir correo en navegador ↗</a>`;
+        } else {
+          resultEl.textContent = `✓ Correo de prueba procesado para ${to}.`;
+        }
+      } catch (err) {
+        if (resultEl) resultEl.textContent = '❌ Error: ' + err.message;
+      }
+    }
+
     function handleLogout() {
       window.MicaBackend.auth.logout();
       window.location.href = 'login.html';
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+      const currentUser = window.MicaBackend.auth.getUser();
+      if (!currentUser || currentUser.role !== 'admin') {
+        window.location.href = 'login.html';
+        return;
+      }
       loadAppointments();
+      loadPublishedDaysBoard();
       loadGalleryPhotos();
+      window.MicaBackend.emails.getSettings().then(d => updateEmailProviderBadges(d.provider)).catch(() => {});
     });
   </script>
 </body>

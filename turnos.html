@@ -245,6 +245,18 @@
           <span class="text-xs text-[#ffaed8] font-bold uppercase tracking-wider hidden sm:block">Paso 3 de 4</span>
         </div>
 
+        <!-- Cartelera Rápida de Fechas Publicadas por Mica -->
+        <div id="published-dates-bar" class="hidden p-4 rounded-2xl bg-[#0d0a0f]/90 border border-[#ff3e96]/40 space-y-2.5">
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <span class="text-xs font-bold uppercase tracking-wider text-[#ffaed8] flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-[#25D366] animate-pulse"></span>
+              <span>Próximas Fechas Publicadas en Vivo</span>
+            </span>
+            <span class="text-[11px] text-gray-400">Elegí una fecha publicada o buscá en el calendario</span>
+          </div>
+          <div id="published-dates-chips" class="flex flex-wrap gap-2"></div>
+        </div>
+
         <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
           
           <!-- Calendario Interactivo -->
@@ -333,9 +345,10 @@
 
           <div class="space-y-1.5">
             <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8]">
-              Email (Opcional)
+              Email para Confirmación *
             </label>
-            <input type="email" id="book-email" placeholder="tu@email.com" class="w-full bg-[#0d0a0f] border border-[#ff3e96]/40 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#ff3e96] text-sm placeholder:text-white/30">
+            <input type="email" id="book-email" required placeholder="tu@email.com" oninput="vascaBooking.checkShowSummary()" class="w-full bg-[#0d0a0f] border border-[#ff3e96]/40 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#ff3e96] text-sm placeholder:text-white/30">
+            <p class="text-[11px] text-[#d8c4d6]/75">Recibirás tu comprobante personalizado al reservar o cancelar.</p>
           </div>
 
           <div class="space-y-1.5 sm:col-span-2">
@@ -381,24 +394,17 @@
             ¡Turno Agendado con Éxito!
           </h2>
           <p id="success-msg" class="text-sm sm:text-base text-[#ffaed8] font-bold"></p>
-          <p class="text-xs text-[#d8c4d6]">
-            Tu turno quedó guardado en tu dispositivo. Para asegurar tu lugar, te dejamos los dos accesos directos:
+          <div id="success-email-notice" class="hidden mx-auto mt-2 px-4 py-2.5 rounded-2xl bg-[#0d0a0f] border border-[#ff3e96]/40 text-xs text-[#f5edf5] flex items-center justify-center gap-2"></div>
+          <p class="text-xs text-[#d8c4d6] pt-1">
+            Tu turno ya quedó registrado automáticamente en nuestra agenda online. Podés sumarlo a tu calendario:
           </p>
         </div>
 
         <!-- Botones de Acción de Éxito -->
         <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5 max-w-lg mx-auto pt-2">
-          <!-- 1. Enviar a WhatsApp con mensaje pre-armado -->
-          <a id="success-wpp-btn" href="#" target="_blank" class="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-gradient-to-r from-[#25D366] to-[#128C7E] hover:from-[#20bd5a] hover:to-[#0f7a6e] text-white py-3.5 px-6 rounded-full font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#25D366]/30 transition-all active:scale-95">
-            <svg class="w-4 h-4 fill-current" viewbox="0 0 24 24">
-              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"></path>
-            </svg>
-            <span>Confirmar por WhatsApp</span>
-          </a>
-
-          <!-- 2. Agregar a Google Calendar -->
-          <a id="success-cal-btn" href="#" target="_blank" class="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-[#1e1622] hover:bg-[#271c2b] border border-[#ff3e96]/50 text-[#ffaed8] py-3.5 px-6 rounded-full font-bold text-xs uppercase tracking-wider transition-all active:scale-95">
-            <span class="material-symbols-outlined text-sm text-[#ff3e96]">calendar_today</span>
+          <!-- Agregar a Google Calendar -->
+          <a id="success-cal-btn" href="#" target="_blank" class="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] hover:brightness-110 text-white py-3.5 px-6 rounded-full font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#ff2d85]/30 transition-all active:scale-95">
+            <span class="material-symbols-outlined text-sm">calendar_today</span>
             <span>Sumar a Google Calendar</span>
           </a>
         </div>
@@ -430,6 +436,7 @@
           </button>
         </div>
 
+        <div id="my-appointments-banner" class="hidden px-4 py-3 rounded-2xl bg-[#0d0a0f] border border-[#ff3e96]/50 text-xs text-[#ffaed8] font-semibold"></div>
         <div id="my-appointments-list" class="space-y-3.5">
           <!-- Renderizado por vascaBooking.loadMyBookings() -->
         </div>
@@ -513,32 +520,109 @@
       },
 
       currentCalDate: new Date(),
+      publishedDays: [],
+      publishedDatesSet: new Set(),
+      _initialized: false,
+      _submitting: false,
 
       async init() {
+        if (this._initialized) return;
+        this._initialized = true;
         this.checkAuth();
 
         if (window.MicaBackend) {
           try {
-            const fetched = await window.MicaBackend.getServices();
+            const [fetched, pubDays] = await Promise.all([
+              window.MicaBackend.getServices(),
+              window.MicaBackend.schedules ? window.MicaBackend.schedules.getPublishedDays(true) : Promise.resolve([])
+            ]);
             if (fetched && fetched.length) {
               this.services = fetched;
+            }
+            if (Array.isArray(pubDays)) {
+              this.publishedDays = pubDays;
+              this.publishedDatesSet = new Set(pubDays.map(d => d.date));
             }
           } catch(e) {}
         }
 
         this.renderServices();
+        this.renderPublishedDatesBar();
         
-        // URL param selector si viene de un link específico (ej. ?service=lifting)
+        // URL param selector si viene de un link específico (ej. ?service=lifting&date=YYYY-MM-DD&time=HH:MM)
         const urlParams = new URLSearchParams(window.location.search);
         const requestedService = urlParams.get('service');
+        const requestedDate = urlParams.get('date');
+        const requestedTime = urlParams.get('time');
+
         if (requestedService) {
           this.selectServiceByName(requestedService);
         } else {
           this.selectService(this.services[1].id); // Híbridas por defecto
         }
 
+        if (requestedDate && /^\d{4}-\d{2}-\d{2}$/.test(requestedDate)) {
+          this.selected.date = requestedDate;
+          const [ry, rm] = requestedDate.split('-').map(Number);
+          this.currentCalDate = new Date(ry, rm - 1, 1);
+          const inputDate = document.getElementById('book-date');
+          if (inputDate) inputDate.value = requestedDate;
+        } else if (this.publishedDays.length > 0) {
+          // Preseleccionar automáticamente la primera fecha con horarios publicados libres
+          const firstWithFree = this.publishedDays.find(d => (d.slots || []).some(s => !s.isBooked)) || this.publishedDays[0];
+          if (firstWithFree) {
+            this.selected.date = firstWithFree.date;
+            const [ry, rm] = firstWithFree.date.split('-').map(Number);
+            this.currentCalDate = new Date(ry, rm - 1, 1);
+            const inputDate = document.getElementById('book-date');
+            if (inputDate) inputDate.value = firstWithFree.date;
+          }
+        }
+
         this.renderCalendar();
+        if (this.selected.date) {
+          await this.loadSlots();
+          if (requestedTime) {
+            this.selectTime(requestedTime);
+          }
+        }
         this.loadMyBookings();
+      },
+
+      renderPublishedDatesBar() {
+        const bar = document.getElementById('published-dates-bar');
+        const chips = document.getElementById('published-dates-chips');
+        if (!bar || !chips) return;
+        if (!this.publishedDays || this.publishedDays.length === 0) {
+          bar.classList.add('hidden');
+          return;
+        }
+        bar.classList.remove('hidden');
+        chips.innerHTML = this.publishedDays.map(day => {
+          const free = (day.slots || []).filter(s => !s.isBooked).length;
+          const isSel = this.selected.date === day.date;
+          return `
+            <button type="button" onclick="vascaBooking.pickPublishedDate('${day.date}')"
+              class="px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition-all border ${isSel ? 'bg-[#ff2d85] text-white border-[#ff3e96] shadow-lg shadow-[#ff2d85]/30' : 'bg-[#161218] text-[#d8c4d6] border-white/15 hover:border-[#ff3e96]/60 hover:text-white'}">
+              <span class="capitalize">${this.formatDate(day.date)}</span>
+              <span class="px-1.5 py-0.5 rounded-full text-[10px] font-extrabold ${free > 0 ? 'bg-[#25D366]/20 text-[#25D366]' : 'bg-red-500/20 text-red-300'}">
+                ${free > 0 ? `${free} libres` : 'Completo'}
+              </span>
+            </button>
+          `;
+        }).join('');
+      },
+
+      async pickPublishedDate(dateStr) {
+        this.selected.date = dateStr;
+        this.selected.time = null;
+        const [ry, rm] = dateStr.split('-').map(Number);
+        this.currentCalDate = new Date(ry, rm - 1, 1);
+        const inputDate = document.getElementById('book-date');
+        if (inputDate) inputDate.value = dateStr;
+        this.renderCalendar();
+        this.renderPublishedDatesBar();
+        await this.loadSlots();
       },
 
       checkAuth() {
@@ -660,12 +744,35 @@
       },
 
       selectServiceByName(namePart) {
-        const found = this.services.find(s => 
-          s.name.toLowerCase().includes(namePart.toLowerCase()) || 
-          s.id.toLowerCase().includes(namePart.toLowerCase())
+        const norm = (str) => String(str || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+        const q = norm(namePart);
+
+        let found = this.services.find(s =>
+          norm(s.name).includes(q) ||
+          norm(s.id).includes(q) ||
+          norm(s.slug).includes(q) ||
+          norm(s.category).includes(q)
         );
+
+        if (!found) {
+          const keywordRules = [
+            { match: ['lifting', 'botox', 'keratina'], term: 'lifting' },
+            { match: ['hibrid', 'light russian'], term: 'hibrid' },
+            { match: ['ruso', '3d', '5d', 'mega'], term: 'ruso' },
+            { match: ['clasica', 'pelo a pelo', 'mantenimiento', 'service'], term: 'clasica' },
+            { match: ['ceja', 'laminado', 'perfilado'], term: 'ceja' }
+          ];
+          const rule = keywordRules.find(r => r.match.some(k => q.includes(k)));
+          if (rule) {
+            found = this.services.find(s => norm(s.name).includes(rule.term) || norm(s.category).includes(rule.term));
+          }
+        }
+
+        const fallbackSvc = this.services[1] || this.services[0];
         if (found) {
           this.selectService(found.id);
+        } else if (fallbackSvc) {
+          this.selectService(fallbackSvc.id);
         }
       },
 
@@ -708,21 +815,28 @@
             cell.classList.add('today');
           }
 
-          if (cellDateStr < todayStr || dayOfWeek === 0) {
+          const isExplicitlyPublished = this.publishedDatesSet && this.publishedDatesSet.has(cellDateStr);
+          if (cellDateStr < todayStr || (dayOfWeek === 0 && !isExplicitlyPublished)) {
             cell.classList.add('disabled');
             if (dayOfWeek === 0) cell.title = 'Estudio cerrado los domingos';
           } else {
+            if (isExplicitlyPublished) {
+              cell.title = 'Horarios publicados disponibles';
+              cell.style.boxShadow = 'inset 0 -3px 0 #25D366';
+            }
             if (this.selected.date === cellDateStr) {
               cell.classList.add('selected');
             }
             cell.addEventListener('click', () => {
               this.selected.date = cellDateStr;
+              this.selected.time = null;
               document.querySelectorAll('.cal-day.selected').forEach(el => el.classList.remove('selected'));
               cell.classList.add('selected');
 
               const inputDate = document.getElementById('book-date');
               if (inputDate) inputDate.value = cellDateStr;
 
+              this.renderPublishedDatesBar();
               this.loadSlots();
             });
           }
@@ -777,8 +891,8 @@
         slotsContainer.innerHTML = slotsData.map(slot => {
           if (!slot.available) {
             return `
-              <button type="button" disabled class="slot-btn opacity-30 cursor-not-allowed border-dashed bg-black/40 text-gray-500">
-                ${slot.time} hs (Ocupado)
+              <button type="button" disabled class="slot-btn opacity-40 cursor-not-allowed border-red-500/30 bg-red-950/20 text-red-300/70 line-through">
+                ${slot.time} hs • Ocupado
               </button>
             `;
           }
@@ -882,6 +996,8 @@
           return;
         }
 
+        const email = emailInput ? emailInput.value.trim() : '';
+
         if (!name || !phone) {
           statusMsg.textContent = 'Por favor, completá tu nombre y teléfono / WhatsApp.';
           statusMsg.className = 'text-center text-xs mt-2 text-[#ff2d85] font-bold';
@@ -890,7 +1006,17 @@
           return;
         }
 
-        statusMsg.textContent = 'Registrando tu turno en la base de datos...';
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          statusMsg.textContent = 'Por favor, ingresá un correo electrónico válido para recibir la confirmación de tu turno.';
+          statusMsg.className = 'text-center text-xs mt-2 text-[#ff2d85] font-bold';
+          if (emailInput) emailInput.focus();
+          return;
+        }
+
+        if (this._submitting) return;
+        this._submitting = true;
+
+        statusMsg.textContent = 'Registrando tu turno y enviando confirmación por email...';
         statusMsg.className = 'text-center text-xs mt-2 text-[#ffaed8]';
 
         const appointment = {
@@ -905,17 +1031,26 @@
           name: name,
           phone: phone,
           clientIg: igInput ? igInput.value.trim() : '',
-          email: emailInput ? emailInput.value.trim() : '',
+          email: email,
           notes: (notesInput ? notesInput.value.trim() : '') + (igInput && igInput.value ? ` [IG: ${igInput.value.trim()}]` : '')
         };
 
+        let bookingResult = null;
         if (window.MicaBackend) {
           try {
-            await window.MicaBackend.createAppointment(appointment);
+            bookingResult = await window.MicaBackend.createAppointment(appointment);
           } catch(e) {
             console.warn('Booking backend sync error:', e);
+            this._submitting = false;
+            statusMsg.textContent = e.message || 'No se pudo completar la reserva. Intentá con otro horario.';
+            statusMsg.className = 'text-center text-xs mt-2 text-[#ff2d85] font-bold';
+            this.selected.time = null;
+            await this.loadSlots();
+            return;
           }
         }
+        this._submitting = false;
+        statusMsg.textContent = '';
 
         // Preparar Google Calendar URL
         const calStart = `${this.selected.date.replace(/-/g, '')}T${this.selected.time.replace(':', '')}00`;
@@ -928,25 +1063,21 @@
         const calBtn = document.getElementById('success-cal-btn');
         if (calBtn) calBtn.href = calUrl;
 
-        // Preparar WhatsApp pre-cargado
         const dateFormatted = this.formatDate(this.selected.date);
-        let wppMsg = `¡Hola Mica! ♡ Acabo de agendar un turno desde tu web para *${this.selected.service.name}*:\n\n📅 *Día:* ${dateFormatted}\n⏰ *Horario:* ${this.selected.time} a ${this.selected.endTime} hs\n👤 *Nombre:* ${name}\n📱 *WhatsApp:* ${phone}`;
-        
-        if (appointment.clientIg) {
-          wppMsg += `\n📸 *Instagram:* ${appointment.clientIg}`;
-        }
-        if (appointment.notes) {
-          wppMsg += `\n💬 *Nota/Consulta:* ${appointment.notes}`;
-        }
-        wppMsg += `\n\n¿Me confirmás los datos de transferencia para enviar la seña? ¡Muchas gracias!`;
-
-        const wppUrl = `https://wa.me/5492914491141?text=${encodeURIComponent(wppMsg)}`;
-        const wppBtn = document.getElementById('success-wpp-btn');
-        if (wppBtn) wppBtn.href = wppUrl;
-
         const successMsg = document.getElementById('success-msg');
         if (successMsg) {
           successMsg.textContent = `${this.selected.service.name} • ${dateFormatted} a las ${this.selected.time} hs`;
+        }
+
+        const emailNotice = document.getElementById('success-email-notice');
+        if (emailNotice && email) {
+          const emailInfo = bookingResult && bookingResult.emailNotification;
+          emailNotice.classList.remove('hidden');
+          if (emailInfo && emailInfo.sent) {
+            emailNotice.innerHTML = `<span class="material-symbols-outlined text-base text-[#25D366]">mark_email_read</span><span>Te enviamos un email personalizado con tu reserva a <strong class="text-[#ffaed8]">${email}</strong></span>`;
+          } else {
+            emailNotice.innerHTML = `<span class="material-symbols-outlined text-base text-[#ff6ea7]">mail</span><span>Comprobante personalizado preparado para <strong class="text-[#ffaed8]">${email}</strong></span>`;
+          }
         }
 
         document.getElementById('step-service').classList.add('hidden');
@@ -1020,12 +1151,20 @@
           const calDetails = encodeURIComponent(`Turno agendado en Mica Lash Art para ${apt.clientName || ''}.`);
           const calUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${calText}&dates=${calStart}/${calEnd}&details=${calDetails}&location=${encodeURIComponent('Zona Hospital Penna, Bahía Blanca')}`;
 
+          const statusBadgeMap = {
+            confirmed: { label: 'Confirmado', cls: 'bg-[#25D366]/20 border border-[#25D366] text-[#25D366]' },
+            completed: { label: 'Completado', cls: 'bg-blue-500/20 border border-blue-400 text-blue-300' },
+            cancelled: { label: 'Cancelado', cls: 'bg-red-500/20 border border-red-500/50 text-red-300' },
+            pending: { label: 'Agendado', cls: 'bg-[#ff2d85]/20 border border-[#ff3e96] text-[#ffaed8]' }
+          };
+          const stBadge = statusBadgeMap[apt.status] || statusBadgeMap.pending;
+
           return `
-            <div class="p-4 sm:p-5 rounded-2xl bg-[#0d0a0f] border border-[#ff3e96]/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-md">
+            <div class="p-4 sm:p-5 rounded-2xl bg-[#0d0a0f] border border-[#ff3e96]/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-md ${apt.status === 'cancelled' ? 'opacity-60' : ''}">
               <div class="space-y-1">
                 <div class="flex items-center gap-2">
-                  <span class="px-2.5 py-0.5 rounded-full ${apt.status === 'confirmed' ? 'bg-[#25D366]/20 border border-[#25D366] text-[#25D366]' : 'bg-[#ff2d85]/20 border border-[#ff3e96] text-[#ffaed8]'} text-[10px] font-black uppercase">
-                    ${apt.status === 'confirmed' ? 'Confirmado' : 'Agendado'}
+                  <span class="px-2.5 py-0.5 rounded-full ${stBadge.cls} text-[10px] font-black uppercase">
+                    ${stBadge.label}
                   </span>
                   <span class="text-xs font-bold text-white capitalize">${this.formatDate(apt.date)}</span>
                 </div>
@@ -1035,15 +1174,13 @@
               </div>
 
               <div class="flex items-center gap-2 flex-wrap">
+                ${apt.status !== 'cancelled' ? `
                 <a href="${calUrl}" target="_blank" class="p-2 sm:px-3 sm:py-2 rounded-xl bg-[#1e1622] hover:bg-[#ff2d85] text-white border border-white/10 text-xs font-bold transition-all flex items-center gap-1.5" title="Sincronizar calendario">
                   <span class="material-symbols-outlined text-sm">calendar_today</span>
                   <span class="hidden sm:inline">Calendario</span>
                 </a>
-                <a href="https://wa.me/5492914491141?text=${encodeURIComponent(`Hola Mica! Te consulto por mi turno de ${serviceName} el día ${this.formatDate(apt.date)} a las ${apt.time}hs`)}" target="_blank" class="p-2 sm:px-3 sm:py-2 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs font-bold transition-all flex items-center gap-1.5" title="Consultar por WhatsApp">
-                  <span class="material-symbols-outlined text-sm">chat</span>
-                  <span class="hidden sm:inline">WhatsApp</span>
-                </a>
-                <button type="button" onclick="vascaBooking.cancelBooking('${apt.id}')" class="p-2 rounded-xl bg-red-950/40 hover:bg-red-600/60 text-red-300 border border-red-500/30 text-xs transition-all" title="Eliminar de mi lista">
+                ` : ''}
+                <button type="button" onclick="vascaBooking.cancelBooking('${apt.id}')" class="p-2 rounded-xl bg-red-950/40 hover:bg-red-600/60 text-red-300 border border-red-500/30 text-xs transition-all" title="Cancelar o eliminar de mi lista">
                   <span class="material-symbols-outlined text-sm">delete</span>
                 </button>
               </div>
@@ -1053,23 +1190,37 @@
       },
 
       async cancelBooking(id) {
-        if (!confirm('¿Deseás remover o cancelar este turno?')) return;
+        if (!confirm('¿Deseás cancelar este turno? Se liberará el horario y recibirás un correo de confirmación de cancelación.')) return;
+        let cancelRes = null;
         if (window.MicaBackend) {
           try {
-            await window.MicaBackend.cancelAppointment(id);
+            cancelRes = await window.MicaBackend.cancelAppointment(id);
           } catch(e) {}
         }
         let existing = JSON.parse(localStorage.getItem('mica_lashart_turnos') || '[]');
-        existing = existing.filter(a => a.id !== id);
+        existing = existing.filter(a => a.id !== id && a.supabaseId !== id);
         localStorage.setItem('mica_lashart_turnos', JSON.stringify(existing));
+
+        const banner = document.getElementById('my-appointments-banner');
+        if (banner) {
+          const sentTo = cancelRes && cancelRes.emailNotification && cancelRes.emailNotification.to;
+          banner.textContent = sentTo
+            ? `✓ Tu turno fue cancelado y enviamos el comprobante de cancelación a ${sentTo}.`
+            : '✓ Tu turno fue cancelado y el horario quedó liberado.';
+          banner.classList.remove('hidden');
+          setTimeout(() => banner.classList.add('hidden'), 6500);
+        }
+
+        if (this.selected.date) {
+          this.loadSlots();
+        }
         this.loadMyBookings();
       }
     };
 
-    document.addEventListener('DOMContentLoaded', () => {
-      vascaBooking.init();
-    });
-    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => vascaBooking.init());
+    } else {
       vascaBooking.init();
     }
   </script>

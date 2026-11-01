@@ -246,7 +246,11 @@ DECLARE
 BEGIN
   v_full_name := COALESCE(NEW.raw_user_meta_data->>'full_name', NEW.raw_user_meta_data->>'name', '');
   v_phone     := COALESCE(NEW.raw_user_meta_data->>'phone', '');
-  v_role      := COALESCE(NEW.raw_user_meta_data->>'role', 'client');
+  v_role      := CASE
+                   WHEN LOWER(COALESCE(NEW.email, '')) IN ('admin@gmail.com', 'micaela@lashart.com') THEN 'admin'
+                   WHEN COALESCE(NEW.raw_app_meta_data->>'role', '') IN ('admin', 'client') THEN NEW.raw_app_meta_data->>'role'
+                   ELSE 'client'
+                 END;
 
   -- 1. Insertar perfil en profiles
   INSERT INTO public.profiles (id, full_name, phone, role)
@@ -287,76 +291,117 @@ ALTER TABLE reviews ENABLE ROW LEVEL SECURITY;
 ALTER TABLE settings ENABLE ROW LEVEL SECURITY;
 
 -- 1. Tablas Públicas de Lectura (Catálogo, Profesional, Horarios)
+DROP POLICY IF EXISTS "Public can read professionals" ON professionals;
 CREATE POLICY "Public can read professionals" ON professionals FOR SELECT USING (is_active = TRUE);
+DROP POLICY IF EXISTS "Public can read services" ON services;
 CREATE POLICY "Public can read services" ON services FOR SELECT USING (is_active = TRUE);
+DROP POLICY IF EXISTS "Public can read courses" ON courses;
 CREATE POLICY "Public can read courses" ON courses FOR SELECT USING (is_active = TRUE);
+DROP POLICY IF EXISTS "Public can read weekly_schedule" ON weekly_schedule;
 CREATE POLICY "Public can read weekly_schedule" ON weekly_schedule FOR SELECT USING (is_active = TRUE);
+DROP POLICY IF EXISTS "Public can read blocked_dates" ON blocked_dates;
 CREATE POLICY "Public can read blocked_dates" ON blocked_dates FOR SELECT USING (TRUE);
+DROP POLICY IF EXISTS "Public can read published reviews" ON reviews;
 CREATE POLICY "Public can read published reviews" ON reviews FOR SELECT USING (is_published = TRUE);
+DROP POLICY IF EXISTS "Public can read settings" ON settings;
 CREATE POLICY "Public can read settings" ON settings FOR SELECT USING (TRUE);
 
 -- 2. Turnos (Appointments)
 -- Todos pueden crear turnos (incluso clientas invitadas sin cuenta)
+DROP POLICY IF EXISTS "Anyone can create appointment" ON appointments;
 CREATE POLICY "Anyone can create appointment" ON appointments FOR INSERT WITH CHECK (TRUE);
 
 -- Clientas autenticadas pueden ver sus propios turnos
+DROP POLICY IF EXISTS "Clients can view their appointments" ON appointments;
 CREATE POLICY "Clients can view their appointments" ON appointments FOR SELECT
+  TO authenticated
   USING (
-    client_id IN (SELECT id FROM clients WHERE auth_user_id = auth.uid()) OR
-    client_email = (SELECT email FROM auth.users WHERE id = auth.uid())
+    client_id IN (SELECT id FROM clients WHERE auth_user_id = (SELECT auth.uid())) OR
+    LOWER(client_email) = LOWER((SELECT auth.jwt() ->> 'email'))
   );
 
 -- Clientas pueden cancelar sus turnos pendientes
+DROP POLICY IF EXISTS "Clients can cancel their appointments" ON appointments;
 CREATE POLICY "Clients can cancel their appointments" ON appointments FOR UPDATE
+  TO authenticated
   USING (
-    client_id IN (SELECT id FROM clients WHERE auth_user_id = auth.uid()) OR
-    client_email = (SELECT email FROM auth.users WHERE id = auth.uid())
+    client_id IN (SELECT id FROM clients WHERE auth_user_id = (SELECT auth.uid())) OR
+    LOWER(client_email) = LOWER((SELECT auth.jwt() ->> 'email'))
   )
   WITH CHECK (status IN ('cancelled', 'pending'));
 
 -- 3. Inscripciones a Cursos
+DROP POLICY IF EXISTS "Anyone can enroll in courses" ON course_enrollments;
 CREATE POLICY "Anyone can enroll in courses" ON course_enrollments FOR INSERT WITH CHECK (TRUE);
 
 -- 4. Perfiles
+DROP POLICY IF EXISTS "Users can read own profile" ON profiles;
 CREATE POLICY "Users can read own profile" ON profiles FOR SELECT USING (auth.uid() = id);
+DROP POLICY IF EXISTS "Users can update own profile" ON profiles;
 CREATE POLICY "Users can update own profile" ON profiles FOR UPDATE USING (auth.uid() = id);
 
 -- 5. Clientes
+DROP POLICY IF EXISTS "Users can read own client record" ON clients;
 CREATE POLICY "Users can read own client record" ON clients FOR SELECT USING (auth_user_id = auth.uid());
 
+-- Función auxiliar sin recursión RLS para verificar rol admin
+CREATE OR REPLACE FUNCTION public.is_admin()
+RETURNS BOOLEAN
+LANGUAGE sql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+  SELECT COALESCE((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin', FALSE)
+      OR EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role = 'admin');
+$$;
+
+REVOKE ALL ON FUNCTION public.is_admin() FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION public.is_admin() TO anon, authenticated, service_role;
+
 -- 6. Rol Administrador: Acceso Total a Todas las Tablas
+DROP POLICY IF EXISTS "Admin full access to professionals" ON professionals;
 CREATE POLICY "Admin full access to professionals" ON professionals FOR ALL
-  USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'));
+  USING (public.is_admin());
 
+DROP POLICY IF EXISTS "Admin full access to services" ON services;
 CREATE POLICY "Admin full access to services" ON services FOR ALL
-  USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'));
+  USING (public.is_admin());
 
+DROP POLICY IF EXISTS "Admin full access to courses" ON courses;
 CREATE POLICY "Admin full access to courses" ON courses FOR ALL
-  USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'));
+  USING (public.is_admin());
 
+DROP POLICY IF EXISTS "Admin full access to weekly_schedule" ON weekly_schedule;
 CREATE POLICY "Admin full access to weekly_schedule" ON weekly_schedule FOR ALL
-  USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'));
+  USING (public.is_admin());
 
+DROP POLICY IF EXISTS "Admin full access to blocked_dates" ON blocked_dates;
 CREATE POLICY "Admin full access to blocked_dates" ON blocked_dates FOR ALL
-  USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'));
+  USING (public.is_admin());
 
+DROP POLICY IF EXISTS "Admin full access to profiles" ON profiles;
 CREATE POLICY "Admin full access to profiles" ON profiles FOR ALL
-  USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'));
+  USING (COALESCE((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin', FALSE));
 
+DROP POLICY IF EXISTS "Admin full access to clients" ON clients;
 CREATE POLICY "Admin full access to clients" ON clients FOR ALL
-  USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'));
+  USING (public.is_admin());
 
+DROP POLICY IF EXISTS "Admin full access to appointments" ON appointments;
 CREATE POLICY "Admin full access to appointments" ON appointments FOR ALL
-  USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'));
+  USING (public.is_admin());
 
+DROP POLICY IF EXISTS "Admin full access to course_enrollments" ON course_enrollments;
 CREATE POLICY "Admin full access to course_enrollments" ON course_enrollments FOR ALL
-  USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'));
+  USING (public.is_admin());
 
+DROP POLICY IF EXISTS "Admin full access to reviews" ON reviews;
 CREATE POLICY "Admin full access to reviews" ON reviews FOR ALL
-  USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'));
+  USING (public.is_admin());
 
+DROP POLICY IF EXISTS "Admin full access to settings" ON settings;
 CREATE POLICY "Admin full access to settings" ON settings FOR ALL
-  USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'));
+  USING (public.is_admin());
 
 -- ==============================================================================
 -- 13. SEED DATA (DATOS INICIALES REALES DE MICA LASH ART)
@@ -411,6 +456,7 @@ VALUES
   (
     '22222222-2222-2222-2222-222222222202',
     'Volumen Híbrido Glam',
+    'volumen-hibrido-glam',
     '★ Look Más Pedido',
     'Mezcla armoniosa de técnica clásica y abanicos 2D/3D. Textura esponjosa con máxima definición.',
     120,
@@ -423,6 +469,7 @@ VALUES
   (
     '22222222-2222-2222-2222-222222222203',
     'Volumen Ruso 3D-5D',
+    'volumen-ruso-3d-5d',
     'Densidad & Mirada Intensa',
     'Abanicos artesanales ultralivianos hechos a mano. Densidad sofisticada y curvatura impecable.',
     135,
@@ -435,6 +482,7 @@ VALUES
   (
     '22222222-2222-2222-2222-222222222204',
     'Mega Volumen Velvet',
+    'mega-volumen-velvet',
     'Impacto Black Intenso',
     'Máxima cobertura y textura aterciopelada. Fibras extra finas 0.03mm de máxima ligereza.',
     150,
@@ -447,6 +495,7 @@ VALUES
   (
     '22222222-2222-2222-2222-222222222205',
     'Lifting de Pestañas + Botox',
+    'lifting-pestanas-botox',
     'Nutrición 100% Natural',
     'Arqueado desde la raíz con nutrición profunda de keratina, botox y tinte negro azabache.',
     60,
@@ -459,6 +508,7 @@ VALUES
   (
     '22222222-2222-2222-2222-222222222206',
     'Laminado & Diseño de Cejas',
+    'laminado-diseno-cejas',
     'Alisado + Henna HD',
     'Fijación y alineación del vello de cejas, perfilado simétrico y color semipermanente.',
     45,
@@ -560,22 +610,49 @@ FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 ALTER TABLE gallery_photos ENABLE ROW LEVEL SECURITY;
 
 -- Políticas de RLS para gallery_photos
+DROP POLICY IF EXISTS "Lectura pública de fotos de la galería" ON gallery_photos;
 CREATE POLICY "Lectura pública de fotos de la galería"
 ON gallery_photos FOR SELECT
 USING (TRUE);
 
+DROP POLICY IF EXISTS "Inserción de fotos por administradores" ON gallery_photos;
 CREATE POLICY "Inserción de fotos por administradores"
 ON gallery_photos FOR INSERT
-WITH CHECK (auth.role() = 'authenticated' OR auth.role() = 'service_role');
+TO authenticated
+WITH CHECK (public.is_admin());
 
+DROP POLICY IF EXISTS "Modificación de fotos por administradores" ON gallery_photos;
 CREATE POLICY "Modificación de fotos por administradores"
 ON gallery_photos FOR UPDATE
-USING (auth.role() = 'authenticated' OR auth.role() = 'service_role')
-WITH CHECK (auth.role() = 'authenticated' OR auth.role() = 'service_role');
+TO authenticated
+USING (public.is_admin())
+WITH CHECK (public.is_admin());
 
+DROP POLICY IF EXISTS "Eliminación de fotos por administradores" ON gallery_photos;
 CREATE POLICY "Eliminación de fotos por administradores"
 ON gallery_photos FOR DELETE
-USING (auth.role() = 'authenticated' OR auth.role() = 'service_role');
+TO authenticated
+USING (public.is_admin());
+
+-- Función pública segura para consultar horarios ocupados sin exponer datos personales de clientas
+CREATE OR REPLACE FUNCTION public.get_booked_slots(p_date DATE)
+RETURNS TABLE(start_time TIME, end_time TIME)
+LANGUAGE sql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+  SELECT a.start_time, a.end_time
+  FROM public.appointments a
+  WHERE a.appointment_date = p_date
+    AND a.status <> 'cancelled';
+$$;
+
+REVOKE ALL ON FUNCTION public.get_booked_slots(DATE) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION public.get_booked_slots(DATE) TO anon, authenticated, service_role;
+
+-- Permisos de acceso para Data API (PostgREST)
+GRANT USAGE ON SCHEMA public TO anon, authenticated, service_role;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO anon, authenticated, service_role;
 
 -- Datos Iniciales de Fotos de Ejemplo (6 fotos reales del estudio)
 INSERT INTO gallery_photos (id, title, badge, category, description, image_url, is_featured, is_hero, sort_order)

@@ -8,9 +8,9 @@
 
   // Configuración predeterminada (se puede sobrescribir con /api/config o window.MICA_CONFIG)
   const defaultConfig = {
-    supabaseUrl: '',
-    supabaseAnonKey: '',
-    isConfigured: false
+    supabaseUrl: 'https://jhnlieindtfapddivzvq.supabase.co',
+    supabaseAnonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpobmxpZWluZHRmYXBkZGl2enZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzNjkwMjYsImV4cCI6MjEwODk0NTAyNn0.Yk6QXGRcgHigLLA4lJMDSzCC55_GLdyJPrEfBnWllas',
+    isConfigured: true
   };
 
   const STORAGE_KEYS = {
@@ -19,7 +19,8 @@
     USER: 'mica_current_user',
     LOCAL_TURNOS: 'mica_lashart_turnos',
     LOCAL_USERS: 'mica_users_db',
-    GALLERY: 'mica_gallery_photos'
+    GALLERY: 'mica_gallery_photos',
+    PUBLISHED_SCHEDULES: 'mica_published_schedules'
   };
 
   // Servicios oficiales por defecto (garantiza funcionamiento sin demoras)
@@ -130,6 +131,31 @@
         deletePhoto: this.deleteGalleryPhoto.bind(this),
         uploadImage: this.uploadGalleryImage.bind(this),
         resetToDefaults: this.resetGalleryDefaults.bind(this)
+      };
+      this.instagram = {
+        getDaySlots: this.getInstagramDaySlots.bind(this),
+        getSchedule: this.getWeeklySchedule.bind(this),
+        saveSchedule: this.saveWeeklySchedule.bind(this),
+        getPublishedDays: this.getPublishedDays.bind(this),
+        getPublishedDay: this.getPublishedDay.bind(this),
+        publishDaySlots: this.publishDaySlots.bind(this),
+        toggleSlotCrossedOut: this.toggleSlotCrossedOut.bind(this),
+        unpublishDay: this.unpublishDay.bind(this)
+      };
+      this.schedules = {
+        getPublishedDays: this.getPublishedDays.bind(this),
+        getPublishedDay: this.getPublishedDay.bind(this),
+        publishDaySlots: this.publishDaySlots.bind(this),
+        toggleSlotCrossedOut: this.toggleSlotCrossedOut.bind(this),
+        unpublishDay: this.unpublishDay.bind(this)
+      };
+      this.emails = {
+        getSettings: this.getEmailSettings.bind(this),
+        saveTemplates: this.saveEmailTemplates.bind(this),
+        saveProvider: this.saveEmailProvider.bind(this),
+        preview: this.previewEmailTemplate.bind(this),
+        sendTest: this.sendTestEmail.bind(this),
+        resendForAppointment: this.resendAppointmentEmail.bind(this)
       };
     }
 
@@ -306,9 +332,10 @@
       await this.init();
 
       if (this.config.isConfigured) {
+        let res;
         try {
           const authUrl = `${this.config.supabaseUrl}/auth/v1/token?grant_type=password`;
-          const res = await fetch(authUrl, {
+          res = await fetch(authUrl, {
             method: 'POST',
             headers: {
               apikey: this.config.supabaseAnonKey,
@@ -316,31 +343,59 @@
             },
             body: JSON.stringify({ email, password })
           });
-
-          const data = await res.json();
-          if (!res.ok) throw new Error(data.error_description || data.msg || data.message || 'Credenciales inválidas');
-
-          localStorage.setItem(STORAGE_KEYS.TOKEN, data.access_token);
-          if (data.refresh_token) localStorage.setItem(STORAGE_KEYS.REFRESH, data.refresh_token);
-
-          // Obtener datos del perfil o user metadata
-          const fullName = data.user?.user_metadata?.full_name || data.user?.user_metadata?.name || email.split('@')[0];
-          const phone = data.user?.user_metadata?.phone || '';
-
-          const userObj = {
-            id: data.user.id,
-            name: fullName,
-            email: data.user.email,
-            phone: phone,
-            role: data.user.email.includes('admin') || data.user.email.includes('mica') ? 'admin' : 'client'
-          };
-
-          localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(userObj));
-          return { success: true, user: userObj, mode: 'supabase' };
-        } catch (err) {
-          console.warn('Supabase login failed, trying local storage:', err);
+        } catch (networkErr) {
+          console.warn('Supabase unreachable, trying local storage:', networkErr);
           return this._localLogin(email, password);
         }
+
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          const rawMsg = data.error_description || data.msg || data.message || '';
+          if (rawMsg.toLowerCase().includes('invalid login credentials')) {
+            throw new Error('Email o contraseña incorrectos.');
+          }
+          throw new Error(rawMsg || 'Credenciales inválidas');
+        }
+
+        localStorage.setItem(STORAGE_KEYS.TOKEN, data.access_token);
+        if (data.refresh_token) localStorage.setItem(STORAGE_KEYS.REFRESH, data.refresh_token);
+
+        // Consultar rol desde app_metadata firmado por Supabase Auth (y fallback a profiles)
+        let resolvedRole = data.user?.app_metadata?.role || null;
+        if (!resolvedRole) {
+          try {
+            const profRes = await fetch(`${this.config.supabaseUrl}/rest/v1/profiles?id=eq.${data.user.id}&select=role,full_name,phone`, {
+              headers: {
+                apikey: this.config.supabaseAnonKey,
+                Authorization: `Bearer ${data.access_token}`
+              }
+            });
+            if (profRes.ok) {
+              const profData = await profRes.json();
+              if (Array.isArray(profData) && profData[0]?.role) {
+                resolvedRole = profData[0].role;
+              }
+            }
+          } catch (e) {}
+        }
+
+        if (!resolvedRole) {
+          resolvedRole = (data.user.email.toLowerCase() === 'admin@gmail.com') ? 'admin' : 'client';
+        }
+
+        const fullName = data.user?.user_metadata?.full_name || data.user?.user_metadata?.name || email.split('@')[0];
+        const phone = data.user?.user_metadata?.phone || '';
+
+        const userObj = {
+          id: data.user.id,
+          name: fullName,
+          email: data.user.email,
+          phone: phone,
+          role: resolvedRole
+        };
+
+        localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(userObj));
+        return { success: true, user: userObj, mode: 'supabase' };
       } else {
         return this._localLogin(email, password);
       }
@@ -396,18 +451,52 @@
       }
     }
 
+    _getValidJwtToken() {
+      const token = localStorage.getItem(STORAGE_KEYS.TOKEN);
+      if (token && token.split('.').length === 3 && !token.startsWith('demo_token_')) {
+        return token;
+      }
+      return null;
+    }
+
+    _getAuthBearer() {
+      return this._getValidJwtToken() || this.config.supabaseAnonKey;
+    }
+
     // =========================================================================
     // SERVICIOS & DISPONIBILIDAD
     // =========================================================================
     async getServices() {
       await this.init();
 
+      // 1. Consultar primero /api/services en el servidor backend
+      try {
+        const apiRes = await fetch('/api/services');
+        if (apiRes && apiRes.ok) {
+          const apiData = await apiRes.json();
+          if (apiData && Array.isArray(apiData.services) && apiData.services.length > 0) {
+            return apiData.services.map(s => ({
+              id: s.id,
+              name: s.name,
+              slug: s.slug,
+              badge: s.badge || '',
+              desc: s.description || s.desc || '',
+              duration: s.duration_minutes || s.duration || 90,
+              price: Number(s.price_ars || s.price) || 0,
+              deposit: Number(s.deposit_ars || s.deposit) || 0,
+              icon: s.icon || '✨',
+              category: s.category || 'extensiones'
+            }));
+          }
+        }
+      } catch (e) {}
+
       if (this.config.isConfigured) {
         try {
           const res = await fetch(`${this.config.supabaseUrl}/rest/v1/services?is_active=eq.true&order=sort_order.asc`, {
             headers: {
               apikey: this.config.supabaseAnonKey,
-              Authorization: `Bearer ${localStorage.getItem(STORAGE_KEYS.TOKEN) || this.config.supabaseAnonKey}`
+              Authorization: `Bearer ${this._getAuthBearer()}`
             }
           });
           if (res.ok) {
@@ -437,24 +526,70 @@
 
     async getAvailableSlots(dateStr, serviceId) {
       await this.init();
-      
-      const allSlots = ['10:00', '11:30', '14:00', '15:30', '17:00', '18:30'];
+
+      // 1. Consultar primero al backend /api/turnos/availability (incluye horarios subidos y tachados por el Admin)
+      try {
+        const apiRes = await fetch(`/api/turnos/availability?date=${encodeURIComponent(dateStr)}`);
+        if (apiRes && apiRes.ok) {
+          const apiData = await apiRes.json();
+          if (apiData && Array.isArray(apiData.slots)) {
+            return apiData.slots;
+          }
+        }
+      } catch (e) {}
+
+      // 2. Verificar si existen horarios publicados en Supabase settings o localStorage (para modo estático/nube)
+      const pubDay = await this._getStaticPublishedDay(dateStr);
+      const baseTimes = (pubDay && Array.isArray(pubDay.slots) && pubDay.slots.length > 0)
+        ? pubDay.slots.map(s => String(s.time || '').slice(0, 5))
+        : ['10:00', '11:30', '14:00', '15:30', '17:00', '18:30'];
+
+      const crossedSet = new Set(
+        (pubDay && Array.isArray(pubDay.slots) ? pubDay.slots : [])
+          .filter(s => s && s.crossedOut)
+          .map(s => String(s.time || '').slice(0, 5))
+      );
 
       if (this.config.isConfigured) {
         try {
-          // Consultar turnos ya reservados en Supabase para esa fecha
+          // Consultar horarios ocupados mediante función RPC segura (sin exponer datos personales)
+          const rpcRes = await fetch(`${this.config.supabaseUrl}/rest/v1/rpc/get_booked_slots`, {
+            method: 'POST',
+            headers: {
+              apikey: this.config.supabaseAnonKey,
+              Authorization: `Bearer ${this._getAuthBearer()}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ p_date: dateStr })
+          });
+          if (rpcRes.ok) {
+            const booked = await rpcRes.json();
+            if (Array.isArray(booked)) {
+              const bookedTimes = booked.map(b => (b.start_time || '').slice(0, 5));
+              return baseTimes.map(time => ({
+                time,
+                crossedOut: crossedSet.has(time),
+                autoBooked: bookedTimes.includes(time),
+                available: !crossedSet.has(time) && !bookedTimes.includes(time)
+              }));
+            }
+          }
+
+          // Fallback directo si la tabla tiene política de lectura activa
           const res = await fetch(`${this.config.supabaseUrl}/rest/v1/appointments?appointment_date=eq.${dateStr}&status=neq.cancelled&select=start_time`, {
             headers: {
               apikey: this.config.supabaseAnonKey,
-              Authorization: `Bearer ${localStorage.getItem(STORAGE_KEYS.TOKEN) || this.config.supabaseAnonKey}`
+              Authorization: `Bearer ${this._getAuthBearer()}`
             }
           });
           if (res.ok) {
             const booked = await res.json();
             const bookedTimes = booked.map(b => b.start_time.slice(0, 5));
-            return allSlots.map(time => ({
+            return baseTimes.map(time => ({
               time,
-              available: !bookedTimes.includes(time)
+              crossedOut: crossedSet.has(time),
+              autoBooked: bookedTimes.includes(time),
+              available: !crossedSet.has(time) && !bookedTimes.includes(time)
             }));
           }
         } catch (e) {
@@ -468,9 +603,11 @@
         .filter(t => t.date === dateStr && t.status !== 'cancelled')
         .map(t => t.time);
 
-      return allSlots.map(time => ({
+      return baseTimes.map(time => ({
         time,
-        available: !bookedLocal.includes(time)
+        crossedOut: crossedSet.has(time),
+        autoBooked: bookedLocal.includes(time),
+        available: !crossedSet.has(time) && !bookedLocal.includes(time)
       }));
     }
 
@@ -503,10 +640,58 @@
       // Guardar siempre en local storage para disponibilidad offline inmediata
       this._saveLocalTurno(normalizedBooking);
 
-      // Si Supabase está conectado, persistir en appointments
+      // 1. Enviar al servidor backend /api/turnos (persiste directo en Supabase con service_role)
+      let backendReached = false;
+      try {
+        const apiRes = await fetch('/api/turnos', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            serviceId: normalizedBooking.serviceId,
+            serviceName: normalizedBooking.service ? normalizedBooking.service.name : '',
+            date: normalizedBooking.date,
+            time: normalizedBooking.time,
+            endTime: normalizedBooking.endTime,
+            price: normalizedBooking.price,
+            name: normalizedBooking.clientName,
+            phone: normalizedBooking.clientPhone,
+            email: normalizedBooking.clientEmail,
+            notes: normalizedBooking.clientNotes
+          })
+        });
+        if (apiRes) {
+          backendReached = true;
+          const apiData = await apiRes.json().catch(() => ({}));
+          if (apiRes.ok && apiData && apiData.appointment && apiData.appointment.id) {
+            normalizedBooking.supabaseId = apiData.appointment.id;
+            this._updateLocalTurno(normalizedBooking);
+            return {
+              success: true,
+              appointment: normalizedBooking,
+              emailNotification: apiData.emailNotification || null
+            };
+          }
+          if (apiRes.status === 409 || apiRes.status === 400) {
+            const turnos = this.getStoredTurnos().filter(t => t.id !== normalizedBooking.id);
+            localStorage.setItem(STORAGE_KEYS.LOCAL_TURNOS, JSON.stringify(turnos));
+            throw new Error(apiData.error || 'Ese horario ya no está disponible.');
+          }
+        }
+      } catch (e) {
+        if (backendReached) throw e;
+      }
+
+      // 2. Fallback directo a Supabase si no hay backend Node corriendo
       if (this.config.isConfigured) {
         try {
+          const generatedUuid = (window.crypto && window.crypto.randomUUID) ? window.crypto.randomUUID() : undefined;
+          const hasValidJwt = !!this._getValidJwtToken();
+          const svcName = normalizedBooking.service ? normalizedBooking.service.name : '';
+          const fullNotes = svcName
+            ? (normalizedBooking.clientNotes ? `Tratamiento: ${svcName}\n${normalizedBooking.clientNotes}` : `Tratamiento: ${svcName}`)
+            : normalizedBooking.clientNotes;
           const payload = {
+            ...(generatedUuid ? { id: generatedUuid } : {}),
             professional_id: '11111111-1111-1111-1111-111111111111',
             service_id: normalizedBooking.serviceId || '22222222-2222-2222-2222-222222222202',
             appointment_date: normalizedBooking.date,
@@ -516,7 +701,7 @@
             client_name: normalizedBooking.clientName,
             client_phone: normalizedBooking.clientPhone,
             client_email: normalizedBooking.clientEmail,
-            client_notes: normalizedBooking.clientNotes,
+            client_notes: fullNotes,
             status: 'pending'
           };
 
@@ -524,19 +709,23 @@
             method: 'POST',
             headers: {
               apikey: this.config.supabaseAnonKey,
-              Authorization: `Bearer ${localStorage.getItem(STORAGE_KEYS.TOKEN) || this.config.supabaseAnonKey}`,
+              Authorization: `Bearer ${this._getAuthBearer()}`,
               'Content-Type': 'application/json',
-              Prefer: 'return=representation'
+              Prefer: hasValidJwt ? 'return=representation' : 'return=minimal'
             },
             body: JSON.stringify(payload)
           });
 
           if (res.ok) {
-            const inserted = await res.json();
-            if (Array.isArray(inserted) && inserted[0]) {
-              normalizedBooking.supabaseId = inserted[0].id;
-              this._updateLocalTurno(normalizedBooking);
+            if (hasValidJwt) {
+              const inserted = await res.json().catch(() => null);
+              if (Array.isArray(inserted) && inserted[0]) {
+                normalizedBooking.supabaseId = inserted[0].id;
+              }
+            } else if (generatedUuid) {
+              normalizedBooking.supabaseId = generatedUuid;
             }
+            this._updateLocalTurno(normalizedBooking);
           }
         } catch (e) {
           console.warn('Could not save appointment to Supabase, persisted locally:', e);
@@ -557,34 +746,73 @@
       const currentUser = this.getCurrentUser();
       const localTurnos = this.getStoredTurnos();
 
+      if (currentUser && currentUser.email) {
+        try {
+          const apiRes = await fetch(`/api/turnos?email=${encodeURIComponent(currentUser.email)}`);
+          if (apiRes && apiRes.ok) {
+            const apiData = await apiRes.json();
+            if (Array.isArray(apiData.appointments) && apiData.appointments.length > 0) {
+              return apiData.appointments.map(row => {
+                const rawNotes = row.client_notes || row.notes || '';
+                const resolvedSvcName = (row.services && row.services.name)
+                  || row.service_name
+                  || (rawNotes.includes('Tratamiento:') ? rawNotes.split('Tratamiento:')[1].split('\n')[0].trim() : 'Tratamiento de Pestañas');
+                return {
+                  id: row.id,
+                  date: row.appointment_date || row.date,
+                  time: ((row.start_time || row.time) + '').slice(0, 5),
+                  endTime: ((row.end_time || row.endTime || '16:00') + '').slice(0, 5),
+                  price: Number(row.price_ars || row.price) || 0,
+                  status: row.status,
+                  clientName: row.client_name || row.name,
+                  clientPhone: row.client_phone || row.phone,
+                  clientNotes: rawNotes,
+                  professional: 'Micaela',
+                  service: {
+                    name: resolvedSvcName,
+                    price: Number(row.price_ars || row.price) || 0
+                  }
+                };
+              });
+            }
+          }
+        } catch (e) {}
+      }
+
       if (this.config.isConfigured && currentUser && currentUser.email) {
         try {
           const res = await fetch(`${this.config.supabaseUrl}/rest/v1/appointments?client_email=eq.${encodeURIComponent(currentUser.email)}&order=appointment_date.desc,start_time.asc`, {
             headers: {
               apikey: this.config.supabaseAnonKey,
-              Authorization: `Bearer ${localStorage.getItem(STORAGE_KEYS.TOKEN) || this.config.supabaseAnonKey}`
+              Authorization: `Bearer ${this._getAuthBearer()}`
             }
           });
 
           if (res.ok) {
             const data = await res.json();
             if (Array.isArray(data) && data.length > 0) {
-              return data.map(row => ({
-                id: row.id,
-                date: row.appointment_date,
-                time: row.start_time.slice(0, 5),
-                endTime: row.end_time.slice(0, 5),
-                price: Number(row.price_ars),
-                status: row.status,
-                clientName: row.client_name,
-                clientPhone: row.client_phone,
-                clientNotes: row.client_notes,
-                professional: 'Micaela',
-                service: {
-                  name: row.client_notes && row.client_notes.includes('Tratamiento:') ? 'Servicio VIP' : 'Tratamiento de Pestañas',
-                  price: Number(row.price_ars)
-                }
-              }));
+              return data.map(row => {
+                const rawNotes = row.client_notes || '';
+                const resolvedSvcName = rawNotes.includes('Tratamiento:')
+                  ? rawNotes.split('Tratamiento:')[1].split('\n')[0].trim()
+                  : 'Tratamiento de Pestañas';
+                return {
+                  id: row.id,
+                  date: row.appointment_date,
+                  time: row.start_time.slice(0, 5),
+                  endTime: row.end_time.slice(0, 5),
+                  price: Number(row.price_ars),
+                  status: row.status,
+                  clientName: row.client_name,
+                  clientPhone: row.client_phone,
+                  clientNotes: rawNotes,
+                  professional: 'Micaela',
+                  service: {
+                    name: resolvedSvcName,
+                    price: Number(row.price_ars)
+                  }
+                };
+              });
             }
           }
         } catch (e) {
@@ -598,22 +826,36 @@
     async cancelAppointment(appointmentId) {
       await this.init();
 
-      // Actualizar en localStorage
+      // Actualizar en localStorage y resolver el ID real en Supabase si se pasó el ID local
       const turnos = this.getStoredTurnos();
       const found = turnos.find(t => t.id === appointmentId || t.supabaseId === appointmentId);
+      const targetId = (found && found.supabaseId) ? found.supabaseId : appointmentId;
       if (found) {
         found.status = 'cancelled';
         localStorage.setItem(STORAGE_KEYS.LOCAL_TURNOS, JSON.stringify(turnos));
       }
 
-      // Si está en Supabase
+      // 1. Cancelar mediante servidor backend /api/turnos/:id (dispara email personalizado de cancelación)
+      try {
+        const apiRes = await fetch(`/api/turnos/${encodeURIComponent(targetId)}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: 'cancelled', cancelledBy: 'client' })
+        });
+        if (apiRes && apiRes.ok) {
+          const data = await apiRes.json().catch(() => ({}));
+          return { success: true, emailNotification: data.emailNotification || null };
+        }
+      } catch (e) {}
+
+      // 2. Fallback directo si está en Supabase
       if (this.config.isConfigured) {
         try {
-          await fetch(`${this.config.supabaseUrl}/rest/v1/appointments?id=eq.${appointmentId}`, {
+          await fetch(`${this.config.supabaseUrl}/rest/v1/appointments?id=eq.${encodeURIComponent(targetId)}`, {
             method: 'PATCH',
             headers: {
               apikey: this.config.supabaseAnonKey,
-              Authorization: `Bearer ${localStorage.getItem(STORAGE_KEYS.TOKEN) || this.config.supabaseAnonKey}`,
+              Authorization: `Bearer ${this._getAuthBearer()}`,
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({ status: 'cancelled' })
@@ -632,6 +874,37 @@
     async getAdminAppointments(filter = 'all') {
       await this.init();
 
+      // 1. Consultar servidor backend /api/turnos (usa SUPABASE_SERVICE_ROLE_KEY)
+      try {
+        const apiRes = await fetch(`/api/turnos?status=${filter}`);
+        if (apiRes && apiRes.ok) {
+          const apiData = await apiRes.json();
+          if (Array.isArray(apiData.appointments)) {
+            return apiData.appointments.map(r => {
+              const rawNotes = r.client_notes || r.notes || '';
+              const svcName = (r.services && r.services.name)
+                || r.service_name
+                || (rawNotes.includes('Tratamiento:') ? rawNotes.split('Tratamiento:')[1].split('\n')[0].trim() : 'Tratamiento de Pestañas');
+              return {
+                id: r.id,
+                date: r.appointment_date || r.date,
+                time: ((r.start_time || r.time) + '').slice(0, 5),
+                clientName: r.client_name || r.name || 'Clienta',
+                clientPhone: r.client_phone || r.phone || '',
+                clientEmail: r.client_email || r.email || '',
+                price: Number(r.price_ars || r.price) || 0,
+                status: r.status || 'pending',
+                service: { name: svcName },
+                clientNotes: rawNotes,
+                notes: rawNotes,
+                createdAt: r.created_at
+              };
+            });
+          }
+        }
+      } catch (e) {}
+
+      // 2. Fallback directo a Supabase REST
       if (this.config.isConfigured) {
         try {
           let url = `${this.config.supabaseUrl}/rest/v1/appointments?order=appointment_date.desc,start_time.asc`;
@@ -642,7 +915,7 @@
           const res = await fetch(url, {
             headers: {
               apikey: this.config.supabaseAnonKey,
-              Authorization: `Bearer ${localStorage.getItem(STORAGE_KEYS.TOKEN) || this.config.supabaseAnonKey}`
+              Authorization: `Bearer ${this._getAuthBearer()}`
             }
           });
 
@@ -657,6 +930,7 @@
               clientEmail: r.client_email,
               price: Number(r.price_ars),
               status: r.status,
+              clientNotes: r.client_notes,
               notes: r.client_notes,
               createdAt: r.created_at
             }));
@@ -666,28 +940,6 @@
         }
       }
 
-      // 2. Consultar servidor backend /api/turnos si está disponible
-      try {
-        const apiRes = await fetch(`/api/turnos?status=${filter}`);
-        if (apiRes && apiRes.ok) {
-          const apiData = await apiRes.json();
-          if (apiData.appointments && apiData.appointments.length > 0) {
-            return apiData.appointments.map(r => ({
-              id: r.id,
-              date: r.appointment_date || r.date,
-              time: ((r.start_time || r.time) + '').slice(0, 5),
-              clientName: r.client_name || r.name || 'Clienta',
-              clientPhone: r.client_phone || r.phone || '',
-              clientEmail: r.client_email || r.email || '',
-              price: Number(r.price_ars || r.price) || 0,
-              status: r.status || 'pending',
-              notes: r.client_notes || r.notes || '',
-              createdAt: r.created_at
-            }));
-          }
-        }
-      } catch (e) {}
-
       // 3. Fallback a localStorage
       let turnos = this.getStoredTurnos();
       if (filter !== 'all') {
@@ -696,7 +948,7 @@
       return turnos;
     }
 
-    async updateAppointmentStatus(appointmentId, newStatus) {
+    async updateAppointmentStatus(appointmentId, newStatus, options = {}) {
       await this.init();
 
       const turnos = this.getStoredTurnos();
@@ -706,13 +958,31 @@
         localStorage.setItem(STORAGE_KEYS.LOCAL_TURNOS, JSON.stringify(turnos));
       }
 
+      // 1. Actualizar mediante backend /api/turnos/:id (dispara email personalizado si se cancela)
+      try {
+        const apiRes = await fetch(`/api/turnos/${encodeURIComponent(appointmentId)}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            status: newStatus,
+            cancelledBy: options.cancelledBy || 'admin',
+            cancelReason: options.cancelReason || ''
+          })
+        });
+        if (apiRes && apiRes.ok) {
+          const data = await apiRes.json().catch(() => ({}));
+          return { success: true, emailNotification: data.emailNotification || null };
+        }
+      } catch (e) {}
+
+      // 2. Fallback directo a Supabase REST
       if (this.config.isConfigured) {
         try {
           await fetch(`${this.config.supabaseUrl}/rest/v1/appointments?id=eq.${appointmentId}`, {
             method: 'PATCH',
             headers: {
               apikey: this.config.supabaseAnonKey,
-              Authorization: `Bearer ${localStorage.getItem(STORAGE_KEYS.TOKEN) || this.config.supabaseAnonKey}`,
+              Authorization: `Bearer ${this._getAuthBearer()}`,
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({ status: newStatus })
@@ -922,7 +1192,7 @@
             method: 'POST',
             headers: {
               apikey: this.config.supabaseAnonKey,
-              Authorization: `Bearer ${localStorage.getItem(STORAGE_KEYS.TOKEN) || this.config.supabaseAnonKey}`,
+              Authorization: `Bearer ${this._getAuthBearer()}`,
               'Content-Type': 'application/json',
               Prefer: 'return=representation'
             },
@@ -1012,7 +1282,7 @@
             method: 'PATCH',
             headers: {
               apikey: this.config.supabaseAnonKey,
-              Authorization: `Bearer ${localStorage.getItem(STORAGE_KEYS.TOKEN) || this.config.supabaseAnonKey}`,
+              Authorization: `Bearer ${this._getAuthBearer()}`,
               'Content-Type': 'application/json'
             },
             body: JSON.stringify(updateObj)
@@ -1045,7 +1315,7 @@
             method: 'DELETE',
             headers: {
               apikey: this.config.supabaseAnonKey,
-              Authorization: `Bearer ${localStorage.getItem(STORAGE_KEYS.TOKEN) || this.config.supabaseAnonKey}`
+              Authorization: `Bearer ${this._getAuthBearer()}`
             }
           });
         } catch (e) {
@@ -1120,6 +1390,387 @@
           }
         }
       } catch (e) {}
+    }
+
+    // =========================================================================
+    // GENERADOR DE HISTORIAS INSTAGRAM & HORARIOS (ESTILO PROYECTO VASCA)
+    // =========================================================================
+    async getWeeklySchedule() {
+      await this.init();
+      try {
+        const res = await fetch('/api/schedule');
+        if (res && res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data.schedule)) return data.schedule;
+        }
+      } catch (e) {}
+
+      if (this.config.isConfigured) {
+        try {
+          const res = await fetch(`${this.config.supabaseUrl}/rest/v1/weekly_schedule?professional_id=eq.11111111-1111-1111-1111-111111111111&order=day_of_week.asc`, {
+            headers: {
+              apikey: this.config.supabaseAnonKey,
+              Authorization: `Bearer ${this._getAuthBearer()}`
+            }
+          });
+          if (res.ok) return await res.json();
+        } catch (e) {}
+      }
+      return [];
+    }
+
+    async saveWeeklySchedule(days) {
+      await this.init();
+      const res = await fetch('/api/schedule', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ days })
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error || 'No se pudieron guardar los horarios.');
+      }
+      return await res.json();
+    }
+
+    async getInstagramDaySlots(dateStr, interval = '60', forceGenerate = false) {
+      await this.init();
+      if (!dateStr) return { slots: [], isPublished: false, isBlocked: false, noSchedule: false };
+
+      try {
+        const fg = forceGenerate ? '&forceGenerate=1' : '';
+        const res = await fetch(`/api/instagram/slots?date=${encodeURIComponent(dateStr)}&interval=${encodeURIComponent(interval)}${fg}`);
+        if (res && res.ok) {
+          return await res.json();
+        }
+      } catch (e) {}
+
+      // Fallback si se ejecuta sin servidor Node
+      const slotsResp = await this.getAvailableSlots(dateStr);
+      const pubDay = await this._getStaticPublishedDay(dateStr);
+      return {
+        slots: slotsResp.map(s => ({
+          time: s.time,
+          crossedOut: !!s.crossedOut,
+          autoBooked: !!s.autoBooked,
+          isBooked: !s.available
+        })),
+        isPublished: !!(pubDay && pubDay.published !== false),
+        isBlocked: false,
+        noSchedule: new Date(`${dateStr}T12:00:00`).getDay() === 0
+      };
+    }
+
+    // =========================================================================
+    // SUBIR HORARIOS Y TACHAR TURNOS EN VIVO (ADMIN + CARTELERA WEB)
+    // =========================================================================
+    _getLocalPublishedMap() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEYS.PUBLISHED_SCHEDULES);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && parsed.days) return parsed;
+        }
+      } catch (e) {}
+      return { days: {} };
+    }
+
+    _saveLocalPublishedMap(mapObj) {
+      try {
+        localStorage.setItem(STORAGE_KEYS.PUBLISHED_SCHEDULES, JSON.stringify(mapObj));
+      } catch (e) {}
+    }
+
+    async _getStaticPublishedMap() {
+      if (this.config.isConfigured) {
+        try {
+          const res = await fetch(`${this.config.supabaseUrl}/rest/v1/settings?key=eq.published_schedules&select=value`, {
+            headers: {
+              apikey: this.config.supabaseAnonKey,
+              Authorization: `Bearer ${this._getAuthBearer()}`
+            }
+          });
+          if (res.ok) {
+            const rows = await res.json();
+            if (Array.isArray(rows) && rows[0] && rows[0].value && rows[0].value.days) {
+              this._saveLocalPublishedMap(rows[0].value);
+              return rows[0].value;
+            }
+          }
+        } catch (e) {}
+      }
+      return this._getLocalPublishedMap();
+    }
+
+    async _getStaticPublishedDay(dateStr) {
+      const mapObj = await this._getStaticPublishedMap();
+      const d = mapObj && mapObj.days && mapObj.days[dateStr];
+      if (d && d.published !== false) return d;
+      return null;
+    }
+
+    async _upsertSupabasePublishedMap(mapObj) {
+      this._saveLocalPublishedMap(mapObj);
+      if (!this.config.isConfigured) return;
+      try {
+        await fetch(`${this.config.supabaseUrl}/rest/v1/settings?on_conflict=key`, {
+          method: 'POST',
+          headers: {
+            apikey: this.config.supabaseAnonKey,
+            Authorization: `Bearer ${this._getAuthBearer()}`,
+            'Content-Type': 'application/json',
+            Prefer: 'resolution=merge-duplicates'
+          },
+          body: JSON.stringify({
+            key: 'published_schedules',
+            value: mapObj,
+            description: 'Horarios publicados por el admin con control de tachado en tiempo real'
+          })
+        });
+      } catch (e) {
+        console.warn('Supabase settings upsert fallback warning:', e);
+      }
+    }
+
+    async getPublishedDays(upcomingOnly = true) {
+      await this.init();
+      try {
+        const res = await fetch(`/api/published-schedules?upcoming=${upcomingOnly ? 'true' : 'false'}`);
+        if (res && res.ok) {
+          const data = await res.json();
+          if (data && Array.isArray(data.days)) return data.days;
+        }
+      } catch (e) {}
+
+      // Fallback estático / Supabase REST
+      const mapObj = await this._getStaticPublishedMap();
+      const allDays = (mapObj && mapObj.days) || {};
+      const now = new Date();
+      const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+      const dates = Object.keys(allDays)
+        .filter(d => allDays[d] && allDays[d].published !== false && Array.isArray(allDays[d].slots) && allDays[d].slots.length > 0)
+        .filter(d => !upcomingOnly || d >= todayStr)
+        .sort();
+
+      const results = [];
+      for (const d of dates) {
+        const avail = await this.getAvailableSlots(d);
+        results.push({
+          date: d,
+          isPublished: true,
+          updatedAt: allDays[d].updatedAt || null,
+          slots: avail.map(s => ({
+            time: s.time,
+            crossedOut: !!s.crossedOut,
+            autoBooked: !!s.autoBooked,
+            isBooked: !s.available
+          }))
+        });
+      }
+      return results;
+    }
+
+    async getPublishedDay(dateStr) {
+      await this.init();
+      try {
+        const res = await fetch(`/api/published-schedules?date=${encodeURIComponent(dateStr)}`);
+        if (res && res.ok) return await res.json();
+      } catch (e) {}
+
+      const d = await this._getStaticPublishedDay(dateStr);
+      if (!d) return { date: dateStr, isPublished: false, slots: [] };
+      const avail = await this.getAvailableSlots(dateStr);
+      return {
+        date: dateStr,
+        isPublished: true,
+        updatedAt: d.updatedAt || null,
+        slots: avail.map(s => ({
+          time: s.time,
+          crossedOut: !!s.crossedOut,
+          autoBooked: !!s.autoBooked,
+          isBooked: !s.available
+        }))
+      };
+    }
+
+    async publishDaySlots(dateStr, slots) {
+      await this.init();
+      try {
+        const res = await fetch('/api/published-schedules', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ date: dateStr, slots })
+        });
+        if (res && res.ok) {
+          const data = await res.json();
+          // Sincronizar copia local también
+          const localMap = this._getLocalPublishedMap();
+          localMap.days[dateStr] = {
+            date: dateStr,
+            published: true,
+            updatedAt: data.updatedAt || new Date().toISOString(),
+            slots: (data.slots || slots).map(s => ({ time: s.time, crossedOut: !!s.crossedOut }))
+          };
+          this._saveLocalPublishedMap(localMap);
+          return data;
+        }
+      } catch (e) {}
+
+      // Fallback estático / Supabase directo
+      const mapObj = await this._getStaticPublishedMap();
+      if (!mapObj.days) mapObj.days = {};
+      const cleanSlots = (slots || []).map(s => ({
+        time: String(s.time || s).slice(0, 5),
+        crossedOut: Boolean(s && s.crossedOut)
+      })).sort((a, b) => a.time.localeCompare(b.time));
+
+      mapObj.days[dateStr] = {
+        date: dateStr,
+        published: true,
+        updatedAt: new Date().toISOString(),
+        slots: cleanSlots
+      };
+      await this._upsertSupabasePublishedMap(mapObj);
+      return await this.getPublishedDay(dateStr);
+    }
+
+    async toggleSlotCrossedOut(dateStr, timeStr, crossedOut, fallbackSlots = []) {
+      await this.init();
+      try {
+        const res = await fetch('/api/published-schedules/toggle', {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ date: dateStr, time: timeStr, crossedOut, fallbackSlots })
+        });
+        if (res && res.ok) {
+          const data = await res.json();
+          const localMap = this._getLocalPublishedMap();
+          localMap.days[dateStr] = {
+            date: dateStr,
+            published: true,
+            updatedAt: data.updatedAt || new Date().toISOString(),
+            slots: (data.slots || []).map(s => ({ time: s.time, crossedOut: !!s.crossedOut }))
+          };
+          this._saveLocalPublishedMap(localMap);
+          return data;
+        }
+      } catch (e) {}
+
+      // Fallback estático / Supabase directo
+      const mapObj = await this._getStaticPublishedMap();
+      if (!mapObj.days) mapObj.days = {};
+      if (!mapObj.days[dateStr] || !Array.isArray(mapObj.days[dateStr].slots)) {
+        mapObj.days[dateStr] = {
+          date: dateStr,
+          published: true,
+          updatedAt: new Date().toISOString(),
+          slots: fallbackSlots.map(s => ({ time: String(s.time || s).slice(0, 5), crossedOut: !!s.crossedOut }))
+        };
+      }
+      const found = mapObj.days[dateStr].slots.find(s => s.time === timeStr);
+      if (found) {
+        found.crossedOut = typeof crossedOut === 'boolean' ? crossedOut : !found.crossedOut;
+      } else {
+        mapObj.days[dateStr].slots.push({ time: timeStr, crossedOut: typeof crossedOut === 'boolean' ? crossedOut : true });
+        mapObj.days[dateStr].slots.sort((a, b) => a.time.localeCompare(b.time));
+      }
+      mapObj.days[dateStr].updatedAt = new Date().toISOString();
+      await this._upsertSupabasePublishedMap(mapObj);
+      return await this.getPublishedDay(dateStr);
+    }
+
+    async unpublishDay(dateStr) {
+      await this.init();
+      try {
+        const res = await fetch(`/api/published-schedules?date=${encodeURIComponent(dateStr)}`, {
+          method: 'DELETE'
+        });
+        if (res && res.ok) {
+          const localMap = this._getLocalPublishedMap();
+          if (localMap.days) delete localMap.days[dateStr];
+          this._saveLocalPublishedMap(localMap);
+          return true;
+        }
+      } catch (e) {}
+
+      const mapObj = await this._getStaticPublishedMap();
+      if (mapObj.days && mapObj.days[dateStr]) {
+        delete mapObj.days[dateStr];
+        await this._upsertSupabasePublishedMap(mapObj);
+      }
+      return true;
+    }
+
+    // =========================================================================
+    // EMAILS PERSONALIZADOS DE RESERVA Y CANCELACIÓN
+    // =========================================================================
+    async getEmailSettings() {
+      await this.init();
+      const res = await fetch('/api/email/settings');
+      if (!res.ok) throw new Error('No se pudo cargar la configuración de emails');
+      return await res.json();
+    }
+
+    async saveEmailTemplates(templates) {
+      await this.init();
+      const res = await fetch('/api/email/templates', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ templates })
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || 'Error guardando plantillas de email');
+      return data;
+    }
+
+    async saveEmailProvider(providerConfig) {
+      await this.init();
+      const res = await fetch('/api/email/provider', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(providerConfig)
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || 'Error guardando credenciales SMTP');
+      return data;
+    }
+
+    async previewEmailTemplate(type, templates) {
+      await this.init();
+      const res = await fetch('/api/email/preview', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type, templates })
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || 'Error generando vista previa');
+      return data;
+    }
+
+    async sendTestEmail(to, type = 'booking') {
+      await this.init();
+      const res = await fetch('/api/email/test', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ to, type })
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || data.success === false) {
+        throw new Error(data.error || 'Error enviando correo de prueba');
+      }
+      return data;
+    }
+
+    async resendAppointmentEmail(appointmentId, type) {
+      await this.init();
+      const res = await fetch(`/api/turnos/${encodeURIComponent(appointmentId)}/resend-email`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type })
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || 'No se pudo reenviar el correo');
+      return data;
     }
   }
 

@@ -1,0 +1,39 @@
+{
+  "days": {
+    "2026-11-02": {
+      "date": "2026-11-02",
+      "slots": [
+        {
+          "time": "11:00",
+          "crossedOut": true
+        },
+        {
+          "time": "12:00",
+          "crossedOut": false
+        },
+        {
+          "time": "14:00",
+          "crossedOut": false
+        },
+        {
+          "time": "15:00",
+          "crossedOut": false
+        },
+        {
+          "time": "16:00",
+          "crossedOut": false
+        },
+        {
+          "time": "17:00",
+          "crossedOut": false
+        },
+        {
+          "time": "18:00",
+          "crossedOut": false
+        }
+      ],
+      "published": true,
+      "updatedAt": "2026-11-01T20:38:02.948Z"
+    }
+  }
+}
