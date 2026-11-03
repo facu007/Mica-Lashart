@@ -683,9 +683,13 @@
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              <div class="space-y-1 sm:col-span-2">
+                <label class="text-[11px] font-bold uppercase text-[#ffaed8]">Nombre del Remitente (cómo lo ve la clienta)</label>
+                <input type="text" id="smtp-sender-name-input" value="Mica Lashes" placeholder="Mica Lashes" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-[#ff3e96]">
+              </div>
               <div class="space-y-1">
                 <label class="text-[11px] font-bold uppercase text-[#ffaed8]">Tu Correo Gmail / Usuario SMTP</label>
-                <input type="email" id="smtp-user-input" placeholder="micalashart@gmail.com" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-[#ff3e96]">
+                <input type="email" id="smtp-user-input" placeholder="micalashes.estudio@gmail.com" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-[#ff3e96]">
               </div>
               <div class="space-y-1">
                 <label class="text-[11px] font-bold uppercase text-[#ffaed8]">Contraseña de Aplicación Gmail</label>
@@ -2469,6 +2473,8 @@
         document.getElementById('tpl-studio-location').value = t.studioLocation || '';
         document.getElementById('tpl-notify-admin').checked = t.notifyAdmin !== false;
 
+        const extractedSender = p.emailFrom ? (p.emailFrom.match(/^"([^"]+)"/) || [])[1] : '';
+        document.getElementById('smtp-sender-name-input').value = extractedSender || 'Mica Lashes';
         document.getElementById('smtp-user-input').value = p.smtpUser || '';
         document.getElementById('smtp-pass-input').value = p.hasSmtpPass ? '••••••••' : '';
         document.getElementById('smtp-host-input').value = p.smtpHost || 'smtp.gmail.com';
@@ -2504,6 +2510,7 @@
 
     async function saveSmtpConfiguration() {
       const fb = document.getElementById('smtp-save-feedback');
+      const senderName = (document.getElementById('smtp-sender-name-input')?.value || 'Mica Lashes').trim().replace(/"/g, '') || 'Mica Lashes';
       const smtpUser = document.getElementById('smtp-user-input').value.trim();
       const smtpPass = document.getElementById('smtp-pass-input').value.trim();
       const smtpHost = document.getElementById('smtp-host-input').value.trim() || 'smtp.gmail.com';
@@ -2516,7 +2523,7 @@
           smtpPort,
           smtpUser,
           smtpPass,
-          emailFrom: smtpUser ? `"Mica Lash Art ♡" <${smtpUser}>` : '',
+          emailFrom: smtpUser ? `"${senderName}" <${smtpUser}>` : `"${senderName}" <micalashes@gmail.com>`,
           adminEmail
         });
         updateEmailProviderBadges(res.provider);

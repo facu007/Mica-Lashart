@@ -447,7 +447,7 @@ function getProviderStatus() {
   const smtpPass = (process.env.SMTP_PASS || '').trim();
   const smtpHost = (process.env.SMTP_HOST || (smtpUser.endsWith('@gmail.com') ? 'smtp.gmail.com' : '')).trim();
   const smtpPort = Number(process.env.SMTP_PORT || 465);
-  const emailFrom = (process.env.EMAIL_FROM || (smtpUser ? `"Mica Lash Art ♡" <${smtpUser}>` : '"Mica Lash Art ♡" <turnos@micalashart.com>')).trim();
+  const emailFrom = (process.env.EMAIL_FROM || (smtpUser ? `"Mica Lashes" <${smtpUser}>` : '"Mica Lashes" <micalashes@gmail.com>')).trim();
   const adminEmail = (process.env.ADMIN_EMAIL || smtpUser || '').trim();
 
   if (resendKey) {
@@ -534,7 +534,7 @@ async function getNodemailerTransport() {
   return {
     transporter: cachedTransporter,
     mode: 'preview',
-    from: `"Mica Lash Art ♡" <${cachedEtherealAccount ? cachedEtherealAccount.user : 'turnos@micalashart.local'}>`
+    from: `"Mica Lashes" <${cachedEtherealAccount ? cachedEtherealAccount.user : 'micalashes@local'}>`
   };
 }
 
