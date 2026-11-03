@@ -122,6 +122,36 @@ function saveGalleryData(items) {
 
 localDatabase.gallery = loadGalleryData();
 
+// Asegurar bucket público 'gallery' en Supabase Storage para alojar fotos en la nube
+let galleryBucketReady = false;
+async function ensureGalleryBucket() {
+  if (!supabase || galleryBucketReady) return galleryBucketReady;
+  try {
+    const { data: existing, error: getErr } = await supabase.storage.getBucket('gallery');
+    if (existing && !getErr) {
+      galleryBucketReady = true;
+      return true;
+    }
+    const { error: createErr } = await supabase.storage.createBucket('gallery', {
+      public: true,
+      fileSizeLimit: 10485760,
+      allowedMimeTypes: ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
+    });
+    if (!createErr || String(createErr.message || '').toLowerCase().includes('already exists')) {
+      galleryBucketReady = true;
+      console.log('[Storage] Bucket público "gallery" listo en Supabase Storage.');
+      return true;
+    }
+    console.warn('[Storage] Aviso al preparar bucket gallery:', createErr.message);
+  } catch (e) {
+    console.warn('[Storage] Excepción verificando bucket gallery:', e.message);
+  }
+  return false;
+}
+if (supabase) {
+  ensureGalleryBucket().catch(() => {});
+}
+
 // Cargar y persistir horarios publicados por el Admin (con estado tachado en vivo)
 const PUBLISHED_SCHEDULES_FILE = path.join(dir, 'published-schedules.json');
 function loadPublishedSchedulesLocal() {
@@ -716,7 +746,7 @@ async function handleApiRequest(req, res, pathname, queryParams) {
     return sendJson(res, 200, { photos: localDatabase.gallery });
   }
 
-  // 10. POST /api/gallery/upload (Subir archivo de imagen para los ejemplos)
+  // 10. POST /api/gallery/upload (Subir archivo de imagen a Supabase Storage + respaldo local)
   if (req.method === 'POST' && pathname === '/api/gallery/upload') {
     try {
       const body = await parseJsonBody(req);
@@ -729,29 +759,79 @@ async function handleApiRequest(req, res, pathname, queryParams) {
         fs.mkdirSync(uploadsDir, { recursive: true });
       }
 
-      const rawBase64 = body.data.replace(/^data:image\/\w+;base64,/, '');
+      const mimeMatch = String(body.data).match(/^data:(image\/[a-zA-Z0-9.+-]+);base64,/);
+      const detectedMime = mimeMatch ? mimeMatch[1].toLowerCase() : 'image/jpeg';
+      const rawBase64 = String(body.data).replace(/^data:image\/[^;]+;base64,/, '');
       const buffer = Buffer.from(rawBase64, 'base64');
-      
+
       let ext = '.jpg';
-      if (body.filename) {
+      if (detectedMime === 'image/png') ext = '.png';
+      else if (detectedMime === 'image/webp') ext = '.webp';
+      else if (detectedMime === 'image/gif') ext = '.gif';
+      else if (body.filename) {
         const parsedExt = path.extname(body.filename).toLowerCase();
-        if (['.jpg', '.jpeg', '.png', '.webp'].includes(parsedExt)) {
+        if (['.jpg', '.jpeg', '.png', '.webp', '.gif'].includes(parsedExt)) {
           ext = parsedExt;
         }
       }
 
-      const safeBase = (body.filename ? path.basename(body.filename, ext) : 'foto')
+      const contentTypeMap = {
+        '.jpg': 'image/jpeg',
+        '.jpeg': 'image/jpeg',
+        '.png': 'image/png',
+        '.webp': 'image/webp',
+        '.gif': 'image/gif'
+      };
+      const contentType = contentTypeMap[ext] || 'image/jpeg';
+
+      const origBase = body.filename ? path.basename(body.filename, path.extname(body.filename)) : 'foto';
+      const safeBase = (origBase || 'foto')
         .toLowerCase()
-        .replace(/[^a-z0-9_-]/g, '-');
+        .replace(/[^a-z0-9_-]/g, '-')
+        .replace(/-+/g, '-')
+        .slice(0, 40) || 'foto';
       const filename = `ej-${Date.now()}-${safeBase}${ext}`;
       const targetPath = path.join(uploadsDir, filename);
 
+      // Respaldo local en images/uploads/
       fs.writeFileSync(targetPath, buffer);
-      const publicUrl = `images/uploads/${filename}`;
+      const localUrl = `images/uploads/${filename}`;
+      let finalUrl = localUrl;
+      let storageMode = 'local';
+
+      // Subir a Supabase Storage (URL pública permanente en CDN)
+      if (supabase) {
+        try {
+          const bucketOk = await ensureGalleryBucket();
+          if (bucketOk) {
+            const { error: upErr } = await supabase.storage
+              .from('gallery')
+              .upload(filename, buffer, {
+                contentType,
+                cacheControl: '31536000',
+                upsert: true
+              });
+
+            if (!upErr) {
+              const { data: pubData } = supabase.storage.from('gallery').getPublicUrl(filename);
+              if (pubData && pubData.publicUrl) {
+                finalUrl = pubData.publicUrl;
+                storageMode = 'supabase';
+              }
+            } else {
+              console.warn('[Storage] Aviso al subir imagen a Supabase:', upErr.message);
+            }
+          }
+        } catch (storageErr) {
+          console.warn('[Storage] Excepción subiendo imagen:', storageErr.message);
+        }
+      }
 
       return sendJson(res, 201, {
         success: true,
-        url: publicUrl,
+        url: finalUrl,
+        localUrl,
+        storage: storageMode,
         filename
       });
     } catch (err) {

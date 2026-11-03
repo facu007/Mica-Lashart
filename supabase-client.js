@@ -103,6 +103,8 @@
     constructor() {
       this.config = { ...defaultConfig };
       this.sbClient = null;
+      this.apiBase = '';
+      this.hasNodeBackend = false;
       this.initialized = false;
       this.initPromise = null;
 
@@ -167,14 +169,48 @@
 
     async _loadConfigAndInit() {
       try {
-        // 1. Intentar cargar config desde endpoint de node /api/config
-        const res = await fetch('/api/config').catch(() => null);
-        if (res && res.ok) {
-          const apiConfig = await res.json();
-          if (apiConfig.supabaseUrl && apiConfig.supabaseAnonKey) {
-            this.config.supabaseUrl = apiConfig.supabaseUrl;
-            this.config.supabaseAnonKey = apiConfig.supabaseAnonKey;
-            this.config.isConfigured = true;
+        // 1. Auto-descubrimiento inteligente del servidor Node (evita errores 404 en Live Server / GitHub Pages)
+        const host = (window.location && window.location.hostname) ? window.location.hostname.toLowerCase() : '';
+        const port = (window.location && window.location.port) ? String(window.location.port) : '';
+        const proto = (window.location && window.location.protocol) ? window.location.protocol : '';
+        const isStaticCloudHost = (
+          host.endsWith('.github.io') ||
+          host.endsWith('.netlify.app') ||
+          host.endsWith('.vercel.app') ||
+          host.endsWith('.pages.dev')
+        );
+
+        const candidateBases = [];
+        if (window.MICA_API_URL) {
+          candidateBases.push(String(window.MICA_API_URL).replace(/\/+$/, ''));
+        } else if (host === 'localhost' || host === '127.0.0.1' || proto === 'file:') {
+          if (port === '3456') {
+            candidateBases.push('');
+          } else {
+            // Abierto desde Live Server (:5500, etc.) o file:// -> conectar directo al backend en :3456 sin provocar 404 local
+            candidateBases.push('http://localhost:3456');
+          }
+        } else if (!isStaticCloudHost) {
+          candidateBases.push('');
+        }
+
+        for (const base of candidateBases) {
+          const res = await fetch(`${base}/api/config`).catch(() => null);
+          if (res && res.ok) {
+            const ctype = (res.headers.get('content-type') || '').toLowerCase();
+            if (ctype.includes('application/json')) {
+              const apiConfig = await res.json().catch(() => null);
+              if (apiConfig) {
+                this.apiBase = base;
+                this.hasNodeBackend = true;
+                if (apiConfig.supabaseUrl && apiConfig.supabaseAnonKey) {
+                  this.config.supabaseUrl = apiConfig.supabaseUrl;
+                  this.config.supabaseAnonKey = apiConfig.supabaseAnonKey;
+                  this.config.isConfigured = true;
+                }
+                break;
+              }
+            }
           }
         }
 
@@ -211,9 +247,16 @@
       }
     }
 
+    async _apiFetch(path, options = {}) {
+      if (!this.hasNodeBackend) return null;
+      return fetch(`${this.apiBase}${path}`, options);
+    }
+
     getStatus() {
       return {
         isConfigured: !!(this.config.supabaseUrl && this.config.supabaseAnonKey),
+        hasNodeBackend: this.hasNodeBackend,
+        apiBase: this.apiBase,
         mode: this.config.isConfigured ? 'supabase' : 'local',
         supabaseUrl: this.config.supabaseUrl || null,
         user: this.getCurrentUser()
@@ -471,7 +514,7 @@
 
       // 1. Consultar primero /api/services en el servidor backend
       try {
-        const apiRes = await fetch('/api/services');
+        const apiRes = await this._apiFetch('/api/services');
         if (apiRes && apiRes.ok) {
           const apiData = await apiRes.json();
           if (apiData && Array.isArray(apiData.services) && apiData.services.length > 0) {
@@ -496,7 +539,7 @@
           const res = await fetch(`${this.config.supabaseUrl}/rest/v1/services?is_active=eq.true&order=sort_order.asc`, {
             headers: {
               apikey: this.config.supabaseAnonKey,
-              Authorization: `Bearer ${this._getAuthBearer()}`
+              Authorization: `Bearer ${this.config.supabaseAnonKey}`
             }
           });
           if (res.ok) {
@@ -529,7 +572,7 @@
 
       // 1. Consultar primero al backend /api/turnos/availability (incluye horarios subidos y tachados por el Admin)
       try {
-        const apiRes = await fetch(`/api/turnos/availability?date=${encodeURIComponent(dateStr)}`);
+        const apiRes = await this._apiFetch(`/api/turnos/availability?date=${encodeURIComponent(dateStr)}`);
         if (apiRes && apiRes.ok) {
           const apiData = await apiRes.json();
           if (apiData && Array.isArray(apiData.slots)) {
@@ -557,7 +600,7 @@
             method: 'POST',
             headers: {
               apikey: this.config.supabaseAnonKey,
-              Authorization: `Bearer ${this._getAuthBearer()}`,
+              Authorization: `Bearer ${this.config.supabaseAnonKey}`,
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({ p_date: dateStr })
@@ -579,7 +622,7 @@
           const res = await fetch(`${this.config.supabaseUrl}/rest/v1/appointments?appointment_date=eq.${dateStr}&status=neq.cancelled&select=start_time`, {
             headers: {
               apikey: this.config.supabaseAnonKey,
-              Authorization: `Bearer ${this._getAuthBearer()}`
+              Authorization: `Bearer ${this.config.supabaseAnonKey}`
             }
           });
           if (res.ok) {
@@ -643,7 +686,7 @@
       // 1. Enviar al servidor backend /api/turnos (persiste directo en Supabase con service_role)
       let backendReached = false;
       try {
-        const apiRes = await fetch('/api/turnos', {
+        const apiRes = await this._apiFetch('/api/turnos', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -709,20 +752,15 @@
             method: 'POST',
             headers: {
               apikey: this.config.supabaseAnonKey,
-              Authorization: `Bearer ${this._getAuthBearer()}`,
+              Authorization: `Bearer ${this.config.supabaseAnonKey}`,
               'Content-Type': 'application/json',
-              Prefer: hasValidJwt ? 'return=representation' : 'return=minimal'
+              Prefer: 'return=minimal'
             },
             body: JSON.stringify(payload)
           });
 
           if (res.ok) {
-            if (hasValidJwt) {
-              const inserted = await res.json().catch(() => null);
-              if (Array.isArray(inserted) && inserted[0]) {
-                normalizedBooking.supabaseId = inserted[0].id;
-              }
-            } else if (generatedUuid) {
+            if (generatedUuid) {
               normalizedBooking.supabaseId = generatedUuid;
             }
             this._updateLocalTurno(normalizedBooking);
@@ -748,7 +786,7 @@
 
       if (currentUser && currentUser.email) {
         try {
-          const apiRes = await fetch(`/api/turnos?email=${encodeURIComponent(currentUser.email)}`);
+          const apiRes = await this._apiFetch(`/api/turnos?email=${encodeURIComponent(currentUser.email)}`);
           if (apiRes && apiRes.ok) {
             const apiData = await apiRes.json();
             if (Array.isArray(apiData.appointments) && apiData.appointments.length > 0) {
@@ -837,7 +875,7 @@
 
       // 1. Cancelar mediante servidor backend /api/turnos/:id (dispara email personalizado de cancelación)
       try {
-        const apiRes = await fetch(`/api/turnos/${encodeURIComponent(targetId)}`, {
+        const apiRes = await this._apiFetch(`/api/turnos/${encodeURIComponent(targetId)}`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ status: 'cancelled', cancelledBy: 'client' })
@@ -876,7 +914,7 @@
 
       // 1. Consultar servidor backend /api/turnos (usa SUPABASE_SERVICE_ROLE_KEY)
       try {
-        const apiRes = await fetch(`/api/turnos?status=${filter}`);
+        const apiRes = await this._apiFetch(`/api/turnos?status=${filter}`);
         if (apiRes && apiRes.ok) {
           const apiData = await apiRes.json();
           if (Array.isArray(apiData.appointments)) {
@@ -960,7 +998,7 @@
 
       // 1. Actualizar mediante backend /api/turnos/:id (dispara email personalizado si se cancela)
       try {
-        const apiRes = await fetch(`/api/turnos/${encodeURIComponent(appointmentId)}`, {
+        const apiRes = await this._apiFetch(`/api/turnos/${encodeURIComponent(appointmentId)}`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -1095,16 +1133,95 @@
       ];
     }
 
+    _safeSetLocalGallery(list) {
+      if (!Array.isArray(list)) return;
+      try {
+        localStorage.setItem(STORAGE_KEYS.GALLERY, JSON.stringify(list));
+      } catch (quotaErr) {
+        try {
+          // Si alguna imagen antigua en Base64 superó la cuota del navegador, conservar URLs livianas y la última foto subida
+          const slim = list.filter((p, idx) => {
+            const u = String(p && p.imageUrl ? p.imageUrl : '');
+            return !u.startsWith('data:image/') || u.length < 350000 || idx === list.length - 1;
+          });
+          localStorage.setItem(STORAGE_KEYS.GALLERY, JSON.stringify(slim));
+        } catch (_) {
+          // No bloquear el guardado principal si el caché de localStorage está lleno
+        }
+      }
+    }
+
+    async _compressImageFile(file, maxDim = 1400, quality = 0.84) {
+      return new Promise((resolve, reject) => {
+        const fallbackReader = () => {
+          const reader = new FileReader();
+          reader.onload = () => resolve({ dataUrl: reader.result, blob: file });
+          reader.onerror = err => reject(err);
+          reader.readAsDataURL(file);
+        };
+
+        if (typeof document === 'undefined' || typeof Image === 'undefined') {
+          return fallbackReader();
+        }
+
+        const objUrl = (window.URL && window.URL.createObjectURL) ? window.URL.createObjectURL(file) : null;
+        if (!objUrl) return fallbackReader();
+
+        const img = new Image();
+        img.onload = () => {
+          try {
+            window.URL.revokeObjectURL(objUrl);
+            let width = img.naturalWidth || img.width;
+            let height = img.naturalHeight || img.height;
+
+            if (!width || !height) return fallbackReader();
+
+            if (width > maxDim || height > maxDim) {
+              const ratio = Math.min(maxDim / width, maxDim / height);
+              width = Math.round(width * ratio);
+              height = Math.round(height * ratio);
+            }
+
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            if (!ctx) return fallbackReader();
+
+            ctx.fillStyle = '#0d0a0f';
+            ctx.fillRect(0, 0, width, height);
+            ctx.drawImage(img, 0, 0, width, height);
+
+            const dataUrl = canvas.toDataURL('image/jpeg', quality);
+            if (canvas.toBlob) {
+              canvas.toBlob((blob) => {
+                resolve({ dataUrl, blob: blob || file });
+              }, 'image/jpeg', quality);
+            } else {
+              resolve({ dataUrl, blob: file });
+            }
+          } catch (e) {
+            fallbackReader();
+          }
+        };
+        img.onerror = () => {
+          try { window.URL.revokeObjectURL(objUrl); } catch (_) {}
+          fallbackReader();
+        };
+        img.src = objUrl;
+      });
+    }
+
     async getGalleryPhotos() {
       await this.init();
 
       // 1. Intentar desde backend server /api/gallery
       try {
-        const res = await fetch('/api/gallery');
-        if (res.ok) {
+        const res = await this._apiFetch('/api/gallery');
+        if (res && res.ok) {
           const data = await res.json();
           if (data && Array.isArray(data.photos) && data.photos.length > 0) {
-            localStorage.setItem(STORAGE_KEYS.GALLERY, JSON.stringify(data.photos));
+            this._safeSetLocalGallery(data.photos);
             return data.photos;
           }
         }
@@ -1135,7 +1252,7 @@
                 isHero: r.is_hero,
                 sortOrder: r.sort_order
               }));
-              localStorage.setItem(STORAGE_KEYS.GALLERY, JSON.stringify(mapped));
+              this._safeSetLocalGallery(mapped);
               return mapped;
             }
           }
@@ -1155,7 +1272,7 @@
 
       // 4. Default 6 fotos
       const def = this._getDefaultGalleryPhotos();
-      localStorage.setItem(STORAGE_KEYS.GALLERY, JSON.stringify(def));
+      this._safeSetLocalGallery(def);
       return def;
     }
 
@@ -1164,19 +1281,18 @@
 
       // 1. Intentar backend /api/gallery
       try {
-        const res = await fetch('/api/gallery', {
+        const res = await this._apiFetch('/api/gallery', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(photoData)
         });
-        if (res.ok) {
+        if (res && res.ok) {
           const data = await res.json();
           if (data && data.photo) {
             const current = await this.getGalleryPhotos();
-            // Evitar duplicados
-            if (!current.some(p => p.id === data.photo.id)) {
+            if (!current.some(p => String(p.id) === String(data.photo.id))) {
               current.push(data.photo);
-              localStorage.setItem(STORAGE_KEYS.GALLERY, JSON.stringify(current));
+              this._safeSetLocalGallery(current);
             }
             return data.photo;
           }
@@ -1224,7 +1340,7 @@
               };
               const current = await this.getGalleryPhotos();
               current.push(mapped);
-              localStorage.setItem(STORAGE_KEYS.GALLERY, JSON.stringify(current));
+              this._safeSetLocalGallery(current);
               return mapped;
             }
           }
@@ -1233,14 +1349,14 @@
         }
       }
 
-      // 3. Fallback Local
+      // 3. Fallback Local seguro (sin error de cuota)
       const localPhoto = {
         id: 'photo_' + Date.now(),
         ...photoData
       };
       const current = await this.getGalleryPhotos();
       current.push(localPhoto);
-      localStorage.setItem(STORAGE_KEYS.GALLERY, JSON.stringify(current));
+      this._safeSetLocalGallery(current);
       return localPhoto;
     }
 
@@ -1249,12 +1365,12 @@
 
       // 1. Backend /api/gallery/:id
       try {
-        const res = await fetch(`/api/gallery/${id}`, {
+        const res = await this._apiFetch(`/api/gallery/${encodeURIComponent(id)}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(photoData)
         });
-        if (res.ok) {
+        if (res && res.ok) {
           const data = await res.json();
           if (data && data.photo) {
             this._updateLocalGalleryItem(data.photo);
@@ -1278,7 +1394,7 @@
           if (photoData.isHero !== undefined) updateObj.is_hero = photoData.isHero;
           if (photoData.sortOrder !== undefined) updateObj.sort_order = photoData.sortOrder;
 
-          await fetch(`${this.config.supabaseUrl}/rest/v1/gallery_photos?id=eq.${id}`, {
+          await fetch(`${this.config.supabaseUrl}/rest/v1/gallery_photos?id=eq.${encodeURIComponent(id)}`, {
             method: 'PATCH',
             headers: {
               apikey: this.config.supabaseAnonKey,
@@ -1303,7 +1419,7 @@
 
       // 1. Backend /api/gallery/:id
       try {
-        await fetch(`/api/gallery/${id}`, { method: 'DELETE' });
+        await this._apiFetch(`/api/gallery/${encodeURIComponent(id)}`, { method: 'DELETE' });
       } catch (e) {
         console.warn('Backend deleteGalleryPhoto error:', e);
       }
@@ -1311,7 +1427,7 @@
       // 2. Supabase
       if (this.config.isConfigured) {
         try {
-          await fetch(`${this.config.supabaseUrl}/rest/v1/gallery_photos?id=eq.${id}`, {
+          await fetch(`${this.config.supabaseUrl}/rest/v1/gallery_photos?id=eq.${encodeURIComponent(id)}`, {
             method: 'DELETE',
             headers: {
               apikey: this.config.supabaseAnonKey,
@@ -1327,8 +1443,8 @@
       try {
         const raw = localStorage.getItem(STORAGE_KEYS.GALLERY);
         if (raw) {
-          const list = JSON.parse(raw).filter(p => p.id !== id);
-          localStorage.setItem(STORAGE_KEYS.GALLERY, JSON.stringify(list));
+          const list = JSON.parse(raw).filter(p => String(p.id) !== String(id));
+          this._safeSetLocalGallery(list);
         }
       } catch (e) {}
 
@@ -1338,44 +1454,74 @@
     async resetGalleryDefaults() {
       await this.init();
       try {
-        await fetch('/api/gallery/reset', { method: 'POST' });
+        await this._apiFetch('/api/gallery/reset', { method: 'POST' });
       } catch (e) {}
 
       const def = this._getDefaultGalleryPhotos();
-      localStorage.setItem(STORAGE_KEYS.GALLERY, JSON.stringify(def));
+      this._safeSetLocalGallery(def);
       return def;
     }
 
     async uploadGalleryImage(file) {
       if (!file) throw new Error('No se seleccionó ningún archivo de imagen.');
+      await this.init();
 
-      const base64 = await new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = err => reject(err);
-        reader.readAsDataURL(file);
-      });
+      // Optimizar tamaño y resolución en el cliente (evita demoras y errores de cuota)
+      const { dataUrl, blob } = await this._compressImageFile(file, 1400, 0.84);
+      const cleanName = (file.name || 'foto.jpg')
+        .replace(/\.[^.]+$/, '')
+        .toLowerCase()
+        .replace(/[^a-z0-9_-]/g, '-')
+        .slice(0, 40) || 'foto';
+      const uploadFilename = `${cleanName}.jpg`;
 
+      // 1. Subir a través del backend Node (guarda en Supabase Storage + respaldo local)
       try {
-        const res = await fetch('/api/gallery/upload', {
+        const res = await this._apiFetch('/api/gallery/upload', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            filename: file.name,
-            data: base64
+            filename: uploadFilename,
+            data: dataUrl
           })
         });
 
-        if (res.ok) {
+        if (res && res.ok) {
           const data = await res.json();
-          if (data && data.url) return data.url;
+          if (data && data.url) {
+            // Si devolvió ruta relativa desde otro puerto local (ej: Live Server :5500), anteponer apiBase
+            if (this.apiBase && !data.url.startsWith('http') && !data.url.startsWith('data:')) {
+              return `${this.apiBase}/${data.url.replace(/^\/+/, '')}`;
+            }
+            return data.url;
+          }
         }
       } catch (e) {
-        console.warn('Upload endpoint error, using data URL fallback:', e);
+        console.warn('Upload endpoint warning, trying cloud/compressed fallback:', e);
       }
 
-      // Fallback a data URL Base64
-      return base64;
+      // 2. Intento directo a Supabase Storage si no hay servidor Node activo
+      if (!this.hasNodeBackend && this.config.isConfigured && blob) {
+        try {
+          const storageFile = `ej-${Date.now()}-${uploadFilename}`;
+          const upRes = await fetch(`${this.config.supabaseUrl}/storage/v1/object/gallery/${storageFile}`, {
+            method: 'POST',
+            headers: {
+              apikey: this.config.supabaseAnonKey,
+              Authorization: `Bearer ${this._getAuthBearer()}`,
+              'Content-Type': 'image/jpeg',
+              'x-upsert': 'true'
+            },
+            body: blob
+          });
+          if (upRes.ok) {
+            return `${this.config.supabaseUrl}/storage/v1/object/public/gallery/${storageFile}`;
+          }
+        } catch (_) {}
+      }
+
+      // 3. Fallback a Data URL JPEG optimizado (~120 KB)
+      return dataUrl;
     }
 
     _updateLocalGalleryItem(item) {
@@ -1383,10 +1529,10 @@
         const raw = localStorage.getItem(STORAGE_KEYS.GALLERY);
         if (raw) {
           const list = JSON.parse(raw);
-          const idx = list.findIndex(p => p.id === item.id);
+          const idx = list.findIndex(p => String(p.id) === String(item.id));
           if (idx !== -1) {
             list[idx] = { ...list[idx], ...item };
-            localStorage.setItem(STORAGE_KEYS.GALLERY, JSON.stringify(list));
+            this._safeSetLocalGallery(list);
           }
         }
       } catch (e) {}
@@ -1398,7 +1544,7 @@
     async getWeeklySchedule() {
       await this.init();
       try {
-        const res = await fetch('/api/schedule');
+        const res = await this._apiFetch('/api/schedule');
         if (res && res.ok) {
           const data = await res.json();
           if (Array.isArray(data.schedule)) return data.schedule;
@@ -1410,27 +1556,36 @@
           const res = await fetch(`${this.config.supabaseUrl}/rest/v1/weekly_schedule?professional_id=eq.11111111-1111-1111-1111-111111111111&order=day_of_week.asc`, {
             headers: {
               apikey: this.config.supabaseAnonKey,
-              Authorization: `Bearer ${this._getAuthBearer()}`
+              Authorization: `Bearer ${this.config.supabaseAnonKey}`
             }
           });
           if (res.ok) return await res.json();
         } catch (e) {}
       }
+
+      try {
+        const saved = localStorage.getItem('mica_weekly_schedule');
+        if (saved) return JSON.parse(saved);
+      } catch (e) {}
       return [];
     }
 
     async saveWeeklySchedule(days) {
       await this.init();
-      const res = await fetch('/api/schedule', {
+      const res = await this._apiFetch('/api/schedule', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ days })
       });
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        throw new Error(err.error || 'No se pudieron guardar los horarios.');
+      if (res) {
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.error || 'No se pudieron guardar los horarios.');
+        }
+        return await res.json();
       }
-      return await res.json();
+      localStorage.setItem('mica_weekly_schedule', JSON.stringify(days));
+      return { success: true, schedule: days };
     }
 
     async getInstagramDaySlots(dateStr, interval = '60', forceGenerate = false) {
@@ -1439,7 +1594,7 @@
 
       try {
         const fg = forceGenerate ? '&forceGenerate=1' : '';
-        const res = await fetch(`/api/instagram/slots?date=${encodeURIComponent(dateStr)}&interval=${encodeURIComponent(interval)}${fg}`);
+        const res = await this._apiFetch(`/api/instagram/slots?date=${encodeURIComponent(dateStr)}&interval=${encodeURIComponent(interval)}${fg}`);
         if (res && res.ok) {
           return await res.json();
         }
@@ -1487,7 +1642,7 @@
           const res = await fetch(`${this.config.supabaseUrl}/rest/v1/settings?key=eq.published_schedules&select=value`, {
             headers: {
               apikey: this.config.supabaseAnonKey,
-              Authorization: `Bearer ${this._getAuthBearer()}`
+              Authorization: `Bearer ${this.config.supabaseAnonKey}`
             }
           });
           if (res.ok) {
@@ -1535,7 +1690,7 @@
     async getPublishedDays(upcomingOnly = true) {
       await this.init();
       try {
-        const res = await fetch(`/api/published-schedules?upcoming=${upcomingOnly ? 'true' : 'false'}`);
+        const res = await this._apiFetch(`/api/published-schedules?upcoming=${upcomingOnly ? 'true' : 'false'}`);
         if (res && res.ok) {
           const data = await res.json();
           if (data && Array.isArray(data.days)) return data.days;
@@ -1573,7 +1728,7 @@
     async getPublishedDay(dateStr) {
       await this.init();
       try {
-        const res = await fetch(`/api/published-schedules?date=${encodeURIComponent(dateStr)}`);
+        const res = await this._apiFetch(`/api/published-schedules?date=${encodeURIComponent(dateStr)}`);
         if (res && res.ok) return await res.json();
       } catch (e) {}
 
@@ -1596,7 +1751,7 @@
     async publishDaySlots(dateStr, slots) {
       await this.init();
       try {
-        const res = await fetch('/api/published-schedules', {
+        const res = await this._apiFetch('/api/published-schedules', {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ date: dateStr, slots })
@@ -1637,7 +1792,7 @@
     async toggleSlotCrossedOut(dateStr, timeStr, crossedOut, fallbackSlots = []) {
       await this.init();
       try {
-        const res = await fetch('/api/published-schedules/toggle', {
+        const res = await this._apiFetch('/api/published-schedules/toggle', {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ date: dateStr, time: timeStr, crossedOut, fallbackSlots })
@@ -1682,7 +1837,7 @@
     async unpublishDay(dateStr) {
       await this.init();
       try {
-        const res = await fetch(`/api/published-schedules?date=${encodeURIComponent(dateStr)}`, {
+        const res = await this._apiFetch(`/api/published-schedules?date=${encodeURIComponent(dateStr)}`, {
           method: 'DELETE'
         });
         if (res && res.ok) {
@@ -1704,20 +1859,61 @@
     // =========================================================================
     // EMAILS PERSONALIZADOS DE RESERVA Y CANCELACIÓN
     // =========================================================================
+    _getDefaultEmailTemplates() {
+      try {
+        const raw = localStorage.getItem('mica_email_templates');
+        if (raw) return JSON.parse(raw);
+      } catch (_) {}
+      return {
+        studioLocation: 'Zona Hospital Penna - Villa Cerrito, Bahía Blanca',
+        notifyAdmin: true,
+        booking: {
+          enabled: true,
+          subject: '✨ ¡Tu turno está confirmado, {{primer_nombre}}! — Mica Lash Art',
+          heading: '¡Te esperamos, {{primer_nombre}}! ♡',
+          intro: 'Tu reserva para {{servicio}} quedó agendada con éxito. Acá tenés todos los detalles de tu cita:',
+          tips: '• Asistí con los ojos limpios y sin máscara de pestañas ni delineador.\n• Tolerancia máxima de espera: 15 minutos.\n• Si necesitás reprogramar o cancelar, avisame con al menos 24 hs de anticipación.',
+          footerNote: '¡Gracias por confiar tu mirada a Mica Lash Art!'
+        },
+        cancellation: {
+          enabled: true,
+          subject: '🌸 Tu turno fue cancelado, {{primer_nombre}} — Mica Lash Art',
+          heading: 'Turno cancelado, {{primer_nombre}}',
+          intro: 'Te confirmamos que tu turno para {{servicio}} del día {{fecha}} a las {{hora}} hs fue cancelado.',
+          rebookMessage: '¡Cuando quieras volver a agendar tu mirada, vas a poder elegir un nuevo horario disponible desde nuestra web! ♡',
+          footerNote: 'Mica Lash Art • Estudio de Miradas en Bahía Blanca'
+        }
+      };
+    }
+
     async getEmailSettings() {
       await this.init();
-      const res = await fetch('/api/email/settings');
-      if (!res.ok) throw new Error('No se pudo cargar la configuración de emails');
-      return await res.json();
+      const res = await this._apiFetch('/api/email/settings');
+      if (res && res.ok) {
+        return await res.json();
+      }
+      return {
+        templates: this._getDefaultEmailTemplates(),
+        provider: {
+          configured: false,
+          mode: 'static',
+          label: 'Modo Estático (Iniciá node server.js para envío SMTP)'
+        },
+        logs: []
+      };
     }
 
     async saveEmailTemplates(templates) {
       await this.init();
-      const res = await fetch('/api/email/templates', {
+      try {
+        localStorage.setItem('mica_email_templates', JSON.stringify(templates));
+      } catch (_) {}
+      const res = await this._apiFetch('/api/email/templates', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ templates })
       });
+      if (!res) return { success: true, templates };
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error || 'Error guardando plantillas de email');
       return data;
@@ -1725,11 +1921,12 @@
 
     async saveEmailProvider(providerConfig) {
       await this.init();
-      const res = await fetch('/api/email/provider', {
+      const res = await this._apiFetch('/api/email/provider', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(providerConfig)
       });
+      if (!res) throw new Error('Iniciá el servidor local (node server.js) para configurar las credenciales SMTP.');
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error || 'Error guardando credenciales SMTP');
       return data;
@@ -1737,23 +1934,45 @@
 
     async previewEmailTemplate(type, templates) {
       await this.init();
-      const res = await fetch('/api/email/preview', {
+      const res = await this._apiFetch('/api/email/preview', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ type, templates })
       });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(data.error || 'Error generando vista previa');
-      return data;
+      if (res && res.ok) {
+        return await res.json();
+      }
+      // Vista previa instantánea en el cliente si server.js no está corriendo
+      const t = templates || this._getDefaultEmailTemplates();
+      const cfg = (type === 'cancellation' ? t.cancellation : t.booking) || {};
+      const vars = {
+        nombre: 'Valentina Gómez',
+        primer_nombre: 'Valentina',
+        servicio: 'Volumen Híbrido Glam',
+        fecha: 'Viernes 14 de Noviembre',
+        hora: '15:30',
+        precio: '$34.000',
+        ubicacion: t.studioLocation || 'Bahía Blanca',
+        motivo: 'Reprogramación solicitada'
+      };
+      const rep = (s) => String(s || '').replace(/\{\{\s*([a-zA-Z0-9_]+)\s*\}\}/g, (_, k) => vars[k] || '');
+      const subject = rep(cfg.subject);
+      const heading = rep(cfg.heading);
+      const intro = rep(cfg.intro);
+      return {
+        subject,
+        html: `<div style="background:#0d0a0f;color:#f8eef6;font-family:sans-serif;padding:28px;border-radius:18px;border:1px solid #ff3e9655;"><h2 style="color:#ffaed8;margin-top:0;">${heading}</h2><p style="line-height:1.6;color:#d8c4d6;">${intro}</p><div style="background:#19121d;padding:16px;border-radius:12px;margin:16px 0;font-size:14px;"><p><strong>Tratamiento:</strong> ${vars.servicio}</p><p><strong>Fecha:</strong> ${vars.fecha} — ${vars.hora} hs</p><p><strong>Ubicación:</strong> ${vars.ubicacion}</p></div></div>`
+      };
     }
 
     async sendTestEmail(to, type = 'booking') {
       await this.init();
-      const res = await fetch('/api/email/test', {
+      const res = await this._apiFetch('/api/email/test', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ to, type })
       });
+      if (!res) throw new Error('Iniciá el servidor (node server.js) para enviar correos de prueba.');
       const data = await res.json().catch(() => ({}));
       if (!res.ok || data.success === false) {
         throw new Error(data.error || 'Error enviando correo de prueba');
@@ -1763,11 +1982,12 @@
 
     async resendAppointmentEmail(appointmentId, type) {
       await this.init();
-      const res = await fetch(`/api/turnos/${encodeURIComponent(appointmentId)}/resend-email`, {
+      const res = await this._apiFetch(`/api/turnos/${encodeURIComponent(appointmentId)}/resend-email`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ type })
       });
+      if (!res) throw new Error('Iniciá el servidor (node server.js) para reenviar correos.');
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error || 'No se pudo reenviar el correo');
       return data;

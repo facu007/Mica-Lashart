@@ -35,7 +35,7 @@
       box-shadow: 0 0 35px 2px rgba(255, 62, 150, 0.25), inset 0 0 25px rgba(255, 62, 150, 0.08);
     }
   </style>
-  <script src="supabase-client.js"></script>
+  <script src="supabase-client.js?v=20261102"></script>
 </head>
 <body class="bg-[#0d0a0f] text-[#f5edf5] font-body min-h-screen flex flex-col antialiased selection:bg-[#ff3e96] selection:text-white">
 
@@ -792,7 +792,7 @@
           <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1.5" for="photo-title-input">
             Título del Look / Técnica *
           </label>
-          <input type="text" id="photo-title-input" required placeholder="Ej: Volumen Híbrido Glam, Lifting & Botox..." class="w-full bg-[#0d0a0f] border border-white/20 focus:border-[#ff3e96] rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none transition-colors">
+          <input type="text" id="photo-title-input" required oninput="updateLivePreview()" placeholder="Ej: Volumen Híbrido Glam, Lifting & Botox..." class="w-full bg-[#0d0a0f] border border-white/20 focus:border-[#ff3e96] rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none transition-colors">
         </div>
 
         <!-- Badge & Categoría -->
@@ -801,7 +801,7 @@
             <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1.5" for="photo-badge-input">
               Etiqueta / Badge Destacado
             </label>
-            <input type="text" id="photo-badge-input" placeholder="Ej: ★ Look Más Pedido" class="w-full bg-[#0d0a0f] border border-white/20 focus:border-[#ff3e96] rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none transition-colors">
+            <input type="text" id="photo-badge-input" oninput="updateLivePreview()" placeholder="Ej: ★ Look Más Pedido" class="w-full bg-[#0d0a0f] border border-white/20 focus:border-[#ff3e96] rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none transition-colors">
             
             <!-- Quick Chips -->
             <div class="flex flex-wrap gap-1 mt-2">
@@ -831,7 +831,7 @@
           <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1.5" for="photo-desc-input">
             Descripción Detallada (visible en tarjeta y Lightbox)
           </label>
-          <textarea id="photo-desc-input" rows="2" placeholder="Explicá el acabado, textura y técnica empleada..." class="w-full bg-[#0d0a0f] border border-white/20 focus:border-[#ff3e96] rounded-xl p-3 text-sm text-white placeholder-gray-500 focus:outline-none transition-colors resize-none"></textarea>
+          <textarea id="photo-desc-input" rows="2" oninput="updateLivePreview()" placeholder="Explicá el acabado, textura y técnica empleada..." class="w-full bg-[#0d0a0f] border border-white/20 focus:border-[#ff3e96] rounded-xl p-3 text-sm text-white placeholder-gray-500 focus:outline-none transition-colors resize-none"></textarea>
         </div>
 
         <!-- Origen de la Imagen: Subir archivo o URL existente -->
@@ -841,11 +841,15 @@
           </label>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <!-- Opción A: Subir desde PC o Celular -->
-            <label class="p-3.5 rounded-2xl bg-[#0d0a0f] border-2 border-dashed border-[#ff3e96]/40 hover:border-[#ff3e96] cursor-pointer flex flex-col items-center justify-center text-center group transition-colors">
+            <!-- Opción A: Subir desde PC o Celular (Click o Arrastrar y Soltar) -->
+            <label id="photo-dropzone"
+                   ondragover="event.preventDefault(); this.classList.add('border-[#ff2d85]', 'bg-[#ff2d85]/10');"
+                   ondragleave="this.classList.remove('border-[#ff2d85]', 'bg-[#ff2d85]/10');"
+                   ondrop="handlePhotoDrop(event)"
+                   class="p-3.5 rounded-2xl bg-[#0d0a0f] border-2 border-dashed border-[#ff3e96]/40 hover:border-[#ff3e96] cursor-pointer flex flex-col items-center justify-center text-center group transition-colors">
               <span class="material-symbols-outlined text-2xl text-[#ff3e96] group-hover:scale-110 transition-transform">upload_file</span>
-              <span class="text-xs font-bold text-white mt-1">Subir desde dispositivo</span>
-              <span class="text-[10px] text-gray-400">JPG, PNG o WEBP</span>
+              <span class="text-xs font-bold text-white mt-1">Subir o arrastrar foto</span>
+              <span class="text-[10px] text-gray-400">JPG, PNG o WEBP (se optimiza automático)</span>
               <input type="file" id="photo-file-input" accept="image/*" class="hidden" onchange="handleFileSelected(event)">
             </label>
 
@@ -1279,7 +1283,7 @@
       if (presetSelect) presetSelect.value = '';
 
       if (photoId) {
-        const existing = allGalleryPhotos.find(p => p.id === photoId);
+        const existing = allGalleryPhotos.find(p => String(p.id) === String(photoId));
         if (existing) {
           modalTitle.textContent = 'Editar Foto de Ejemplo';
           editIdInput.value = existing.id;
@@ -1323,23 +1327,56 @@
       updateLivePreview();
     }
 
-    function handleFileSelected(event) {
-      const file = event.target.files[0];
+    let currentPreviewObjectUrl = null;
+    function applySelectedPhotoFile(file) {
       if (!file) return;
+      if (file.type && !file.type.startsWith('image/')) {
+        alert('Por favor seleccioná un archivo de imagen válido (JPG, PNG o WEBP).');
+        return;
+      }
 
       selectedImageFile = file;
-      document.getElementById('upload-status-text').textContent = `Archivo listo: ${file.name}`;
-      
-      // Vista previa local inmediata con FileReader
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        document.getElementById('photo-url-input').value = `[Nuevo archivo: ${file.name}]`;
-        const previewBox = document.getElementById('live-preview-box');
-        const previewImg = document.getElementById('live-preview-img');
-        previewImg.src = e.target.result;
-        previewBox.classList.remove('hidden');
-      };
-      reader.readAsDataURL(file);
+      const sizeKb = Math.max(1, Math.round(file.size / 1024));
+      const sizeLabel = sizeKb >= 1024 ? `${(sizeKb / 1024).toFixed(1)} MB` : `${sizeKb} KB`;
+      document.getElementById('upload-status-text').textContent = `✓ Listo: ${file.name} (${sizeLabel})`;
+      document.getElementById('photo-url-input').value = `[Nuevo archivo: ${file.name}]`;
+
+      // Si el título está vacío, sugerir un nombre limpio basado en el archivo
+      const titleInput = document.getElementById('photo-title-input');
+      if (titleInput && !titleInput.value.trim()) {
+        const cleanTitle = file.name
+          .replace(/\.[^.]+$/, '')
+          .replace(/[-_]+/g, ' ')
+          .replace(/\b\w/g, c => c.toUpperCase())
+          .trim();
+        if (cleanTitle && !/^(img|dsc|whatsapp|photo|image)\b/i.test(cleanTitle)) {
+          titleInput.value = cleanTitle;
+        }
+      }
+
+      // Vista previa instantánea sin demora
+      if (currentPreviewObjectUrl) {
+        try { URL.revokeObjectURL(currentPreviewObjectUrl); } catch (_) {}
+      }
+      currentPreviewObjectUrl = URL.createObjectURL(file);
+      const previewBox = document.getElementById('live-preview-box');
+      const previewImg = document.getElementById('live-preview-img');
+      previewImg.src = currentPreviewObjectUrl;
+      previewBox.classList.remove('hidden');
+      updateLivePreview();
+    }
+
+    function handleFileSelected(event) {
+      const file = event.target.files && event.target.files[0];
+      applySelectedPhotoFile(file);
+    }
+
+    function handlePhotoDrop(event) {
+      event.preventDefault();
+      const dz = document.getElementById('photo-dropzone');
+      if (dz) dz.classList.remove('border-[#ff2d85]', 'bg-[#ff2d85]/10');
+      const file = event.dataTransfer && event.dataTransfer.files && event.dataTransfer.files[0];
+      applySelectedPhotoFile(file);
     }
 
     function updateLivePreview() {
