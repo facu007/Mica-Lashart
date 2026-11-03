@@ -1540,11 +1540,11 @@ async function handleApiRequest(req, res, pathname, queryParams) {
     }
   }
 
-  // 22. GET /api/email/settings (Plantillas personalizadas, estado SMTP/Resend e historial reciente)
+  // 22. GET /api/email/settings (Plantillas personalizadas, estado EmailJS/SMTP/Resend e historial reciente)
   if (req.method === 'GET' && pathname === '/api/email/settings') {
     try {
       const templates = await mailer.getEmailTemplates(supabase);
-      const provider = mailer.getProviderStatus();
+      const provider = mailer.getProviderStatus(templates);
       const logs = mailer.loadEmailLogs().slice(0, 20);
       return sendJson(res, 200, { templates, provider, logs });
     } catch (err) {
@@ -1556,27 +1556,51 @@ async function handleApiRequest(req, res, pathname, queryParams) {
   if (req.method === 'PUT' && pathname === '/api/email/templates') {
     try {
       const body = await parseJsonBody(req);
-      const templates = await mailer.saveEmailTemplates(supabase, body.templates || body);
+      const current = await mailer.getEmailTemplates(supabase);
+      const incoming = body.templates || body;
+      const templates = await mailer.saveEmailTemplates(supabase, {
+        ...current,
+        ...incoming,
+        emailjs: { ...(current.emailjs || {}), ...(incoming.emailjs || {}) }
+      });
       return sendJson(res, 200, { success: true, templates });
     } catch (err) {
       return sendJson(res, 500, { error: err.message });
     }
   }
 
-  // 24. PUT /api/email/provider (Configurar credenciales SMTP / Gmail o Resend en .env local)
+  // 24. PUT /api/email/provider (Configurar EmailJS 24/7 para GitHub Pages y/o credenciales SMTP en .env local)
   if (req.method === 'PUT' && pathname === '/api/email/provider') {
     try {
       const body = await parseJsonBody(req);
-      const provider = mailer.updateEmailEnvConfig({
+      const current = await mailer.getEmailTemplates(supabase);
+      const updatedEmailJs = {
+        ...(current.emailjs || {}),
+        ...(body.emailjsPublicKey !== undefined ? { publicKey: String(body.emailjsPublicKey || '').trim() } : {}),
+        ...(body.emailjsServiceId !== undefined ? { serviceId: String(body.emailjsServiceId || '').trim() } : {}),
+        ...(body.emailjsTemplateId !== undefined ? { templateId: String(body.emailjsTemplateId || '').trim() } : {}),
+        ...(body.senderName !== undefined ? { senderName: String(body.senderName || 'Mica Lashes').trim() } : {}),
+        ...(body.replyTo !== undefined ? { replyTo: String(body.replyTo || 'micalashes.estudio@gmail.com').trim() } : {}),
+        ...(body.adminEmail !== undefined ? { adminEmail: String(body.adminEmail || 'micalashes.estudio@gmail.com').trim() } : {})
+      };
+      const savedTemplates = await mailer.saveEmailTemplates(supabase, {
+        ...current,
+        emailjs: updatedEmailJs
+      });
+      mailer.updateEmailEnvConfig({
         SMTP_HOST: body.smtpHost,
         SMTP_PORT: body.smtpPort,
-        SMTP_USER: body.smtpUser,
+        SMTP_USER: body.smtpUser || body.replyTo,
         SMTP_PASS: body.smtpPass,
         EMAIL_FROM: body.emailFrom,
         ADMIN_EMAIL: body.adminEmail,
-        RESEND_API_KEY: body.resendApiKey
+        RESEND_API_KEY: body.resendApiKey,
+        EMAILJS_PUBLIC_KEY: body.emailjsPublicKey,
+        EMAILJS_SERVICE_ID: body.emailjsServiceId,
+        EMAILJS_TEMPLATE_ID: body.emailjsTemplateId
       });
-      return sendJson(res, 200, { success: true, provider });
+      const provider = mailer.getProviderStatus(savedTemplates);
+      return sendJson(res, 200, { success: true, provider, templates: savedTemplates });
     } catch (err) {
       return sendJson(res, 500, { error: err.message });
     }

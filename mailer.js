@@ -30,6 +30,14 @@ const DEFAULT_EMAIL_TEMPLATES = {
     intro: 'Hola {{nombre}}, te confirmamos que tu turno de {{servicio}} programado para el {{fecha}} ({{hora}}) quedó cancelado y el horario fue liberado en nuestra agenda.',
     rebookMessage: 'Cuando quieras volver a agendar tu momento de belleza, podés elegir un nuevo día y horario disponible en tiempo real desde nuestra agenda online ♡',
     footerNote: 'Gracias por confiar en Mica Lash Art. ¡Esperamos verte muy pronto! ✨'
+  },
+  emailjs: {
+    publicKey: '',
+    serviceId: '',
+    templateId: '',
+    senderName: 'Mica Lashes',
+    replyTo: 'micalashes.estudio@gmail.com',
+    adminEmail: 'micalashes.estudio@gmail.com'
   }
 };
 
@@ -61,6 +69,10 @@ function mergeTemplates(saved) {
     cancellation: {
       ...DEFAULT_EMAIL_TEMPLATES.cancellation,
       ...(src.cancellation || {})
+    },
+    emailjs: {
+      ...DEFAULT_EMAIL_TEMPLATES.emailjs,
+      ...(src.emailjs || {})
     }
   };
 }
@@ -441,14 +453,47 @@ function buildEmailLayout({ type, templates, vars, baseUrl }) {
   return { subject, html, text: textLines };
 }
 
-function getProviderStatus() {
+function getProviderStatus(templatesOverride = null) {
+  const tpl = templatesOverride || loadLocalTemplates();
+  const ej = (tpl && tpl.emailjs) ? tpl.emailjs : {};
+  const ejPublicKey = (ej.publicKey || process.env.EMAILJS_PUBLIC_KEY || '').trim();
+  const ejServiceId = (ej.serviceId || process.env.EMAILJS_SERVICE_ID || '').trim();
+  const ejTemplateId = (ej.templateId || process.env.EMAILJS_TEMPLATE_ID || '').trim();
+  const ejSenderName = (ej.senderName || 'Mica Lashes').trim();
+  const ejReplyTo = (ej.replyTo || process.env.SMTP_USER || 'micalashes.estudio@gmail.com').trim();
+
   const resendKey = (process.env.RESEND_API_KEY || '').trim();
-  const smtpUser = (process.env.SMTP_USER || '').trim();
+  const smtpUser = (process.env.SMTP_USER || ejReplyTo || 'micalashes.estudio@gmail.com').trim();
   const smtpPass = (process.env.SMTP_PASS || '').trim();
-  const smtpHost = (process.env.SMTP_HOST || (smtpUser.endsWith('@gmail.com') ? 'smtp.gmail.com' : '')).trim();
+  const smtpHost = (process.env.SMTP_HOST || 'smtp.gmail.com').trim();
   const smtpPort = Number(process.env.SMTP_PORT || 465);
-  const emailFrom = (process.env.EMAIL_FROM || (smtpUser ? `"Mica Lashes" <${smtpUser}>` : '"Mica Lashes" <micalashes@gmail.com>')).trim();
-  const adminEmail = (process.env.ADMIN_EMAIL || smtpUser || '').trim();
+  const emailFrom = (process.env.EMAIL_FROM || `"${ejSenderName}" <${smtpUser}>`).trim();
+  const adminEmail = (ej.adminEmail || process.env.ADMIN_EMAIL || smtpUser || 'micalashes.estudio@gmail.com').trim();
+
+  const emailjsObj = {
+    publicKey: ejPublicKey,
+    serviceId: ejServiceId,
+    templateId: ejTemplateId,
+    senderName: ejSenderName,
+    replyTo: ejReplyTo,
+    adminEmail
+  };
+
+  if (ejPublicKey && ejServiceId && ejTemplateId) {
+    return {
+      configured: true,
+      mode: 'emailjs',
+      label: `EmailJS 24/7 Activo (${ejReplyTo})`,
+      smtpHost,
+      smtpPort,
+      smtpUser,
+      hasSmtpPass: Boolean(smtpPass),
+      hasResendKey: Boolean(resendKey),
+      emailFrom,
+      adminEmail,
+      emailjs: emailjsObj
+    };
+  }
 
   if (resendKey) {
     return {
@@ -461,7 +506,8 @@ function getProviderStatus() {
       hasSmtpPass: false,
       hasResendKey: true,
       emailFrom,
-      adminEmail
+      adminEmail,
+      emailjs: emailjsObj
     };
   }
 
@@ -476,21 +522,23 @@ function getProviderStatus() {
       hasSmtpPass: true,
       hasResendKey: false,
       emailFrom,
-      adminEmail
+      adminEmail,
+      emailjs: emailjsObj
     };
   }
 
   return {
     configured: false,
     mode: 'preview',
-    label: 'Modo Vista Previa (Configurá Gmail SMTP o Resend para envío real)',
+    label: 'Falta conectar EmailJS (24/7 GitHub Pages) o Contraseña de Aplicación Gmail',
     smtpHost: smtpHost || 'smtp.gmail.com',
     smtpPort: smtpPort || 465,
     smtpUser,
     hasSmtpPass: Boolean(smtpPass),
     hasResendKey: false,
     emailFrom,
-    adminEmail
+    adminEmail,
+    emailjs: emailjsObj
   };
 }
 
@@ -538,8 +586,46 @@ async function getNodemailerTransport() {
   };
 }
 
-async function dispatchRawEmail({ to, subject, html, text }) {
-  const status = getProviderStatus();
+async function dispatchRawEmail({ to, subject, html, text, vars = {}, templates = null }) {
+  const status = getProviderStatus(templates);
+
+  // Opción 0: EmailJS REST API (funciona tanto en GitHub Pages 24/7 como desde Node)
+  if (status.mode === 'emailjs' && status.emailjs) {
+    const ej = status.emailjs;
+    const res = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        origin: 'http://localhost'
+      },
+      body: JSON.stringify({
+        service_id: ej.serviceId,
+        template_id: ej.templateId,
+        user_id: ej.publicKey,
+        template_params: {
+          to_email: to,
+          to_name: vars.nombre || 'Clienta',
+          from_name: ej.senderName || 'Mica Lashes',
+          reply_to: ej.replyTo || 'micalashes.estudio@gmail.com',
+          subject,
+          html_content: html,
+          message: text,
+          client_name: vars.nombre || '',
+          first_name: vars.primer_nombre || '',
+          service_name: vars.servicio || '',
+          date: vars.fecha || '',
+          time: vars.hora || '',
+          price: vars.precio || '',
+          location: vars.ubicacion || ''
+        }
+      })
+    });
+    const respText = await res.text().catch(() => '');
+    if (!res.ok) {
+      throw new Error(respText || `EmailJS HTTP ${res.status}`);
+    }
+    return { sent: true, mode: 'emailjs', messageId: respText || 'ok', previewUrl: null };
+  }
 
   // Opción 1: Resend HTTP API
   if (status.mode === 'resend') {
@@ -604,7 +690,7 @@ async function sendAppointmentEmail({ supabase, type, appointment, baseUrl, extr
   const { subject, html, text } = buildEmailLayout({ type, templates, vars, baseUrl });
 
   try {
-    const result = await dispatchRawEmail({ to: recipient, subject, html, text });
+    const result = await dispatchRawEmail({ to: recipient, subject, html, text, vars, templates });
     const logItem = appendEmailLog({
       type,
       to: recipient,
@@ -619,8 +705,8 @@ async function sendAppointmentEmail({ supabase, type, appointment, baseUrl, extr
       html
     });
 
-    // Copia opcional de aviso al correo del admin si SMTP/Resend real está activo
-    const prov = getProviderStatus();
+    // Copia opcional de aviso al correo del admin si EmailJS / SMTP / Resend real está activo
+    const prov = getProviderStatus(templates);
     if (
       templates.notifyAdmin &&
       prov.configured &&
@@ -631,7 +717,7 @@ async function sendAppointmentEmail({ supabase, type, appointment, baseUrl, extr
       const adminSubj = type === 'booking'
         ? `🔔 Nuevo turno agendado: ${vars.nombre} (${vars.fecha} - ${vars.hora_inicio} hs)`
         : `❌ Turno cancelado: ${vars.nombre} (${vars.fecha} - ${vars.hora_inicio} hs)`;
-      dispatchRawEmail({ to: prov.adminEmail, subject: adminSubj, html, text }).catch(() => {});
+      dispatchRawEmail({ to: prov.adminEmail, subject: adminSubj, html, text, vars, templates }).catch(() => {});
     }
 
     return {
@@ -675,7 +761,10 @@ function updateEmailEnvConfig(updates = {}) {
     'SMTP_PASS',
     'EMAIL_FROM',
     'ADMIN_EMAIL',
-    'RESEND_API_KEY'
+    'RESEND_API_KEY',
+    'EMAILJS_PUBLIC_KEY',
+    'EMAILJS_SERVICE_ID',
+    'EMAILJS_TEMPLATE_ID'
   ];
 
   let envContent = '';
