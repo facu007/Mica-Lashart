@@ -160,6 +160,43 @@
         </div>
       </div>
 
+      <!-- Panel de Datos para la Seña (Alias / CBU) -->
+      <div class="neon-card rounded-3xl bg-[#161218] p-5 sm:p-6 shadow-2xl border border-amber-500/30 space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-3">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-amber-300 text-xl">account_balance_wallet</span>
+            <div>
+              <h2 class="font-display font-bold text-base text-white">Datos para la Seña del 20% (Transferencia)</h2>
+              <p class="text-xs text-gray-400">Estos son los datos que ven las clientas para transferir antes de agendar su turno.</p>
+            </div>
+          </div>
+          <button type="button" onclick="savePaymentInfoFromAdmin()" id="btn-save-payment-info" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 hover:brightness-110 text-white text-xs font-bold uppercase tracking-wider shadow transition-all">
+            <span class="material-symbols-outlined text-sm">save</span>
+            <span>Guardar Datos</span>
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+          <div>
+            <label class="block text-gray-400 font-bold mb-1">Alias de transferencia *</label>
+            <input type="text" id="admin-pay-alias" placeholder="Ej. MICA.LASHART" class="w-full bg-[#0d0a0f] border border-white/15 focus:border-amber-400 rounded-xl px-3 py-2 text-white font-mono uppercase focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-gray-400 font-bold mb-1">CBU / CVU (Opcional)</label>
+            <input type="text" id="admin-pay-cbu" placeholder="22 dígitos" class="w-full bg-[#0d0a0f] border border-white/15 focus:border-amber-400 rounded-xl px-3 py-2 text-white font-mono focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-gray-400 font-bold mb-1">Titular de la cuenta</label>
+            <input type="text" id="admin-pay-holder" placeholder="Ej. Micaela Gómez" class="w-full bg-[#0d0a0f] border border-white/15 focus:border-amber-400 rounded-xl px-3 py-2 text-white focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-gray-400 font-bold mb-1">Banco / Billetera</label>
+            <input type="text" id="admin-pay-bank" placeholder="Ej. Mercado Pago / Banco Provincia" class="w-full bg-[#0d0a0f] border border-white/15 focus:border-amber-400 rounded-xl px-3 py-2 text-white focus:outline-none">
+          </div>
+        </div>
+        <div id="admin-pay-status" class="text-xs font-bold text-center"></div>
+      </div>
+
       <!-- Cartelera Rápida: Horarios Subidos & Tachado en Vivo -->
       <div class="neon-card rounded-3xl bg-[#161218] p-5 sm:p-7 shadow-2xl space-y-4">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
@@ -1040,6 +1077,10 @@
                 <span class="text-xs font-black text-[#ffaed8]">
                   $${(Number(app.price) || 0).toLocaleString('es-AR')}
                 </span>
+                ${app.depositArs ? `
+                <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40" title="Seña del 20%">
+                  Seña: $${Number(app.depositArs).toLocaleString('es-AR')}
+                </span>` : ''}
               </div>
 
               <div class="flex items-center gap-2 text-sm sm:text-base font-display font-bold text-white">
@@ -1060,6 +1101,13 @@
 
             <!-- Acciones -->
             <div class="flex items-center gap-2 flex-wrap border-t md:border-t-0 pt-3 md:pt-0 border-white/5">
+              ${app.depositReceipt ? `
+                <button type="button" onclick="viewReceipt('${app.depositReceipt.replace(/'/g, "\\'")}')" class="p-2 sm:px-3 sm:py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 text-xs font-bold flex items-center gap-1 transition-all" title="Ver comprobante de transferencia">
+                  <span class="material-symbols-outlined text-base">receipt_long</span>
+                  <span class="hidden sm:inline">Comprobante</span>
+                </button>
+              ` : ''}
+
               ${phoneClean ? `
                 <a href="https://wa.me/${phoneClean.startsWith('54') ? phoneClean : '549' + phoneClean}?text=Hola%20${encodeURIComponent(app.clientName)}!%20Te%20escribo%20de%20Mica%20Lash%20Art%20para%20confirmar%20tu%20turno%20del%20${app.date}%20a%20las%20${app.time}%20hs." target="_blank" class="p-2 sm:px-3 sm:py-2 rounded-xl bg-[#25D366]/20 hover:bg-[#25D366]/30 text-[#25D366] text-xs font-bold flex items-center gap-1 transition-all" title="WhatsApp a la clienta">
                   <span class="material-symbols-outlined text-base">chat</span>
@@ -1122,6 +1170,20 @@
         loadPublishedDaysBoard();
       } catch (e) {
         alert('Error al actualizar turno: ' + e.message);
+      }
+    }
+
+    async function viewReceipt(receiptPath) {
+      if (!receiptPath) return;
+      try {
+        const url = await window.MicaBackend.payments.getReceiptUrl(receiptPath);
+        if (url) {
+          window.open(url, '_blank');
+        } else {
+          alert('No se pudo generar el enlace seguro al comprobante.');
+        }
+      } catch (err) {
+        alert('Error al abrir comprobante: ' + err.message);
       }
     }
 
@@ -2563,6 +2625,53 @@
       }
     }
 
+    async function loadAdminPaymentInfo() {
+      try {
+        const info = await window.MicaBackend.payments.getInfo();
+        if (info) {
+          const a = document.getElementById('admin-pay-alias');
+          const c = document.getElementById('admin-pay-cbu');
+          const h = document.getElementById('admin-pay-holder');
+          const b = document.getElementById('admin-pay-bank');
+          if (a && info.alias) a.value = info.alias;
+          if (c && info.cbu) c.value = info.cbu;
+          if (h && info.holder) h.value = info.holder;
+          if (b && info.bank) b.value = info.bank;
+        }
+      } catch (e) {}
+    }
+
+    async function savePaymentInfoFromAdmin() {
+      const alias = (document.getElementById('admin-pay-alias')?.value || '').trim();
+      const cbu = (document.getElementById('admin-pay-cbu')?.value || '').trim();
+      const holder = (document.getElementById('admin-pay-holder')?.value || '').trim();
+      const bank = (document.getElementById('admin-pay-bank')?.value || '').trim();
+      const statusEl = document.getElementById('admin-pay-status');
+
+      if (!alias) {
+        alert('Por favor ingresá un Alias de transferencia (ej. MICA.LASHART).');
+        document.getElementById('admin-pay-alias')?.focus();
+        return;
+      }
+
+      if (statusEl) {
+        statusEl.textContent = 'Guardando datos...';
+        statusEl.className = 'text-xs font-bold text-center text-amber-300';
+      }
+
+      try {
+        await window.MicaBackend.payments.saveInfo({ alias, cbu, holder, bank });
+        if (statusEl) {
+          statusEl.textContent = '✓ Datos de transferencia guardados con éxito. Las clientas ya los ven al pedir un turno.';
+          statusEl.className = 'text-xs font-bold text-center text-emerald-300';
+          setTimeout(() => { statusEl.textContent = ''; }, 4000);
+        }
+      } catch (err) {
+        alert('Error al guardar datos de pago: ' + err.message);
+        if (statusEl) statusEl.textContent = '';
+      }
+    }
+
     function handleLogout() {
       window.MicaBackend.auth.logout();
       window.location.href = 'login.html';
@@ -2577,6 +2686,7 @@
       loadAppointments();
       loadPublishedDaysBoard();
       loadGalleryPhotos();
+      loadAdminPaymentInfo();
       window.MicaBackend.emails.getSettings().then(d => updateEmailProviderBadges(d.provider)).catch(() => {});
     });
   </script>

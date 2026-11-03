@@ -407,10 +407,14 @@ async function handleApiRequest(req, res, pathname, queryParams) {
   if (req.method === 'POST' && pathname === '/api/turnos') {
     try {
       const body = await parseJsonBody(req);
-      const { serviceId, serviceName, date, time, endTime, name, phone, email, notes, price } = body;
+      const { serviceId, serviceName, date, time, endTime, name, phone, email, notes, price, depositArs, depositReceipt } = body;
 
       if (!date || !time || !name || !phone) {
         return sendJson(res, 400, { error: 'Faltan campos requeridos (date, time, name, phone).' });
+      }
+
+      if (!depositReceipt) {
+        return sendJson(res, 400, { error: 'Para reservar es obligatorio adjuntar el comprobante de la seña del 20%.' });
       }
 
       const cleanTime = String(time).slice(0, 5);
@@ -454,12 +458,23 @@ async function handleApiRequest(req, res, pathname, queryParams) {
           client_phone: phone,
           client_email: email || null,
           client_notes: fullClientNotes,
+          deposit_ars: Number(depositArs) || Math.ceil(((Number(price) || 34000) * 0.2) / 100) * 100,
+          deposit_receipt_url: depositReceipt,
+          payment_method: 'transferencia',
+          payment_status: 'pending',
           status: 'pending'
         };
 
-        const { error } = await supabase
+        let { error } = await supabase
           .from('appointments')
           .insert(appointmentRow);
+
+        // Compatibilidad si todavía no se ejecutó add-deposit-sena.sql
+        if (error && /deposit_receipt_url/.test(error.message || '')) {
+          const { deposit_receipt_url, ...legacyRow } = appointmentRow;
+          legacyRow.client_notes = `${fullClientNotes || ''}\n[Seña $${appointmentRow.deposit_ars} - comprobante: ${depositReceipt}]`.trim();
+          ({ error } = await supabase.from('appointments').insert(legacyRow));
+        }
 
         if (error) {
           console.warn('[Supabase] Error al insertar turno:', error);
@@ -482,6 +497,8 @@ async function handleApiRequest(req, res, pathname, queryParams) {
           client_email: email || '',
           client_notes: fullClientNotes || '',
           service_name: serviceName || null,
+          deposit_ars: Number(depositArs) || 0,
+          deposit_receipt_url: depositReceipt,
           status: 'pending',
           created_at: new Date().toISOString()
         };
@@ -574,6 +591,7 @@ async function handleApiRequest(req, res, pathname, queryParams) {
           .from('appointments')
           .update({
             status: newStatus,
+            ...(newStatus === 'confirmed' ? { payment_status: 'partial' } : {}),
             ...(newStatus === 'cancelled' && cancelReason ? { internal_notes: cancelReason } : {})
           })
           .eq('id', id)
@@ -744,6 +762,46 @@ async function handleApiRequest(req, res, pathname, queryParams) {
       localDatabase.gallery = loadGalleryData();
     }
     return sendJson(res, 200, { photos: localDatabase.gallery });
+  }
+
+  // 9b. POST /api/receipts/upload (Comprobante de seña -> bucket privado 'receipts')
+  if (req.method === 'POST' && pathname === '/api/receipts/upload') {
+    try {
+      const body = await parseJsonBody(req);
+      if (!body.data || !body.path) {
+        return sendJson(res, 400, { error: 'Faltan datos del comprobante.' });
+      }
+      const safePath = String(body.path).replace(/[^a-zA-Z0-9/_.-]/g, '').replace(/\.\.+/g, '.').replace(/^\/+/, '');
+      const contentType = /^(image\/(jpeg|png|webp|heic|heif)|application\/pdf)$/.test(body.contentType || '')
+        ? body.contentType
+        : 'image/jpeg';
+      const buffer = Buffer.from(String(body.data).replace(/^data:[^;]+;base64,/, ''), 'base64');
+
+      if (supabase) {
+        await supabase.storage.createBucket('receipts', { public: false, fileSizeLimit: 8 * 1024 * 1024 }).catch(() => {});
+        const { error } = await supabase.storage.from('receipts').upload(safePath, buffer, { contentType, upsert: false });
+        if (error) return sendJson(res, 500, { error: error.message });
+        return sendJson(res, 201, { success: true, path: safePath });
+      }
+
+      // Sin Supabase: guardar localmente
+      const localDir = path.join(dir, 'receipts', path.dirname(safePath));
+      fs.mkdirSync(localDir, { recursive: true });
+      fs.writeFileSync(path.join(dir, 'receipts', safePath), buffer);
+      return sendJson(res, 201, { success: true, path: safePath });
+    } catch (err) {
+      return sendJson(res, 500, { error: err.message });
+    }
+  }
+
+  // 9c. GET /api/receipts/signed?path= (URL temporal para que la admin vea el comprobante)
+  if (req.method === 'GET' && pathname === '/api/receipts/signed') {
+    const receiptPath = queryParams.get('path');
+    if (!receiptPath) return sendJson(res, 400, { error: 'Falta path.' });
+    if (!supabase) return sendJson(res, 404, { error: 'Supabase no configurado.' });
+    const { data, error } = await supabase.storage.from('receipts').createSignedUrl(receiptPath, 3600);
+    if (error || !data) return sendJson(res, 404, { error: error ? error.message : 'No encontrado' });
+    return sendJson(res, 200, { url: data.signedUrl });
   }
 
   // 10. POST /api/gallery/upload (Subir archivo de imagen a Supabase Storage + respaldo local)

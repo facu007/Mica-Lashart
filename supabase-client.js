@@ -23,6 +23,18 @@
     PUBLISHED_SCHEDULES: 'mica_published_schedules'
   };
 
+  // Seña obligatoria para reservar (porcentaje del precio del servicio)
+  const DEPOSIT_PERCENTAGE = 20;
+
+  // Datos de transferencia por defecto (editables desde el Panel Admin > Turnos > Datos para la seña)
+  const DEFAULT_PAYMENT_INFO = {
+    alias: '',
+    cbu: '',
+    holder: 'Micaela',
+    bank: '',
+    whatsapp: ''
+  };
+
   // Servicios oficiales por defecto (garantiza funcionamiento sin demoras)
   const FALLBACK_SERVICES = [
     {
@@ -125,6 +137,14 @@
       this.admin = {
         getAppointments: this.getAdminAppointments.bind(this),
         updateAppointmentStatus: this.updateAppointmentStatus.bind(this)
+      };
+      this.payments = {
+        depositPercentage: DEPOSIT_PERCENTAGE,
+        calcDeposit: this.calcDeposit.bind(this),
+        getInfo: this.getPaymentInfo.bind(this),
+        saveInfo: this.savePaymentInfo.bind(this),
+        uploadReceipt: this.uploadDepositReceipt.bind(this),
+        getReceiptUrl: this.getDepositReceiptUrl.bind(this)
       };
       this.gallery = {
         getPhotos: this.getGalleryPhotos.bind(this),
@@ -236,6 +256,10 @@
         if (this.config.isConfigured && window.supabase && window.supabase.createClient) {
           this.sbClient = window.supabase.createClient(this.config.supabaseUrl, this.config.supabaseAnonKey);
         }
+
+        // 5. Mantener la sesión iniciada entre visitas (renueva el token vencido con el refresh_token)
+        await this._refreshSessionIfNeeded();
+        this._scheduleSessionRefresh();
 
         this.initialized = true;
         this._updateUIStatusBadge();
@@ -497,9 +521,73 @@
     _getValidJwtToken() {
       const token = localStorage.getItem(STORAGE_KEYS.TOKEN);
       if (token && token.split('.').length === 3 && !token.startsWith('demo_token_')) {
+        // Un JWT vencido provoca 401 en todas las consultas: mejor usar la anon key hasta renovarlo
+        const exp = this._getJwtExp(token);
+        if (exp && exp * 1000 <= Date.now()) return null;
         return token;
       }
       return null;
+    }
+
+    _getJwtExp(token) {
+      try {
+        const payload = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+        const json = JSON.parse(atob(payload.padEnd(payload.length + (4 - payload.length % 4) % 4, '=')));
+        return Number(json.exp) || null;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    // Renueva el access_token (dura 1 hora) usando el refresh_token guardado,
+    // así la sesión queda iniciada aunque la clienta/admin cierre y vuelva a entrar.
+    async _refreshSessionIfNeeded(force = false) {
+      if (!this.config.isConfigured) return false;
+      const token = localStorage.getItem(STORAGE_KEYS.TOKEN);
+      const refresh = localStorage.getItem(STORAGE_KEYS.REFRESH);
+      if (!refresh || !token || token.startsWith('demo_token_')) return false;
+
+      const exp = this._getJwtExp(token);
+      const msLeft = exp ? exp * 1000 - Date.now() : 0;
+      if (!force && msLeft > 5 * 60 * 1000) return true; // todavía le quedan más de 5 minutos
+
+      if (this._refreshPromise) return this._refreshPromise;
+      this._refreshPromise = (async () => {
+        try {
+          const res = await fetch(`${this.config.supabaseUrl}/auth/v1/token?grant_type=refresh_token`, {
+            method: 'POST',
+            headers: { apikey: this.config.supabaseAnonKey, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ refresh_token: refresh })
+          });
+          const data = await res.json().catch(() => ({}));
+          if (res.ok && data.access_token) {
+            localStorage.setItem(STORAGE_KEYS.TOKEN, data.access_token);
+            if (data.refresh_token) localStorage.setItem(STORAGE_KEYS.REFRESH, data.refresh_token);
+            return true;
+          }
+          // Refresh token inválido o revocado: la sesión terminó de verdad
+          if (res.status === 400 || res.status === 401) {
+            this.logout();
+          }
+          return false;
+        } catch (e) {
+          // Sin conexión: conservar la sesión y reintentar más tarde
+          return false;
+        } finally {
+          this._refreshPromise = null;
+        }
+      })();
+      return this._refreshPromise;
+    }
+
+    _scheduleSessionRefresh() {
+      if (this._sessionTimerStarted || typeof window === 'undefined') return;
+      this._sessionTimerStarted = true;
+      // Revisar cada 4 minutos y al volver a la pestaña
+      setInterval(() => { this._refreshSessionIfNeeded(); }, 4 * 60 * 1000);
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') this._refreshSessionIfNeeded();
+      });
     }
 
     _getAuthBearer() {
@@ -676,6 +764,9 @@
         clientPhone: bookingData.phone,
         clientEmail: bookingData.email || (currentUser ? currentUser.email : ''),
         clientNotes: bookingData.notes || '',
+        depositArs: Number(bookingData.depositArs) || 0,
+        depositReceipt: bookingData.depositReceipt || null,
+        paymentMethod: bookingData.depositReceipt ? 'transferencia' : 'efectivo',
         status: 'pending',
         createdAt: new Date().toISOString()
       };
@@ -699,7 +790,9 @@
             name: normalizedBooking.clientName,
             phone: normalizedBooking.clientPhone,
             email: normalizedBooking.clientEmail,
-            notes: normalizedBooking.clientNotes
+            notes: normalizedBooking.clientNotes,
+            depositArs: normalizedBooking.depositArs,
+            depositReceipt: normalizedBooking.depositReceipt
           })
         });
         if (apiRes) {
@@ -745,10 +838,14 @@
             client_phone: normalizedBooking.clientPhone,
             client_email: normalizedBooking.clientEmail,
             client_notes: fullNotes,
+            deposit_ars: normalizedBooking.depositArs,
+            deposit_receipt_url: normalizedBooking.depositReceipt,
+            payment_method: normalizedBooking.paymentMethod,
+            payment_status: 'pending',
             status: 'pending'
           };
 
-          const res = await fetch(`${this.config.supabaseUrl}/rest/v1/appointments`, {
+          const postAppointment = (body) => fetch(`${this.config.supabaseUrl}/rest/v1/appointments`, {
             method: 'POST',
             headers: {
               apikey: this.config.supabaseAnonKey,
@@ -756,8 +853,21 @@
               'Content-Type': 'application/json',
               Prefer: 'return=minimal'
             },
-            body: JSON.stringify(payload)
+            body: JSON.stringify(body)
           });
+
+          let res = await postAppointment(payload);
+
+          // Si todavía no se ejecutó add-deposit-sena.sql (falta la columna del comprobante),
+          // guardar igual el turno dejando los datos de la seña en las notas
+          if (!res.ok && normalizedBooking.depositReceipt) {
+            const errData = await res.clone().json().catch(() => ({}));
+            if (errData.code === 'PGRST204' || /deposit_receipt_url/.test(errData.message || '')) {
+              const { deposit_receipt_url, ...legacyPayload } = payload;
+              legacyPayload.client_notes = `${fullNotes || ''}\n[Seña $${normalizedBooking.depositArs} - comprobante: ${normalizedBooking.depositReceipt}]`.trim();
+              res = await postAppointment(legacyPayload);
+            }
+          }
 
           if (res.ok) {
             if (generatedUuid) {
@@ -935,6 +1045,9 @@
                 service: { name: svcName },
                 clientNotes: rawNotes,
                 notes: rawNotes,
+                depositArs: Number(r.deposit_ars) || 0,
+                depositReceipt: r.deposit_receipt_url || null,
+                paymentStatus: r.payment_status || 'pending',
                 createdAt: r.created_at
               };
             });
@@ -970,6 +1083,9 @@
               status: r.status,
               clientNotes: r.client_notes,
               notes: r.client_notes,
+              depositArs: Number(r.deposit_ars) || 0,
+              depositReceipt: r.deposit_receipt_url || null,
+              paymentStatus: r.payment_status || 'pending',
               createdAt: r.created_at
             }));
           }
@@ -1023,7 +1139,9 @@
               Authorization: `Bearer ${this._getAuthBearer()}`,
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ status: newStatus })
+            body: JSON.stringify(newStatus === 'confirmed'
+              ? { status: newStatus, payment_status: 'partial' } // Confirmar = seña recibida
+              : { status: newStatus })
           });
         } catch (e) {
           console.warn('Status update error in Supabase:', e);
@@ -1522,6 +1640,172 @@
 
       // 3. Fallback a Data URL JPEG optimizado (~120 KB)
       return dataUrl;
+    }
+
+    // =========================================================================
+    // SEÑA DEL 20% (TRANSFERENCIA + COMPROBANTE)
+    // =========================================================================
+    calcDeposit(price) {
+      const pct = DEPOSIT_PERCENTAGE / 100;
+      // Redondeo a múltiplos de $100 para que sea cómodo transferir
+      return Math.ceil(((Number(price) || 0) * pct) / 100) * 100;
+    }
+
+    async getPaymentInfo() {
+      await this.init();
+      if (this.config.isConfigured) {
+        try {
+          const res = await fetch(`${this.config.supabaseUrl}/rest/v1/settings?key=eq.payment_info&select=value`, {
+            headers: { apikey: this.config.supabaseAnonKey, Authorization: `Bearer ${this.config.supabaseAnonKey}` }
+          });
+          if (res.ok) {
+            const rows = await res.json();
+            if (Array.isArray(rows) && rows[0] && rows[0].value) {
+              return { ...DEFAULT_PAYMENT_INFO, ...rows[0].value };
+            }
+          }
+        } catch (e) {}
+      }
+      return { ...DEFAULT_PAYMENT_INFO };
+    }
+
+    async savePaymentInfo(info) {
+      await this.init();
+      await this._refreshSessionIfNeeded();
+      const clean = {
+        alias: String(info.alias || '').trim(),
+        cbu: String(info.cbu || '').trim(),
+        holder: String(info.holder || '').trim(),
+        bank: String(info.bank || '').trim(),
+        whatsapp: String(info.whatsapp || '').trim()
+      };
+      if (!this.config.isConfigured) throw new Error('Supabase no está configurado.');
+      const res = await fetch(`${this.config.supabaseUrl}/rest/v1/settings?on_conflict=key`, {
+        method: 'POST',
+        headers: {
+          apikey: this.config.supabaseAnonKey,
+          Authorization: `Bearer ${this._getAuthBearer()}`,
+          'Content-Type': 'application/json',
+          Prefer: 'resolution=merge-duplicates,return=minimal'
+        },
+        body: JSON.stringify({ key: 'payment_info', value: clean, description: 'Datos de transferencia para la seña' })
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.message || 'No se pudieron guardar los datos de pago. Cerrá sesión y volvé a ingresar como admin.');
+      }
+      return clean;
+    }
+
+    // Sube el comprobante de la seña al bucket privado 'receipts' y devuelve su ruta
+    async uploadDepositReceipt(file, dateStr) {
+      if (!file) throw new Error('Adjuntá el comprobante de la transferencia de la seña.');
+      await this.init();
+
+      const isPdf = (file.type || '').includes('pdf') || /\.pdf$/i.test(file.name || '');
+      let blob = file;
+      let dataUrl = null;
+      let contentType = file.type || (isPdf ? 'application/pdf' : 'image/jpeg');
+      let ext = isPdf ? 'pdf' : ((file.name || '').split('.').pop() || 'jpg').toLowerCase();
+
+      if (!isPdf) {
+        try {
+          const compressed = await this._compressImageFile(file, 1600, 0.85);
+          if (compressed && compressed.dataUrl && compressed.dataUrl.startsWith('data:image/jpeg')) {
+            blob = compressed.blob;
+            dataUrl = compressed.dataUrl;
+            contentType = 'image/jpeg';
+            ext = 'jpg';
+          }
+        } catch (e) {}
+      }
+
+      if (blob.size > 8 * 1024 * 1024) {
+        throw new Error('El comprobante es muy pesado (máximo 8 MB). Probá con una captura de pantalla.');
+      }
+
+      const uid = (window.crypto && window.crypto.randomUUID) ? window.crypto.randomUUID() : String(Date.now()) + Math.random().toString(36).slice(2);
+      const folder = /^\d{4}-\d{2}-\d{2}$/.test(dateStr || '') ? dateStr : 'sin-fecha';
+      const path = `${folder}/${uid}.${ext}`;
+
+      // 1. Subida directa a Supabase Storage
+      if (this.config.isConfigured) {
+        try {
+          const res = await fetch(`${this.config.supabaseUrl}/storage/v1/object/receipts/${path}`, {
+            method: 'POST',
+            headers: {
+              apikey: this.config.supabaseAnonKey,
+              Authorization: `Bearer ${this._getAuthBearer()}`,
+              'Content-Type': contentType
+            },
+            body: blob
+          });
+          if (res.ok) return path;
+          const errData = await res.json().catch(() => ({}));
+          console.warn('Receipt direct upload warning:', errData);
+        } catch (e) {
+          console.warn('Receipt direct upload error:', e);
+        }
+      }
+
+      // 2. A través del servidor Node (service_role) si está disponible
+      try {
+        if (!dataUrl) {
+          dataUrl = await new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+          });
+        }
+        const res = await this._apiFetch('/api/receipts/upload', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ path, data: dataUrl, contentType })
+        });
+        if (res && res.ok) {
+          const data = await res.json();
+          if (data && data.path) return data.path;
+        }
+      } catch (e) {
+        console.warn('Receipt backend upload error:', e);
+      }
+
+      throw new Error('No se pudo subir el comprobante. Revisá tu conexión e intentá de nuevo.');
+    }
+
+    // URL temporal (1 hora) para que la admin vea el comprobante privado
+    async getDepositReceiptUrl(path) {
+      if (!path) return null;
+      if (/^https?:|^data:/.test(path)) return path;
+      await this.init();
+      await this._refreshSessionIfNeeded();
+
+      try {
+        const res = await this._apiFetch(`/api/receipts/signed?path=${encodeURIComponent(path)}`);
+        if (res && res.ok) {
+          const data = await res.json();
+          if (data && data.url) return data.url;
+        }
+      } catch (e) {}
+
+      if (this.config.isConfigured) {
+        const res = await fetch(`${this.config.supabaseUrl}/storage/v1/object/sign/receipts/${path}`, {
+          method: 'POST',
+          headers: {
+            apikey: this.config.supabaseAnonKey,
+            Authorization: `Bearer ${this._getAuthBearer()}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ expiresIn: 3600 })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          const signed = data.signedURL || data.signedUrl;
+          if (signed) return `${this.config.supabaseUrl}/storage/v1${signed.startsWith('/') ? '' : '/'}${signed}`;
+        }
+      }
+      throw new Error('No se pudo abrir el comprobante. Cerrá sesión y volvé a ingresar como admin.');
     }
 
     _updateLocalGalleryItem(item) {

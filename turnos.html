@@ -372,10 +372,32 @@
             <!-- Renderizado en vivo por vascaBooking.renderSummary() -->
           </div>
 
+          <!-- SEÑA OBLIGATORIA DEL 20% -->
+          <div id="deposit-box" class="p-4 rounded-2xl bg-[#161218] border border-amber-400/50 space-y-3">
+            <div class="flex items-start gap-2">
+              <span class="material-symbols-outlined text-amber-300 text-xl">payments</span>
+              <div>
+                <p class="text-sm font-bold text-white">Seña obligatoria del 20%: <span id="deposit-amount" class="text-amber-300 font-display font-extrabold">$0</span></p>
+                <p class="text-[11px] text-[#d8c4d6]">Para reservar, transferí la seña y adjuntá el comprobante. El resto se abona el día del turno. Tu turno queda <strong class="text-amber-300">pendiente</strong> hasta que Mica verifique la transferencia.</p>
+              </div>
+            </div>
+
+            <div id="deposit-bank-info" class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+              <!-- Renderizado por vascaBooking.renderDepositInfo() -->
+            </div>
+
+            <label id="deposit-dropzone" class="block p-3 rounded-xl bg-[#0d0a0f] border-2 border-dashed border-amber-400/40 hover:border-amber-300 cursor-pointer text-center transition-colors">
+              <span class="material-symbols-outlined text-amber-300">upload_file</span>
+              <span id="deposit-file-label" class="block text-xs font-bold text-white">Adjuntar comprobante de la seña *</span>
+              <span class="block text-[10px] text-gray-400">Captura o PDF de la transferencia (máx. 8 MB)</span>
+              <input type="file" id="deposit-file-input" accept="image/*,application/pdf" class="hidden" onchange="vascaBooking.onDepositFileChange(event)">
+            </label>
+          </div>
+
           <div class="pt-3">
             <button type="button" id="btn-confirm-booking" onclick="vascaBooking.confirmBooking()" class="w-full inline-flex justify-center items-center gap-2.5 bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] hover:brightness-110 text-white py-4 px-6 rounded-full font-bold text-sm uppercase tracking-wider shadow-xl shadow-[#ff2d85]/40 transition-all active:scale-[0.98]">
               <span class="material-symbols-outlined text-lg">check_circle</span>
-              <span>Confirmar y Agendar Turno</span>
+              <span>Enviar Seña y Reservar Turno</span>
             </button>
             <div id="booking-status-msg" class="text-center text-xs mt-2 font-semibold"></div>
           </div>
@@ -391,9 +413,10 @@
 
         <div class="space-y-2 max-w-md mx-auto">
           <h2 class="font-display text-2xl sm:text-3xl font-extrabold text-white">
-            ¡Turno Agendado con Éxito!
+            ¡Reserva Recibida!
           </h2>
           <p id="success-msg" class="text-sm sm:text-base text-[#ffaed8] font-bold"></p>
+          <p class="text-xs text-amber-300 font-semibold">Tu turno queda pendiente hasta que Mica verifique la seña. Te avisamos apenas esté confirmado.</p>
           <div id="success-email-notice" class="hidden mx-auto mt-2 px-4 py-2.5 rounded-2xl bg-[#0d0a0f] border border-[#ff3e96]/40 text-xs text-[#f5edf5] flex items-center justify-center gap-2"></div>
           <p class="text-xs text-[#d8c4d6] pt-1">
             Tu turno ya quedó registrado automáticamente en nuestra agenda online. Podés sumarlo a tu calendario:
@@ -522,6 +545,8 @@
       currentCalDate: new Date(),
       publishedDays: [],
       publishedDatesSet: new Set(),
+      paymentInfo: null,
+      selectedReceiptFile: null,
       _initialized: false,
       _submitting: false,
 
@@ -532,9 +557,10 @@
 
         if (window.MicaBackend) {
           try {
-            const [fetched, pubDays] = await Promise.all([
+            const [fetched, pubDays, payInfo] = await Promise.all([
               window.MicaBackend.getServices(),
-              window.MicaBackend.schedules ? window.MicaBackend.schedules.getPublishedDays(true) : Promise.resolve([])
+              window.MicaBackend.schedules ? window.MicaBackend.schedules.getPublishedDays(true) : Promise.resolve([]),
+              window.MicaBackend.payments ? window.MicaBackend.payments.getInfo() : Promise.resolve(null)
             ]);
             if (fetched && fetched.length) {
               this.services = fetched;
@@ -542,6 +568,9 @@
             if (Array.isArray(pubDays)) {
               this.publishedDays = pubDays;
               this.publishedDatesSet = new Set(pubDays.map(d => d.date));
+            }
+            if (payInfo) {
+              this.paymentInfo = payInfo;
             }
           } catch(e) {}
         }
@@ -943,6 +972,12 @@
         const dateFormatted = this.selected.date ? this.formatDate(this.selected.date) : 'A seleccionar';
         const timeFormatted = this.selected.time ? `${this.selected.time} a ${this.selected.endTime || '---'} hs` : 'A seleccionar';
 
+        const depositPct = (window.MicaBackend && window.MicaBackend.payments) ? window.MicaBackend.payments.depositPercentage : 20;
+        const depositAmount = (window.MicaBackend && window.MicaBackend.payments)
+          ? window.MicaBackend.payments.calcDeposit(svc.price)
+          : Math.ceil(((svc.price || 0) * (depositPct / 100)) / 100) * 100;
+        const remainder = Math.max(0, (svc.price || 0) - depositAmount);
+
         summaryDetails.innerHTML = `
           <div class="flex items-center justify-between py-1.5 border-b border-white/5">
             <span class="text-gray-400">Tratamiento:</span>
@@ -964,7 +999,72 @@
             <span class="font-bold text-white">Inversión Total:</span>
             <span class="font-display font-extrabold text-[#ffaed8]">$${svc.price.toLocaleString('es-AR')}</span>
           </div>
+          <div class="flex items-center justify-between py-1.5 border-b border-white/5 text-xs">
+            <span class="text-amber-300 font-bold">Seña requerida (${depositPct}%):</span>
+            <span class="font-bold text-amber-300">$${depositAmount.toLocaleString('es-AR')}</span>
+          </div>
+          <div class="flex items-center justify-between py-1 text-xs text-gray-400">
+            <span>Resta abonar en el estudio:</span>
+            <span class="text-gray-300 font-semibold">$${remainder.toLocaleString('es-AR')}</span>
+          </div>
         `;
+
+        this.renderDepositInfo(depositAmount);
+      },
+
+      renderDepositInfo(depositAmount) {
+        const depAmtEl = document.getElementById('deposit-amount');
+        if (depAmtEl) depAmtEl.textContent = `$${depositAmount.toLocaleString('es-AR')}`;
+
+        const bankBox = document.getElementById('deposit-bank-info');
+        if (!bankBox) return;
+
+        const info = this.paymentInfo || { alias: 'MICA.LASHART', holder: 'Micaela', bank: 'Mercado Pago / Banco' };
+        const alias = info.alias || 'MICA.LASHART';
+        const cbu = info.cbu || '';
+        const holder = info.holder || 'Micaela';
+        const bank = info.bank || 'Transferencia';
+
+        bankBox.innerHTML = `
+          <div class="p-2.5 rounded-xl bg-[#0d0a0f] border border-white/10 space-y-1">
+            <span class="text-[10px] text-gray-400 uppercase tracking-wider block">Alias para transferir</span>
+            <div class="flex items-center justify-between gap-1">
+              <span class="font-mono font-bold text-amber-300 select-all">${alias}</span>
+              <button type="button" onclick="navigator.clipboard.writeText('${alias}'); alert('Alias copiado: ${alias}');" class="px-2 py-0.5 rounded bg-white/10 hover:bg-white/20 text-[10px] font-bold text-white transition-all">Copiar</button>
+            </div>
+          </div>
+          ${cbu ? `
+          <div class="p-2.5 rounded-xl bg-[#0d0a0f] border border-white/10 space-y-1">
+            <span class="text-[10px] text-gray-400 uppercase tracking-wider block">CBU / CVU</span>
+            <div class="flex items-center justify-between gap-1">
+              <span class="font-mono text-xs text-white select-all">${cbu}</span>
+              <button type="button" onclick="navigator.clipboard.writeText('${cbu}'); alert('CBU copiado');" class="px-2 py-0.5 rounded bg-white/10 hover:bg-white/20 text-[10px] font-bold text-white transition-all">Copiar</button>
+            </div>
+          </div>
+          ` : `
+          <div class="p-2.5 rounded-xl bg-[#0d0a0f] border border-white/10 space-y-1">
+            <span class="text-[10px] text-gray-400 uppercase tracking-wider block">Titular de cuenta</span>
+            <p class="font-bold text-white">${holder} <span class="text-gray-400 font-normal">(${bank})</span></p>
+          </div>
+          `}
+        `;
+      },
+
+      onDepositFileChange(e) {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        this.selectedReceiptFile = file;
+        const sizeKb = Math.round(file.size / 1024);
+        const lbl = document.getElementById('deposit-file-label');
+        if (lbl) {
+          lbl.textContent = `✓ Comprobante listo: ${file.name} (${sizeKb} KB)`;
+          lbl.className = 'block text-xs font-bold text-emerald-300';
+        }
+        const drop = document.getElementById('deposit-dropzone');
+        if (drop) {
+          drop.classList.add('border-emerald-400', 'bg-emerald-500/10');
+          drop.classList.remove('border-dashed', 'border-amber-400/40');
+        }
       },
 
       async confirmBooking() {
@@ -1013,16 +1113,46 @@
           return;
         }
 
+        if (!this.selectedReceiptFile) {
+          statusMsg.textContent = 'Por favor adjuntá el comprobante de transferencia de la seña (20%) para reservar tu lugar.';
+          statusMsg.className = 'text-center text-xs mt-2 text-amber-300 font-bold';
+          const drop = document.getElementById('deposit-dropzone');
+          if (drop) {
+            drop.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            drop.classList.add('animate-pulse');
+            setTimeout(() => drop.classList.remove('animate-pulse'), 1500);
+          }
+          return;
+        }
+
         if (this._submitting) return;
         this._submitting = true;
 
-        statusMsg.textContent = 'Registrando tu turno y enviando confirmación por email...';
+        statusMsg.textContent = 'Subiendo comprobante de la seña y registrando tu turno...';
         statusMsg.className = 'text-center text-xs mt-2 text-[#ffaed8]';
+
+        let receiptPath = null;
+        const depositAmount = (window.MicaBackend && window.MicaBackend.payments)
+          ? window.MicaBackend.payments.calcDeposit(this.selected.service.price)
+          : Math.ceil(((this.selected.service.price || 0) * 0.2) / 100) * 100;
+
+        try {
+          if (window.MicaBackend && window.MicaBackend.payments) {
+            receiptPath = await window.MicaBackend.payments.uploadReceipt(this.selectedReceiptFile, this.selected.date);
+          }
+        } catch (upErr) {
+          this._submitting = false;
+          statusMsg.textContent = upErr.message || 'Error al subir el comprobante. Intentá nuevamente.';
+          statusMsg.className = 'text-center text-xs mt-2 text-[#ff2d85] font-bold';
+          return;
+        }
 
         const appointment = {
           service: this.selected.service,
           serviceId: this.selected.service.id,
           price: this.selected.service.price,
+          depositArs: depositAmount,
+          depositReceipt: receiptPath,
           duration: this.selected.service.duration,
           date: this.selected.date,
           time: this.selected.time,
