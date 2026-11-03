@@ -334,6 +334,9 @@
               Teléfono / WhatsApp *
             </label>
             <input type="tel" id="book-phone" required placeholder="Ej. 291 1234567" oninput="vascaBooking.checkShowSummary()" class="w-full bg-[#0d0a0f] border border-[#ff3e96]/40 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#ff3e96] text-sm placeholder:text-white/30">
+            <p class="text-[11px] text-[#25D366] font-semibold flex items-center gap-1 mt-1">
+              <span class="material-symbols-outlined text-xs">chat</span> Te contactamos por WhatsApp para confirmar tu turno y enviarte la dirección
+            </p>
           </div>
 
           <div class="space-y-1.5">
@@ -341,14 +344,6 @@
               Instagram (Opcional)
             </label>
             <input type="text" id="book-ig" placeholder="@tu_usuario" class="w-full bg-[#0d0a0f] border border-[#ff3e96]/40 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#ff3e96] text-sm placeholder:text-white/30">
-          </div>
-
-          <div class="space-y-1.5">
-            <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8]">
-              Email para Confirmación *
-            </label>
-            <input type="email" id="book-email" required placeholder="tu@email.com" oninput="vascaBooking.checkShowSummary()" class="w-full bg-[#0d0a0f] border border-[#ff3e96]/40 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#ff3e96] text-sm placeholder:text-white/30">
-            <p class="text-[11px] text-[#d8c4d6]/75">Recibirás tu comprobante personalizado al reservar o cancelar.</p>
           </div>
 
           <div class="space-y-1.5 sm:col-span-2">
@@ -416,11 +411,18 @@
             ¡Reserva Recibida!
           </h2>
           <p id="success-msg" class="text-sm sm:text-base text-[#ffaed8] font-bold"></p>
-          <p class="text-xs text-amber-300 font-semibold">Tu turno queda pendiente hasta que Mica verifique la seña. Te avisamos apenas esté confirmado.</p>
-          <div id="success-email-notice" class="hidden mx-auto mt-2 px-4 py-2.5 rounded-2xl bg-[#0d0a0f] border border-[#ff3e96]/40 text-xs text-[#f5edf5] flex items-center justify-center gap-2"></div>
-          <p class="text-xs text-[#d8c4d6] pt-1">
-            Tu turno ya quedó registrado automáticamente en nuestra agenda online. Podés sumarlo a tu calendario:
-          </p>
+          <p class="text-xs text-amber-300 font-semibold">Tu turno queda pendiente hasta que Mica verifique la seña del 20%.</p>
+          
+          <!-- Botón de WhatsApp Directo de la clienta hacia Mica -->
+          <div class="pt-3">
+            <a id="success-wa-btn" href="#" target="_blank" class="w-full inline-flex justify-center items-center gap-2.5 bg-[#25D366] hover:bg-[#20ba59] text-white py-3.5 px-6 rounded-full font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#25D366]/40 transition-all active:scale-95">
+              <span class="material-symbols-outlined text-base">chat</span>
+              <span>Avisarle a Mica por WhatsApp</span>
+            </a>
+            <p class="text-[11px] text-[#d8c4d6] mt-2">
+              Tocá el botón para enviarle los datos de tu turno directo a su WhatsApp y agilizar la confirmación.
+            </p>
+          </div>
         </div>
 
         <!-- Botones de Acción de Éxito -->
@@ -679,11 +681,9 @@
               // Pre-fill datos automáticamente
               const nameField = document.getElementById('book-name');
               const phoneField = document.getElementById('book-phone');
-              const emailField = document.getElementById('book-email');
 
               if (nameField && user.name) nameField.value = user.name;
               if (phoneField && user.phone) phoneField.value = user.phone;
-              if (emailField && user.email) emailField.value = user.email;
             }
           } catch(e) {}
         }
@@ -1071,7 +1071,6 @@
         const nameInput = document.getElementById('book-name');
         const phoneInput = document.getElementById('book-phone');
         const igInput = document.getElementById('book-ig');
-        const emailInput = document.getElementById('book-email');
         const notesInput = document.getElementById('book-notes');
         const statusMsg = document.getElementById('booking-status-msg');
 
@@ -1096,20 +1095,11 @@
           return;
         }
 
-        const email = emailInput ? emailInput.value.trim() : '';
-
         if (!name || !phone) {
           statusMsg.textContent = 'Por favor, completá tu nombre y teléfono / WhatsApp.';
           statusMsg.className = 'text-center text-xs mt-2 text-[#ff2d85] font-bold';
           if (!name && nameInput) nameInput.focus();
           else if (phoneInput) phoneInput.focus();
-          return;
-        }
-
-        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-          statusMsg.textContent = 'Por favor, ingresá un correo electrónico válido para recibir la confirmación de tu turno.';
-          statusMsg.className = 'text-center text-xs mt-2 text-[#ff2d85] font-bold';
-          if (emailInput) emailInput.focus();
           return;
         }
 
@@ -1161,7 +1151,7 @@
           name: name,
           phone: phone,
           clientIg: igInput ? igInput.value.trim() : '',
-          email: email,
+          email: '',
           notes: (notesInput ? notesInput.value.trim() : '') + (igInput && igInput.value ? ` [IG: ${igInput.value.trim()}]` : '')
         };
 
@@ -1199,15 +1189,19 @@
           successMsg.textContent = `${this.selected.service.name} • ${dateFormatted} a las ${this.selected.time} hs`;
         }
 
-        const emailNotice = document.getElementById('success-email-notice');
-        if (emailNotice && email) {
-          const emailInfo = bookingResult && bookingResult.emailNotification;
-          emailNotice.classList.remove('hidden');
-          if (emailInfo && emailInfo.sent) {
-            emailNotice.innerHTML = `<span class="material-symbols-outlined text-base text-[#25D366]">mark_email_read</span><span>Te enviamos un email personalizado con tu reserva a <strong class="text-[#ffaed8]">${email}</strong></span>`;
-          } else {
-            emailNotice.innerHTML = `<span class="material-symbols-outlined text-base text-[#ff6ea7]">mail</span><span>Comprobante personalizado preparado para <strong class="text-[#ffaed8]">${email}</strong></span>`;
-          }
+        // Configurar enlace directo a WhatsApp de Mica con los datos del turno y seña
+        const waStudioNumber = (this.paymentInfo && this.paymentInfo.whatsapp) ? this.paymentInfo.whatsapp.replace(/\D/g, '') : '5492914491141';
+        const waText = encodeURIComponent(`¡Hola Mica! 👋 Acabo de solicitar mi turno en la web y transferir la seña:\n\n` +
+          `✨ *Tratamiento:* ${this.selected.service.name}\n` +
+          `📅 *Fecha:* ${dateFormatted}\n` +
+          `⏰ *Horario:* ${this.selected.time} hs\n` +
+          `👤 *Nombre:* ${name}\n` +
+          `📱 *Tel:* ${phone}\n` +
+          `💵 *Seña (20%):* $${depositAmount.toLocaleString('es-AR')}\n\n` +
+          `Ya adjunté el comprobante en la página. ¿Me confirmás el turno? ¡Muchas gracias! 💕`);
+        const waBtn = document.getElementById('success-wa-btn');
+        if (waBtn) {
+          waBtn.href = `https://wa.me/${waStudioNumber}?text=${waText}`;
         }
 
         document.getElementById('step-service').classList.add('hidden');

@@ -176,7 +176,7 @@
           </button>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 text-xs">
           <div>
             <label class="block text-gray-400 font-bold mb-1">Alias de transferencia *</label>
             <input type="text" id="admin-pay-alias" placeholder="Ej. MICA.LASHART" class="w-full bg-[#0d0a0f] border border-white/15 focus:border-amber-400 rounded-xl px-3 py-2 text-white font-mono uppercase focus:outline-none">
@@ -192,6 +192,12 @@
           <div>
             <label class="block text-gray-400 font-bold mb-1">Banco / Billetera</label>
             <input type="text" id="admin-pay-bank" placeholder="Ej. Mercado Pago / Banco Provincia" class="w-full bg-[#0d0a0f] border border-white/15 focus:border-amber-400 rounded-xl px-3 py-2 text-white focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-emerald-400 font-bold mb-1 flex items-center gap-1">
+              <span class="material-symbols-outlined text-xs">chat</span> WhatsApp Estudio
+            </label>
+            <input type="text" id="admin-pay-wa" placeholder="Ej. 5492914491141" class="w-full bg-[#0d0a0f] border border-emerald-500/40 focus:border-emerald-400 rounded-xl px-3 py-2 text-white font-mono focus:outline-none">
           </div>
         </div>
         <div id="admin-pay-status" class="text-xs font-bold text-center"></div>
@@ -1089,11 +1095,11 @@
               </div>
 
               <div class="flex items-center gap-3 text-xs text-gray-300 flex-wrap">
-                <span class="flex items-center gap-1">
+                <span class="flex items-center gap-1 font-semibold text-white">
                   <span class="material-symbols-outlined text-sm text-[#25D366]">call</span>
                   ${app.clientPhone || 'Sin teléfono'}
                 </span>
-                ${app.clientEmail ? `<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm text-gray-400">mail</span> ${app.clientEmail}</span>` : ''}
+                ${app.clientEmail ? `<span class="flex items-center gap-1 text-gray-400"><span class="material-symbols-outlined text-sm text-gray-400">mail</span> ${app.clientEmail}</span>` : ''}
               </div>
 
               ${app.clientNotes ? `<p class="text-[11px] text-gray-400 italic bg-white/5 p-2 rounded-lg mt-1 border border-white/5">Nota: ${app.clientNotes}</p>` : ''}
@@ -1109,17 +1115,14 @@
               ` : ''}
 
               ${phoneClean ? `
-                <a href="https://wa.me/${phoneClean.startsWith('54') ? phoneClean : '549' + phoneClean}?text=Hola%20${encodeURIComponent(app.clientName)}!%20Te%20escribo%20de%20Mica%20Lash%20Art%20para%20confirmar%20tu%20turno%20del%20${app.date}%20a%20las%20${app.time}%20hs." target="_blank" class="p-2 sm:px-3 sm:py-2 rounded-xl bg-[#25D366]/20 hover:bg-[#25D366]/30 text-[#25D366] text-xs font-bold flex items-center gap-1 transition-all" title="WhatsApp a la clienta">
+                <a href="https://wa.me/${phoneClean.startsWith('54') ? phoneClean : '549' + phoneClean}?text=${encodeURIComponent(
+                  app.status === 'confirmed'
+                    ? `¡Hola ${app.clientName}! 💕 Te escribo de Mica Lash Art. Tu turno para ${serviceName} el día ${app.date} a las ${app.time} hs está CONFIRMADO (seña recibida). ¡Te esperamos!`
+                    : `¡Hola ${app.clientName}! 💕 Te escribo de Mica Lash Art por tu turno para ${serviceName} el día ${app.date} a las ${app.time} hs.`
+                )}" target="_blank" class="p-2 sm:px-3 sm:py-2 rounded-xl bg-[#25D366]/20 hover:bg-[#25D366]/30 text-[#25D366] text-xs font-bold flex items-center gap-1 transition-all" title="Enviar WhatsApp a la clienta">
                   <span class="material-symbols-outlined text-base">chat</span>
-                  <span class="hidden sm:inline">WhatsApp</span>
+                  <span>WhatsApp</span>
                 </a>
-              ` : ''}
-
-              ${app.clientEmail ? `
-                <button type="button" onclick="resendEmailForTurn('${app.id}', '${app.status}')" class="p-2 sm:px-3 sm:py-2 rounded-xl bg-[#1e1622] hover:bg-[#ff2d85]/30 text-[#ffaed8] border border-[#ff3e96]/30 text-xs font-bold flex items-center gap-1 transition-all" title="Reenviar email personalizado a ${app.clientEmail}">
-                  <span class="material-symbols-outlined text-base">forward_to_inbox</span>
-                  <span class="hidden sm:inline">Email</span>
-                </button>
               ` : ''}
 
               ${app.status !== 'confirmed' ? `
@@ -1148,11 +1151,10 @@
 
     async function changeStatus(id, newStatus) {
       let cancelReason = '';
+      const targetApp = allAppointments.find(a => a.id === id);
+
       if (newStatus === 'cancelled') {
-        const targetApp = allAppointments.find(a => a.id === id);
-        const promptMsg = targetApp && targetApp.clientEmail
-          ? `Se cancelará el turno y se enviará un email personalizado a ${targetApp.clientEmail}.\n\nMotivo opcional para incluir en el correo (o dejá vacío):`
-          : '¿Confirmás cancelar este turno? Motivo opcional:';
+        const promptMsg = '¿Confirmás cancelar este turno? Podés ingresar el motivo (opcional):';
         const userReason = prompt(promptMsg, '');
         if (userReason === null) return; // Canceló el cuadro de diálogo
         cancelReason = userReason.trim();
@@ -1168,6 +1170,24 @@
         updateStats();
         renderFiltered();
         loadPublishedDaysBoard();
+
+        // Si se confirma o cancela, ofrecer abrir WhatsApp directo a la clienta
+        if (targetApp && targetApp.clientPhone) {
+          const phoneClean = (targetApp.clientPhone || '').replace(/\D/g, '');
+          const intlPhone = phoneClean.startsWith('54') ? phoneClean : '549' + phoneClean;
+          const svcName = targetApp.service?.name || 'tu sesión';
+
+          let waMsg = '';
+          if (newStatus === 'confirmed') {
+            waMsg = `¡Hola ${targetApp.clientName}! 💕 Te confirmo tu turno para *${svcName}* el día *${targetApp.date}* a las *${targetApp.time} hs* (seña del 20% recibida con éxito). ¡Te esperamos en el estudio!`;
+          } else if (newStatus === 'cancelled') {
+            waMsg = `Hola ${targetApp.clientName}. Te escribo de Mica Lash Art para informarte que tu turno del ${targetApp.date} a las ${targetApp.time} hs fue cancelado${cancelReason ? ` (${cancelReason})` : ''}. Cualquier consulta avisanos por este medio.`;
+          }
+
+          if (waMsg && confirm(`Turno ${newStatus === 'confirmed' ? 'confirmado' : 'cancelado'}. ¿Querés abrir WhatsApp ahora para avisarle a la clienta?`)) {
+            window.open(`https://wa.me/${intlPhone}?text=${encodeURIComponent(waMsg)}`, '_blank');
+          }
+        }
       } catch (e) {
         alert('Error al actualizar turno: ' + e.message);
       }
@@ -2633,10 +2653,12 @@
           const c = document.getElementById('admin-pay-cbu');
           const h = document.getElementById('admin-pay-holder');
           const b = document.getElementById('admin-pay-bank');
+          const w = document.getElementById('admin-pay-wa');
           if (a && info.alias) a.value = info.alias;
           if (c && info.cbu) c.value = info.cbu;
           if (h && info.holder) h.value = info.holder;
           if (b && info.bank) b.value = info.bank;
+          if (w && info.whatsapp) w.value = info.whatsapp;
         }
       } catch (e) {}
     }
@@ -2646,6 +2668,7 @@
       const cbu = (document.getElementById('admin-pay-cbu')?.value || '').trim();
       const holder = (document.getElementById('admin-pay-holder')?.value || '').trim();
       const bank = (document.getElementById('admin-pay-bank')?.value || '').trim();
+      const whatsapp = (document.getElementById('admin-pay-wa')?.value || '').trim();
       const statusEl = document.getElementById('admin-pay-status');
 
       if (!alias) {
@@ -2660,7 +2683,7 @@
       }
 
       try {
-        await window.MicaBackend.payments.saveInfo({ alias, cbu, holder, bank });
+        await window.MicaBackend.payments.saveInfo({ alias, cbu, holder, bank, whatsapp });
         if (statusEl) {
           statusEl.textContent = '✓ Datos de transferencia guardados con éxito. Las clientas ya los ven al pedir un turno.';
           statusEl.className = 'text-xs font-bold text-center text-emerald-300';
