@@ -18,6 +18,7 @@
     REFRESH: 'vasca_refresh',
     USER: 'mica_current_user',
     LOCAL_TURNOS: 'mica_lashart_turnos',
+    DELETED_TURNOS: 'mica_deleted_turnos',
     LOCAL_USERS: 'mica_users_db',
     GALLERY: 'mica_gallery_photos',
     PUBLISHED_SCHEDULES: 'mica_published_schedules',
@@ -133,11 +134,15 @@
         getAvailableSlots: this.getAvailableSlots.bind(this),
         createAppointment: this.createAppointment.bind(this),
         getMyAppointments: this.getMyAppointments.bind(this),
-        cancelAppointment: this.cancelAppointment.bind(this)
+        cancelAppointment: this.cancelAppointment.bind(this),
+        deleteAppointment: this.deleteAppointment.bind(this),
+        deleteCancelledAppointments: this.deleteCancelledAppointments.bind(this)
       };
       this.admin = {
         getAppointments: this.getAdminAppointments.bind(this),
-        updateAppointmentStatus: this.updateAppointmentStatus.bind(this)
+        updateAppointmentStatus: this.updateAppointmentStatus.bind(this),
+        deleteAppointment: this.deleteAppointment.bind(this),
+        deleteCancelledAppointments: this.deleteCancelledAppointments.bind(this)
       };
       this.payments = {
         depositPercentage: DEPOSIT_PERCENTAGE,
@@ -924,7 +929,8 @@
     async getMyAppointments() {
       await this.init();
       const currentUser = this.getCurrentUser();
-      const localTurnos = this.getStoredTurnos();
+      const deletedSet = new Set(this._getDeletedTurnoIds());
+      const localTurnos = this.getStoredTurnos().filter(t => !deletedSet.has(t.id) && !deletedSet.has(t.supabaseId));
 
       if (currentUser && currentUser.email) {
         try {
@@ -932,28 +938,30 @@
           if (apiRes && apiRes.ok) {
             const apiData = await apiRes.json();
             if (Array.isArray(apiData.appointments) && apiData.appointments.length > 0) {
-              return apiData.appointments.map(row => {
-                const rawNotes = row.client_notes || row.notes || '';
-                const resolvedSvcName = (row.services && row.services.name)
-                  || row.service_name
-                  || (rawNotes.includes('Tratamiento:') ? rawNotes.split('Tratamiento:')[1].split('\n')[0].trim() : 'Tratamiento de Pestañas');
-                return {
-                  id: row.id,
-                  date: row.appointment_date || row.date,
-                  time: ((row.start_time || row.time) + '').slice(0, 5),
-                  endTime: ((row.end_time || row.endTime || '16:00') + '').slice(0, 5),
-                  price: Number(row.price_ars || row.price) || 0,
-                  status: row.status,
-                  clientName: row.client_name || row.name,
-                  clientPhone: row.client_phone || row.phone,
-                  clientNotes: rawNotes,
-                  professional: 'Micaela',
-                  service: {
-                    name: resolvedSvcName,
-                    price: Number(row.price_ars || row.price) || 0
-                  }
-                };
-              });
+              return apiData.appointments
+                .filter(row => !deletedSet.has(row.id))
+                .map(row => {
+                  const rawNotes = row.client_notes || row.notes || '';
+                  const resolvedSvcName = (row.services && row.services.name)
+                    || row.service_name
+                    || (rawNotes.includes('Tratamiento:') ? rawNotes.split('Tratamiento:')[1].split('\n')[0].trim() : 'Tratamiento de Pestañas');
+                  return {
+                    id: row.id,
+                    date: row.appointment_date || row.date,
+                    time: ((row.start_time || row.time) + '').slice(0, 5),
+                    endTime: ((row.end_time || row.endTime || '16:00') + '').slice(0, 5),
+                    price: Number(row.price_ars || row.price) || 0,
+                    status: row.status,
+                    clientName: row.client_name || row.name,
+                    clientPhone: row.client_phone || row.phone,
+                    clientNotes: rawNotes,
+                    professional: 'Micaela',
+                    service: {
+                      name: resolvedSvcName,
+                      price: Number(row.price_ars || row.price) || 0
+                    }
+                  };
+                });
             }
           }
         } catch (e) {}
@@ -971,28 +979,30 @@
           if (res.ok) {
             const data = await res.json();
             if (Array.isArray(data) && data.length > 0) {
-              return data.map(row => {
-                const rawNotes = row.client_notes || '';
-                const resolvedSvcName = rawNotes.includes('Tratamiento:')
-                  ? rawNotes.split('Tratamiento:')[1].split('\n')[0].trim()
-                  : 'Tratamiento de Pestañas';
-                return {
-                  id: row.id,
-                  date: row.appointment_date,
-                  time: row.start_time.slice(0, 5),
-                  endTime: row.end_time.slice(0, 5),
-                  price: Number(row.price_ars),
-                  status: row.status,
-                  clientName: row.client_name,
-                  clientPhone: row.client_phone,
-                  clientNotes: rawNotes,
-                  professional: 'Micaela',
-                  service: {
-                    name: resolvedSvcName,
-                    price: Number(row.price_ars)
-                  }
-                };
-              });
+              return data
+                .filter(row => !deletedSet.has(row.id))
+                .map(row => {
+                  const rawNotes = row.client_notes || '';
+                  const resolvedSvcName = rawNotes.includes('Tratamiento:')
+                    ? rawNotes.split('Tratamiento:')[1].split('\n')[0].trim()
+                    : 'Tratamiento de Pestañas';
+                  return {
+                    id: row.id,
+                    date: row.appointment_date,
+                    time: row.start_time.slice(0, 5),
+                    endTime: row.end_time.slice(0, 5),
+                    price: Number(row.price_ars),
+                    status: row.status,
+                    clientName: row.client_name,
+                    clientPhone: row.client_phone,
+                    clientNotes: rawNotes,
+                    professional: 'Micaela',
+                    service: {
+                      name: resolvedSvcName,
+                      price: Number(row.price_ars)
+                    }
+                  };
+                });
             }
           }
         } catch (e) {
@@ -1053,6 +1063,7 @@
     // =========================================================================
     async getAdminAppointments(filter = 'all') {
       await this.init();
+      const deletedSet = new Set(this._getDeletedTurnoIds());
 
       // 1. Consultar servidor backend /api/turnos (usa SUPABASE_SERVICE_ROLE_KEY)
       try {
@@ -1060,29 +1071,31 @@
         if (apiRes && apiRes.ok) {
           const apiData = await apiRes.json();
           if (Array.isArray(apiData.appointments)) {
-            return apiData.appointments.map(r => {
-              const rawNotes = r.client_notes || r.notes || '';
-              const svcName = (r.services && r.services.name)
-                || r.service_name
-                || (rawNotes.includes('Tratamiento:') ? rawNotes.split('Tratamiento:')[1].split('\n')[0].trim() : 'Tratamiento de Pestañas');
-              return {
-                id: r.id,
-                date: r.appointment_date || r.date,
-                time: ((r.start_time || r.time) + '').slice(0, 5),
-                clientName: r.client_name || r.name || 'Clienta',
-                clientPhone: r.client_phone || r.phone || '',
-                clientEmail: r.client_email || r.email || '',
-                price: Number(r.price_ars || r.price) || 0,
-                status: r.status || 'pending',
-                service: { name: svcName },
-                clientNotes: rawNotes,
-                notes: rawNotes,
-                depositArs: Number(r.deposit_ars) || 0,
-                depositReceipt: r.deposit_receipt_url || null,
-                paymentStatus: r.payment_status || 'pending',
-                createdAt: r.created_at
-              };
-            });
+            return apiData.appointments
+              .filter(r => !deletedSet.has(r.id))
+              .map(r => {
+                const rawNotes = r.client_notes || r.notes || '';
+                const svcName = (r.services && r.services.name)
+                  || r.service_name
+                  || (rawNotes.includes('Tratamiento:') ? rawNotes.split('Tratamiento:')[1].split('\n')[0].trim() : 'Tratamiento de Pestañas');
+                return {
+                  id: r.id,
+                  date: r.appointment_date || r.date,
+                  time: ((r.start_time || r.time) + '').slice(0, 5),
+                  clientName: r.client_name || r.name || 'Clienta',
+                  clientPhone: r.client_phone || r.phone || '',
+                  clientEmail: r.client_email || r.email || '',
+                  price: Number(r.price_ars || r.price) || 0,
+                  status: r.status || 'pending',
+                  service: { name: svcName },
+                  clientNotes: rawNotes,
+                  notes: rawNotes,
+                  depositArs: Number(r.deposit_ars) || 0,
+                  depositReceipt: r.deposit_receipt_url || null,
+                  paymentStatus: r.payment_status || 'pending',
+                  createdAt: r.created_at
+                };
+              });
           }
         }
       } catch (e) {}
@@ -1104,22 +1117,24 @@
 
           if (res.ok) {
             const data = await res.json();
-            return data.map(r => ({
-              id: r.id,
-              date: r.appointment_date,
-              time: r.start_time.slice(0, 5),
-              clientName: r.client_name,
-              clientPhone: r.client_phone,
-              clientEmail: r.client_email,
-              price: Number(r.price_ars),
-              status: r.status,
-              clientNotes: r.client_notes,
-              notes: r.client_notes,
-              depositArs: Number(r.deposit_ars) || 0,
-              depositReceipt: r.deposit_receipt_url || null,
-              paymentStatus: r.payment_status || 'pending',
-              createdAt: r.created_at
-            }));
+            return data
+              .filter(r => !deletedSet.has(r.id))
+              .map(r => ({
+                id: r.id,
+                date: r.appointment_date,
+                time: r.start_time.slice(0, 5),
+                clientName: r.client_name,
+                clientPhone: r.client_phone,
+                clientEmail: r.client_email,
+                price: Number(r.price_ars),
+                status: r.status,
+                clientNotes: r.client_notes,
+                notes: r.client_notes,
+                depositArs: Number(r.deposit_ars) || 0,
+                depositReceipt: r.deposit_receipt_url || null,
+                paymentStatus: r.payment_status || 'pending',
+                createdAt: r.created_at
+              }));
           }
         } catch (e) {
           console.warn('Admin fetch error:', e);
@@ -1127,7 +1142,7 @@
       }
 
       // 3. Fallback a localStorage
-      let turnos = this.getStoredTurnos();
+      let turnos = this.getStoredTurnos().filter(t => !deletedSet.has(t.id) && !deletedSet.has(t.supabaseId));
       if (filter !== 'all') {
         turnos = turnos.filter(t => t.status === filter);
       }
@@ -1183,7 +1198,122 @@
       return true;
     }
 
+    async deleteAppointment(appointmentId) {
+      await this.init();
+      if (!appointmentId) return { success: false };
+
+      const turnos = this.getStoredTurnos();
+      const found = turnos.find(t => t.id === appointmentId || t.supabaseId === appointmentId);
+      const targetId = (found && found.supabaseId) ? found.supabaseId : appointmentId;
+
+      const remaining = turnos.filter(t => t.id !== appointmentId && t.supabaseId !== appointmentId && t.id !== targetId);
+      localStorage.setItem(STORAGE_KEYS.LOCAL_TURNOS, JSON.stringify(remaining));
+      this._markTurnoDeleted(appointmentId);
+      if (targetId && targetId !== appointmentId) {
+        this._markTurnoDeleted(targetId);
+      }
+
+      // 1. Eliminar en servidor backend /api/turnos/:id
+      try {
+        const apiRes = await this._apiFetch(`/api/turnos/${encodeURIComponent(targetId)}`, {
+          method: 'DELETE'
+        });
+        if (apiRes && apiRes.ok) {
+          return { success: true, id: targetId };
+        }
+      } catch (e) {}
+
+      // 2. Eliminar directamente en Supabase REST
+      if (this.config.isConfigured) {
+        try {
+          await fetch(`${this.config.supabaseUrl}/rest/v1/appointments?id=eq.${encodeURIComponent(targetId)}`, {
+            method: 'DELETE',
+            headers: {
+              apikey: this.config.supabaseAnonKey,
+              Authorization: `Bearer ${this._getAuthBearer()}`
+            }
+          });
+        } catch (e) {
+          console.warn('Error deleting appointment on Supabase:', e);
+        }
+      }
+
+      return { success: true, id: targetId };
+    }
+
+    async deleteCancelledAppointments(knownCancelledIds = []) {
+      await this.init();
+
+      const turnos = this.getStoredTurnos();
+      const cancelledLocal = turnos.filter(t => t.status === 'cancelled');
+      cancelledLocal.forEach(t => {
+        if (t.id) this._markTurnoDeleted(t.id);
+        if (t.supabaseId) this._markTurnoDeleted(t.supabaseId);
+      });
+      if (Array.isArray(knownCancelledIds)) {
+        knownCancelledIds.forEach(id => {
+          if (id) this._markTurnoDeleted(id);
+        });
+      }
+      const remaining = turnos.filter(t => t.status !== 'cancelled');
+      localStorage.setItem(STORAGE_KEYS.LOCAL_TURNOS, JSON.stringify(remaining));
+
+      let deletedCount = cancelledLocal.length;
+
+      // 1. Eliminar todos los cancelados en servidor backend
+      try {
+        const apiRes = await this._apiFetch('/api/turnos/cancelled', {
+          method: 'DELETE'
+        });
+        if (apiRes && apiRes.ok) {
+          const data = await apiRes.json().catch(() => ({}));
+          if (typeof data.deletedCount === 'number') {
+            deletedCount = Math.max(deletedCount, data.deletedCount);
+          }
+          return { success: true, deletedCount };
+        }
+      } catch (e) {}
+
+      // 2. Eliminar directamente en Supabase REST
+      if (this.config.isConfigured) {
+        try {
+          await fetch(`${this.config.supabaseUrl}/rest/v1/appointments?status=eq.cancelled`, {
+            method: 'DELETE',
+            headers: {
+              apikey: this.config.supabaseAnonKey,
+              Authorization: `Bearer ${this._getAuthBearer()}`
+            }
+          });
+        } catch (e) {
+          console.warn('Error bulk-deleting cancelled appointments on Supabase:', e);
+        }
+      }
+
+      return { success: true, deletedCount };
+    }
+
     // Helpers locales
+    _getDeletedTurnoIds() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEYS.DELETED_TURNOS);
+        const parsed = raw ? JSON.parse(raw) : [];
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    _markTurnoDeleted(id) {
+      if (!id) return;
+      try {
+        const current = this._getDeletedTurnoIds();
+        if (!current.includes(id)) {
+          current.push(id);
+          localStorage.setItem(STORAGE_KEYS.DELETED_TURNOS, JSON.stringify(current));
+        }
+      } catch (e) {}
+    }
+
     getStoredTurnos() {
       try {
         const raw = localStorage.getItem(STORAGE_KEYS.LOCAL_TURNOS);

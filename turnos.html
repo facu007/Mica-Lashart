@@ -1281,7 +1281,18 @@
           return;
         }
 
-        container.innerHTML = appointments.map(apt => {
+        const cancelledCount = appointments.filter(a => a.status === 'cancelled').length;
+        const bulkClearHtml = cancelledCount > 0 ? `
+          <div class="flex items-center justify-between p-3 rounded-xl bg-red-950/30 border border-red-500/30 mb-3">
+            <span class="text-xs text-red-200">Tenés <strong>${cancelledCount}</strong> turno(s) cancelado(s) en tu historial.</span>
+            <button type="button" onclick="vascaBooking.deleteCancelledBookings()" class="px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-500 text-white text-xs font-bold flex items-center gap-1 transition-all shadow">
+              <span class="material-symbols-outlined text-sm">delete_sweep</span>
+              <span>Eliminar cancelados</span>
+            </button>
+          </div>
+        ` : '';
+
+        container.innerHTML = bulkClearHtml + appointments.map(apt => {
           const calStart = apt.date ? `${apt.date.replace(/-/g, '')}T${apt.time.replace(':', '')}00` : '';
           const calEnd = apt.date && apt.endTime ? `${apt.date.replace(/-/g, '')}T${apt.endTime.replace(':', '')}00` : '';
           const serviceName = apt.service?.name || apt.service || 'Tratamiento de Pestañas';
@@ -1317,14 +1328,45 @@
                   <span class="material-symbols-outlined text-sm">calendar_today</span>
                   <span class="hidden sm:inline">Calendario</span>
                 </a>
-                ` : ''}
-                <button type="button" onclick="vascaBooking.cancelBooking('${apt.id}')" class="p-2 rounded-xl bg-red-950/40 hover:bg-red-600/60 text-red-300 border border-red-500/30 text-xs transition-all" title="Cancelar o eliminar de mi lista">
-                  <span class="material-symbols-outlined text-sm">delete</span>
+                <button type="button" onclick="vascaBooking.cancelBooking('${apt.id}')" class="p-2 rounded-xl bg-red-950/40 hover:bg-red-600/60 text-red-300 border border-red-500/30 text-xs transition-all" title="Cancelar turno">
+                  <span class="material-symbols-outlined text-sm">cancel</span>
                 </button>
+                ` : `
+                <button type="button" onclick="vascaBooking.deleteBooking('${apt.id}')" class="px-3 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white text-xs font-bold flex items-center gap-1 transition-all shadow" title="Eliminar este turno cancelado">
+                  <span class="material-symbols-outlined text-sm">delete</span>
+                  <span>Eliminar</span>
+                </button>
+                `}
               </div>
             </div>
           `;
         }).join('');
+      },
+
+      async deleteBooking(id) {
+        if (!confirm('¿Eliminar este turno cancelado para que no aparezca más en Mis Turnos?')) return;
+        if (window.MicaBackend && window.MicaBackend.turnos && window.MicaBackend.turnos.deleteAppointment) {
+          try {
+            await window.MicaBackend.turnos.deleteAppointment(id);
+          } catch (e) {}
+        }
+        let existing = JSON.parse(localStorage.getItem('mica_lashart_turnos') || '[]');
+        existing = existing.filter(a => a.id !== id && a.supabaseId !== id);
+        localStorage.setItem('mica_lashart_turnos', JSON.stringify(existing));
+        this.loadMyBookings();
+      },
+
+      async deleteCancelledBookings() {
+        if (!confirm('¿Eliminar todos los turnos cancelados de tu lista?')) return;
+        if (window.MicaBackend && window.MicaBackend.turnos && window.MicaBackend.turnos.deleteCancelledAppointments) {
+          try {
+            await window.MicaBackend.turnos.deleteCancelledAppointments();
+          } catch (e) {}
+        }
+        let existing = JSON.parse(localStorage.getItem('mica_lashart_turnos') || '[]');
+        existing = existing.filter(a => a.status !== 'cancelled');
+        localStorage.setItem('mica_lashart_turnos', JSON.stringify(existing));
+        this.loadMyBookings();
       },
 
       async cancelBooking(id) {

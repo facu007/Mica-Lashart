@@ -1323,6 +1323,60 @@ async function handleApiRequest(req, res, pathname, queryParams) {
     }
   }
 
+  // 7a. DELETE /api/turnos/cancelled (Eliminar todos los turnos cancelados en bloque)
+  if (req.method === 'DELETE' && (pathname === '/api/turnos/cancelled' || (pathname === '/api/turnos' && queryParams.get('status') === 'cancelled'))) {
+    try {
+      let deletedCount = 0;
+      if (supabase) {
+        const { data, error } = await supabase
+          .from('appointments')
+          .delete()
+          .eq('status', 'cancelled')
+          .select('id');
+        if (!error && Array.isArray(data)) {
+          deletedCount = data.length;
+        }
+      }
+      const beforeCount = localDatabase.appointments.length;
+      localDatabase.appointments = localDatabase.appointments.filter(a => a.status !== 'cancelled');
+      const localRemoved = beforeCount - localDatabase.appointments.length;
+      return sendJson(res, 200, {
+        success: true,
+        deletedCount: Math.max(deletedCount, localRemoved)
+      });
+    } catch (err) {
+      return sendJson(res, 500, { error: err.message });
+    }
+  }
+
+  // 7a-2. DELETE /api/turnos/:id (Eliminar un turno específico de forma permanente)
+  if (req.method === 'DELETE' && /^\/api\/turnos\/[^/]+$/.test(pathname) && pathname !== '/api/turnos/cancelled') {
+    const id = decodeURIComponent(pathname.replace('/api/turnos/', ''));
+    try {
+      let deletedFromDb = false;
+      if (supabase) {
+        const { error } = await supabase
+          .from('appointments')
+          .delete()
+          .eq('id', id);
+        if (!error) {
+          deletedFromDb = true;
+        }
+      }
+      const beforeCount = localDatabase.appointments.length;
+      localDatabase.appointments = localDatabase.appointments.filter(a => a.id !== id && a.supabaseId !== id);
+      const deletedLocal = localDatabase.appointments.length < beforeCount;
+
+      return sendJson(res, 200, {
+        success: true,
+        id,
+        deleted: deletedFromDb || deletedLocal
+      });
+    } catch (err) {
+      return sendJson(res, 500, { error: err.message });
+    }
+  }
+
   // 7b. POST /api/turnos/:id/resend-email (Reenviar email personalizado de reserva o cancelación)
   if (req.method === 'POST' && /^\/api\/turnos\/[^/]+\/resend-email$/.test(pathname)) {
     const id = pathname.split('/')[3];
