@@ -77,28 +77,44 @@
   <!-- ================= MAIN DASHBOARD ================= -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6">
     
-    <!-- Pestañas Principales: Turnos, Galería e Historias Instagram -->
-    <div class="flex items-center gap-3 border-b border-white/10 pb-4 overflow-x-auto no-scrollbar">
-      <button type="button" id="tab-btn-turnos" onclick="switchMainTab('turnos')" class="px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#ff2d85] text-white shadow-lg shadow-[#ff2d85]/30 flex items-center gap-2 transition-all whitespace-nowrap">
+    <!-- Pestañas Principales: Turnos, Precios/Servicios, Cursos, Secciones, Galería, Instagram y Emails -->
+    <div class="flex items-center gap-2.5 border-b border-white/10 pb-4 overflow-x-auto no-scrollbar">
+      <button type="button" id="tab-btn-turnos" onclick="switchMainTab('turnos')" class="px-4 sm:px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#ff2d85] text-white shadow-lg shadow-[#ff2d85]/30 flex items-center gap-2 transition-all whitespace-nowrap">
         <span class="material-symbols-outlined text-base">calendar_month</span>
         <span>Turnos &amp; Agenda</span>
       </button>
 
-      <button type="button" id="tab-btn-instagram" onclick="switchMainTab('instagram')" class="px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#161218] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 hover:text-white flex items-center gap-2 transition-all whitespace-nowrap">
+      <button type="button" id="tab-btn-services" onclick="switchMainTab('services')" class="px-4 sm:px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#161218] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 hover:text-white flex items-center gap-2 transition-all whitespace-nowrap">
+        <span class="material-symbols-outlined text-base">payments</span>
+        <span>Precios, Servicios &amp; Promos</span>
+      </button>
+
+      <button type="button" id="tab-btn-courses" onclick="switchMainTab('courses')" class="px-4 sm:px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#161218] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 hover:text-white flex items-center gap-2 transition-all whitespace-nowrap">
+        <span class="material-symbols-outlined text-base">school</span>
+        <span>Cursos &amp; Academia</span>
+        <span id="courses-badge-count" class="px-2 py-0.5 rounded-full bg-[#ff3e96]/20 text-[#ffaed8] text-[10px] font-black border border-[#ff3e96]/40">3</span>
+      </button>
+
+      <button type="button" id="tab-btn-sections" onclick="switchMainTab('sections')" class="px-4 sm:px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#161218] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 hover:text-white flex items-center gap-2 transition-all whitespace-nowrap">
+        <span class="material-symbols-outlined text-base">dashboard_customize</span>
+        <span>Secciones de la Web</span>
+      </button>
+
+      <button type="button" id="tab-btn-instagram" onclick="switchMainTab('instagram')" class="px-4 sm:px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#161218] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 hover:text-white flex items-center gap-2 transition-all whitespace-nowrap">
         <span class="material-symbols-outlined text-base">publish</span>
         <span>Subir Horarios &amp; Instagram</span>
         <span id="published-days-badge" class="hidden px-2 py-0.5 rounded-full bg-[#25D366]/20 text-[#25D366] text-[10px] font-black border border-[#25D366]/40">0</span>
       </button>
 
-      <button type="button" id="tab-btn-gallery" onclick="switchMainTab('gallery')" class="px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#161218] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 hover:text-white flex items-center gap-2 transition-all whitespace-nowrap">
+      <button type="button" id="tab-btn-gallery" onclick="switchMainTab('gallery')" class="px-4 sm:px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#161218] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 hover:text-white flex items-center gap-2 transition-all whitespace-nowrap">
         <span class="material-symbols-outlined text-base">photo_library</span>
-        <span>Fotos de Ejemplos &amp; Galería</span>
+        <span>Fotos &amp; Galería</span>
         <span id="gallery-badge-count" class="px-2 py-0.5 rounded-full bg-[#ff3e96]/20 text-[#ffaed8] text-[10px] font-black border border-[#ff3e96]/40">6</span>
       </button>
 
-      <button type="button" id="tab-btn-emails" onclick="switchMainTab('emails')" class="px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#161218] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 hover:text-white flex items-center gap-2 transition-all whitespace-nowrap">
+      <button type="button" id="tab-btn-emails" onclick="switchMainTab('emails')" class="px-4 sm:px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#161218] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 hover:text-white flex items-center gap-2 transition-all whitespace-nowrap">
         <span class="material-symbols-outlined text-base">mail</span>
-        <span>Emails Personalizados</span>
+        <span>Emails</span>
         <span id="email-provider-pill" class="px-2 py-0.5 rounded-full bg-[#ff3e96]/20 text-[#ffaed8] text-[10px] font-black border border-[#ff3e96]/40">Auto</span>
       </button>
     </div>
@@ -812,7 +828,935 @@
       </div>
     </div>
 
+    <!-- ================= SECCIÓN 5: PRECIOS, SERVICIOS & PROMOCIONES ================= -->
+    <div id="section-services" class="hidden space-y-6">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-3 border-b border-white/10">
+        <div>
+          <div class="inline-flex items-center gap-1.5 text-[#ff6ea7] text-xs font-bold uppercase tracking-widest mb-1">
+            <span class="material-symbols-outlined text-sm">payments</span>
+            <span>Catálogo &amp; Lista de Precios en Vivo</span>
+          </div>
+          <h2 class="font-display text-2xl sm:text-3xl font-extrabold text-white">
+            Precios, Servicios &amp; Promociones
+          </h2>
+          <p class="text-xs sm:text-sm text-[#d8c4d6] mt-0.5">
+            Actualizá todos los precios en segundos o editá cada tratamiento y promoción destacada. Se sincroniza al instante en la web principal y en la agenda de turnos.
+          </p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2.5">
+          <button type="button" onclick="resetSectionConfirm('services', 'Servicios y Precios')" class="px-4 py-2.5 rounded-full bg-[#1e1622] hover:bg-red-950/40 text-xs font-bold text-[#d8c4d6] hover:text-red-300 border border-white/10 hover:border-red-500/40 flex items-center gap-1.5 transition-all">
+            <span class="material-symbols-outlined text-sm">restart_alt</span>
+            <span>Restaurar Originales</span>
+          </button>
+          <button type="button" onclick="openServiceModal()" class="px-5 py-2.5 rounded-full bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] hover:brightness-110 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#ff2d85]/40 active:scale-95 transition-all flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-base">add_circle</span>
+            <span>Nuevo Servicio</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Panel Rápido: Editor Masivo de Precios en 1 Clic -->
+      <div class="neon-card-glow rounded-3xl bg-[#161218] p-5 sm:p-6 border border-[#ff3e96]/50 space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-3">
+          <div>
+            <h3 class="font-display font-bold text-base sm:text-lg text-white flex items-center gap-2">
+              <span class="material-symbols-outlined text-[#ff3e96]">bolt</span>
+              <span>Actualizador Rápido de Todos los Precios (ARS)</span>
+            </h3>
+            <p class="text-xs text-[#d8c4d6]">Modificá los números directamente acá abajo y tocá "Guardar Todos los Precios" para actualizar Servicios, Promos, Portada y Cursos de una sola vez.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span id="quick-prices-feedback" class="text-xs font-bold text-[#25D366]"></span>
+            <button type="button" id="btn-save-quick-prices" onclick="saveAllQuickPrices()" class="px-5 py-2.5 rounded-full bg-gradient-to-r from-[#25D366] to-[#128C7E] hover:brightness-110 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#25D366]/30 active:scale-95 transition-all flex items-center gap-1.5 whitespace-nowrap">
+              <span class="material-symbols-outlined text-sm">save</span>
+              <span>Guardar Todos los Precios</span>
+            </button>
+          </div>
+        </div>
+
+        <div id="quick-prices-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- Renderizado dinámicamente por JS -->
+        </div>
+      </div>
+
+      <!-- Listado de Servicios del Catálogo (#servicios y Turnero) -->
+      <div class="space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="font-display font-bold text-lg sm:text-xl text-white flex items-center gap-2">
+              <span class="material-symbols-outlined text-[#ff3e96]">spa</span>
+              <span>Catálogo de Servicios (Web &amp; Turnero Online)</span>
+            </h3>
+            <p class="text-xs text-gray-400">Estos servicios aparecen tanto en el catálogo de la portada como en el Paso 1 de Pedir Turno.</p>
+          </div>
+          <button type="button" onclick="openServiceModal()" class="px-4 py-2 rounded-full bg-[#1e1622] hover:bg-[#ff2d85] text-[#ffaed8] hover:text-white border border-[#ff3e96]/40 text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1">
+            <span class="material-symbols-outlined text-sm">add</span>
+            <span>Agregar Servicio</span>
+          </button>
+        </div>
+
+        <div id="admin-services-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Renderizado dinámicamente -->
+        </div>
+      </div>
+
+      <!-- Promociones & Combos Destacados (#promos) -->
+      <div class="neon-card rounded-3xl bg-[#161218] p-5 sm:p-6 border border-white/10 space-y-5">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
+          <div>
+            <h3 class="font-display font-bold text-lg sm:text-xl text-white flex items-center gap-2">
+              <span class="material-symbols-outlined text-[#ff3e96]">local_offer</span>
+              <span>Promociones de Temporada &amp; Combos (#promos)</span>
+            </h3>
+            <p class="text-xs text-[#d8c4d6]">Editá las tarjetas de promoción destacadas, sus precios, cintas rosas y el encabezado de la sección.</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <button type="button" onclick="resetSectionConfirm('promosSection', 'Promociones')" class="px-3.5 py-2 rounded-full bg-white/5 hover:bg-red-950/40 text-xs font-bold text-gray-300 hover:text-red-300 border border-white/10 transition-all">
+              Restaurar Promos
+            </button>
+            <button type="button" onclick="openPromoModal()" class="px-4 py-2 rounded-full bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] text-white text-xs font-bold uppercase tracking-wider shadow-md flex items-center gap-1">
+              <span class="material-symbols-outlined text-sm">add</span>
+              <span>Nueva Promo</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Encabezado y Banner de #promos -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 bg-[#0d0a0f] p-4 rounded-2xl border border-white/10">
+          <div>
+            <label class="block text-[11px] font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Etiqueta Superior (Pill)</label>
+            <input type="text" id="promos-sec-pill" class="w-full bg-[#161218] border border-white/15 focus:border-[#ff3e96] rounded-xl px-3 py-2 text-xs text-white">
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Título de la Sección Promos</label>
+            <input type="text" id="promos-sec-title" class="w-full bg-[#161218] border border-white/15 focus:border-[#ff3e96] rounded-xl px-3 py-2 text-xs text-white">
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Subtítulo de la Sección Promos</label>
+            <input type="text" id="promos-sec-subtitle" class="w-full bg-[#161218] border border-white/15 focus:border-[#ff3e96] rounded-xl px-3 py-2 text-xs text-white">
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-1">Banner Inferior: Etiqueta</label>
+            <input type="text" id="promos-banner-tag-in" class="w-full bg-[#161218] border border-white/15 focus:border-[#ff3e96] rounded-xl px-3 py-2 text-xs text-white">
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-1">Banner Inferior: Título</label>
+            <input type="text" id="promos-banner-title-in" class="w-full bg-[#161218] border border-white/15 focus:border-[#ff3e96] rounded-xl px-3 py-2 text-xs text-white">
+          </div>
+          <div class="flex items-end gap-2">
+            <div class="flex-1">
+              <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-1">Banner Inferior: Subtítulo</label>
+              <input type="text" id="promos-banner-sub-in" class="w-full bg-[#161218] border border-white/15 focus:border-[#ff3e96] rounded-xl px-3 py-2 text-xs text-white">
+            </div>
+            <button type="button" onclick="savePromosHeader()" class="px-4 py-2 rounded-xl bg-[#ff2d85] hover:bg-[#ff3e96] text-white text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all">
+              Guardar Textos
+            </button>
+          </div>
+        </div>
+
+        <!-- Tarjetas de Promociones -->
+        <div id="admin-promos-list" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- Renderizado dinámicamente -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= SECCIÓN 6: CURSOS & ACADEMIA ================= -->
+    <div id="section-courses" class="hidden space-y-6">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-3 border-b border-white/10">
+        <div>
+          <div class="inline-flex items-center gap-1.5 text-[#ff6ea7] text-xs font-bold uppercase tracking-widest mb-1">
+            <span class="material-symbols-outlined text-sm">school</span>
+            <span>Academia Mica Lash Art</span>
+          </div>
+          <h2 class="font-display text-2xl sm:text-3xl font-extrabold text-white">
+            Gestión de Cursos &amp; Capacitaciones
+          </h2>
+          <p class="text-xs sm:text-sm text-[#d8c4d6] mt-0.5">
+            Editá títulos, precios, modalidades, notas de cuotas, puntos del temario y mensajes de WhatsApp de cada curso.
+          </p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2.5">
+          <button type="button" onclick="resetSectionConfirm('coursesSection', 'Cursos y Academia')" class="px-4 py-2.5 rounded-full bg-[#1e1622] hover:bg-red-950/40 text-xs font-bold text-[#d8c4d6] hover:text-red-300 border border-white/10 hover:border-red-500/40 flex items-center gap-1.5 transition-all">
+            <span class="material-symbols-outlined text-sm">restart_alt</span>
+            <span>Restaurar Cursos</span>
+          </button>
+          <button type="button" onclick="openCourseModal()" class="px-5 py-2.5 rounded-full bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] hover:brightness-110 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#ff2d85]/40 active:scale-95 transition-all flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-base">add_circle</span>
+            <span>Agregar Nuevo Curso</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Encabezado y Sellos de Confianza de la Academia -->
+      <div class="neon-card rounded-3xl bg-[#161218] p-5 sm:p-6 border border-white/10 space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-3">
+          <div>
+            <h3 class="font-display font-bold text-base sm:text-lg text-white flex items-center gap-2">
+              <span class="material-symbols-outlined text-[#ff3e96]">workspace_premium</span>
+              <span>Encabezado de Academia &amp; 4 Sellos de Garantía</span>
+            </h3>
+            <p class="text-xs text-gray-400">Personalizá el texto de presentación de la sección #cursos y los 4 sellos inferiores.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span id="courses-header-feedback" class="text-xs font-bold text-[#25D366]"></span>
+            <button type="button" onclick="saveCoursesHeaderAndBadges()" class="px-5 py-2 rounded-full bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] text-white font-bold text-xs uppercase tracking-wider shadow-md flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-sm">save</span>
+              <span>Guardar Encabezado de Cursos</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div>
+            <label class="block text-[11px] font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Píldora Superior (Pill)</label>
+            <input type="text" id="courses-sec-pill" class="w-full bg-[#0d0a0f] border border-white/15 focus:border-[#ff3e96] rounded-xl px-3.5 py-2.5 text-xs text-white">
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-[11px] font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Título Principal de Academia</label>
+            <input type="text" id="courses-sec-title" class="w-full bg-[#0d0a0f] border border-white/15 focus:border-[#ff3e96] rounded-xl px-3.5 py-2.5 text-xs text-white">
+          </div>
+          <div class="md:col-span-3">
+            <label class="block text-[11px] font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Descripción / Subtítulo de la Academia</label>
+            <textarea id="courses-sec-subtitle" rows="2" class="w-full bg-[#0d0a0f] border border-white/15 focus:border-[#ff3e96] rounded-xl p-3 text-xs text-white resize-none"></textarea>
+          </div>
+        </div>
+
+        <div class="pt-2">
+          <p class="text-[11px] font-bold uppercase tracking-wider text-[#ffaed8] mb-2">4 Sellos de Confianza de la Academia (Ícono, Título y Subtítulo)</p>
+          <div id="admin-courses-trust-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <!-- Renderizado dinámicamente -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Grilla de Tarjetas de Cursos -->
+      <div id="admin-courses-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <!-- Renderizado dinámicamente -->
+      </div>
+    </div>
+
+    <!-- ================= SECCIÓN 7: EDITOR DE SECCIONES DE LA WEB ================= -->
+    <div id="section-sections" class="hidden space-y-6">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-3 border-b border-white/10">
+        <div>
+          <div class="inline-flex items-center gap-1.5 text-[#ff6ea7] text-xs font-bold uppercase tracking-widest mb-1">
+            <span class="material-symbols-outlined text-sm">dashboard_customize</span>
+            <span>Personalización Total del Sitio</span>
+          </div>
+          <h2 class="font-display text-2xl sm:text-3xl font-extrabold text-white">
+            Contenido de Todas las Secciones
+          </h2>
+          <p class="text-xs sm:text-sm text-[#d8c4d6] mt-0.5">
+            Editá los textos, fotos, biografía de Mica, horarios, ubicación, WhatsApp y preguntas frecuentes de toda la web.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-2.5">
+          <span id="sections-global-feedback" class="text-xs font-bold text-[#25D366]"></span>
+          <button type="button" onclick="saveAllWebSections()" class="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] hover:brightness-110 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#ff2d85]/40 active:scale-95 transition-all flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-base">save</span>
+            <span>Guardar Todos los Cambios</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Sub-navegación de Secciones -->
+      <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+        <button type="button" id="subtab-btn-hero" onclick="switchSectionSubtab('hero')" class="px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider bg-[#ff2d85] text-white shadow transition-all whitespace-nowrap">
+          1. Portada / Hero (#inicio)
+        </button>
+        <button type="button" id="subtab-btn-about" onclick="switchSectionSubtab('about')" class="px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider bg-[#1e1622] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 transition-all whitespace-nowrap">
+          2. Sobre Mica (#sobre-mica)
+        </button>
+        <button type="button" id="subtab-btn-location" onclick="switchSectionSubtab('location')" class="px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider bg-[#1e1622] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 transition-all whitespace-nowrap">
+          3. Ubicación, Horarios &amp; Contacto
+        </button>
+        <button type="button" id="subtab-btn-faqs" onclick="switchSectionSubtab('faqs')" class="px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider bg-[#1e1622] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 transition-all whitespace-nowrap">
+          4. Preguntas Frecuentes (#faqs)
+        </button>
+        <button type="button" id="subtab-btn-headers" onclick="switchSectionSubtab('headers')" class="px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider bg-[#1e1622] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 transition-all whitespace-nowrap">
+          5. Textos Catálogo, Galería &amp; Turnero
+        </button>
+      </div>
+
+      <!-- SUB-PANEL 1: PORTADA / HERO -->
+      <div id="subpanel-hero" class="space-y-5">
+        <div class="neon-card rounded-3xl bg-[#161218] p-5 sm:p-6 border border-white/10 space-y-4">
+          <div class="flex items-center justify-between border-b border-white/10 pb-3">
+            <h3 class="font-display font-bold text-lg text-white flex items-center gap-2">
+              <span class="material-symbols-outlined text-[#ff3e96]">auto_awesome</span>
+              <span>Textos Principales de la Portada (#inicio)</span>
+            </h3>
+            <button type="button" onclick="resetSectionConfirm('hero', 'Portada / Hero')" class="text-xs text-gray-400 hover:text-red-300 underline">Restaurar Portada</button>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Píldora de Estado Superior</label>
+              <input type="text" id="sec-hero-status-pill" class="w-full bg-[#0d0a0f] border border-white/15 focus:border-[#ff3e96] rounded-xl px-3.5 py-2.5 text-sm text-white">
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Frase Cursiva Superior</label>
+              <input type="text" id="sec-hero-script-title" class="w-full bg-[#0d0a0f] border border-white/15 focus:border-[#ff3e96] rounded-xl px-3.5 py-2.5 text-sm text-white">
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Título Principal (Línea 1)</label>
+              <input type="text" id="sec-hero-title-1" class="w-full bg-[#0d0a0f] border border-white/15 focus:border-[#ff3e96] rounded-xl px-3.5 py-2.5 text-sm text-white">
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Título Destacado en Degradé (Línea 2)</label>
+              <input type="text" id="sec-hero-title-2" class="w-full bg-[#0d0a0f] border border-white/15 focus:border-[#ff3e96] rounded-xl px-3.5 py-2.5 text-sm text-white">
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Cinta Rosa: Texto Superior</label>
+              <input type="text" id="sec-hero-ribbon-top" class="w-full bg-[#0d0a0f] border border-white/15 focus:border-[#ff3e96] rounded-xl px-3.5 py-2.5 text-sm text-white">
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Cinta Rosa: Nombre de Marca</label>
+              <input type="text" id="sec-hero-ribbon-brand" class="w-full bg-[#0d0a0f] border border-white/15 focus:border-[#ff3e96] rounded-xl px-3.5 py-2.5 text-sm text-white">
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Párrafo Descriptivo de Portada</label>
+              <textarea id="sec-hero-desc" rows="2" class="w-full bg-[#0d0a0f] border border-white/15 focus:border-[#ff3e96] rounded-xl p-3 text-sm text-white resize-none"></textarea>
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Texto Botón Principal</label>
+              <input type="text" id="sec-hero-btn1" class="w-full bg-[#0d0a0f] border border-white/15 focus:border-[#ff3e96] rounded-xl px-3.5 py-2.5 text-sm text-white">
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Texto Botón Secundario</label>
+              <input type="text" id="sec-hero-btn2" class="w-full bg-[#0d0a0f] border border-white/15 focus:border-[#ff3e96] rounded-xl px-3.5 py-2.5 text-sm text-white">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t border-white/10">
+            <div>
+              <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-1">Sello Garantía 1</label>
+              <input type="text" id="sec-hero-guar-1" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl px-3 py-2 text-xs text-white">
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-1">Sello Garantía 2</label>
+              <input type="text" id="sec-hero-guar-2" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl px-3 py-2 text-xs text-white">
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-1">Sello Garantía 3</label>
+              <input type="text" id="sec-hero-guar-3" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl px-3 py-2 text-xs text-white">
+            </div>
+          </div>
+        </div>
+
+        <!-- Estilos Interactivos del Hero -->
+        <div class="neon-card rounded-3xl bg-[#161218] p-5 sm:p-6 border border-white/10 space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-3">
+            <div>
+              <h3 class="font-display font-bold text-lg text-white flex items-center gap-2">
+                <span class="material-symbols-outlined text-[#ff3e96]">style</span>
+                <span>Tarjetas del Selector Interactivo del Hero ("Explorá y cambiá el estilo en vivo")</span>
+              </h3>
+              <p class="text-xs text-[#d8c4d6]">Podés editar el nombre del botón, el título, precio, duración y cambiar la foto de cada estilo en la portada.</p>
+            </div>
+            <button type="button" onclick="addHeroStyleCard()" class="px-4 py-2 rounded-full bg-[#1e1622] hover:bg-[#ff2d85] text-[#ffaed8] hover:text-white border border-[#ff3e96]/40 text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1 self-start">
+              <span class="material-symbols-outlined text-sm">add</span>
+              <span>Agregar Estilo</span>
+            </button>
+          </div>
+
+          <div id="admin-hero-styles-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Renderizado dinámicamente -->
+          </div>
+        </div>
+      </div>
+
+      <!-- SUB-PANEL 2: SOBRE MICA -->
+      <div id="subpanel-about" class="hidden space-y-5">
+        <div class="neon-card rounded-3xl bg-[#161218] p-5 sm:p-6 border border-white/10 space-y-5">
+          <div class="flex items-center justify-between border-b border-white/10 pb-3">
+            <h3 class="font-display font-bold text-lg text-white flex items-center gap-2">
+              <span class="material-symbols-outlined text-[#ff3e96]">face_3</span>
+              <span>Sección "Sobre Mica" — Biografía, Foto, Estadísticas y Especialidades (#sobre-mica)</span>
+            </h3>
+            <button type="button" onclick="resetSectionConfirm('about', 'Sobre Mica')" class="text-xs text-gray-400 hover:text-red-300 underline">Restaurar Biografía</button>
+          </div>
+
+          <!-- Foto y Tarjeta de Foto -->
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start bg-[#0d0a0f] p-4 rounded-2xl border border-white/10">
+            <div class="lg:col-span-4 flex flex-col items-center text-center space-y-3">
+              <img id="sec-about-photo-preview" src="images/mica-bio-1.jpg" alt="Mica Bio" class="w-40 h-48 object-cover object-top rounded-2xl border-2 border-[#ff3e96] shadow-lg">
+              <label class="px-4 py-2 rounded-full bg-[#ff2d85]/20 hover:bg-[#ff2d85] text-[#ffaed8] hover:text-white border border-[#ff3e96]/50 text-xs font-bold uppercase tracking-wider cursor-pointer transition-all inline-flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-sm">upload</span>
+                <span>Subir Nueva Foto de Mica</span>
+                <input type="file" accept="image/*" class="hidden" onchange="uploadSectionImage(event, 'sec-about-photo-url', 'sec-about-photo-preview')">
+              </label>
+              <input type="text" id="sec-about-photo-url" oninput="document.getElementById('sec-about-photo-preview').src = this.value" class="w-full bg-[#161218] border border-white/15 rounded-xl px-3 py-1.5 text-xs text-white font-mono" placeholder="images/mica-bio-1.jpg">
+            </div>
+
+            <div class="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div class="sm:col-span-2">
+                <label class="block text-[11px] font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Badge Superior en la Foto</label>
+                <input type="text" id="sec-about-top-badge" class="w-full bg-[#161218] border border-white/15 rounded-xl px-3 py-2 text-xs text-white">
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Nombre en Tarjeta de Foto</label>
+                <input type="text" id="sec-about-card-name" class="w-full bg-[#161218] border border-white/15 rounded-xl px-3 py-2 text-xs text-white">
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Rol en Tarjeta de Foto</label>
+                <input type="text" id="sec-about-card-role" class="w-full bg-[#161218] border border-white/15 rounded-xl px-3 py-2 text-xs text-white">
+              </div>
+              <div class="sm:col-span-2">
+                <label class="block text-[11px] font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Subtítulo en Tarjeta de Foto</label>
+                <input type="text" id="sec-about-card-sub" class="w-full bg-[#161218] border border-white/15 rounded-xl px-3 py-2 text-xs text-white">
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-1">Estadística 1: Valor (ej. 9+ Años)</label>
+                <input type="text" id="sec-about-stat1-val" class="w-full bg-[#161218] border border-white/15 rounded-xl px-3 py-2 text-xs text-white">
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-1">Estadística 1: Etiqueta</label>
+                <input type="text" id="sec-about-stat1-lbl" class="w-full bg-[#161218] border border-white/15 rounded-xl px-3 py-2 text-xs text-white">
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-1">Estadística 2: Valor (ej. +150)</label>
+                <input type="text" id="sec-about-stat2-val" class="w-full bg-[#161218] border border-white/15 rounded-xl px-3 py-2 text-xs text-white">
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-1">Estadística 2: Etiqueta</label>
+                <input type="text" id="sec-about-stat2-lbl" class="w-full bg-[#161218] border border-white/15 rounded-xl px-3 py-2 text-xs text-white">
+              </div>
+            </div>
+          </div>
+
+          <!-- Textos de Historia y Presentación -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="md:col-span-2">
+              <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Píldora de Bienvenida</label>
+              <input type="text" id="sec-about-header-pill" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl px-3.5 py-2.5 text-sm text-white">
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Frase Principal (Headline)</label>
+              <input type="text" id="sec-about-headline" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl px-3.5 py-2.5 text-sm text-white">
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Subtítulo Cursivo</label>
+              <input type="text" id="sec-about-subheadline" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl px-3.5 py-2.5 text-sm text-white">
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Párrafo de Presentación 1</label>
+              <textarea id="sec-about-intro1" rows="3" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl p-3 text-xs text-white resize-none"></textarea>
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Párrafo de Presentación 2</label>
+              <textarea id="sec-about-intro2" rows="3" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl p-3 text-xs text-white resize-none"></textarea>
+            </div>
+          </div>
+
+          <!-- Especialidades: ¿Qué podés encontrar en Mica Lash Art? -->
+          <div class="bg-[#0d0a0f] p-4 rounded-2xl border border-white/10 space-y-3">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div class="flex-1">
+                <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Título del Recuadro de Especialidades</label>
+                <input type="text" id="sec-about-box-title" class="w-full bg-[#161218] border border-white/15 rounded-xl px-3 py-2 text-xs text-white">
+              </div>
+              <button type="button" onclick="addAboutSpecialtyItem()" class="px-4 py-2 rounded-xl bg-[#1e1622] hover:bg-[#ff2d85] text-[#ffaed8] hover:text-white border border-[#ff3e96]/40 text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1 self-end">
+                <span class="material-symbols-outlined text-sm">add</span>
+                <span>Agregar Ítem</span>
+              </button>
+            </div>
+            <div id="admin-about-specialties-list" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              <!-- Renderizado dinámicamente -->
+            </div>
+          </div>
+
+          <!-- Frase y Cierre -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="md:col-span-2">
+              <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Cita / Filosofía Destacada</label>
+              <textarea id="sec-about-quote" rows="2" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl p-3 text-xs text-white resize-none"></textarea>
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Párrafo de Cierre 1</label>
+              <textarea id="sec-about-close1" rows="2" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl p-3 text-xs text-white resize-none"></textarea>
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Párrafo de Cierre 2</label>
+              <textarea id="sec-about-close2" rows="2" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl p-3 text-xs text-white resize-none"></textarea>
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Saludo Final / Firma</label>
+              <input type="text" id="sec-about-signature" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUB-PANEL 3: UBICACIÓN, HORARIOS, CONTACTO Y FOOTER -->
+      <div id="subpanel-location" class="hidden space-y-5">
+        <div class="neon-card rounded-3xl bg-[#161218] p-5 sm:p-6 border border-white/10 space-y-5">
+          <div class="flex items-center justify-between border-b border-white/10 pb-3">
+            <h3 class="font-display font-bold text-lg text-white flex items-center gap-2">
+              <span class="material-symbols-outlined text-[#ff3e96]">location_on</span>
+              <span>Ubicación, Días &amp; Horarios, Redes y Pie de Página (#ubicacion)</span>
+            </h3>
+            <button type="button" onclick="resetSectionConfirm('location', 'Ubicación y Contacto')" class="text-xs text-gray-400 hover:text-red-300 underline">Restaurar Ubicación</button>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Píldora Superior</label>
+              <input type="text" id="sec-loc-pill" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white">
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Título Principal de Ubicación</label>
+              <input type="text" id="sec-loc-title" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white">
+            </div>
+            <div class="md:col-span-3">
+              <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Subtítulo / Descripción del Estudio</label>
+              <input type="text" id="sec-loc-subtitle" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white">
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Título Bloque Dirección</label>
+              <input type="text" id="sec-loc-addr-title" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white">
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Zona / Dirección Pública</label>
+              <input type="text" id="sec-loc-addr-text" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white">
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Nota de Dirección Exacta</label>
+              <input type="text" id="sec-loc-addr-note" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white">
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Título Bloque Horarios</label>
+              <input type="text" id="sec-loc-hours-title" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white">
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Horarios Línea 1 (Lun a Vie)</label>
+              <input type="text" id="sec-loc-hours-1" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white">
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Horarios Línea 2 (Sábados)</label>
+              <input type="text" id="sec-loc-hours-2" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white">
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-[#25D366] mb-1">WhatsApp Oficial (con 549...)</label>
+              <input type="text" id="sec-loc-whatsapp" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white font-mono">
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Usuario de Instagram</label>
+              <input type="text" id="sec-loc-ig-handle" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white">
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">URL Completa de Instagram</label>
+              <input type="text" id="sec-loc-ig-url" class="w-full bg-[#0d0a0f] border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white font-mono">
+            </div>
+          </div>
+
+          <!-- Foto del Estudio y Footer -->
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center bg-[#0d0a0f] p-4 rounded-2xl border border-white/10">
+            <div class="md:col-span-5 flex items-center gap-3">
+              <img id="sec-loc-studio-preview" src="images/studio-ambiance-vip.jpg" alt="Studio" class="w-28 h-20 object-cover rounded-xl border border-[#ff3e96]/50">
+              <div class="space-y-1.5 flex-1">
+                <label class="px-3 py-1.5 rounded-full bg-[#ff2d85]/20 hover:bg-[#ff2d85] text-[#ffaed8] hover:text-white border border-[#ff3e96]/50 text-[11px] font-bold uppercase tracking-wider cursor-pointer transition-all inline-flex items-center gap-1">
+                  <span class="material-symbols-outlined text-xs">upload</span>
+                  <span>Cambiar Foto Estudio</span>
+                  <input type="file" accept="image/*" class="hidden" onchange="uploadSectionImage(event, 'sec-loc-studio-url', 'sec-loc-studio-preview')">
+                </label>
+                <input type="text" id="sec-loc-studio-url" oninput="document.getElementById('sec-loc-studio-preview').src = this.value" class="w-full bg-[#161218] border border-white/15 rounded-lg px-2.5 py-1 text-[11px] text-white font-mono">
+              </div>
+            </div>
+            <div class="md:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div>
+                <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-1">Marca en Footer</label>
+                <input type="text" id="sec-loc-brand" class="w-full bg-[#161218] border border-white/15 rounded-xl px-3 py-2 text-xs text-white">
+              </div>
+              <div class="sm:col-span-2">
+                <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-1">Subtítulo del Footer</label>
+                <input type="text" id="sec-loc-footer-sub" class="w-full bg-[#161218] border border-white/15 rounded-xl px-3 py-2 text-xs text-white">
+              </div>
+              <div class="sm:col-span-3">
+                <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-1">Texto Copyright del Footer</label>
+                <input type="text" id="sec-loc-footer-copy" class="w-full bg-[#161218] border border-white/15 rounded-xl px-3 py-2 text-xs text-white">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUB-PANEL 4: PREGUNTAS FRECUENTES (#FAQS) -->
+      <div id="subpanel-faqs" class="hidden space-y-5">
+        <div class="neon-card rounded-3xl bg-[#161218] p-5 sm:p-6 border border-white/10 space-y-5">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-3">
+            <div>
+              <h3 class="font-display font-bold text-lg text-white flex items-center gap-2">
+                <span class="material-symbols-outlined text-[#ff3e96]">help</span>
+                <span>Preguntas Frecuentes (#faqs)</span>
+              </h3>
+              <p class="text-xs text-[#d8c4d6]">Agregá, editá o eliminá preguntas del acordeón informativo.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button type="button" onclick="resetSectionConfirm('faqs', 'Preguntas Frecuentes')" class="px-3.5 py-2 rounded-full bg-white/5 hover:bg-red-950/40 text-xs font-bold text-gray-300 hover:text-red-300 border border-white/10 transition-all">
+                Restaurar FAQs
+              </button>
+              <button type="button" onclick="openFaqModal()" class="px-4 py-2 rounded-full bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] text-white text-xs font-bold uppercase tracking-wider shadow-md flex items-center gap-1">
+                <span class="material-symbols-outlined text-sm">add</span>
+                <span>Nueva Pregunta</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 bg-[#0d0a0f] p-4 rounded-2xl border border-white/10">
+            <div>
+              <label class="block text-[11px] font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Píldora Superior</label>
+              <input type="text" id="sec-faqs-pill" class="w-full bg-[#161218] border border-white/15 rounded-xl px-3 py-2 text-xs text-white">
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Título de la Sección</label>
+              <input type="text" id="sec-faqs-title" class="w-full bg-[#161218] border border-white/15 rounded-xl px-3 py-2 text-xs text-white">
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Subtítulo</label>
+              <input type="text" id="sec-faqs-subtitle" class="w-full bg-[#161218] border border-white/15 rounded-xl px-3 py-2 text-xs text-white">
+            </div>
+          </div>
+
+          <div id="admin-faqs-list" class="space-y-3">
+            <!-- Renderizado dinámicamente -->
+          </div>
+        </div>
+      </div>
+
+      <!-- SUB-PANEL 5: ENCABEZADOS DE CATÁLOGO, GALERÍA Y TURNERO -->
+      <div id="subpanel-headers" class="hidden space-y-5">
+        <div class="neon-card rounded-3xl bg-[#161218] p-5 sm:p-6 border border-white/10 space-y-6">
+          <h3 class="font-display font-bold text-lg text-white flex items-center gap-2 border-b border-white/10 pb-3">
+            <span class="material-symbols-outlined text-[#ff3e96]">text_fields</span>
+            <span>Textos de Catálogo (#servicios), Galería (#galeria) y Agenda Online (#reservas y turnos.html)</span>
+          </h3>
+
+          <!-- Catálogo Header & CTA Card -->
+          <div class="space-y-3 bg-[#0d0a0f] p-4 rounded-2xl border border-white/10">
+            <p class="text-xs font-bold uppercase tracking-wider text-[#ff6ea7]">1. Encabezado de Catálogo de Servicios &amp; Tarjeta Final</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div>
+                <label class="block text-[11px] text-gray-400 mb-1">Píldora Superior</label>
+                <input type="text" id="sec-srv-pill" class="w-full bg-[#161218] border border-white/15 rounded-xl px-3 py-2 text-xs text-white">
+              </div>
+              <div>
+                <label class="block text-[11px] text-gray-400 mb-1">Título</label>
+                <input type="text" id="sec-srv-title" class="w-full bg-[#161218] border border-white/15 rounded-xl px-3 py-2 text-xs text-white">
+              </div>
+              <div>
+                <label class="block text-[11px] text-gray-400 mb-1">Subtítulo</label>
+                <input type="text" id="sec-srv-subtitle" class="w-full bg-[#161218] border border-white/15 rounded-xl px-3 py-2 text-xs text-white">
+              </div>
+              <div>
+                <label class="block text-[11px] text-gray-400 mb-1">Tarjeta Calendario: Título</label>
+                <input type="text" id="sec-srv-cta-title" class="w-full bg-[#161218] border border-white/15 rounded-xl px-3 py-2 text-xs text-white">
+              </div>
+              <div>
+                <label class="block text-[11px] text-gray-400 mb-1">Tarjeta Calendario: Descripción</label>
+                <input type="text" id="sec-srv-cta-desc" class="w-full bg-[#161218] border border-white/15 rounded-xl px-3 py-2 text-xs text-white">
+              </div>
+              <div>
+                <label class="block text-[11px] text-gray-400 mb-1">Tarjeta Calendario: Botón</label>
+                <input type="text" id="sec-srv-cta-btn" class="w-full bg-[#161218] border border-white/15 rounded-xl px-3 py-2 text-xs text-white">
+              </div>
+            </div>
+          </div>
+
+          <!-- Galería Header -->
+          <div class="space-y-3 bg-[#0d0a0f] p-4 rounded-2xl border border-white/10">
+            <p class="text-xs font-bold uppercase tracking-wider text-[#ff6ea7]">2. Encabezado de Galería de Miradas (#galeria)</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div>
+                <label class="block text-[11px] text-gray-400 mb-1">Píldora Superior</label>
+                <input type="text" id="sec-gal-pill" class="w-full bg-[#161218] border border-white/15 rounded-xl px-3 py-2 text-xs text-white">
+              </div>
+              <div>
+                <label class="block text-[11px] text-gray-400 mb-1">Título</label>
+                <input type="text" id="sec-gal-title" class="w-full bg-[#161218] border border-white/15 rounded-xl px-3 py-2 text-xs text-white">
+              </div>
+              <div>
+                <label class="block text-[11px] text-gray-400 mb-1">Subtítulo</label>
+                <input type="text" id="sec-gal-subtitle" class="w-full bg-[#161218] border border-white/15 rounded-xl px-3 py-2 text-xs text-white">
+              </div>
+              <div>
+                <label class="block text-[11px] text-gray-400 mb-1">Texto del Botón a Instagram</label>
+                <input type="text" id="sec-gal-ig-btn" class="w-full bg-[#161218] border border-white/15 rounded-xl px-3 py-2 text-xs text-white">
+              </div>
+            </div>
+          </div>
+
+          <!-- Reservas y Turnos.html Header -->
+          <div class="space-y-3 bg-[#0d0a0f] p-4 rounded-2xl border border-white/10">
+            <p class="text-xs font-bold uppercase tracking-wider text-[#ff6ea7]">3. Sección Reservas (#reservas) y Cabecera de Turnos Online (turnos.html)</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div>
+                <label class="block text-[11px] text-gray-400 mb-1">Píldora Sección Reservas</label>
+                <input type="text" id="sec-book-pill" class="w-full bg-[#161218] border border-white/15 rounded-xl px-3 py-2 text-xs text-white">
+              </div>
+              <div>
+                <label class="block text-[11px] text-gray-400 mb-1">Título Sección Reservas</label>
+                <input type="text" id="sec-book-title" class="w-full bg-[#161218] border border-white/15 rounded-xl px-3 py-2 text-xs text-white">
+              </div>
+              <div>
+                <label class="block text-[11px] text-gray-400 mb-1">Botón Principal Reservas</label>
+                <input type="text" id="sec-book-btn1" class="w-full bg-[#161218] border border-white/15 rounded-xl px-3 py-2 text-xs text-white">
+              </div>
+              <div class="md:col-span-3">
+                <label class="block text-[11px] text-gray-400 mb-1">Subtítulo Sección Reservas</label>
+                <input type="text" id="sec-book-subtitle" class="w-full bg-[#161218] border border-white/15 rounded-xl px-3 py-2 text-xs text-white">
+              </div>
+              <div>
+                <label class="block text-[11px] text-[#ffaed8] mb-1">Página Turnos: Cinta Superior</label>
+                <input type="text" id="sec-turnos-ribbon" class="w-full bg-[#161218] border border-white/15 rounded-xl px-3 py-2 text-xs text-white">
+              </div>
+              <div>
+                <label class="block text-[11px] text-[#ffaed8] mb-1">Página Turnos: Título Principal</label>
+                <input type="text" id="sec-turnos-title" class="w-full bg-[#161218] border border-white/15 rounded-xl px-3 py-2 text-xs text-white">
+              </div>
+              <div>
+                <label class="block text-[11px] text-[#ffaed8] mb-1">Página Turnos: Subtítulo</label>
+                <input type="text" id="sec-turnos-subtitle" class="w-full bg-[#161218] border border-white/15 rounded-xl px-3 py-2 text-xs text-white">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </main>
+
+  <!-- ================= MODAL CREAR / EDITAR SERVICIO DEL CATÁLOGO ================= -->
+  <div id="service-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div class="relative max-w-xl w-full bg-[#161218] rounded-3xl p-6 sm:p-8 neon-card-glow border border-[#ff3e96]/60 shadow-2xl my-8">
+      <button type="button" onclick="closeServiceModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/60 hover:bg-[#ff2d85] text-white flex items-center justify-center border border-white/20">
+        <span class="material-symbols-outlined text-lg">close</span>
+      </button>
+      <h3 id="service-modal-title" class="font-display text-xl sm:text-2xl font-bold text-white mb-5">Editar Servicio</h3>
+      <form id="service-form" onsubmit="handleServiceFormSubmit(event)" class="space-y-4">
+        <input type="hidden" id="srv-edit-id">
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+          <div class="sm:col-span-3">
+            <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Nombre del Servicio *</label>
+            <input type="text" id="srv-name" required class="w-full bg-[#0d0a0f] border border-white/20 focus:border-[#ff3e96] rounded-xl px-3.5 py-2.5 text-sm text-white">
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Ícono</label>
+            <input type="text" id="srv-icon" placeholder="✨" class="w-full bg-[#0d0a0f] border border-white/20 focus:border-[#ff3e96] rounded-xl px-3.5 py-2.5 text-sm text-white text-center">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-[#25D366] mb-1">Precio Total (ARS) *</label>
+            <input type="number" id="srv-price" required min="0" step="100" oninput="document.getElementById('srv-deposit').value = Math.ceil((Number(this.value || 0) * 0.2) / 100) * 100" class="w-full bg-[#0d0a0f] border border-white/20 focus:border-[#25D366] rounded-xl px-3.5 py-2.5 text-sm font-bold text-white">
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-amber-300 mb-1">Valor Seña (ARS)</label>
+            <input type="number" id="srv-deposit" min="0" step="100" class="w-full bg-[#0d0a0f] border border-white/20 focus:border-amber-400 rounded-xl px-3.5 py-2.5 text-sm text-white">
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Categoría Filtro</label>
+            <select id="srv-category" class="w-full bg-[#0d0a0f] border border-white/20 focus:border-[#ff3e96] rounded-xl px-3 py-2.5 text-sm text-white">
+              <option value="lifting">Lifting &amp; Botox</option>
+              <option value="clasicas">Pelo a Pelo Clásicas</option>
+              <option value="volumen">Volumen &amp; Cejas</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Etiqueta / Badge</label>
+            <input type="text" id="srv-badge" placeholder="Ej: ★ Look Más Pedido" class="w-full bg-[#0d0a0f] border border-white/20 focus:border-[#ff3e96] rounded-xl px-3.5 py-2.5 text-xs text-white">
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Duración (min)</label>
+            <input type="number" id="srv-duration" min="15" step="15" value="90" class="w-full bg-[#0d0a0f] border border-white/20 focus:border-[#ff3e96] rounded-xl px-3.5 py-2.5 text-xs text-white">
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Texto Duración</label>
+            <input type="text" id="srv-duration-label" placeholder="Ej: 90-120 min" class="w-full bg-[#0d0a0f] border border-white/20 focus:border-[#ff3e96] rounded-xl px-3.5 py-2.5 text-xs text-white">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Descripción del Tratamiento</label>
+          <textarea id="srv-desc" rows="3" class="w-full bg-[#0d0a0f] border border-white/20 focus:border-[#ff3e96] rounded-xl p-3 text-xs text-white resize-none"></textarea>
+        </div>
+
+        <label class="flex items-center gap-2 text-xs text-gray-200 cursor-pointer">
+          <input type="checkbox" id="srv-active" checked class="rounded border-white/20 text-[#ff2d85] focus:ring-[#ff2d85]">
+          <span>Servicio visible y activo para reservar en la web</span>
+        </label>
+
+        <div class="flex items-center justify-end gap-3 pt-4 border-t border-white/10">
+          <button type="button" onclick="closeServiceModal()" class="px-5 py-2.5 rounded-full bg-white/5 hover:bg-white/10 text-xs font-bold text-gray-300 uppercase tracking-wider">Cancelar</button>
+          <button type="submit" class="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] text-white font-bold text-xs uppercase tracking-wider shadow-lg">Guardar Servicio</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= MODAL CREAR / EDITAR PROMOCIÓN (#PROMOS) ================= -->
+  <div id="promo-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div class="relative max-w-xl w-full bg-[#161218] rounded-3xl p-6 sm:p-8 neon-card-glow border border-[#ff3e96]/60 shadow-2xl my-8">
+      <button type="button" onclick="closePromoModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/60 hover:bg-[#ff2d85] text-white flex items-center justify-center border border-white/20">
+        <span class="material-symbols-outlined text-lg">close</span>
+      </button>
+      <h3 id="promo-modal-title" class="font-display text-xl sm:text-2xl font-bold text-white mb-5">Editar Promoción</h3>
+      <form id="promo-form" onsubmit="handlePromoFormSubmit(event)" class="space-y-4">
+        <input type="hidden" id="prm-edit-id">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Título de la Promo / Combo *</label>
+            <input type="text" id="prm-title" required class="w-full bg-[#0d0a0f] border border-white/20 focus:border-[#ff3e96] rounded-xl px-3.5 py-2.5 text-sm text-white">
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Etiqueta Superior (Badge)</label>
+            <input type="text" id="prm-badge" placeholder="Ej: Pack Glow Total" class="w-full bg-[#0d0a0f] border border-white/20 rounded-xl px-3.5 py-2 text-xs text-white">
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Duración</label>
+            <input type="text" id="prm-duration" placeholder="Ej: 120 min" class="w-full bg-[#0d0a0f] border border-white/20 rounded-xl px-3.5 py-2 text-xs text-white">
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-[#25D366] mb-1">Precio Promocional (ARS) *</label>
+            <input type="number" id="prm-price" required min="0" step="100" class="w-full bg-[#0d0a0f] border border-white/20 focus:border-[#25D366] rounded-xl px-3.5 py-2 text-sm font-bold text-white">
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Texto sobre el Precio</label>
+            <input type="text" id="prm-price-label" placeholder="Ej: Precio Promoción" class="w-full bg-[#0d0a0f] border border-white/20 rounded-xl px-3.5 py-2 text-xs text-white">
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Descripción de la Promo</label>
+            <textarea id="prm-desc" rows="2" class="w-full bg-[#0d0a0f] border border-white/20 rounded-xl p-3 text-xs text-white resize-none"></textarea>
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Frase en Cinta Rosa</label>
+            <input type="text" id="prm-ribbon" placeholder="La opción para potenciar tus resultados ♡" class="w-full bg-[#0d0a0f] border border-white/20 rounded-xl px-3.5 py-2 text-xs text-white">
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Texto del Botón</label>
+            <input type="text" id="prm-btn-text" placeholder="Pedir Turno Promo" class="w-full bg-[#0d0a0f] border border-white/20 rounded-xl px-3.5 py-2 text-xs text-white">
+          </div>
+        </div>
+
+        <div class="p-3.5 rounded-2xl bg-[#0d0a0f] border border-[#ff3e96]/30 space-y-2">
+          <label class="flex items-center gap-2 text-xs font-bold text-[#ffaed8] cursor-pointer">
+            <input type="checkbox" id="prm-is-vip" class="rounded border-white/20 text-[#ff2d85]">
+            <span>★ Destacar como Tarjeta Central VIP con brillo neón</span>
+          </label>
+          <input type="text" id="prm-vip-badge" placeholder="Texto medalla VIP (Ej: ★ Más Elegido VIP ★)" class="w-full bg-[#161218] border border-white/15 rounded-xl px-3 py-1.5 text-xs text-white">
+        </div>
+
+        <div class="flex items-center justify-end gap-3 pt-4 border-t border-white/10">
+          <button type="button" onclick="closePromoModal()" class="px-5 py-2.5 rounded-full bg-white/5 hover:bg-white/10 text-xs font-bold text-gray-300 uppercase tracking-wider">Cancelar</button>
+          <button type="submit" class="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] text-white font-bold text-xs uppercase tracking-wider shadow-lg">Guardar Promo</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= MODAL CREAR / EDITAR CURSO DE ACADEMIA ================= -->
+  <div id="course-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div class="relative max-w-2xl w-full bg-[#161218] rounded-3xl p-6 sm:p-8 neon-card-glow border border-[#ff3e96]/60 shadow-2xl my-8">
+      <button type="button" onclick="closeCourseModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/60 hover:bg-[#ff2d85] text-white flex items-center justify-center border border-white/20">
+        <span class="material-symbols-outlined text-lg">close</span>
+      </button>
+      <h3 id="course-modal-title" class="font-display text-xl sm:text-2xl font-bold text-white mb-5">Editar Curso / Capacitación</h3>
+      <form id="course-form" onsubmit="handleCourseFormSubmit(event)" class="space-y-4">
+        <input type="hidden" id="crs-edit-id">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Título del Curso / Masterclass *</label>
+            <input type="text" id="crs-title" required placeholder="Ej: Curso Inicial: Clásicas 1 a 1" class="w-full bg-[#0d0a0f] border border-white/20 focus:border-[#ff3e96] rounded-xl px-3.5 py-2.5 text-sm text-white">
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Subtítulo / Nivel</label>
+            <input type="text" id="crs-subtitle" placeholder="Ej: Extensiones Pelo a Pelo • Nivel Inicial sin experiencia previa" class="w-full bg-[#0d0a0f] border border-white/20 rounded-xl px-3.5 py-2 text-xs text-white">
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Badge Superior</label>
+            <input type="text" id="crs-badge" placeholder="Ej: ★ El Más Elegido" class="w-full bg-[#0d0a0f] border border-white/20 rounded-xl px-3.5 py-2 text-xs text-white">
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Duración / Formato</label>
+            <input type="text" id="crs-duration" placeholder="Ej: 2 Jornadas / 1 Día Intensivo" class="w-full bg-[#0d0a0f] border border-white/20 rounded-xl px-3.5 py-2 text-xs text-white">
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-[#25D366] mb-1">Valor / Inversión (ARS) *</label>
+            <input type="number" id="crs-price" required min="0" step="500" class="w-full bg-[#0d0a0f] border border-white/20 focus:border-[#25D366] rounded-xl px-3.5 py-2 text-sm font-bold text-white">
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Nota debajo del Precio (Cuotas / Online)</label>
+            <input type="text" id="crs-price-note" placeholder="Ej: Opciones en cuotas • Seña previa" class="w-full bg-[#0d0a0f] border border-white/20 rounded-xl px-3.5 py-2 text-xs text-white">
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Filtro de Modalidad</label>
+            <select id="crs-modality" class="w-full bg-[#0d0a0f] border border-white/20 rounded-xl px-3 py-2 text-xs text-white">
+              <option value="presencial">Presencial VIP</option>
+              <option value="online">Online / Perfeccionamiento</option>
+              <option value="ambos">Ambos (Presencial y Online)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Texto del Botón</label>
+            <input type="text" id="crs-btn-text" value="Consultar por WhatsApp" class="w-full bg-[#0d0a0f] border border-white/20 rounded-xl px-3.5 py-2 text-xs text-white">
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Descripción Completa del Curso</label>
+            <textarea id="crs-desc" rows="3" class="w-full bg-[#0d0a0f] border border-white/20 rounded-xl p-3 text-xs text-white resize-none"></textarea>
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-bold uppercase tracking-wider text-[#25D366] mb-1">Puntos del Temario / Qué Incluye (1 ítem por línea con tilde ✓)</label>
+            <textarea id="crs-syllabus" rows="4" placeholder="Práctica real en cabeza técnica y modelo viva&#10;Kit profesional completo&#10;Manual teórico y certificado oficial" class="w-full bg-[#0d0a0f] border border-white/20 focus:border-[#25D366] rounded-xl p-3 text-xs text-white"></textarea>
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1">Mensaje Automático al tocar WhatsApp</label>
+            <input type="text" id="crs-whatsapp-text" placeholder="Hola Mica! Quiero info y fechas de..." class="w-full bg-[#0d0a0f] border border-white/20 rounded-xl px-3.5 py-2 text-xs text-white">
+          </div>
+        </div>
+
+        <div class="flex items-center justify-end gap-3 pt-4 border-t border-white/10">
+          <button type="button" onclick="closeCourseModal()" class="px-5 py-2.5 rounded-full bg-white/5 hover:bg-white/10 text-xs font-bold text-gray-300 uppercase tracking-wider">Cancelar</button>
+          <button type="submit" class="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] text-white font-bold text-xs uppercase tracking-wider shadow-lg">Guardar Curso</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= MODAL CREAR / EDITAR PREGUNTA FRECUENTE (FAQ) ================= -->
+  <div id="faq-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div class="relative max-w-lg w-full bg-[#161218] rounded-3xl p-6 sm:p-8 neon-card-glow border border-[#ff3e96]/60 shadow-2xl my-8">
+      <button type="button" onclick="closeFaqModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/60 hover:bg-[#ff2d85] text-white flex items-center justify-center border border-white/20">
+        <span class="material-symbols-outlined text-lg">close</span>
+      </button>
+      <h3 id="faq-modal-title" class="font-display text-xl font-bold text-white mb-4">Pregunta Frecuente</h3>
+      <form id="faq-form" onsubmit="handleFaqFormSubmit(event)" class="space-y-4">
+        <input type="hidden" id="faq-edit-id">
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Pregunta *</label>
+          <input type="text" id="faq-question" required placeholder="Ej: ¿Duelen las extensiones o el lifting?" class="w-full bg-[#0d0a0f] border border-white/20 focus:border-[#ff3e96] rounded-xl px-3.5 py-2.5 text-sm text-white">
+        </div>
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-[#ffaed8] mb-1">Respuesta *</label>
+          <textarea id="faq-answer" required rows="4" class="w-full bg-[#0d0a0f] border border-white/20 focus:border-[#ff3e96] rounded-xl p-3 text-xs text-white resize-none"></textarea>
+        </div>
+        <div class="flex items-center justify-end gap-3 pt-4 border-t border-white/10">
+          <button type="button" onclick="closeFaqModal()" class="px-5 py-2.5 rounded-full bg-white/5 hover:bg-white/10 text-xs font-bold text-gray-300 uppercase tracking-wider">Cancelar</button>
+          <button type="submit" class="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] text-white font-bold text-xs uppercase tracking-wider shadow-lg">Guardar Pregunta</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <!-- ================= MODAL AGREGAR / EDITAR FOTO DE EJEMPLO ================= -->
   <div id="photo-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden items-center justify-center p-3 sm:p-4 overflow-y-auto">
@@ -962,10 +1906,10 @@
 
     // ================= PESTAÑAS PRINCIPALES =================
     function switchMainTab(tab) {
-      const activeCls = 'px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#ff2d85] text-white shadow-lg shadow-[#ff2d85]/30 flex items-center gap-2 transition-all whitespace-nowrap';
-      const inactiveCls = 'px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#161218] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 hover:text-white flex items-center gap-2 transition-all whitespace-nowrap';
+      const activeCls = 'px-4 sm:px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#ff2d85] text-white shadow-lg shadow-[#ff2d85]/30 flex items-center gap-2 transition-all whitespace-nowrap';
+      const inactiveCls = 'px-4 sm:px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#161218] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 hover:text-white flex items-center gap-2 transition-all whitespace-nowrap';
 
-      const tabs = ['turnos', 'instagram', 'gallery', 'emails'];
+      const tabs = ['turnos', 'services', 'courses', 'sections', 'instagram', 'gallery', 'emails'];
       tabs.forEach(t => {
         const btn = document.getElementById('tab-btn-' + t);
         const sec = document.getElementById('section-' + t);
@@ -976,7 +1920,13 @@
         }
       });
 
-      if (tab === 'gallery') {
+      if (tab === 'services') {
+        loadSiteContentAdmin();
+      } else if (tab === 'courses') {
+        loadSiteContentAdmin();
+      } else if (tab === 'sections') {
+        loadSiteContentAdmin();
+      } else if (tab === 'gallery') {
         loadGalleryPhotos();
       } else if (tab === 'instagram') {
         initInstagramSection();
@@ -2695,6 +3645,1086 @@
       }
     }
 
+    // =========================================================================
+    // GESTOR INTEGRAL DE PRECIOS, SERVICIOS, PROMOS, CURSOS Y SECCIONES DE LA WEB
+    // =========================================================================
+    let adminSiteContent = null;
+
+    function escHtml(str) {
+      return String(str == null ? '' : str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function parsePriceNum(val) {
+      return Number(String(val || '').replace(/[^0-9]/g, '')) || 0;
+    }
+
+    async function loadSiteContentAdmin(force = false) {
+      if (!window.MicaBackend || !window.MicaBackend.content) return;
+      try {
+        adminSiteContent = await window.MicaBackend.content.getAll(force);
+        renderQuickPricesPanel();
+        renderAdminServicesPanel();
+        renderAdminPromosPanel();
+        renderAdminCoursesPanel();
+        renderAdminWebSectionsPanel();
+      } catch (err) {
+        console.warn('Error cargando contenido del sitio en Admin:', err);
+      }
+    }
+
+    // 1. PANEL RÁPIDO DE TODOS LOS PRECIOS
+    function renderQuickPricesPanel() {
+      const grid = document.getElementById('quick-prices-grid');
+      if (!grid || !adminSiteContent) return;
+
+      const services = adminSiteContent.services || [];
+      const promos = (adminSiteContent.promosSection && adminSiteContent.promosSection.items) || [];
+      const courses = (adminSiteContent.coursesSection && adminSiteContent.coursesSection.courses) || [];
+
+      grid.innerHTML = `
+        <div class="p-4 rounded-2xl bg-[#0d0a0f] border border-white/10 space-y-2.5">
+          <p class="text-xs font-extrabold uppercase tracking-wider text-[#ffaed8] flex items-center gap-1.5 border-b border-white/10 pb-2">
+            <span class="material-symbols-outlined text-sm text-[#ff3e96]">spa</span>
+            <span>Servicios del Catálogo (${services.length})</span>
+          </p>
+          <div class="space-y-2 max-h-72 overflow-y-auto pr-1">
+            ${services.map((s, idx) => `
+              <div class="flex items-center justify-between gap-2 bg-[#161218] px-3 py-2 rounded-xl border border-white/5">
+                <span class="text-xs text-white font-medium truncate" title="${escHtml(s.name)}">${escHtml(s.icon || '✨')} ${escHtml(s.name)}</span>
+                <div class="flex items-center gap-1 flex-shrink-0">
+                  <span class="text-xs text-[#25D366] font-bold">$</span>
+                  <input type="number" data-qp-type="service" data-qp-idx="${idx}" value="${Number(s.price) || 0}" step="500" class="w-24 bg-[#0d0a0f] border border-white/20 focus:border-[#25D366] rounded-lg px-2 py-1 text-xs font-bold text-white text-right">
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-[#0d0a0f] border border-white/10 space-y-2.5">
+          <p class="text-xs font-extrabold uppercase tracking-wider text-[#ffaed8] flex items-center gap-1.5 border-b border-white/10 pb-2">
+            <span class="material-symbols-outlined text-sm text-[#ff3e96]">local_offer</span>
+            <span>Promociones Destacadas (${promos.length})</span>
+          </p>
+          <div class="space-y-2 max-h-72 overflow-y-auto pr-1">
+            ${promos.map((p, idx) => `
+              <div class="flex items-center justify-between gap-2 bg-[#161218] px-3 py-2 rounded-xl border border-white/5">
+                <span class="text-xs text-white font-medium truncate" title="${escHtml(p.title)}">${p.isVip ? '👑 ' : ''}${escHtml(p.title)}</span>
+                <div class="flex items-center gap-1 flex-shrink-0">
+                  <span class="text-xs text-[#25D366] font-bold">$</span>
+                  <input type="number" data-qp-type="promo" data-qp-idx="${idx}" value="${Number(p.price) || 0}" step="500" class="w-24 bg-[#0d0a0f] border border-white/20 focus:border-[#25D366] rounded-lg px-2 py-1 text-xs font-bold text-white text-right">
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-[#0d0a0f] border border-white/10 space-y-2.5">
+          <p class="text-xs font-extrabold uppercase tracking-wider text-[#ffaed8] flex items-center gap-1.5 border-b border-white/10 pb-2">
+            <span class="material-symbols-outlined text-sm text-[#ff3e96]">school</span>
+            <span>Cursos &amp; Masterclasses (${courses.length})</span>
+          </p>
+          <div class="space-y-2 max-h-72 overflow-y-auto pr-1">
+            ${courses.map((c, idx) => `
+              <div class="flex items-center justify-between gap-2 bg-[#161218] px-3 py-2 rounded-xl border border-white/5">
+                <span class="text-xs text-white font-medium truncate" title="${escHtml(c.title)}">🎓 ${escHtml(c.title)}</span>
+                <div class="flex items-center gap-1 flex-shrink-0">
+                  <span class="text-xs text-[#25D366] font-bold">$</span>
+                  <input type="number" data-qp-type="course" data-qp-idx="${idx}" value="${Number(c.price) || 0}" step="1000" class="w-24 bg-[#0d0a0f] border border-white/20 focus:border-[#25D366] rounded-lg px-2 py-1 text-xs font-bold text-white text-right">
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    async function saveAllQuickPrices() {
+      if (!adminSiteContent) return;
+      const fb = document.getElementById('quick-prices-feedback');
+      const btn = document.getElementById('btn-save-quick-prices');
+      if (btn) btn.disabled = true;
+      if (fb) fb.textContent = 'Guardando precios...';
+
+      try {
+        document.querySelectorAll('input[data-qp-type="service"]').forEach(inp => {
+          const idx = Number(inp.getAttribute('data-qp-idx'));
+          const newPrice = Number(inp.value) || 0;
+          if (adminSiteContent.services && adminSiteContent.services[idx]) {
+            adminSiteContent.services[idx].price = newPrice;
+            adminSiteContent.services[idx].deposit = Math.ceil((newPrice * 0.2) / 100) * 100;
+          }
+        });
+
+        document.querySelectorAll('input[data-qp-type="promo"]').forEach(inp => {
+          const idx = Number(inp.getAttribute('data-qp-idx'));
+          const newPrice = Number(inp.value) || 0;
+          if (adminSiteContent.promosSection?.items?.[idx]) {
+            adminSiteContent.promosSection.items[idx].price = newPrice;
+          }
+        });
+
+        document.querySelectorAll('input[data-qp-type="course"]').forEach(inp => {
+          const idx = Number(inp.getAttribute('data-qp-idx'));
+          const newPrice = Number(inp.value) || 0;
+          if (adminSiteContent.coursesSection?.courses?.[idx]) {
+            adminSiteContent.coursesSection.courses[idx].price = newPrice;
+          }
+        });
+
+        await window.MicaBackend.content.saveAll(adminSiteContent);
+        await loadSiteContentAdmin(true);
+        if (fb) {
+          fb.textContent = '✓ ¡Todos los precios actualizados!';
+          setTimeout(() => { fb.textContent = ''; }, 3500);
+        }
+      } catch (err) {
+        alert('Error al guardar precios: ' + err.message);
+        if (fb) fb.textContent = '';
+      } finally {
+        if (btn) btn.disabled = false;
+      }
+    }
+
+    // 2. CATÁLOGO DE SERVICIOS (CRUD)
+    function renderAdminServicesPanel() {
+      const container = document.getElementById('admin-services-list');
+      if (!container || !adminSiteContent) return;
+      const services = adminSiteContent.services || [];
+
+      const catLabels = {
+        lifting: 'Lifting & Botox',
+        clasicas: 'Pelo a Pelo Clásicas',
+        volumen: 'Volumen & Cejas'
+      };
+
+      container.innerHTML = services.map((s, idx) => `
+        <div class="p-5 rounded-2xl bg-[#161218] border ${s.isActive === false ? 'border-white/5 opacity-60' : 'border-[#ff3e96]/30 hover:border-[#ff3e96]'} flex flex-col justify-between gap-4 transition-all">
+          <div class="space-y-2">
+            <div class="flex items-center justify-between gap-2">
+              <span class="px-2.5 py-0.5 rounded-full bg-[#271c2b] text-[#ffaed8] text-[10px] font-bold uppercase tracking-wider border border-[#ff3e96]/30">
+                ${escHtml(s.badge || catLabels[s.category] || 'Servicio')}
+              </span>
+              <span class="text-[11px] text-gray-400 flex items-center gap-1">
+                <span class="material-symbols-outlined text-xs text-[#ff3e96]">schedule</span>
+                ${escHtml(s.durationLabel || (s.duration + ' min'))}
+              </span>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <span class="text-xl">${escHtml(s.icon || '✨')}</span>
+              <h4 class="font-display font-bold text-base text-white">${escHtml(s.name)}</h4>
+            </div>
+
+            <p class="text-xs text-[#d8c4d6] line-clamp-2">${escHtml(s.desc || '')}</p>
+          </div>
+
+          <div class="pt-3 border-t border-white/10 flex items-center justify-between gap-2">
+            <div>
+              <p class="font-display font-extrabold text-xl text-[#25D366]">$${(Number(s.price) || 0).toLocaleString('es-AR')}</p>
+              <p class="text-[10px] text-amber-300">Seña 20%: $${(Number(s.deposit) || Math.ceil(((Number(s.price) || 0) * 0.2) / 100) * 100).toLocaleString('es-AR')}</p>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button type="button" onclick="openServiceModal('${s.id}')" class="px-3 py-1.5 rounded-xl bg-[#ff2d85]/20 hover:bg-[#ff2d85] text-[#ffaed8] hover:text-white border border-[#ff3e96]/40 text-xs font-bold flex items-center gap-1 transition-all">
+                <span class="material-symbols-outlined text-sm">edit</span>
+                <span>Editar</span>
+              </button>
+              <button type="button" onclick="deleteServiceItem('${s.id}')" class="p-1.5 rounded-xl bg-red-950/40 hover:bg-red-600 text-red-300 hover:text-white border border-red-500/30 transition-all" title="Eliminar servicio">
+                <span class="material-symbols-outlined text-sm">delete</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function openServiceModal(id = null) {
+      const modal = document.getElementById('service-modal');
+      const title = document.getElementById('service-modal-title');
+      if (!modal || !adminSiteContent) return;
+
+      const existing = id ? (adminSiteContent.services || []).find(s => s.id === id) : null;
+      document.getElementById('srv-edit-id').value = existing ? existing.id : '';
+      document.getElementById('srv-name').value = existing ? existing.name : '';
+      document.getElementById('srv-icon').value = existing ? (existing.icon || '✨') : '✨';
+      document.getElementById('srv-price').value = existing ? (Number(existing.price) || 0) : 28000;
+      document.getElementById('srv-deposit').value = existing ? (Number(existing.deposit) || Math.ceil(((Number(existing.price) || 0) * 0.2) / 100) * 100) : 5600;
+      document.getElementById('srv-category').value = existing ? (existing.category || 'volumen') : 'volumen';
+      document.getElementById('srv-badge').value = existing ? (existing.badge || '') : 'Tratamiento VIP';
+      document.getElementById('srv-duration').value = existing ? (Number(existing.duration) || 90) : 90;
+      document.getElementById('srv-duration-label').value = existing ? (existing.durationLabel || `${existing.duration || 90} min`) : '90 min';
+      document.getElementById('srv-desc').value = existing ? (existing.desc || '') : '';
+      document.getElementById('srv-active').checked = existing ? (existing.isActive !== false) : true;
+
+      if (title) title.textContent = existing ? 'Editar Servicio y Precio' : 'Agregar Nuevo Servicio';
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeServiceModal() {
+      const modal = document.getElementById('service-modal');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    }
+
+    async function handleServiceFormSubmit(e) {
+      e.preventDefault();
+      if (!adminSiteContent) return;
+      const editId = document.getElementById('srv-edit-id').value;
+      const priceVal = Number(document.getElementById('srv-price').value) || 0;
+      const depositVal = Number(document.getElementById('srv-deposit').value) || Math.ceil((priceVal * 0.2) / 100) * 100;
+      const durationVal = Number(document.getElementById('srv-duration').value) || 90;
+      const durationLabelVal = document.getElementById('srv-duration-label').value.trim() || `${durationVal} min`;
+
+      const newObj = {
+        id: editId || (window.crypto && window.crypto.randomUUID ? window.crypto.randomUUID() : `22222222-2222-2222-2222-${String(Date.now()).slice(-12)}`),
+        name: document.getElementById('srv-name').value.trim(),
+        icon: document.getElementById('srv-icon').value.trim() || '✨',
+        price: priceVal,
+        deposit: depositVal,
+        category: document.getElementById('srv-category').value,
+        badge: document.getElementById('srv-badge').value.trim(),
+        duration: durationVal,
+        durationLabel: durationLabelVal,
+        desc: document.getElementById('srv-desc').value.trim(),
+        isActive: document.getElementById('srv-active').checked,
+        sortOrder: (adminSiteContent.services || []).length + 1
+      };
+
+      const list = Array.isArray(adminSiteContent.services) ? [...adminSiteContent.services] : [];
+      const idx = list.findIndex(s => s.id === editId);
+      if (idx !== -1) {
+        newObj.sortOrder = list[idx].sortOrder || (idx + 1);
+        list[idx] = newObj;
+      } else {
+        list.push(newObj);
+      }
+
+      adminSiteContent.services = list;
+      await window.MicaBackend.content.saveSection('services', list);
+      closeServiceModal();
+      await loadSiteContentAdmin(true);
+    }
+
+    async function deleteServiceItem(id) {
+      if (!adminSiteContent || !confirm('¿Seguro que querés eliminar este servicio del catálogo?')) return;
+      adminSiteContent.services = (adminSiteContent.services || []).filter(s => s.id !== id);
+      await window.MicaBackend.content.saveSection('services', adminSiteContent.services);
+      await loadSiteContentAdmin(true);
+    }
+
+    // 3. PROMOCIONES & COMBOS DESTACADOS (#promos)
+    function renderAdminPromosPanel() {
+      if (!adminSiteContent || !adminSiteContent.promosSection) return;
+      const ps = adminSiteContent.promosSection;
+
+      const setVal = (id, v) => { const el = document.getElementById(id); if (el) el.value = v || ''; };
+      setVal('promos-sec-pill', ps.pill);
+      setVal('promos-sec-title', ps.title);
+      setVal('promos-sec-subtitle', ps.subtitle);
+      setVal('promos-banner-tag-in', ps.bannerTag);
+      setVal('promos-banner-title-in', ps.bannerTitle);
+      setVal('promos-banner-sub-in', ps.bannerSubtitle);
+
+      const container = document.getElementById('admin-promos-list');
+      if (!container) return;
+      const items = ps.items || [];
+
+      container.innerHTML = items.map(p => `
+        <div class="p-5 rounded-2xl bg-[#0d0a0f] border ${p.isVip ? 'border-2 border-[#ff3e96] shadow-lg shadow-[#ff3e96]/20' : 'border-white/10'} flex flex-col justify-between gap-4">
+          <div class="space-y-2">
+            <div class="flex items-center justify-between gap-2">
+              <span class="px-2.5 py-0.5 rounded-full bg-[#271c2b] text-[#ffaed8] text-[10px] font-bold uppercase tracking-wider">
+                ${escHtml(p.badge || 'Promo')}
+              </span>
+              ${p.isVip ? `<span class="px-2 py-0.5 rounded-full bg-[#ff2d85] text-white text-[10px] font-black uppercase">${escHtml(p.vipBadge || '★ VIP ★')}</span>` : ''}
+            </div>
+            <h4 class="font-display font-bold text-base text-white">${escHtml(p.title)}</h4>
+            <p class="text-xs text-[#d8c4d6] line-clamp-2">${escHtml(p.desc || '')}</p>
+          </div>
+
+          <div class="pt-3 border-t border-white/10 flex items-center justify-between gap-2">
+            <div>
+              <span class="text-[10px] uppercase text-gray-400 block">${escHtml(p.priceLabel || 'Precio Promo')}</span>
+              <span class="font-display font-extrabold text-xl text-[#25D366]">$${(Number(p.price) || 0).toLocaleString('es-AR')}</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button type="button" onclick="openPromoModal('${p.id}')" class="px-3 py-1.5 rounded-xl bg-[#ff2d85]/20 hover:bg-[#ff2d85] text-[#ffaed8] hover:text-white border border-[#ff3e96]/40 text-xs font-bold flex items-center gap-1 transition-all">
+                <span class="material-symbols-outlined text-sm">edit</span>
+                <span>Editar</span>
+              </button>
+              <button type="button" onclick="deletePromoItem('${p.id}')" class="p-1.5 rounded-xl bg-red-950/40 hover:bg-red-600 text-red-300 hover:text-white border border-red-500/30 transition-all">
+                <span class="material-symbols-outlined text-sm">delete</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function savePromosHeader() {
+      if (!adminSiteContent) return;
+      adminSiteContent.promosSection = {
+        ...(adminSiteContent.promosSection || {}),
+        pill: document.getElementById('promos-sec-pill').value.trim(),
+        title: document.getElementById('promos-sec-title').value.trim(),
+        subtitle: document.getElementById('promos-sec-subtitle').value.trim(),
+        bannerTag: document.getElementById('promos-banner-tag-in').value.trim(),
+        bannerTitle: document.getElementById('promos-banner-title-in').value.trim(),
+        bannerSubtitle: document.getElementById('promos-banner-sub-in').value.trim()
+      };
+      await window.MicaBackend.content.saveSection('promosSection', adminSiteContent.promosSection);
+      await loadSiteContentAdmin(true);
+      alert('✓ Textos de la sección Promociones guardados.');
+    }
+
+    function openPromoModal(id = null) {
+      const modal = document.getElementById('promo-modal');
+      if (!modal || !adminSiteContent) return;
+      const items = adminSiteContent.promosSection?.items || [];
+      const existing = id ? items.find(p => p.id === id) : null;
+
+      document.getElementById('prm-edit-id').value = existing ? existing.id : '';
+      document.getElementById('prm-title').value = existing ? existing.title : '';
+      document.getElementById('prm-badge').value = existing ? existing.badge : 'Combo Especial';
+      document.getElementById('prm-duration').value = existing ? existing.duration : '90 min';
+      document.getElementById('prm-price').value = existing ? (Number(existing.price) || 0) : 25000;
+      document.getElementById('prm-price-label').value = existing ? existing.priceLabel : 'Precio Promoción';
+      document.getElementById('prm-desc').value = existing ? existing.desc : '';
+      document.getElementById('prm-ribbon').value = existing ? existing.ribbonText : 'La opción para potenciar tus resultados ♡';
+      document.getElementById('prm-btn-text').value = existing ? existing.btnText : 'Pedir Turno Promo';
+      document.getElementById('prm-is-vip').checked = existing ? !!existing.isVip : false;
+      document.getElementById('prm-vip-badge').value = existing ? (existing.vipBadge || '★ Más Elegido VIP ★') : '★ Más Elegido VIP ★';
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closePromoModal() {
+      const modal = document.getElementById('promo-modal');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    }
+
+    async function handlePromoFormSubmit(e) {
+      e.preventDefault();
+      if (!adminSiteContent) return;
+      const editId = document.getElementById('prm-edit-id').value;
+      const newObj = {
+        id: editId || ('promo_' + Date.now()),
+        title: document.getElementById('prm-title').value.trim(),
+        badge: document.getElementById('prm-badge').value.trim(),
+        duration: document.getElementById('prm-duration').value.trim(),
+        price: Number(document.getElementById('prm-price').value) || 0,
+        priceLabel: document.getElementById('prm-price-label').value.trim(),
+        desc: document.getElementById('prm-desc').value.trim(),
+        ribbonText: document.getElementById('prm-ribbon').value.trim(),
+        btnText: document.getElementById('prm-btn-text').value.trim(),
+        serviceLink: document.getElementById('prm-title').value.trim(),
+        isVip: document.getElementById('prm-is-vip').checked,
+        vipBadge: document.getElementById('prm-vip-badge').value.trim()
+      };
+
+      const items = [...(adminSiteContent.promosSection?.items || [])];
+      const idx = items.findIndex(p => p.id === editId);
+      if (idx !== -1) items[idx] = newObj;
+      else items.push(newObj);
+
+      adminSiteContent.promosSection.items = items;
+      await window.MicaBackend.content.saveSection('promosSection', adminSiteContent.promosSection);
+      closePromoModal();
+      await loadSiteContentAdmin(true);
+    }
+
+    async function deletePromoItem(id) {
+      if (!adminSiteContent || !confirm('¿Eliminar esta tarjeta de promoción?')) return;
+      adminSiteContent.promosSection.items = (adminSiteContent.promosSection?.items || []).filter(p => p.id !== id);
+      await window.MicaBackend.content.saveSection('promosSection', adminSiteContent.promosSection);
+      await loadSiteContentAdmin(true);
+    }
+
+    // 4. CURSOS & ACADEMIA (#cursos)
+    function renderAdminCoursesPanel() {
+      if (!adminSiteContent || !adminSiteContent.coursesSection) return;
+      const cs = adminSiteContent.coursesSection;
+      const courses = cs.courses || [];
+
+      const badgeCount = document.getElementById('courses-badge-count');
+      if (badgeCount) badgeCount.textContent = courses.length;
+
+      const setVal = (id, v) => { const el = document.getElementById(id); if (el) el.value = v || ''; };
+      setVal('courses-sec-pill', cs.pill);
+      setVal('courses-sec-title', cs.title);
+      setVal('courses-sec-subtitle', cs.subtitle);
+
+      const trustGrid = document.getElementById('admin-courses-trust-grid');
+      if (trustGrid) {
+        const badges = Array.isArray(cs.trustBadges) ? cs.trustBadges : [];
+        trustGrid.innerHTML = badges.map((tb, idx) => `
+          <div class="p-3 rounded-2xl bg-[#0d0a0f] border border-white/10 space-y-2">
+            <div class="flex items-center gap-2">
+              <input type="text" data-tb-idx="${idx}" data-tb-field="icon" value="${escHtml(tb.icon || '🎓')}" class="w-10 bg-[#161218] border border-white/15 rounded-lg px-2 py-1 text-center text-sm text-white">
+              <input type="text" data-tb-idx="${idx}" data-tb-field="title" value="${escHtml(tb.title || '')}" placeholder="Título sello" class="flex-1 bg-[#161218] border border-white/15 rounded-lg px-2.5 py-1 text-xs font-bold text-white">
+            </div>
+            <input type="text" data-tb-idx="${idx}" data-tb-field="subtitle" value="${escHtml(tb.subtitle || '')}" placeholder="Subtítulo sello" class="w-full bg-[#161218] border border-white/15 rounded-lg px-2.5 py-1 text-[11px] text-[#ffaed8]">
+          </div>
+        `).join('');
+      }
+
+      const listEl = document.getElementById('admin-courses-list');
+      if (!listEl) return;
+
+      listEl.innerHTML = courses.map(c => {
+        const syllabus = Array.isArray(c.syllabus) ? c.syllabus : [];
+        return `
+          <div class="p-6 rounded-3xl bg-[#161218] border-2 border-[#ff3e96]/40 hover:border-[#ff3e96] flex flex-col justify-between gap-4 shadow-xl transition-all">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between gap-2">
+                <span class="px-3 py-1 rounded-full bg-[#ff2d85]/20 border border-[#ff3e96] text-[#ffaed8] text-[10px] font-black uppercase tracking-wider">
+                  ${escHtml(c.badge || 'Curso VIP')}
+                </span>
+                <span class="text-xs text-gray-300 font-semibold">${escHtml(c.duration || '1 Jornada')}</span>
+              </div>
+
+              <div>
+                <h4 class="font-display font-bold text-lg text-white">${escHtml(c.title)}</h4>
+                <p class="text-xs text-[#ff6ea7] font-semibold mt-0.5">${escHtml(c.subtitle || '')}</p>
+              </div>
+
+              <p class="text-xs text-[#d8c4d6] leading-relaxed">${escHtml(c.desc || '')}</p>
+
+              <div class="space-y-1.5 pt-2 border-t border-white/10 text-xs text-gray-200">
+                ${syllabus.map(item => `
+                  <div class="flex items-start gap-1.5">
+                    <span class="text-[#25D366] font-bold">✓</span>
+                    <span>${escHtml(item)}</span>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+
+            <div class="pt-4 border-t border-white/10 space-y-3">
+              <div class="flex items-baseline justify-between">
+                <span class="text-[11px] uppercase font-bold text-gray-400">${escHtml(c.priceLabel || 'Inversión')}</span>
+                <div class="text-right">
+                  <span class="font-display font-extrabold text-2xl text-[#25D366]">$${(Number(c.price) || 0).toLocaleString('es-AR')}</span>
+                  <p class="text-[10px] text-[#ffaed8]">${escHtml(c.priceNote || '')}</p>
+                </div>
+              </div>
+
+              <div class="flex items-center justify-end gap-2">
+                <button type="button" onclick="openCourseModal('${c.id}')" class="flex-1 py-2 px-3 rounded-xl bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] text-white text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1 shadow">
+                  <span class="material-symbols-outlined text-sm">edit</span>
+                  <span>Editar Curso y Temario</span>
+                </button>
+                <button type="button" onclick="deleteCourseItem('${c.id}')" class="p-2 rounded-xl bg-red-950/40 hover:bg-red-600 text-red-300 hover:text-white border border-red-500/30 transition-all" title="Eliminar curso">
+                  <span class="material-symbols-outlined text-sm">delete</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function saveCoursesHeaderAndBadges() {
+      if (!adminSiteContent) return;
+      const fb = document.getElementById('courses-header-feedback');
+      const badges = [...(adminSiteContent.coursesSection?.trustBadges || [])];
+      document.querySelectorAll('[data-tb-idx]').forEach(inp => {
+        const idx = Number(inp.getAttribute('data-tb-idx'));
+        const field = inp.getAttribute('data-tb-field');
+        if (badges[idx] && field) {
+          badges[idx][field] = inp.value.trim();
+        }
+      });
+
+      adminSiteContent.coursesSection = {
+        ...(adminSiteContent.coursesSection || {}),
+        pill: document.getElementById('courses-sec-pill').value.trim(),
+        title: document.getElementById('courses-sec-title').value.trim(),
+        subtitle: document.getElementById('courses-sec-subtitle').value.trim(),
+        trustBadges: badges
+      };
+
+      await window.MicaBackend.content.saveSection('coursesSection', adminSiteContent.coursesSection);
+      if (fb) {
+        fb.textContent = '✓ ¡Encabezado de Academia guardado!';
+        setTimeout(() => { fb.textContent = ''; }, 3000);
+      }
+    }
+
+    function openCourseModal(id = null) {
+      const modal = document.getElementById('course-modal');
+      if (!modal || !adminSiteContent) return;
+      const courses = adminSiteContent.coursesSection?.courses || [];
+      const existing = id ? courses.find(c => c.id === id) : null;
+
+      document.getElementById('crs-edit-id').value = existing ? existing.id : '';
+      document.getElementById('crs-title').value = existing ? existing.title : '';
+      document.getElementById('crs-subtitle').value = existing ? existing.subtitle : '';
+      document.getElementById('crs-badge').value = existing ? existing.badge : '★ Cupos Limitados';
+      document.getElementById('crs-duration').value = existing ? existing.duration : '1 Jornada VIP';
+      document.getElementById('crs-price').value = existing ? (Number(existing.price) || 0) : 65000;
+      document.getElementById('crs-price-note').value = existing ? existing.priceNote : 'Opciones en cuotas • Kit incluido';
+      document.getElementById('crs-modality').value = existing ? (existing.modalityFilter || 'ambos') : 'presencial';
+      document.getElementById('crs-btn-text').value = existing ? (existing.btnText || 'Consultar por WhatsApp') : 'Consultar por WhatsApp';
+      document.getElementById('crs-desc').value = existing ? existing.desc : '';
+      document.getElementById('crs-syllabus').value = existing && Array.isArray(existing.syllabus) ? existing.syllabus.join('\n') : '';
+      document.getElementById('crs-whatsapp-text').value = existing ? (existing.whatsappText || '') : '';
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeCourseModal() {
+      const modal = document.getElementById('course-modal');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    }
+
+    async function handleCourseFormSubmit(e) {
+      e.preventDefault();
+      if (!adminSiteContent) return;
+      const editId = document.getElementById('crs-edit-id').value;
+      const titleVal = document.getElementById('crs-title').value.trim();
+      const syllabusLines = document.getElementById('crs-syllabus').value
+        .split('\n')
+        .map(l => l.replace(/^[✓•\-*]\s*/, '').trim())
+        .filter(Boolean);
+
+      const newCourse = {
+        id: editId || (window.crypto && window.crypto.randomUUID ? window.crypto.randomUUID() : `33333333-3333-3333-3333-${String(Date.now()).slice(-12)}`),
+        title: titleVal,
+        subtitle: document.getElementById('crs-subtitle').value.trim(),
+        badge: document.getElementById('crs-badge').value.trim(),
+        duration: document.getElementById('crs-duration').value.trim(),
+        priceLabel: 'Inversión',
+        price: Number(document.getElementById('crs-price').value) || 0,
+        priceNote: document.getElementById('crs-price-note').value.trim(),
+        modalityFilter: document.getElementById('crs-modality').value,
+        btnText: document.getElementById('crs-btn-text').value.trim() || 'Consultar por WhatsApp',
+        desc: document.getElementById('crs-desc').value.trim(),
+        syllabus: syllabusLines,
+        whatsappText: document.getElementById('crs-whatsapp-text').value.trim() || `Hola Mica! Quiero info y fechas de ${titleVal}`,
+        isActive: true
+      };
+
+      const list = [...(adminSiteContent.coursesSection?.courses || [])];
+      const idx = list.findIndex(c => c.id === editId);
+      if (idx !== -1) list[idx] = newCourse;
+      else list.push(newCourse);
+
+      adminSiteContent.coursesSection.courses = list;
+      await window.MicaBackend.content.saveSection('coursesSection', adminSiteContent.coursesSection);
+      closeCourseModal();
+      await loadSiteContentAdmin(true);
+    }
+
+    async function deleteCourseItem(id) {
+      if (!adminSiteContent || !confirm('¿Eliminar este curso de la sección Academia?')) return;
+      adminSiteContent.coursesSection.courses = (adminSiteContent.coursesSection?.courses || []).filter(c => c.id !== id);
+      await window.MicaBackend.content.saveSection('coursesSection', adminSiteContent.coursesSection);
+      await loadSiteContentAdmin(true);
+    }
+
+    // 5. SECCIONES DE LA WEB (Portada, Sobre Mica, Ubicación, FAQs, Encabezados)
+    function switchSectionSubtab(sub) {
+      const subs = ['hero', 'about', 'location', 'faqs', 'headers'];
+      const activeCls = 'px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider bg-[#ff2d85] text-white shadow transition-all whitespace-nowrap';
+      const inactiveCls = 'px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider bg-[#1e1622] text-[#d8c4d6] border border-white/10 hover:border-[#ff3e96]/50 transition-all whitespace-nowrap';
+
+      subs.forEach(s => {
+        const btn = document.getElementById('subtab-btn-' + s);
+        const panel = document.getElementById('subpanel-' + s);
+        if (btn) btn.className = (s === sub) ? activeCls : inactiveCls;
+        if (panel) {
+          if (s === sub) panel.classList.remove('hidden');
+          else panel.classList.add('hidden');
+        }
+      });
+    }
+
+    function renderAdminWebSectionsPanel() {
+      if (!adminSiteContent) return;
+      const setVal = (id, v) => { const el = document.getElementById(id); if (el) el.value = v !== undefined && v !== null ? v : ''; };
+
+      // A. Hero
+      const h = adminSiteContent.hero || {};
+      setVal('sec-hero-status-pill', h.statusPill);
+      setVal('sec-hero-script-title', h.scriptTitle);
+      setVal('sec-hero-title-1', h.mainTitleLine1);
+      setVal('sec-hero-title-2', h.mainTitleHighlight);
+      setVal('sec-hero-ribbon-top', h.ribbonTop);
+      setVal('sec-hero-ribbon-brand', h.ribbonBrand);
+      setVal('sec-hero-desc', h.description);
+      setVal('sec-hero-btn1', h.primaryBtnText);
+      setVal('sec-hero-btn2', h.secondaryBtnText);
+      setVal('sec-hero-guar-1', (h.guarantees || [])[0] || '');
+      setVal('sec-hero-guar-2', (h.guarantees || [])[1] || '');
+      setVal('sec-hero-guar-3', (h.guarantees || [])[2] || '');
+
+      renderHeroStylesEditor();
+
+      // B. Sobre Mica
+      const ab = adminSiteContent.about || {};
+      setVal('sec-about-photo-url', ab.photoUrl);
+      const bioPrev = document.getElementById('sec-about-photo-preview');
+      if (bioPrev && ab.photoUrl) bioPrev.src = ab.photoUrl;
+      setVal('sec-about-top-badge', ab.photoTopBadge);
+      setVal('sec-about-card-name', ab.photoCardName);
+      setVal('sec-about-card-role', ab.photoCardRole);
+      setVal('sec-about-card-sub', ab.photoCardSub);
+      setVal('sec-about-stat1-val', ab.stat1Value);
+      setVal('sec-about-stat1-lbl', ab.stat1Label);
+      setVal('sec-about-stat2-val', ab.stat2Value);
+      setVal('sec-about-stat2-lbl', ab.stat2Label);
+      setVal('sec-about-header-pill', ab.headerPill);
+      setVal('sec-about-headline', ab.headline);
+      setVal('sec-about-subheadline', ab.subheadline);
+      setVal('sec-about-intro1', ab.introParagraph1);
+      setVal('sec-about-intro2', ab.introParagraph2);
+      setVal('sec-about-box-title', ab.boxTitle);
+      setVal('sec-about-quote', ab.quote);
+      setVal('sec-about-close1', ab.closingParagraph1);
+      setVal('sec-about-close2', ab.closingParagraph2);
+      setVal('sec-about-signature', ab.closingSignature);
+
+      renderAboutSpecialtiesEditor();
+
+      // C. Ubicación, Horarios, Contacto y Footer
+      const loc = adminSiteContent.location || {};
+      setVal('sec-loc-pill', loc.pill);
+      setVal('sec-loc-title', loc.title);
+      setVal('sec-loc-subtitle', loc.subtitle);
+      setVal('sec-loc-addr-title', loc.addressTitle);
+      setVal('sec-loc-addr-text', loc.addressText);
+      setVal('sec-loc-addr-note', loc.addressNote);
+      setVal('sec-loc-hours-title', loc.hoursTitle);
+      setVal('sec-loc-hours-1', loc.hoursLine1);
+      setVal('sec-loc-hours-2', loc.hoursLine2);
+      setVal('sec-loc-whatsapp', loc.whatsappNumber);
+      setVal('sec-loc-ig-handle', loc.instagramHandle);
+      setVal('sec-loc-ig-url', loc.instagramUrl);
+      setVal('sec-loc-studio-url', loc.studioPhotoUrl);
+      const stPrev = document.getElementById('sec-loc-studio-preview');
+      if (stPrev && loc.studioPhotoUrl) stPrev.src = loc.studioPhotoUrl;
+      setVal('sec-loc-brand', loc.brandName);
+      setVal('sec-loc-footer-sub', loc.footerSubtitle);
+      setVal('sec-loc-footer-copy', loc.footerCopyright);
+
+      // D. FAQs
+      const fq = adminSiteContent.faqs || {};
+      setVal('sec-faqs-pill', fq.pill);
+      setVal('sec-faqs-title', fq.title);
+      setVal('sec-faqs-subtitle', fq.subtitle);
+      renderFaqsEditorList();
+
+      // E. Encabezados Catálogo, Galería y Turnero
+      const srvSec = adminSiteContent.servicesSection || {};
+      setVal('sec-srv-pill', srvSec.pill);
+      setVal('sec-srv-title', srvSec.title);
+      setVal('sec-srv-subtitle', srvSec.subtitle);
+      setVal('sec-srv-cta-title', srvSec.ctaCardTitle);
+      setVal('sec-srv-cta-desc', srvSec.ctaCardDesc);
+      setVal('sec-srv-cta-btn', srvSec.ctaCardBtn);
+
+      const galSec = adminSiteContent.gallerySection || {};
+      setVal('sec-gal-pill', galSec.pill);
+      setVal('sec-gal-title', galSec.title);
+      setVal('sec-gal-subtitle', galSec.subtitle);
+      setVal('sec-gal-ig-btn', galSec.instagramBtnText);
+
+      const bookSec = adminSiteContent.bookingSection || {};
+      setVal('sec-book-pill', bookSec.pill);
+      setVal('sec-book-title', bookSec.title);
+      setVal('sec-book-subtitle', bookSec.subtitle);
+      setVal('sec-book-btn1', bookSec.primaryBtnText);
+      setVal('sec-turnos-ribbon', bookSec.turnosPageRibbon);
+      setVal('sec-turnos-title', bookSec.turnosPageTitle);
+      setVal('sec-turnos-subtitle', bookSec.turnosPageSubtitle);
+    }
+
+    function renderHeroStylesEditor() {
+      const container = document.getElementById('admin-hero-styles-list');
+      if (!container || !adminSiteContent) return;
+      const styles = adminSiteContent.hero?.styles || [];
+
+      container.innerHTML = styles.map((st, idx) => `
+        <div class="p-4 rounded-2xl bg-[#0d0a0f] border border-white/10 space-y-3">
+          <div class="flex items-center justify-between gap-2 border-b border-white/10 pb-2">
+            <span class="text-xs font-extrabold uppercase tracking-wider text-[#ffaed8]">Estilo #${idx + 1}</span>
+            ${styles.length > 1 ? `
+              <button type="button" onclick="removeHeroStyleCard(${idx})" class="text-xs text-red-400 hover:text-red-300 flex items-center gap-0.5">
+                <span class="material-symbols-outlined text-sm">delete</span> Quitar
+              </button>
+            ` : ''}
+          </div>
+
+          <div class="flex items-center gap-3">
+            <img id="hs-prev-${idx}" src="${escHtml(st.img || 'images/ej-volumen-hibrido.jpg')}" alt="Hero style" class="w-20 h-20 rounded-xl object-cover border border-[#ff3e96]/50 flex-shrink-0">
+            <div class="flex-1 space-y-1.5">
+              <label class="px-3 py-1 rounded-full bg-[#ff2d85]/20 hover:bg-[#ff2d85] text-[#ffaed8] hover:text-white border border-[#ff3e96]/40 text-[11px] font-bold uppercase cursor-pointer inline-flex items-center gap-1 transition-all">
+                <span class="material-symbols-outlined text-xs">upload</span>
+                <span>Subir Foto</span>
+                <input type="file" accept="image/*" class="hidden" onchange="uploadHeroStyleImg(event, ${idx})">
+              </label>
+              <input type="text" data-hs-idx="${idx}" data-hs-field="img" value="${escHtml(st.img || '')}" oninput="document.getElementById('hs-prev-${idx}').src = this.value" placeholder="Ruta imagen..." class="w-full bg-[#161218] border border-white/15 rounded-lg px-2.5 py-1 text-[11px] text-white font-mono">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-[10px] uppercase text-gray-400 mb-0.5">Nombre Botón</label>
+              <input type="text" data-hs-idx="${idx}" data-hs-field="name" value="${escHtml(st.name || '')}" class="w-full bg-[#161218] border border-white/15 rounded-lg px-2.5 py-1.5 text-xs text-white">
+            </div>
+            <div>
+              <label class="block text-[10px] uppercase text-gray-400 mb-0.5">Badge Flotante</label>
+              <input type="text" data-hs-idx="${idx}" data-hs-field="badge" value="${escHtml(st.badge || '')}" class="w-full bg-[#161218] border border-white/15 rounded-lg px-2.5 py-1.5 text-xs text-white">
+            </div>
+            <div>
+              <label class="block text-[10px] uppercase text-gray-400 mb-0.5">Título Tarjeta</label>
+              <input type="text" data-hs-idx="${idx}" data-hs-field="title" value="${escHtml(st.title || '')}" class="w-full bg-[#161218] border border-white/15 rounded-lg px-2.5 py-1.5 text-xs text-white">
+            </div>
+            <div class="grid grid-cols-2 gap-1.5">
+              <div>
+                <label class="block text-[10px] uppercase text-[#25D366] mb-0.5">Precio</label>
+                <input type="text" data-hs-idx="${idx}" data-hs-field="price" value="${escHtml(st.price || '')}" class="w-full bg-[#161218] border border-white/15 rounded-lg px-2 py-1.5 text-xs font-bold text-white">
+              </div>
+              <div>
+                <label class="block text-[10px] uppercase text-gray-400 mb-0.5">Duración</label>
+                <input type="text" data-hs-idx="${idx}" data-hs-field="time" value="${escHtml(st.time || '')}" class="w-full bg-[#161218] border border-white/15 rounded-lg px-2 py-1.5 text-xs text-white">
+              </div>
+            </div>
+            <div class="col-span-2">
+              <label class="block text-[10px] uppercase text-gray-400 mb-0.5">Descripción Corta</label>
+              <input type="text" data-hs-idx="${idx}" data-hs-field="detail" value="${escHtml(st.detail || '')}" class="w-full bg-[#161218] border border-white/15 rounded-lg px-2.5 py-1.5 text-xs text-white">
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function syncHeroStylesFromDom() {
+      if (!adminSiteContent || !adminSiteContent.hero) return;
+      const styles = [...(adminSiteContent.hero.styles || [])];
+      document.querySelectorAll('[data-hs-idx]').forEach(inp => {
+        const idx = Number(inp.getAttribute('data-hs-idx'));
+        const field = inp.getAttribute('data-hs-field');
+        if (styles[idx] && field) {
+          styles[idx][field] = inp.value.trim();
+        }
+      });
+      adminSiteContent.hero.styles = styles;
+    }
+
+    function addHeroStyleCard() {
+      syncHeroStylesFromDom();
+      adminSiteContent.hero.styles.push({
+        id: 'style_' + Date.now(),
+        name: 'Nuevo Estilo',
+        badge: '✨ Especial Estudio',
+        title: 'Nuevo Look de Pestañas',
+        detail: 'Diseño personalizado adaptado a tu mirada',
+        price: '$30.000',
+        time: '90 min',
+        img: 'images/ej-volumen-hibrido.jpg'
+      });
+      renderHeroStylesEditor();
+    }
+
+    function removeHeroStyleCard(idx) {
+      syncHeroStylesFromDom();
+      adminSiteContent.hero.styles.splice(idx, 1);
+      renderHeroStylesEditor();
+    }
+
+    async function uploadHeroStyleImg(event, idx) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      try {
+        const res = await window.MicaBackend.gallery.uploadImage(file);
+        if (res && res.url) {
+          syncHeroStylesFromDom();
+          if (adminSiteContent.hero.styles[idx]) {
+            adminSiteContent.hero.styles[idx].img = res.url;
+            renderHeroStylesEditor();
+          }
+        }
+      } catch (err) {
+        alert('Error subiendo imagen: ' + err.message);
+      }
+    }
+
+    async function uploadSectionImage(event, inputId, previewId) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      try {
+        const res = await window.MicaBackend.gallery.uploadImage(file);
+        if (res && res.url) {
+          const inp = document.getElementById(inputId);
+          const prev = document.getElementById(previewId);
+          if (inp) inp.value = res.url;
+          if (prev) prev.src = res.url;
+        }
+      } catch (err) {
+        alert('Error subiendo imagen: ' + err.message);
+      }
+    }
+
+    function renderAboutSpecialtiesEditor() {
+      const container = document.getElementById('admin-about-specialties-list');
+      if (!container || !adminSiteContent) return;
+      const specs = adminSiteContent.about?.specialties || [];
+
+      container.innerHTML = specs.map((sp, idx) => `
+        <div class="flex items-center gap-2 bg-[#161218] p-2 rounded-xl border border-white/10">
+          <input type="text" data-sp-idx="${idx}" data-sp-field="icon" value="${escHtml(sp.icon || '✨')}" class="w-10 bg-[#0d0a0f] border border-white/15 rounded-lg px-2 py-1 text-center text-sm text-white">
+          <input type="text" data-sp-idx="${idx}" data-sp-field="text" value="${escHtml(sp.text || '')}" class="flex-1 bg-[#0d0a0f] border border-white/15 rounded-lg px-2.5 py-1 text-xs text-white">
+          <button type="button" onclick="removeAboutSpecialtyItem(${idx})" class="p-1 text-red-400 hover:text-red-300" title="Quitar">
+            <span class="material-symbols-outlined text-sm">close</span>
+          </button>
+        </div>
+      `).join('');
+    }
+
+    function syncAboutSpecialtiesFromDom() {
+      if (!adminSiteContent || !adminSiteContent.about) return;
+      const specs = [...(adminSiteContent.about.specialties || [])];
+      document.querySelectorAll('[data-sp-idx]').forEach(inp => {
+        const idx = Number(inp.getAttribute('data-sp-idx'));
+        const field = inp.getAttribute('data-sp-field');
+        if (specs[idx] && field) {
+          specs[idx][field] = inp.value.trim();
+        }
+      });
+      adminSiteContent.about.specialties = specs;
+    }
+
+    function addAboutSpecialtyItem() {
+      syncAboutSpecialtiesFromDom();
+      adminSiteContent.about.specialties.push({ icon: '✨', text: 'Nuevo servicio o especialidad' });
+      renderAboutSpecialtiesEditor();
+    }
+
+    function removeAboutSpecialtyItem(idx) {
+      syncAboutSpecialtiesFromDom();
+      adminSiteContent.about.specialties.splice(idx, 1);
+      renderAboutSpecialtiesEditor();
+    }
+
+    // FAQs CRUD
+    function renderFaqsEditorList() {
+      const container = document.getElementById('admin-faqs-list');
+      if (!container || !adminSiteContent) return;
+      const items = adminSiteContent.faqs?.items || [];
+
+      container.innerHTML = items.map(item => `
+        <div class="p-4 rounded-2xl bg-[#0d0a0f] border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div class="space-y-1 flex-1">
+            <p class="font-bold text-sm text-white">${escHtml(item.question)}</p>
+            <p class="text-xs text-[#d8c4d6]">${escHtml(item.answer)}</p>
+          </div>
+          <div class="flex items-center gap-1.5 self-end sm:self-center">
+            <button type="button" onclick="openFaqModal('${item.id}')" class="px-3 py-1.5 rounded-xl bg-[#ff2d85]/20 hover:bg-[#ff2d85] text-[#ffaed8] hover:text-white border border-[#ff3e96]/40 text-xs font-bold flex items-center gap-1">
+              <span class="material-symbols-outlined text-sm">edit</span>
+              <span>Editar</span>
+            </button>
+            <button type="button" onclick="deleteFaqItem('${item.id}')" class="p-1.5 rounded-xl bg-red-950/40 hover:bg-red-600 text-red-300 hover:text-white border border-red-500/30">
+              <span class="material-symbols-outlined text-sm">delete</span>
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function openFaqModal(id = null) {
+      const modal = document.getElementById('faq-modal');
+      if (!modal || !adminSiteContent) return;
+      const existing = id ? (adminSiteContent.faqs?.items || []).find(f => f.id === id) : null;
+      document.getElementById('faq-edit-id').value = existing ? existing.id : '';
+      document.getElementById('faq-question').value = existing ? existing.question : '';
+      document.getElementById('faq-answer').value = existing ? existing.answer : '';
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeFaqModal() {
+      const modal = document.getElementById('faq-modal');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    }
+
+    async function handleFaqFormSubmit(e) {
+      e.preventDefault();
+      if (!adminSiteContent) return;
+      const editId = document.getElementById('faq-edit-id').value;
+      const newFaq = {
+        id: editId || ('faq_' + Date.now()),
+        question: document.getElementById('faq-question').value.trim(),
+        answer: document.getElementById('faq-answer').value.trim()
+      };
+      const items = [...(adminSiteContent.faqs?.items || [])];
+      const idx = items.findIndex(f => f.id === editId);
+      if (idx !== -1) items[idx] = newFaq;
+      else items.push(newFaq);
+
+      adminSiteContent.faqs.items = items;
+      await window.MicaBackend.content.saveSection('faqs', adminSiteContent.faqs);
+      closeFaqModal();
+      renderFaqsEditorList();
+    }
+
+    async function deleteFaqItem(id) {
+      if (!adminSiteContent || !confirm('¿Eliminar esta pregunta frecuente?')) return;
+      adminSiteContent.faqs.items = (adminSiteContent.faqs?.items || []).filter(f => f.id !== id);
+      await window.MicaBackend.content.saveSection('faqs', adminSiteContent.faqs);
+      renderFaqsEditorList();
+    }
+
+    async function saveAllWebSections() {
+      if (!adminSiteContent) return;
+      const fb = document.getElementById('sections-global-feedback');
+      if (fb) fb.textContent = 'Guardando secciones...';
+
+      try {
+        syncHeroStylesFromDom();
+        syncAboutSpecialtiesFromDom();
+
+        const gVal = (id) => (document.getElementById(id)?.value || '').trim();
+
+        adminSiteContent.hero = {
+          ...(adminSiteContent.hero || {}),
+          statusPill: gVal('sec-hero-status-pill'),
+          scriptTitle: gVal('sec-hero-script-title'),
+          mainTitleLine1: gVal('sec-hero-title-1'),
+          mainTitleHighlight: gVal('sec-hero-title-2'),
+          ribbonTop: gVal('sec-hero-ribbon-top'),
+          ribbonBrand: gVal('sec-hero-ribbon-brand'),
+          description: gVal('sec-hero-desc'),
+          primaryBtnText: gVal('sec-hero-btn1'),
+          secondaryBtnText: gVal('sec-hero-btn2'),
+          guarantees: [
+            gVal('sec-hero-guar-1'),
+            gVal('sec-hero-guar-2'),
+            gVal('sec-hero-guar-3')
+          ].filter(Boolean),
+          styles: adminSiteContent.hero.styles
+        };
+
+        adminSiteContent.about = {
+          ...(adminSiteContent.about || {}),
+          photoUrl: gVal('sec-about-photo-url'),
+          photoTopBadge: gVal('sec-about-top-badge'),
+          photoCardName: gVal('sec-about-card-name'),
+          photoCardRole: gVal('sec-about-card-role'),
+          photoCardSub: gVal('sec-about-card-sub'),
+          stat1Value: gVal('sec-about-stat1-val'),
+          stat1Label: gVal('sec-about-stat1-lbl'),
+          stat2Value: gVal('sec-about-stat2-val'),
+          stat2Label: gVal('sec-about-stat2-lbl'),
+          headerPill: gVal('sec-about-header-pill'),
+          headline: gVal('sec-about-headline'),
+          subheadline: gVal('sec-about-subheadline'),
+          introParagraph1: gVal('sec-about-intro1'),
+          introParagraph2: gVal('sec-about-intro2'),
+          boxTitle: gVal('sec-about-box-title'),
+          specialties: adminSiteContent.about.specialties,
+          quote: gVal('sec-about-quote'),
+          closingParagraph1: gVal('sec-about-close1'),
+          closingParagraph2: gVal('sec-about-close2'),
+          closingSignature: gVal('sec-about-signature')
+        };
+
+        adminSiteContent.location = {
+          ...(adminSiteContent.location || {}),
+          pill: gVal('sec-loc-pill'),
+          title: gVal('sec-loc-title'),
+          subtitle: gVal('sec-loc-subtitle'),
+          addressTitle: gVal('sec-loc-addr-title'),
+          addressText: gVal('sec-loc-addr-text'),
+          addressNote: gVal('sec-loc-addr-note'),
+          hoursTitle: gVal('sec-loc-hours-title'),
+          hoursLine1: gVal('sec-loc-hours-1'),
+          hoursLine2: gVal('sec-loc-hours-2'),
+          whatsappNumber: gVal('sec-loc-whatsapp'),
+          instagramHandle: gVal('sec-loc-ig-handle'),
+          instagramUrl: gVal('sec-loc-ig-url'),
+          studioPhotoUrl: gVal('sec-loc-studio-url'),
+          brandName: gVal('sec-loc-brand'),
+          footerSubtitle: gVal('sec-loc-footer-sub'),
+          footerCopyright: gVal('sec-loc-footer-copy')
+        };
+
+        adminSiteContent.faqs = {
+          ...(adminSiteContent.faqs || {}),
+          pill: gVal('sec-faqs-pill'),
+          title: gVal('sec-faqs-title'),
+          subtitle: gVal('sec-faqs-subtitle'),
+          items: adminSiteContent.faqs?.items || []
+        };
+
+        adminSiteContent.servicesSection = {
+          ...(adminSiteContent.servicesSection || {}),
+          pill: gVal('sec-srv-pill'),
+          title: gVal('sec-srv-title'),
+          subtitle: gVal('sec-srv-subtitle'),
+          ctaCardTitle: gVal('sec-srv-cta-title'),
+          ctaCardDesc: gVal('sec-srv-cta-desc'),
+          ctaCardBtn: gVal('sec-srv-cta-btn')
+        };
+
+        adminSiteContent.gallerySection = {
+          ...(adminSiteContent.gallerySection || {}),
+          pill: gVal('sec-gal-pill'),
+          title: gVal('sec-gal-title'),
+          subtitle: gVal('sec-gal-subtitle'),
+          instagramBtnText: gVal('sec-gal-ig-btn')
+        };
+
+        adminSiteContent.bookingSection = {
+          ...(adminSiteContent.bookingSection || {}),
+          pill: gVal('sec-book-pill'),
+          title: gVal('sec-book-title'),
+          subtitle: gVal('sec-book-subtitle'),
+          primaryBtnText: gVal('sec-book-btn1'),
+          turnosPageRibbon: gVal('sec-turnos-ribbon'),
+          turnosPageTitle: gVal('sec-turnos-title'),
+          turnosPageSubtitle: gVal('sec-turnos-subtitle')
+        };
+
+        await window.MicaBackend.content.saveAll(adminSiteContent);
+        if (fb) {
+          fb.textContent = '✓ ¡Secciones guardadas y publicadas en vivo!';
+          setTimeout(() => { fb.textContent = ''; }, 3500);
+        }
+      } catch (err) {
+        alert('Error guardando secciones: ' + err.message);
+        if (fb) fb.textContent = '';
+      }
+    }
+
+    async function resetSectionConfirm(sectionKey, label) {
+      if (!confirm(`¿Seguro que querés restaurar "${label}" a sus textos y valores originales?`)) return;
+      try {
+        await window.MicaBackend.content.resetDefaults(sectionKey);
+        await loadSiteContentAdmin(true);
+      } catch (err) {
+        alert('Error restaurando sección: ' + err.message);
+      }
+    }
+
     function handleLogout() {
       window.MicaBackend.auth.logout();
       window.location.href = 'login.html';
@@ -2710,6 +4740,7 @@
       loadPublishedDaysBoard();
       loadGalleryPhotos();
       loadAdminPaymentInfo();
+      loadSiteContentAdmin();
       window.MicaBackend.emails.getSettings().then(d => updateEmailProviderBadges(d.provider)).catch(() => {});
     });
   </script>

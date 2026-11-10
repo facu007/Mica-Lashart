@@ -300,7 +300,7 @@
       <div class="flex items-center justify-center lg:justify-start mb-4 sm:mb-6">
         <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1e1622]/90 border border-[#ff3e96]/40 shadow-sm backdrop-blur-md">
           <span class="w-2 h-2 rounded-full bg-[#25D366] animate-pulse"></span>
-          <span class="text-[11px] sm:text-xs font-bold text-[#ffb0c9] tracking-wider uppercase">
+          <span id="hero-status-pill" class="text-[11px] sm:text-xs font-bold text-[#ffb0c9] tracking-wider uppercase">
             Turnos Disponibles Esta Semana • Bahía Blanca
           </span>
           <span class="text-[#ff3e96] text-xs">♡</span>
@@ -315,12 +315,12 @@
           
           <!-- Headline Group -->
           <div class="space-y-2">
-            <p class="font-script text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-[#ffaed8] italic leading-tight text-glow">
+            <p id="hero-script-title" class="font-script text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-[#ffaed8] italic leading-tight text-glow">
               ¿Lista para sentir la diferencia?
             </p>
             <h1 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-tight pt-1">
-              Miradas con arte,<br/>
-              <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#ff3e96] via-[#ffaed8] to-[#ffffff]">
+              <span id="hero-main-title-line1">Miradas con arte,</span><br/>
+              <span id="hero-main-title-highlight" class="text-transparent bg-clip-text bg-gradient-to-r from-[#ff3e96] via-[#ffaed8] to-[#ffffff]">
                 precisión &amp; elegancia.
               </span>
             </h1>
@@ -329,12 +329,12 @@
           <!-- Ribbon Cartel de Referencia -->
           <div class="py-1 flex justify-center lg:justify-start">
             <div class="brush-ribbon px-5 sm:px-6 py-2.5 sm:py-3.5 text-center sm:text-left rounded-md inline-block max-w-xl">
-              <p class="text-[10px] sm:text-xs uppercase font-extrabold tracking-widest text-[#240012]">
+              <p id="hero-ribbon-top" class="text-[10px] sm:text-xs uppercase font-extrabold tracking-widest text-[#240012]">
                 RESERVÁ TU TURNO CON
               </p>
               <div class="flex items-center justify-center sm:justify-start gap-2 sm:gap-3 mt-0.5">
                 <span class="text-white text-sm sm:text-base">♡</span>
-                <span class="font-script text-xl sm:text-2xl md:text-3xl font-bold text-white tracking-wide">
+                <span id="hero-ribbon-brand" class="font-script text-xl sm:text-2xl md:text-3xl font-bold text-white tracking-wide">
                   Mica Lash Art
                 </span>
                 <span class="text-white text-sm sm:text-base">♡</span>
@@ -343,7 +343,7 @@
           </div>
 
           <!-- Description -->
-          <p class="text-[#d8c4d6] text-sm sm:text-base md:text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed">
+          <p id="hero-description" class="text-[#d8c4d6] text-sm sm:text-base md:text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed">
             Diseño exclusivo de pestañas, visagismo y cuidado integral. Un espacio privado en Bahía Blanca para relajarte mientras transformamos tu mirada sin dañar tu pestaña natural.
           </p>
 
@@ -386,27 +386,27 @@
           <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-3 sm:gap-4 pt-2">
             <a class="inline-flex justify-center items-center gap-2.5 bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] hover:brightness-110 text-white px-6 sm:px-7 py-3.5 sm:py-4 rounded-full font-bold text-sm sm:text-base shadow-lg shadow-[#ff2d85]/30 active:scale-95 transition-all text-center" href="turnos.html">
               <span class="material-symbols-outlined text-xl">calendar_month</span>
-              <span>Pedir Turno Online</span>
+              <span id="hero-primary-btn-text">Pedir Turno Online</span>
             </a>
             <a class="inline-flex justify-center items-center gap-2 bg-[#1e1622] hover:bg-[#271c2b] border border-[#ff3e96]/40 hover:border-[#ff3e96] text-[#ffaed8] px-5 sm:px-6 py-3.5 sm:py-4 rounded-full font-bold text-sm transition-all" href="#promos">
-              <span>Ver Precios &amp; Promos</span>
+              <span id="hero-secondary-btn-text">Ver Precios &amp; Promos</span>
               <span class="material-symbols-outlined text-sm">arrow_downward</span>
             </a>
           </div>
 
           <!-- Badges de garantía y bioseguridad -->
-          <div class="pt-4 border-t border-[#382637] flex flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-4 text-xs text-[#d8c4d6]">
+          <div id="hero-guarantees-bar" class="pt-4 border-t border-[#382637] flex flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-4 text-xs text-[#d8c4d6]">
             <div class="flex items-center gap-1.5">
               <span class="material-symbols-outlined text-[#ff3e96] text-base">verified</span>
-              <span>100% Sin dolor</span>
+              <span id="hero-guarantee-1">100% Sin dolor</span>
             </div>
             <div class="flex items-center gap-1.5">
               <span class="material-symbols-outlined text-[#ff3e96] text-base">spa</span>
-              <span>Nutrición folicular</span>
+              <span id="hero-guarantee-2">Nutrición folicular</span>
             </div>
             <div class="flex items-center gap-1.5">
               <span class="material-symbols-outlined text-[#ff3e96] text-base">star</span>
-              <span>+150 clientas felices</span>
+              <span id="hero-guarantee-3">+150 clientas felices</span>
             </div>
           </div>
         </div>
@@ -497,18 +497,18 @@
       
       <div class="text-center max-w-3xl mx-auto mb-10 sm:mb-14 space-y-3">
         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1e1622] border border-[#ff3e96]/30 text-xs text-[#ffaed8] font-bold tracking-widest uppercase">
-          <span class="text-[#ff3e96]">♡</span> Promociones de Temporada <span class="text-[#ff3e96]">♡</span>
+          <span class="text-[#ff3e96]">♡</span> <span id="promos-pill">Promociones de Temporada</span> <span class="text-[#ff3e96]">♡</span>
         </div>
-        <h2 class="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white">
+        <h2 id="promos-title" class="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white">
           Elegí la opción para potenciar tus resultados
         </h2>
-        <p class="text-[#d8c4d6] text-xs sm:text-sm md:text-base max-w-xl mx-auto">
+        <p id="promos-subtitle" class="text-[#d8c4d6] text-xs sm:text-sm md:text-base max-w-xl mx-auto">
           Paquetes y combos pensados para maximizar la belleza de tu mirada y mantenerla impecable por semanas.
         </p>
       </div>
 
       <!-- Grid de Promociones con Borde Neón y Cinta Brush Stroke -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+      <div id="promos-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
         
         <!-- Promo Card 1 -->
         <div class="neon-card rounded-2xl bg-[#161218] p-6 sm:p-7 flex flex-col justify-between hover:scale-[1.02] transition-all duration-300 group">
@@ -611,13 +611,13 @@
             <span class="material-symbols-outlined text-2xl sm:text-3xl">calendar_month</span>
           </div>
           <div>
-            <p class="text-xs uppercase font-extrabold tracking-widest text-[#ff6ea7]">Agenda Online 24/7</p>
-            <p class="font-display text-xl sm:text-2xl md:text-3xl font-bold text-white">Reservá tu Horario en Tiempo Real</p>
-            <p class="text-xs text-[#d8c4d6]">Zona Htal. Penna - Villa Cerrito - Bahía Blanca</p>
+            <p id="promos-banner-tag" class="text-xs uppercase font-extrabold tracking-widest text-[#ff6ea7]">Agenda Online 24/7</p>
+            <p id="promos-banner-title" class="font-display text-xl sm:text-2xl md:text-3xl font-bold text-white">Reservá tu Horario en Tiempo Real</p>
+            <p id="promos-banner-subtitle" class="text-xs text-[#d8c4d6]">Zona Htal. Penna - Villa Cerrito - Bahía Blanca</p>
           </div>
         </div>
         <a class="w-full md:w-auto inline-flex justify-center items-center gap-2 bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] hover:brightness-110 text-white px-6 sm:px-8 py-3.5 rounded-full font-bold text-sm uppercase tracking-wider shadow-lg shadow-[#ff2d85]/40 transition-all whitespace-nowrap active:scale-95" href="turnos.html">
-          <span>Abrir Agenda Online</span>
+          <span id="promos-banner-btn">Abrir Agenda Online</span>
           <span class="material-symbols-outlined text-base">event_available</span>
         </a>
       </div>
@@ -632,12 +632,12 @@
       <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-12 gap-6">
         <div>
           <div class="inline-flex items-center gap-1.5 text-[#ff6ea7] text-xs font-bold uppercase tracking-widest mb-2">
-            <span>♡</span> Catálogo del Estudio <span>♡</span>
+            <span>♡</span> <span id="services-section-pill">Catálogo del Estudio</span> <span>♡</span>
           </div>
-          <h2 class="font-display text-2xl sm:text-3xl md:text-5xl font-bold text-white">
+          <h2 id="services-section-title" class="font-display text-2xl sm:text-3xl md:text-5xl font-bold text-white">
             Técnicas &amp; Tratamientos VIP
           </h2>
-          <p class="text-[#d8c4d6] text-xs sm:text-sm md:text-base mt-2 max-w-lg">
+          <p id="services-section-subtitle" class="text-[#d8c4d6] text-xs sm:text-sm md:text-base mt-2 max-w-lg">
             Aislación prolija 1 a 1 sin excesos ni peso. Seleccioná el servicio para agendar tu horario exclusivo.
           </p>
         </div>
@@ -803,12 +803,12 @@
       
       <div class="text-center max-w-2xl mx-auto mb-10 sm:mb-14 space-y-3">
         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1e1622] border border-[#ff3e96]/30 text-xs text-[#ffaed8] font-bold tracking-widest uppercase">
-          <span class="text-[#ff3e96]">♡</span> Trabajos Reales <span class="text-[#ff3e96]">♡</span>
+          <span class="text-[#ff3e96]">♡</span> <span id="gallery-section-pill">Trabajos Reales</span> <span class="text-[#ff3e96]">♡</span>
         </div>
-        <h2 class="font-display text-2xl sm:text-3xl md:text-5xl font-bold text-white">
+        <h2 id="gallery-section-title" class="font-display text-2xl sm:text-3xl md:text-5xl font-bold text-white">
           Galería de Miradas
         </h2>
-        <p class="text-[#d8c4d6] text-xs sm:text-sm md:text-base">
+        <p id="gallery-section-subtitle" class="text-[#d8c4d6] text-xs sm:text-sm md:text-base">
           Aislación milimétrica, cero grumos y terminación de alta gama en cada sesión. Tocá para ver en detalle.
         </p>
       </div>
@@ -898,8 +898,8 @@
 
       <!-- Enlace a Instagram -->
       <div class="mt-10 text-center">
-        <a class="inline-flex items-center gap-2 text-[#ffaed8] hover:text-white font-bold text-xs sm:text-sm transition-colors border border-[#ff3e96]/40 px-5 sm:px-6 py-3 rounded-full hover:bg-[#ff3e96]/20 active:scale-95" href="https://instagram.com/mica.lashart" rel="noopener noreferrer" target="_blank">
-          <span>Ver más de 150 trabajos en Instagram @mica.lashart</span>
+        <a id="gallery-instagram-link" class="inline-flex items-center gap-2 text-[#ffaed8] hover:text-white font-bold text-xs sm:text-sm transition-colors border border-[#ff3e96]/40 px-5 sm:px-6 py-3 rounded-full hover:bg-[#ff3e96]/20 active:scale-95" href="https://instagram.com/mica.lashart" rel="noopener noreferrer" target="_blank">
+          <span id="gallery-instagram-btn-text">Ver más de 150 trabajos en Instagram @mica.lashart</span>
           <span class="material-symbols-outlined text-sm">open_in_new</span>
         </a>
       </div>
@@ -933,7 +933,7 @@
               <div class="absolute top-3 left-3 z-10">
                 <span class="px-3.5 py-1.5 rounded-full bg-[#070509] border-2 border-[#ff3e96] text-white text-xs font-black flex items-center gap-1.5 shadow-[0_4px_15px_rgba(0,0,0,0.9)]">
                   <span class="text-[#ff3e96]">👑</span>
-                  <span>Lashista &amp; Maquilladora desde 2016</span>
+                  <span id="about-photo-top-badge">Lashista &amp; Maquilladora desde 2016</span>
                 </span>
               </div>
 
@@ -941,11 +941,11 @@
               <div class="absolute bottom-3 left-3 right-3 p-3.5 rounded-xl bg-[#08050a]/95 border-2 border-[#ff3e96] flex items-center justify-between shadow-2xl z-10 backdrop-blur-md">
                 <div>
                   <div class="flex items-center gap-1.5">
-                    <p class="font-display font-extrabold text-base sm:text-lg text-white">Micaela</p>
+                    <p id="about-photo-card-name" class="font-display font-extrabold text-base sm:text-lg text-white">Micaela</p>
                     <span class="text-[#ff3e96] text-sm">♡</span>
                   </div>
-                  <p class="text-[11px] sm:text-xs text-[#ff6ea7] font-bold">Creadora de Mica Lash Art • Bahía Blanca</p>
-                  <p class="text-[10px] text-gray-200 mt-0.5">Atención VIP &amp; Capacitaciones</p>
+                  <p id="about-photo-card-role" class="text-[11px] sm:text-xs text-[#ff6ea7] font-bold">Creadora de Mica Lash Art • Bahía Blanca</p>
+                  <p id="about-photo-card-sub" class="text-[10px] text-gray-200 mt-0.5">Atención VIP &amp; Capacitaciones</p>
                 </div>
                 <div class="w-8 h-8 rounded-full bg-[#ff2d85]/20 border border-[#ff3e96] flex items-center justify-center text-white">
                   <span class="material-symbols-outlined text-sm text-[#ffaed8]">auto_awesome</span>
@@ -958,12 +958,12 @@
           <!-- Micro-stats badges under photo -->
           <div class="mt-4 grid grid-cols-2 gap-3 text-center">
             <div class="p-3 rounded-2xl bg-[#161218] border border-[#ff3e96]/30 shadow-md">
-              <p class="font-display font-black text-xl text-white text-glow">9+ Años</p>
-              <p class="text-[11px] text-[#ffaed8] font-bold uppercase tracking-wider">De Experiencia (2016)</p>
+              <p id="about-stat1-value" class="font-display font-black text-xl text-white text-glow">9+ Años</p>
+              <p id="about-stat1-label" class="text-[11px] text-[#ffaed8] font-bold uppercase tracking-wider">De Experiencia (2016)</p>
             </div>
             <div class="p-3 rounded-2xl bg-[#161218] border border-[#ff3e96]/30 shadow-md">
-              <p class="font-display font-black text-xl text-white text-glow">+150</p>
-              <p class="text-[11px] text-[#ffaed8] font-bold uppercase tracking-wider">Clientas &amp; Alumnas</p>
+              <p id="about-stat2-value" class="font-display font-black text-xl text-white text-glow">+150</p>
+              <p id="about-stat2-label" class="text-[11px] text-[#ffaed8] font-bold uppercase tracking-wider">Clientas &amp; Alumnas</p>
             </div>
           </div>
 
@@ -975,25 +975,25 @@
         
         <!-- Header Pill Oficial -->
         <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#1e1622] border-2 border-[#ff3e96] text-xs sm:text-sm text-[#ffaed8] font-black tracking-wider uppercase shadow-lg shadow-[#ff3e96]/20">
-          <span>🎀✨ ¡HOLA, SOY MICA! BIENVENIDAS A MI MUNDO ✨🎀</span>
+          <span id="about-header-pill">🎀✨ ¡HOLA, SOY MICA! BIENVENIDAS A MI MUNDO ✨🎀</span>
         </div>
 
         <!-- Headline & Subtitle -->
         <div class="space-y-2">
-          <h2 class="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold text-white leading-tight">
+          <h2 id="about-headline" class="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold text-white leading-tight">
             "Hacer de mi pasión mi profesión." 👑
           </h2>
-          <p class="font-script text-2xl sm:text-3xl text-[#ffaed8] italic leading-relaxed">
+          <p id="about-subheadline" class="font-script text-2xl sm:text-3xl text-[#ffaed8] italic leading-relaxed">
             Si todavía no me conocés, ¡me presento! 💗
           </p>
         </div>
 
         <!-- Story Presentation -->
         <div class="space-y-4 text-sm sm:text-base text-[#f5edf5] leading-relaxed">
-          <p class="bg-[#161218]/80 p-4 sm:p-5 rounded-2xl border border-white/5">
+          <p id="about-intro-p1" class="bg-[#161218]/80 p-4 sm:p-5 rounded-2xl border border-white/5">
             Soy <strong>Micaela</strong>, creadora de <strong>Mica Lash Art</strong>, lashista desde 2016, maquilladora y apasionada por el mundo de la belleza. 🦋💄
           </p>
-          <p class="text-[#d8c4d6]">
+          <p id="about-intro-p2" class="text-[#d8c4d6]">
             A lo largo de los años fui aprendiendo, capacitándome y sumando nuevos servicios para ofrecerles una experiencia cada vez más completa, siempre con amor, dedicación y atención a cada detalle. 🩷
           </p>
         </div>
@@ -1002,12 +1002,12 @@
         <div class="p-5 sm:p-7 rounded-3xl bg-gradient-to-br from-[#1e1622] via-[#161218] to-[#120d15] border-2 border-[#ff3e96]/50 shadow-2xl space-y-4">
           <div class="flex items-center gap-2 border-b border-white/10 pb-3">
             <span class="text-xl">✨</span>
-            <h3 class="font-display text-lg sm:text-xl font-bold text-white tracking-wide">
+            <h3 id="about-box-title" class="font-display text-lg sm:text-xl font-bold text-white tracking-wide">
               ¿Qué podés encontrar en Mica Lash Art?
             </h3>
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm">
+          <div id="about-specialties-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm">
             <div class="flex items-center gap-3 p-3 rounded-xl bg-[#0d0a0f] border border-[#ff3e96]/30 hover:border-[#ff3e96] transition-colors">
               <span class="text-lg">🎀</span>
               <span class="font-bold text-white">Extensiones de pestañas y diseños personalizados</span>
@@ -1037,16 +1037,16 @@
 
         <!-- Filosofía & Agradecimiento Personal -->
         <div class="space-y-3.5 text-xs sm:text-sm text-[#d8c4d6] leading-relaxed">
-          <p class="text-sm sm:text-base text-white font-medium italic border-l-2 border-[#ff3e96] pl-4 py-1">
+          <p id="about-quote" class="text-sm sm:text-base text-white font-medium italic border-l-2 border-[#ff3e96] pl-4 py-1">
             "Cada servicio tiene su magia, pero todos comparten lo mismo: las ganas de ayudarte a resaltar tu belleza y que te sientas hermosa, cómoda y segura de vos misma. 🫶🏻"
           </p>
-          <p>
+          <p id="about-closing-p1">
             Detrás de esta marca hay años de trabajo, esfuerzo, aprendizaje y muchísimos sueños por cumplir. Y esto es solo el comienzo… 💫
           </p>
-          <p class="text-white/95">
+          <p id="about-closing-p2" class="text-white/95">
             Gracias a cada clienta y alumna que confía en mí, recomienda mi trabajo y me acompaña en este camino. Ustedes son una parte muy importante de todo lo que estoy construyendo. 🥹💕
           </p>
-          <p class="font-display text-base sm:text-lg text-[#ffaed8] font-bold">
+          <p id="about-closing-signature" class="font-display text-base sm:text-lg text-[#ffaed8] font-bold">
             Bienvenidas a mi espacio, a mi trabajo y a este sueño llamado <span class="text-white uppercase tracking-wider text-glow">MICA LASH ART</span>. 🎀🩷
           </p>
         </div>
@@ -1057,9 +1057,9 @@
             <span class="material-symbols-outlined text-lg">calendar_month</span>
             <span>Reservar Turno Online</span>
           </a>
-          <a class="inline-flex justify-center items-center gap-2 bg-[#1e1622] hover:bg-[#271c2b] border border-[#ff3e96]/40 text-[#ffaed8] px-6 py-4 rounded-full font-bold text-xs uppercase tracking-wider transition-all" href="https://instagram.com/mica.lashart" target="_blank">
+          <a id="about-instagram-link" class="inline-flex justify-center items-center gap-2 bg-[#1e1622] hover:bg-[#271c2b] border border-[#ff3e96]/40 text-[#ffaed8] px-6 py-4 rounded-full font-bold text-xs uppercase tracking-wider transition-all" href="https://instagram.com/mica.lashart" target="_blank">
             <span class="material-symbols-outlined text-base">photo_camera</span>
-            <span>Instagram @mica.lashart</span>
+            <span id="about-instagram-text">Instagram @mica.lashart</span>
           </a>
         </div>
 
@@ -1079,12 +1079,12 @@
       <!-- Section Header -->
       <div class="text-center max-w-2xl mx-auto mb-12 sm:mb-16 space-y-3">
         <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#1e1622] border-2 border-[#ff3e96] text-xs font-black text-[#ffaed8] tracking-widest uppercase shadow-lg shadow-[#ff3e96]/20">
-          <span>🎓 ACADEMIA MICA LASH ART ♡ CAPACITACIONES 🎓</span>
+          <span id="courses-section-pill">🎓 ACADEMIA MICA LASH ART ♡ CAPACITACIONES 🎓</span>
         </div>
-        <h2 class="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold text-white leading-tight">
+        <h2 id="courses-section-title" class="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold text-white leading-tight">
           Cursos Profesionales &amp; Masterclasses
         </h2>
-        <p class="text-xs sm:text-sm md:text-base text-[#d8c4d6] leading-relaxed">
+        <p id="courses-section-subtitle" class="text-xs sm:text-sm md:text-base text-[#d8c4d6] leading-relaxed">
           Aprendé las técnicas más solicitadas del mercado de la mano de <span class="text-white font-bold">Micaela</span> (lashista y educadora desde 2016). Formación personalizada con práctica en modelo real, kit profesional completo y doble certificación.
         </p>
       </div>
@@ -1292,7 +1292,7 @@
       </div>
 
       <!-- Trust Badges Bar -->
-      <div class="mt-12 p-6 rounded-2xl bg-[#161218]/90 border border-[#ff3e96]/30 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+      <div id="courses-trust-badges" class="mt-12 p-6 rounded-2xl bg-[#161218]/90 border border-[#ff3e96]/30 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
         <div class="space-y-1">
           <span class="text-2xl">🎓</span>
           <p class="font-bold text-white text-xs sm:text-sm">Certificado Oficial</p>
@@ -1328,14 +1328,14 @@
       <div class="neon-card-glow rounded-3xl bg-gradient-to-br from-[#1e1622] via-[#161218] to-[#0f0a13] p-8 sm:p-12 md:p-14 text-center space-y-6 shadow-2xl border-2 border-[#ff3e96]">
         
         <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0d0a0f] border border-[#ff3e96]/50 text-xs font-black text-[#ffaed8] tracking-widest uppercase shadow-md">
-          <span>✨ AGENDA ONLINE EN TIEMPO REAL ✨</span>
+          <span id="booking-section-pill">✨ AGENDA ONLINE EN TIEMPO REAL ✨</span>
         </div>
 
         <div class="space-y-3 max-w-2xl mx-auto">
-          <h2 class="font-display text-3xl sm:text-4xl md:text-5xl font-black text-white leading-tight">
+          <h2 id="booking-section-title" class="font-display text-3xl sm:text-4xl md:text-5xl font-black text-white leading-tight">
             Reservá Tu Turno en Pocos Clics
           </h2>
-          <p class="text-xs sm:text-sm md:text-base text-[#d8c4d6] leading-relaxed">
+          <p id="booking-section-subtitle" class="text-xs sm:text-sm md:text-base text-[#d8c4d6] leading-relaxed">
             Accedé a nuestra aplicación exclusiva de turnos. Seleccioná tu tratamiento favorito, elegí el día en el calendario interactivo y asegurá tu horario sin esperas.
           </p>
         </div>
@@ -1358,17 +1358,17 @@
         <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-2 max-w-lg mx-auto">
           <a href="turnos.html" class="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] hover:brightness-110 text-white px-8 py-4 rounded-full font-bold text-xs sm:text-sm uppercase tracking-wider shadow-xl shadow-[#ff2d85]/40 transition-all active:scale-95">
             <span class="material-symbols-outlined text-base">calendar_month</span>
-            <span>Abrir Agenda de Turnos</span>
+            <span id="booking-primary-btn-text">Abrir Agenda de Turnos</span>
           </a>
 
           <a href="login.html" class="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-[#0d0a0f] hover:bg-[#1e1622] border-2 border-[#ff3e96]/50 text-[#ffaed8] hover:text-white px-6 py-4 rounded-full font-bold text-xs sm:text-sm uppercase tracking-wider transition-all active:scale-95">
             <span class="material-symbols-outlined text-base">person</span>
-            <span>Iniciar Sesión Clientas</span>
+            <span id="booking-secondary-btn-text">Iniciar Sesión Clientas</span>
           </a>
         </div>
 
         <!-- 3 Feature Highlights -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-white/10 text-left">
+        <div id="booking-features-grid" class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-white/10 text-left">
           <div class="flex items-start gap-3 p-3.5 rounded-2xl bg-[#0d0a0f]/60 border border-white/5">
             <span class="text-xl">🗓️</span>
             <div>
@@ -1404,12 +1404,12 @@
         
         <div class="lg:col-span-6 space-y-5 sm:space-y-6">
           <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1e1622] border border-[#ff3e96]/30 text-xs text-[#ffaed8] font-bold tracking-widest uppercase">
-            <span class="text-[#ff3e96]">♡</span> Estudio Privado <span class="text-[#ff3e96]">♡</span>
+            <span class="text-[#ff3e96]">♡</span> <span id="location-pill">Estudio Privado</span> <span class="text-[#ff3e96]">♡</span>
           </div>
-          <h2 class="font-display text-2xl sm:text-3xl md:text-5xl font-bold text-white">
+          <h2 id="location-title" class="font-display text-2xl sm:text-3xl md:text-5xl font-bold text-white">
             Visitanos en Bahía Blanca
           </h2>
-          <p class="text-xs sm:text-sm md:text-base text-[#d8c4d6] leading-relaxed">
+          <p id="location-subtitle" class="text-xs sm:text-sm md:text-base text-[#d8c4d6] leading-relaxed">
             Atención en estudio privado climatizado, sin esperas ni ruido exterior. Tu sesión es 100% personalizada.
           </p>
 
@@ -1417,9 +1417,9 @@
             <div class="flex items-start gap-3.5">
               <span class="material-symbols-outlined text-[#ff3e96] text-xl sm:text-2xl mt-0.5">location_on</span>
               <div>
-                <p class="font-bold text-white text-sm sm:text-base">Ubicación</p>
-                <p class="text-xs sm:text-sm text-[#d8c4d6]">Zona Htal. Penna - Villa Cerrito - Bahía Blanca</p>
-                <p class="text-[11px] sm:text-xs text-[#ff6ea7] mt-0.5">Dirección exacta enviada por WhatsApp al confirmar seña</p>
+                <p id="location-address-title" class="font-bold text-white text-sm sm:text-base">Ubicación</p>
+                <p id="location-address-text" class="text-xs sm:text-sm text-[#d8c4d6]">Zona Htal. Penna - Villa Cerrito - Bahía Blanca</p>
+                <p id="location-address-note" class="text-[11px] sm:text-xs text-[#ff6ea7] mt-0.5">Dirección exacta enviada por WhatsApp al confirmar seña</p>
               </div>
             </div>
             <div class="flex items-start gap-3.5">
@@ -1435,9 +1435,9 @@
             <div class="flex items-start gap-3.5">
               <span class="material-symbols-outlined text-[#ff3e96] text-xl sm:text-2xl mt-0.5">schedule</span>
               <div>
-                <p class="font-bold text-white text-sm sm:text-base">Días &amp; Horarios</p>
-                <p class="text-xs sm:text-sm text-[#d8c4d6]">Lunes a Viernes: 10:00 a 19:30 hs</p>
-                <p class="text-xs sm:text-sm text-[#d8c4d6]">Sábados: 10:00 a 16:00 hs (Cupos limitados)</p>
+                <p id="location-hours-title" class="font-bold text-white text-sm sm:text-base">Días &amp; Horarios</p>
+                <p id="location-hours-line1" class="text-xs sm:text-sm text-[#d8c4d6]">Lunes a Viernes: 10:00 a 19:30 hs</p>
+                <p id="location-hours-line2" class="text-xs sm:text-sm text-[#d8c4d6]">Sábados: 10:00 a 16:00 hs (Cupos limitados)</p>
               </div>
             </div>
           </div>
@@ -1447,16 +1447,16 @@
               <span class="material-symbols-outlined text-base">calendar_month</span>
               <span>Pedir Turno Online</span>
             </a>
-            <a class="inline-flex items-center gap-2 bg-[#1e1622] hover:bg-[#271c2b] border border-[#ff3e96]/40 text-[#ffaed8] px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-bold text-xs uppercase tracking-wider transition-all active:scale-95" href="https://instagram.com/mica.lashart" target="_blank">
+            <a id="location-instagram-link" class="inline-flex items-center gap-2 bg-[#1e1622] hover:bg-[#271c2b] border border-[#ff3e96]/40 text-[#ffaed8] px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-bold text-xs uppercase tracking-wider transition-all active:scale-95" href="https://instagram.com/mica.lashart" target="_blank">
               <span class="material-symbols-outlined text-base">photo_camera</span>
-              <span>@mica.lashart</span>
+              <span id="location-instagram-handle">@mica.lashart</span>
             </a>
           </div>
         </div>
 
         <div class="lg:col-span-6">
           <div class="neon-card-glow rounded-2xl overflow-hidden bg-[#0d0a0f] p-2">
-            <img class="w-full h-64 sm:h-80 object-cover rounded-xl" alt="Studio Mica Lash Art" src="images/studio-ambiance-vip.jpg"/>
+            <img id="location-studio-img" class="w-full h-64 sm:h-80 object-cover rounded-xl" alt="Studio Mica Lash Art" src="images/studio-ambiance-vip.jpg"/>
           </div>
         </div>
 
@@ -1470,12 +1470,12 @@
       
       <div class="text-center max-w-xl mx-auto mb-10 sm:mb-14 space-y-3">
         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1e1622] border border-[#ff3e96]/30 text-xs text-[#ffaed8] font-bold tracking-widest uppercase">
-          <span class="text-[#ff3e96]">♡</span> Información Útil <span class="text-[#ff3e96]">♡</span>
+          <span class="text-[#ff3e96]">♡</span> <span id="faqs-pill">Información Útil</span> <span class="text-[#ff3e96]">♡</span>
         </div>
-        <h2 class="font-display text-2xl sm:text-3xl md:text-5xl font-bold text-white">
+        <h2 id="faqs-title" class="font-display text-2xl sm:text-3xl md:text-5xl font-bold text-white">
           Preguntas Frecuentes
         </h2>
-        <p class="text-[#d8c4d6] text-xs sm:text-sm md:text-base">
+        <p id="faqs-subtitle" class="text-[#d8c4d6] text-xs sm:text-sm md:text-base">
           Todo lo que tenés que saber antes de tu cita en el estudio.
         </p>
       </div>
@@ -1529,13 +1529,13 @@
       
       <div class="flex flex-col items-center md:items-start text-center md:text-left">
         <div class="flex items-center gap-2">
-          <span class="font-display font-bold text-xl sm:text-2xl text-white tracking-wider">MICA LASH ART</span>
+          <span id="footer-brand-name" class="font-display font-bold text-xl sm:text-2xl text-white tracking-wider">MICA LASH ART</span>
           <span class="text-[#ff3e96]">♡</span>
         </div>
-        <p class="text-xs text-[#d8c4d6] mt-1">
+        <p id="footer-subtitle" class="text-xs text-[#d8c4d6] mt-1">
           Zona Htal. Penna - Villa Cerrito - Bahía Blanca • Agenda de Turnos Online
         </p>
-        <p class="text-[11px] text-[#ff6ea7] mt-1 font-semibold">
+        <p id="footer-copyright" class="text-[11px] text-[#ff6ea7] mt-1 font-semibold">
           © 2025 Mica Lash Art. Todos los derechos reservados.
         </p>
       </div>
@@ -1805,21 +1805,469 @@
     });
 
     // 7. Acordeón FAQs
-    document.querySelectorAll('.faq-toggle').forEach(toggle => {
-      toggle.addEventListener('click', () => {
-        const content = toggle.nextElementSibling;
-        const icon = toggle.querySelector('.faq-icon');
-        const isHidden = content.classList.contains('hidden');
+    function bindFaqToggles() {
+      document.querySelectorAll('.faq-toggle').forEach(toggle => {
+        if (toggle.dataset.bound === '1') return;
+        toggle.dataset.bound = '1';
+        toggle.addEventListener('click', () => {
+          const content = toggle.nextElementSibling;
+          const icon = toggle.querySelector('.faq-icon');
+          const isHidden = content.classList.contains('hidden');
 
-        document.querySelectorAll('.faq-content').forEach(c => c.classList.add('hidden'));
-        document.querySelectorAll('.faq-icon').forEach(i => i.classList.remove('rotate-180'));
+          document.querySelectorAll('.faq-content').forEach(c => c.classList.add('hidden'));
+          document.querySelectorAll('.faq-icon').forEach(i => i.classList.remove('rotate-180'));
 
-        if (isHidden) {
-          content.classList.remove('hidden');
-          icon.classList.add('rotate-180');
-        }
+          if (isHidden) {
+            content.classList.remove('hidden');
+            icon.classList.add('rotate-180');
+          }
+        });
       });
-    });
+    }
+    bindFaqToggles();
+
+    // 7b. Hidratar Todo el Contenido Editable de la Web (Precios, Servicios, Promos, Cursos, Secciones)
+    function formatArsPrice(val) {
+      if (typeof val === 'string' && val.trim().startsWith('$')) return val.trim();
+      const n = Number(String(val || '').replace(/[^0-9]/g, '')) || 0;
+      return '$' + n.toLocaleString('es-AR');
+    }
+
+    function escapeHtmlSafe(str) {
+      return String(str == null ? '' : str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    async function hydrateSiteContent() {
+      if (!window.MicaBackend || !window.MicaBackend.content) return;
+      try {
+        const content = await window.MicaBackend.content.getAll();
+        if (!content) return;
+
+        const setText = (id, val) => {
+          const el = document.getElementById(id);
+          if (el && val !== undefined && val !== null) el.textContent = val;
+        };
+
+        // A. HERO & ESTILOS EN VIVO
+        if (content.hero) {
+          const h = content.hero;
+          setText('hero-status-pill', h.statusPill);
+          setText('hero-script-title', h.scriptTitle);
+          setText('hero-main-title-line1', h.mainTitleLine1);
+          setText('hero-main-title-highlight', h.mainTitleHighlight);
+          setText('hero-ribbon-top', h.ribbonTop);
+          setText('hero-ribbon-brand', h.ribbonBrand);
+          setText('hero-description', h.description);
+          setText('hero-primary-btn-text', h.primaryBtnText);
+          setText('hero-secondary-btn-text', h.secondaryBtnText);
+
+          if (Array.isArray(h.guarantees)) {
+            if (h.guarantees[0]) setText('hero-guarantee-1', h.guarantees[0]);
+            if (h.guarantees[1]) setText('hero-guarantee-2', h.guarantees[1]);
+            if (h.guarantees[2]) setText('hero-guarantee-3', h.guarantees[2]);
+          }
+
+          if (Array.isArray(h.styles) && h.styles.length > 0) {
+            heroStyles.length = 0;
+            h.styles.forEach(s => {
+              heroStyles.push({
+                id: s.id || 'style',
+                name: s.name || s.title || 'Estilo',
+                badge: s.badge || '★ Destacado',
+                title: s.title || s.name || 'Estilo',
+                detail: s.detail || '',
+                price: formatArsPrice(s.price),
+                time: s.time || '90 min',
+                img: s.img || 'images/ej-volumen-hibrido.jpg'
+              });
+            });
+
+            const pillsContainer = document.getElementById('hero-style-pills');
+            if (pillsContainer) {
+              pillsContainer.innerHTML = heroStyles.map((st, idx) => `
+                <button type="button"
+                  class="hero-pill-btn ${idx === 0 ? 'bg-[#ff2d85] text-white shadow-md shadow-[#ff2d85]/40 border-[#ff3e96]' : 'bg-[#1e1622] text-[#d8c4d6] border-white/10 hover:border-[#ff3e96]/50'} px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border transition-all active:scale-95 flex items-center gap-1.5"
+                  data-hero-idx="${idx}">
+                  <span>${escapeHtmlSafe(st.name)}</span>
+                </button>
+              `).join('');
+              pillsContainer.querySelectorAll('.hero-pill-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                  const idx = parseInt(btn.getAttribute('data-hero-idx'), 10);
+                  setHeroStyle(idx);
+                  resetHeroAutoCycle();
+                });
+              });
+            }
+
+            const dotsContainer = document.getElementById('hero-dots');
+            if (dotsContainer) {
+              dotsContainer.innerHTML = heroStyles.map((_, idx) => `
+                <button type="button" aria-label="Ir a estilo ${idx + 1}" class="hero-dot ${idx === 0 ? 'w-6 bg-[#ff3e96]' : 'w-2 bg-white/30'} h-2 rounded-full transition-all" data-dot-idx="${idx}"></button>
+              `).join('');
+              dotsContainer.querySelectorAll('.hero-dot').forEach(dot => {
+                dot.addEventListener('click', () => {
+                  const idx = parseInt(dot.getAttribute('data-dot-idx'), 10);
+                  setHeroStyle(idx);
+                  resetHeroAutoCycle();
+                });
+              });
+            }
+
+            setHeroStyle(0);
+          }
+        }
+
+        // B. SECCIÓN PROMOCIONES & COMBOS DESTACADOS
+        if (content.promosSection) {
+          const ps = content.promosSection;
+          setText('promos-pill', ps.pill);
+          setText('promos-title', ps.title);
+          setText('promos-subtitle', ps.subtitle);
+          setText('promos-banner-tag', ps.bannerTag);
+          setText('promos-banner-title', ps.bannerTitle);
+          setText('promos-banner-subtitle', ps.bannerSubtitle);
+          setText('promos-banner-btn', ps.bannerBtnText);
+
+          const promosGrid = document.getElementById('promos-grid');
+          if (promosGrid && Array.isArray(ps.items) && ps.items.length > 0) {
+            promosGrid.innerHTML = ps.items.map(promo => {
+              const isVip = !!promo.isVip;
+              const priceStr = formatArsPrice(promo.price);
+              const linkHref = `turnos.html?service=${encodeURIComponent(promo.serviceLink || promo.title || '')}`;
+              if (isVip) {
+                return `
+                  <div class="neon-card-glow rounded-2xl bg-gradient-to-b from-[#221325] to-[#161218] p-6 sm:p-7 flex flex-col justify-between transform md:-translate-y-2 hover:scale-[1.03] transition-all duration-300 relative">
+                    <div class="absolute -top-3.5 left-1/2 -translate-x-1/2">
+                      <span class="bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] text-white px-4 py-1 rounded-full text-xs font-black uppercase tracking-widest shadow-md whitespace-nowrap">
+                        ${escapeHtmlSafe(promo.vipBadge || '★ Más Elegido VIP ★')}
+                      </span>
+                    </div>
+                    <div>
+                      <div class="flex justify-between items-center mb-3 mt-2">
+                        <span class="text-xs font-bold uppercase tracking-wider text-[#ff3e96] px-3 py-1 rounded-full bg-[#38162b] border border-[#ff3e96]/50">${escapeHtmlSafe(promo.badge)}</span>
+                        <span class="text-xs text-[#ffaed8] flex items-center gap-1">
+                          <span class="material-symbols-outlined text-sm text-[#ff3e96]">schedule</span> ${escapeHtmlSafe(promo.duration)}
+                        </span>
+                      </div>
+                      <h3 class="font-display text-2xl font-bold text-white mb-2">${escapeHtmlSafe(promo.title)}</h3>
+                      <p class="text-xs text-[#d8c4d6] leading-relaxed mb-6">${escapeHtmlSafe(promo.desc)}</p>
+                      <div class="text-center py-5 my-2 rounded-xl bg-[#0a070c] border border-[#ff3e96]/40 shadow-inner">
+                        <p class="text-xs uppercase font-bold tracking-widest text-[#ffaed8]">${escapeHtmlSafe(promo.priceLabel || 'Inversión Especial')}</p>
+                        <p class="font-display text-5xl font-black text-white text-glow my-1 tracking-tight">${escapeHtmlSafe(priceStr)}</p>
+                        <div class="brush-ribbon px-4 py-1.5 rounded mx-auto inline-block text-xs font-bold text-white shadow-lg">
+                          ${escapeHtmlSafe(promo.ribbonText || 'La opción para potenciar tus resultados ♡')}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="pt-6 border-t border-[#382637]">
+                      <a class="w-full inline-flex justify-center items-center gap-2 bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] hover:brightness-110 text-white py-3.5 rounded-full font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#ff2d85]/30 active:scale-95 transition-all" href="${linkHref}">
+                        <span class="material-symbols-outlined text-base">calendar_month</span>
+                        <span>${escapeHtmlSafe(promo.btnText || 'Reservar Turno VIP')}</span>
+                      </a>
+                    </div>
+                  </div>
+                `;
+              }
+              return `
+                <div class="neon-card rounded-2xl bg-[#161218] p-6 sm:p-7 flex flex-col justify-between hover:scale-[1.02] transition-all duration-300 group">
+                  <div>
+                    <div class="flex justify-between items-center mb-3">
+                      <span class="text-xs font-bold uppercase tracking-wider text-[#ffaed8] px-3 py-1 rounded-full bg-[#271c2b] border border-[#ff3e96]/30">${escapeHtmlSafe(promo.badge)}</span>
+                      <span class="text-xs text-[#d8c4d6]/80 flex items-center gap-1">
+                        <span class="material-symbols-outlined text-sm text-[#ff3e96]">schedule</span> ${escapeHtmlSafe(promo.duration)}
+                      </span>
+                    </div>
+                    <h3 class="font-display text-xl font-bold text-white mb-2">${escapeHtmlSafe(promo.title)}</h3>
+                    <p class="text-xs text-[#d8c4d6] leading-relaxed mb-6">${escapeHtmlSafe(promo.desc)}</p>
+                    <div class="text-center py-4 my-2 rounded-xl bg-[#0d0a0f] border border-[#ff3e96]/20">
+                      <p class="text-xs uppercase font-bold tracking-widest text-[#ff6ea7]">${escapeHtmlSafe(promo.priceLabel || 'Precio Promoción')}</p>
+                      <p class="font-display text-4xl font-extrabold text-white text-glow my-1">${escapeHtmlSafe(priceStr)}</p>
+                      <div class="brush-ribbon-subtle px-3 py-1 rounded mx-auto inline-block text-[11px] font-bold text-white">
+                        ${escapeHtmlSafe(promo.ribbonText || 'La opción para potenciar tus resultados ♡')}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="pt-6 border-t border-[#382637]">
+                    <a class="w-full inline-flex justify-center items-center gap-2 bg-gradient-to-r from-[#ff2d85] to-[#ff6ea7] text-white py-3.5 rounded-full font-bold text-xs uppercase tracking-wider shadow-md hover:brightness-110 active:scale-95 transition-all" href="${linkHref}">
+                      <span>${escapeHtmlSafe(promo.btnText || 'Pedir Turno Promo')}</span>
+                      <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                    </a>
+                  </div>
+                </div>
+              `;
+            }).join('');
+          }
+        }
+
+        // C. CATÁLOGO DE SERVICIOS & PRECIOS
+        if (content.servicesSection) {
+          setText('services-section-pill', content.servicesSection.pill);
+          setText('services-section-title', content.servicesSection.title);
+          setText('services-section-subtitle', content.servicesSection.subtitle);
+        }
+
+        const servicesGrid = document.getElementById('services-grid');
+        if (servicesGrid && Array.isArray(content.services) && content.services.length > 0) {
+          const activeServices = content.services.filter(s => s.isActive !== false);
+          const ss = content.servicesSection || {};
+          const ctaCardHtml = `
+            <div class="neon-card bg-gradient-to-br from-[#27122b] to-[#161218] rounded-2xl p-6 sm:p-7 flex flex-col justify-between border-dashed">
+              <div>
+                <span class="material-symbols-outlined text-[#ff3e96] text-3xl mb-3">calendar_month</span>
+                <h3 class="font-display text-xl font-bold text-white mb-2">${escapeHtmlSafe(ss.ctaCardTitle || '¿Querés ver todos los horarios libres?')}</h3>
+                <p class="text-xs text-[#d8c4d6] leading-relaxed">
+                  ${escapeHtmlSafe(ss.ctaCardDesc || 'Consultá el calendario interactivo en tiempo real, elegí el día y horario que más te convenga y dejá tu nota de preferencia.')}
+                </p>
+              </div>
+              <div class="pt-6">
+                <a class="w-full inline-flex justify-center items-center gap-2 border border-[#ff3e96] text-[#ffaed8] hover:bg-[#ff2d85] hover:text-white px-4 py-3 rounded-full font-bold text-xs uppercase tracking-wider transition-colors active:scale-95" href="turnos.html">
+                  <span>${escapeHtmlSafe(ss.ctaCardBtn || 'Ver Calendario de Turnos')}</span>
+                </a>
+              </div>
+            </div>
+          `;
+
+          servicesGrid.innerHTML = activeServices.map(s => {
+            const catClass = String(s.category || 'volumen').toLowerCase();
+            const durText = s.durationLabel || `${s.duration || 90} min`;
+            const priceText = formatArsPrice(s.price);
+            const safeNameForJs = String(s.name || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+            return `
+              <div class="service-item ${escapeHtmlSafe(catClass)} neon-card bg-[#161218] rounded-2xl p-6 sm:p-7 flex flex-col justify-between hover:border-[#ff3e96] transition-all duration-300">
+                <div>
+                  <div class="flex justify-between items-start mb-4">
+                    <span class="px-3 py-1 rounded-full bg-[#271c2b] text-[#ffaed8] font-bold text-[11px] uppercase tracking-wider border border-[#ff3e96]/30">${escapeHtmlSafe(s.badge || 'Tratamiento VIP')}</span>
+                    <span class="text-xs text-[#d8c4d6]/70 flex items-center gap-1 font-semibold">
+                      <span class="material-symbols-outlined text-sm text-[#ff3e96]">schedule</span> ${escapeHtmlSafe(durText)}
+                    </span>
+                  </div>
+                  <h3 class="font-display text-xl font-bold text-white mb-2">${escapeHtmlSafe(s.name)}</h3>
+                  <p class="text-xs text-[#d8c4d6] leading-relaxed mb-6">${escapeHtmlSafe(s.desc || s.description || '')}</p>
+                </div>
+                <div class="pt-4 border-t border-[#382637] flex items-center justify-between">
+                  <span class="font-display font-bold text-lg text-[#ffaed8]">${escapeHtmlSafe(priceText)}</span>
+                  <button class="inline-flex items-center gap-1.5 bg-[#1e1622] hover:bg-[#ff2d85] hover:text-white text-[#ffaed8] px-4 py-2 rounded-full font-bold text-xs uppercase tracking-wider transition-colors border border-[#ff3e96]/40 active:scale-95" onclick="prefillBooking('${safeNameForJs}')">
+                    <span>Reservar</span>
+                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                  </button>
+                </div>
+              </div>
+            `;
+          }).join('') + ctaCardHtml;
+        }
+
+        // D. ENCABEZADO GALERÍA
+        if (content.gallerySection) {
+          setText('gallery-section-pill', content.gallerySection.pill);
+          setText('gallery-section-title', content.gallerySection.title);
+          setText('gallery-section-subtitle', content.gallerySection.subtitle);
+          setText('gallery-instagram-btn-text', content.gallerySection.instagramBtnText);
+        }
+
+        // E. SECCIÓN SOBRE MICA
+        if (content.about) {
+          const ab = content.about;
+          const bioImg = document.getElementById('mica-bio-img');
+          if (bioImg && ab.photoUrl) bioImg.src = ab.photoUrl;
+          setText('about-photo-top-badge', ab.photoTopBadge);
+          setText('about-photo-card-name', ab.photoCardName);
+          setText('about-photo-card-role', ab.photoCardRole);
+          setText('about-photo-card-sub', ab.photoCardSub);
+          setText('about-stat1-value', ab.stat1Value);
+          setText('about-stat1-label', ab.stat1Label);
+          setText('about-stat2-value', ab.stat2Value);
+          setText('about-stat2-label', ab.stat2Label);
+          setText('about-header-pill', ab.headerPill);
+          setText('about-headline', ab.headline);
+          setText('about-subheadline', ab.subheadline);
+          setText('about-intro-p1', ab.introParagraph1);
+          setText('about-intro-p2', ab.introParagraph2);
+          setText('about-box-title', ab.boxTitle);
+          setText('about-quote', ab.quote);
+          setText('about-closing-p1', ab.closingParagraph1);
+          setText('about-closing-p2', ab.closingParagraph2);
+          setText('about-closing-signature', ab.closingSignature);
+
+          const specGrid = document.getElementById('about-specialties-grid');
+          if (specGrid && Array.isArray(ab.specialties) && ab.specialties.length > 0) {
+            specGrid.innerHTML = ab.specialties.map(sp => `
+              <div class="flex items-center gap-3 p-3 rounded-xl bg-[#0d0a0f] border border-[#ff3e96]/30 hover:border-[#ff3e96] transition-colors">
+                <span class="text-lg">${escapeHtmlSafe(sp.icon || '✨')}</span>
+                <span class="font-bold text-white">${escapeHtmlSafe(sp.text || '')}</span>
+              </div>
+            `).join('');
+          }
+        }
+
+        // F. SECCIÓN CURSOS & ACADEMIA
+        if (content.coursesSection) {
+          const cs = content.coursesSection;
+          setText('courses-section-pill', cs.pill);
+          setText('courses-section-title', cs.title);
+          setText('courses-section-subtitle', cs.subtitle);
+
+          const wpPhone = (content.location && content.location.whatsappNumber) ? String(content.location.whatsappNumber).replace(/[^0-9]/g, '') : '5492914491141';
+          const coursesGrid = document.getElementById('courses-grid');
+          if (coursesGrid && Array.isArray(cs.courses) && cs.courses.length > 0) {
+            const activeCourses = cs.courses.filter(c => c.isActive !== false);
+            coursesGrid.innerHTML = activeCourses.map(course => {
+              const mod = String(course.modalityFilter || 'ambos').toLowerCase();
+              const filterClasses = mod === 'ambos' ? 'presencial online' : mod;
+              const syllabusList = Array.isArray(course.syllabus) ? course.syllabus : [];
+              const wpMsg = course.whatsappText || `Hola Mica! Quiero info y fechas del curso: ${course.title}`;
+              const wpUrl = `https://wa.me/${wpPhone}?text=${encodeURIComponent(wpMsg)}`;
+              return `
+                <article class="course-card ${filterClasses} flex flex-col justify-between bg-[#161218] border-2 border-[#ff3e96]/40 hover:border-[#ff3e96] rounded-3xl p-6 sm:p-7 shadow-2xl transition-all duration-300 hover:-translate-y-1.5 neon-card">
+                  <div class="space-y-4">
+                    <div class="flex items-center justify-between gap-2">
+                      <span class="px-3 py-1 rounded-full bg-[#ff2d85]/20 border border-[#ff3e96] text-[#ffaed8] text-[11px] font-black uppercase tracking-wider">
+                        ${escapeHtmlSafe(course.badge || '★ Capacitación VIP')}
+                      </span>
+                      <span class="text-xs text-white/70 font-semibold flex items-center gap-1">
+                        <span class="material-symbols-outlined text-sm text-[#ff3e96]">schedule</span> ${escapeHtmlSafe(course.duration || '1 Jornada')}
+                      </span>
+                    </div>
+
+                    <div class="space-y-1">
+                      <h3 class="font-display text-xl sm:text-2xl font-bold text-white tracking-wide">
+                        ${escapeHtmlSafe(course.title)}
+                      </h3>
+                      <p class="text-xs text-[#ff6ea7] font-semibold">${escapeHtmlSafe(course.subtitle || '')}</p>
+                    </div>
+
+                    <p class="text-xs sm:text-sm text-[#d8c4d6] leading-relaxed">
+                      ${escapeHtmlSafe(course.desc || '')}
+                    </p>
+
+                    <div class="space-y-2 pt-2 border-t border-white/10 text-xs text-[#f5edf5]">
+                      ${syllabusList.map(item => `
+                        <div class="flex items-center gap-2">
+                          <span class="text-[#25D366] text-sm font-bold">✓</span>
+                          <span>${escapeHtmlSafe(item)}</span>
+                        </div>
+                      `).join('')}
+                    </div>
+                  </div>
+
+                  <div class="pt-6 mt-6 border-t border-white/10 flex flex-col gap-3">
+                    <div class="flex items-baseline justify-between">
+                      <span class="text-xs uppercase font-bold text-gray-400">${escapeHtmlSafe(course.priceLabel || 'Inversión')}</span>
+                      <div class="text-right">
+                        <span class="font-display font-extrabold text-2xl sm:text-3xl text-white">${escapeHtmlSafe(formatArsPrice(course.price))}</span>
+                        <p class="text-[10px] text-[#ffaed8]">${escapeHtmlSafe(course.priceNote || '')}</p>
+                      </div>
+                    </div>
+
+                    <a href="${wpUrl}" target="_blank" rel="noopener noreferrer" class="w-full inline-flex justify-center items-center gap-2 bg-gradient-to-r from-[#25D366] to-[#128C7E] hover:from-[#20bd5a] hover:to-[#0f7a6e] text-white py-3.5 px-4 rounded-full font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#25D366]/30 active:scale-95 transition-all">
+                      <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                        <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"></path>
+                      </svg>
+                      <span>${escapeHtmlSafe(course.btnText || 'Consultar por WhatsApp')}</span>
+                    </a>
+                  </div>
+                </article>
+              `;
+            }).join('');
+          }
+
+          const trustBar = document.getElementById('courses-trust-badges');
+          if (trustBar && Array.isArray(cs.trustBadges) && cs.trustBadges.length > 0) {
+            trustBar.innerHTML = cs.trustBadges.map(tb => `
+              <div class="space-y-1">
+                <span class="text-2xl">${escapeHtmlSafe(tb.icon || '🎓')}</span>
+                <p class="font-bold text-white text-xs sm:text-sm">${escapeHtmlSafe(tb.title || '')}</p>
+                <p class="text-[10px] text-[#ffaed8]">${escapeHtmlSafe(tb.subtitle || '')}</p>
+              </div>
+            `).join('');
+          }
+        }
+
+        // G. SECCIÓN RESERVAS
+        if (content.bookingSection) {
+          const bs = content.bookingSection;
+          setText('booking-section-pill', bs.pill);
+          setText('booking-section-title', bs.title);
+          setText('booking-section-subtitle', bs.subtitle);
+          setText('booking-primary-btn-text', bs.primaryBtnText);
+          setText('booking-secondary-btn-text', bs.secondaryBtnText);
+
+          const featGrid = document.getElementById('booking-features-grid');
+          if (featGrid && Array.isArray(bs.features) && bs.features.length > 0) {
+            featGrid.innerHTML = bs.features.map(f => `
+              <div class="flex items-start gap-3 p-3.5 rounded-2xl bg-[#0d0a0f]/60 border border-white/5">
+                <span class="text-xl">${escapeHtmlSafe(f.icon || '✨')}</span>
+                <div>
+                  <p class="font-bold text-white text-xs">${escapeHtmlSafe(f.title || '')}</p>
+                  <p class="text-[11px] text-[#d8c4d6]">${escapeHtmlSafe(f.desc || '')}</p>
+                </div>
+              </div>
+            `).join('');
+          }
+        }
+
+        // H. SECCIÓN UBICACIÓN, HORARIOS, CONTACTO & FOOTER
+        if (content.location) {
+          const loc = content.location;
+          setText('location-pill', loc.pill);
+          setText('location-title', loc.title);
+          setText('location-subtitle', loc.subtitle);
+          setText('location-address-title', loc.addressTitle);
+          setText('location-address-text', loc.addressText);
+          setText('location-address-note', loc.addressNote);
+          setText('location-hours-title', loc.hoursTitle);
+          setText('location-hours-line1', loc.hoursLine1);
+          setText('location-hours-line2', loc.hoursLine2);
+          setText('location-instagram-handle', loc.instagramHandle);
+          setText('footer-brand-name', loc.brandName);
+          setText('footer-subtitle', loc.footerSubtitle);
+          setText('footer-copyright', loc.footerCopyright);
+
+          const studioImg = document.getElementById('location-studio-img');
+          if (studioImg && loc.studioPhotoUrl) studioImg.src = loc.studioPhotoUrl;
+
+          if (loc.instagramUrl) {
+            ['location-instagram-link', 'gallery-instagram-link', 'about-instagram-link'].forEach(linkId => {
+              const a = document.getElementById(linkId);
+              if (a) a.href = loc.instagramUrl;
+            });
+          }
+          if (loc.instagramHandle) {
+            setText('about-instagram-text', `Instagram ${loc.instagramHandle}`);
+          }
+        }
+
+        // I. PREGUNTAS FRECUENTES (FAQs)
+        if (content.faqs) {
+          const fq = content.faqs;
+          setText('faqs-pill', fq.pill);
+          setText('faqs-title', fq.title);
+          setText('faqs-subtitle', fq.subtitle);
+
+          const faqAcc = document.getElementById('faq-accordion');
+          if (faqAcc && Array.isArray(fq.items) && fq.items.length > 0) {
+            faqAcc.innerHTML = fq.items.map(item => `
+              <div class="neon-card rounded-2xl bg-[#161218] overflow-hidden">
+                <button class="faq-toggle w-full px-5 sm:px-6 py-4 sm:py-5 text-left flex items-center justify-between gap-4 font-bold text-white hover:text-[#ff3e96] transition-colors text-sm sm:text-base">
+                  <span>${escapeHtmlSafe(item.question)}</span>
+                  <span class="material-symbols-outlined text-[#ff3e96] transition-transform duration-300 transform faq-icon">expand_more</span>
+                </button>
+                <div class="faq-content hidden px-5 sm:px-6 pb-5 pt-1 text-xs sm:text-sm text-[#d8c4d6] border-t border-white/5">
+                  ${escapeHtmlSafe(item.answer)}
+                </div>
+              </div>
+            `).join('');
+            bindFaqToggles();
+          }
+        }
+      } catch (err) {
+        console.warn('Error hydrating site content:', err);
+      }
+    }
 
     // 8. Lightbox
     function openLightbox(src, title, desc) {
@@ -1935,6 +2383,7 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+      hydrateSiteContent();
       hydrateDynamicGallery();
       hydratePublishedSchedules();
     });

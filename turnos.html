@@ -150,13 +150,13 @@
     
     <!-- Hero / Header de Turnos -->
     <div class="text-center max-w-xl mx-auto space-y-3">
-      <div class="brush-ribbon px-4 sm:px-5 py-2 rounded inline-block text-xs font-bold text-white tracking-widest uppercase mb-1 shadow-md">
+      <div id="turnos-page-ribbon" class="brush-ribbon px-4 sm:px-5 py-2 rounded inline-block text-xs font-bold text-white tracking-widest uppercase mb-1 shadow-md">
         AGENDA ONLINE • MICA LASH ART ♡
       </div>
-      <h1 class="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold text-white">
+      <h1 id="turnos-page-title" class="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold text-white">
         Pedir Turno
       </h1>
-      <p class="text-xs sm:text-sm text-[#d8c4d6] leading-relaxed">
+      <p id="turnos-page-subtitle" class="text-xs sm:text-sm text-[#d8c4d6] leading-relaxed">
         Elegí tu tratamiento, seleccioná fecha en el calendario y asegurá tu horario en tiempo real.
       </p>
 
@@ -214,15 +214,15 @@
         <div class="p-4 rounded-2xl bg-gradient-to-r from-[#1e1622] to-[#120d15] border-2 border-[#ff3e96] flex items-center justify-between shadow-lg">
           <div class="flex items-center gap-3.5">
             <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-[#ffaed8] flex-shrink-0">
-              <img src="images/mica-bio-1.jpg" alt="Micaela" class="w-full h-full object-cover object-top">
+              <img id="turnos-prof-img" src="images/mica-bio-1.jpg" alt="Micaela" class="w-full h-full object-cover object-top">
             </div>
             <div>
               <div class="flex items-center gap-1.5">
-                <p class="font-display font-bold text-base text-white">Micaela</p>
+                <p id="turnos-prof-name" class="font-display font-bold text-base text-white">Micaela</p>
                 <span class="text-[#ff3e96] text-xs">👑</span>
               </div>
-              <p class="text-xs text-[#ff6ea7] font-semibold">Master Lash Artist &amp; Educadora (Desde 2016)</p>
-              <p class="text-[11px] text-gray-300">Bahía Blanca • Atención VIP</p>
+              <p id="turnos-prof-role" class="text-xs text-[#ff6ea7] font-semibold">Master Lash Artist &amp; Educadora (Desde 2016)</p>
+              <p id="turnos-prof-sub" class="text-[11px] text-gray-300">Bahía Blanca • Atención VIP</p>
             </div>
           </div>
           <span class="px-3 py-1 rounded-full bg-[#25D366]/20 border border-[#25D366] text-[#25D366] text-xs font-bold flex items-center gap-1">
@@ -559,10 +559,11 @@
 
         if (window.MicaBackend) {
           try {
-            const [fetched, pubDays, payInfo] = await Promise.all([
+            const [fetched, pubDays, payInfo, siteContent] = await Promise.all([
               window.MicaBackend.getServices(),
               window.MicaBackend.schedules ? window.MicaBackend.schedules.getPublishedDays(true) : Promise.resolve([]),
-              window.MicaBackend.payments ? window.MicaBackend.payments.getInfo() : Promise.resolve(null)
+              window.MicaBackend.payments ? window.MicaBackend.payments.getInfo() : Promise.resolve(null),
+              window.MicaBackend.content ? window.MicaBackend.content.getAll() : Promise.resolve(null)
             ]);
             if (fetched && fetched.length) {
               this.services = fetched;
@@ -573,6 +574,19 @@
             }
             if (payInfo) {
               this.paymentInfo = payInfo;
+            }
+            if (siteContent) {
+              const bs = siteContent.bookingSection || {};
+              const ab = siteContent.about || {};
+              const setTxt = (id, v) => { const el = document.getElementById(id); if (el && v) el.textContent = v; };
+              setTxt('turnos-page-ribbon', bs.turnosPageRibbon);
+              setTxt('turnos-page-title', bs.turnosPageTitle);
+              setTxt('turnos-page-subtitle', bs.turnosPageSubtitle);
+              setTxt('turnos-prof-name', ab.photoCardName);
+              setTxt('turnos-prof-role', ab.photoTopBadge);
+              setTxt('turnos-prof-sub', ab.photoCardRole);
+              const profImg = document.getElementById('turnos-prof-img');
+              if (profImg && ab.photoUrl) profImg.src = ab.photoUrl;
             }
           } catch(e) {}
         }
@@ -588,8 +602,8 @@
 
         if (requestedService) {
           this.selectServiceByName(requestedService);
-        } else {
-          this.selectService(this.services[1].id); // Híbridas por defecto
+        } else if (this.services.length > 0) {
+          this.selectService((this.services[1] || this.services[0]).id);
         }
 
         if (requestedDate && /^\d{4}-\d{2}-\d{2}$/.test(requestedDate)) {

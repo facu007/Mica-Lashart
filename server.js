@@ -176,6 +176,650 @@ function savePublishedSchedulesLocal(data) {
 
 localDatabase.publishedSchedules = loadPublishedSchedulesLocal();
 
+// =========================================================================
+// CONTENIDO EDITABLE DEL SITIO WEB, SERVICIOS, PROMOS, CURSOS Y SECCIONES
+// =========================================================================
+const SITE_CONTENT_FILE = path.join(dir, 'site-content.json');
+
+function getDefaultSiteContent() {
+  return {
+    services: [
+      {
+        id: '22222222-2222-2222-2222-222222222205',
+        name: 'Lifting de Pestañas + Nutrición Keratina',
+        slug: 'lifting-pestanas-botox',
+        badge: 'Lifting & Nutrición',
+        desc: 'Eleva tus pestañas naturales desde la raíz con curvatura armónica. Baño botox y keratina para engrosar y dar brillo sin rímel.',
+        duration: 60,
+        durationLabel: '60 min',
+        price: 24000,
+        deposit: 4800,
+        icon: '🌸',
+        category: 'lifting',
+        isActive: true,
+        sortOrder: 1
+      },
+      {
+        id: '22222222-2222-2222-2222-222222222201',
+        name: 'Extensiones Pelo a Pelo Clásicas',
+        slug: 'clasicas-pelo-a-pelo',
+        badge: 'Pelo a Pelo',
+        desc: 'Una extensión suave adherida por cada pestaña sana. Logra el aspecto de máscara perfecta, mirada abierta y ordenada sin recargar.',
+        duration: 90,
+        durationLabel: '90-120 min',
+        price: 28000,
+        deposit: 5600,
+        icon: '✨',
+        category: 'clasicas',
+        isActive: true,
+        sortOrder: 2
+      },
+      {
+        id: '22222222-2222-2222-2222-222222222202',
+        name: 'Volumen Híbrido / Light Russian',
+        slug: 'volumen-hibrido-glam',
+        badge: '★ Look Más Pedido',
+        desc: 'Abanicos ultralivianos armados en el momento combinados con técnica individual. Densidad esponjosa, dimensión glam y acabado aterciopelado.',
+        duration: 120,
+        durationLabel: '120 min',
+        price: 34000,
+        deposit: 6800,
+        icon: '👑',
+        category: 'volumen',
+        isActive: true,
+        sortOrder: 3
+      },
+      {
+        id: '22222222-2222-2222-2222-222222222203',
+        name: 'Volumen Ruso 3D-5D',
+        slug: 'volumen-ruso-3d-5d',
+        badge: 'Densidad & Mirada Intensa',
+        desc: 'Abanicos artesanales ultralivianos hechos a mano. Densidad sofisticada y curvatura impecable.',
+        duration: 135,
+        durationLabel: '135 min',
+        price: 42000,
+        deposit: 8400,
+        icon: '💎',
+        category: 'volumen',
+        isActive: true,
+        sortOrder: 4
+      },
+      {
+        id: '22222222-2222-2222-2222-222222222204',
+        name: 'Mega Volumen Velvet',
+        slug: 'mega-volumen-velvet',
+        badge: 'Impacto Black Intenso',
+        desc: 'Máxima cobertura y textura aterciopelada. Fibras extra finas 0.03mm de máxima ligereza.',
+        duration: 150,
+        durationLabel: '150 min',
+        price: 48000,
+        deposit: 9600,
+        icon: '🖤',
+        category: 'volumen',
+        isActive: true,
+        sortOrder: 5
+      },
+      {
+        id: '22222222-2222-2222-2222-222222222206',
+        name: 'Laminado & Perfilado de Cejas',
+        slug: 'laminado-diseno-cejas',
+        badge: 'Cejas VIP',
+        desc: 'Direcciona y fija cada vello para enmarcar el rostro con simetría orgánica. Incluye diseño personalizado con pinza e hidratación.',
+        duration: 45,
+        durationLabel: '45 min',
+        price: 20000,
+        deposit: 4000,
+        icon: '🦋',
+        category: 'volumen',
+        isActive: true,
+        sortOrder: 6
+      },
+      {
+        id: '22222222-2222-2222-2222-222222222207',
+        name: 'Mantenimiento de Extensiones (Service)',
+        slug: 'mantenimiento-extensiones',
+        badge: 'Service Mensual',
+        desc: 'Reemplazo de pestañas regeneradas para mantener el diseño simétrico, fresco y limpio de forma continua cada 2 a 3 semanas.',
+        duration: 60,
+        durationLabel: '60 min',
+        price: 18000,
+        deposit: 3600,
+        icon: '💫',
+        category: 'clasicas',
+        isActive: true,
+        sortOrder: 7
+      }
+    ],
+    promosSection: {
+      pill: 'Promociones de Temporada',
+      title: 'Elegí la opción para potenciar tus resultados',
+      subtitle: 'Paquetes y combos pensados para maximizar la belleza de tu mirada y mantenerla impecable por semanas.',
+      bannerTag: 'Agenda Online 24/7',
+      bannerTitle: 'Reservá tu Horario en Tiempo Real',
+      bannerSubtitle: 'Zona Htal. Penna - Villa Cerrito - Bahía Blanca',
+      bannerBtnText: 'Abrir Agenda Online',
+      items: [
+        {
+          id: 'promo_1',
+          badge: 'Combo Look Natural',
+          duration: '75 min',
+          title: 'Lifting + Botox + Perfilado',
+          desc: 'Pestañas curvadas con nutrición profunda y cejas perfectamente definidas y ordenadas. Cero uso de rímel diario.',
+          priceLabel: 'Precio Promoción',
+          price: 22000,
+          ribbonText: 'La opción para potenciar tus resultados ♡',
+          btnText: 'Pedir Turno Promo',
+          serviceLink: 'lifting',
+          isVip: false,
+          vipBadge: ''
+        },
+        {
+          id: 'promo_2',
+          badge: 'Pack Glow Total',
+          duration: '120 min',
+          title: 'Extensiones Híbridas / Rusas + Cejas',
+          desc: 'Densidad suave, textura aterciopelada y abanicos ultralivianos hechos a mano más laminado de cejas completo.',
+          priceLabel: 'Inversión Especial',
+          price: 34000,
+          ribbonText: 'La opción para potenciar tus resultados ♡',
+          btnText: 'Reservar Turno VIP',
+          serviceLink: 'hibrido',
+          isVip: true,
+          vipBadge: '★ Más Elegido VIP ★'
+        },
+        {
+          id: 'promo_3',
+          badge: 'Mantenimiento Mensual',
+          duration: '60 min',
+          title: 'Service Frecuente (Cada 2 a 3 sem)',
+          desc: 'Retiro de piezas crecidas y relleno prolijo para lucir tu set completo, limpio y simétrico todo el mes.',
+          priceLabel: 'Precio Clientas Frecuentes',
+          price: 18000,
+          ribbonText: 'Cuidado continuo de tu mirada ♡',
+          btnText: 'Agendar Service',
+          serviceLink: 'mantenimiento',
+          isVip: false,
+          vipBadge: ''
+        }
+      ]
+    },
+    coursesSection: {
+      pill: '🎓 ACADEMIA MICA LASH ART ♡ CAPACITACIONES 🎓',
+      title: 'Cursos Profesionales & Masterclasses',
+      subtitle: 'Aprendé las técnicas más solicitadas del mercado de la mano de Micaela (lashista y educadora desde 2016). Formación personalizada con práctica en modelo real, kit profesional completo y doble certificación.',
+      trustBadges: [
+        { icon: '🎓', title: 'Certificado Oficial', subtitle: 'Válido para inserción profesional' },
+        { icon: '📦', title: 'Kit Completo Incluido', subtitle: 'Materiales profesionales importados' },
+        { icon: '👁️', title: 'Práctica Real Supervisada', subtitle: 'Atención paso a paso con modelo' },
+        { icon: '💬', title: 'Mentoría Permanente', subtitle: 'Canal directo de consultas con Mica' }
+      ],
+      courses: [
+        {
+          id: '33333333-3333-3333-3333-333333333301',
+          slug: 'curso-inicial-clasicas',
+          badge: '★ El Más Elegido',
+          duration: '2 Jornadas',
+          title: 'Curso Inicial: Clásicas 1 a 1',
+          subtitle: 'Extensiones Pelo a Pelo • Nivel Inicial sin experiencia previa',
+          desc: 'El curso base fundamental para insertarte en el mundo lash. Aprendé desde cero anatomía ocular, bioseguridad, dirección de postura, aislación milimétrica y mapping adaptado a cada ojo.',
+          syllabus: [
+            'Práctica real en cabeza técnica y modelo viva',
+            'Kit profesional completo (pinzas, adhesivo, blíster)',
+            'Manual teórico encuadernado y certificado oficial',
+            'Seguimiento y asesoría post-curso de por vida'
+          ],
+          priceLabel: 'Inversión',
+          price: 75000,
+          priceNote: 'Opciones en cuotas • Seña previa',
+          modalityFilter: 'presencial',
+          btnText: 'Consultar por WhatsApp',
+          whatsappText: 'Hola Mica! Quiero info y temario del Curso Inicial de Clásicas Pelo a Pelo',
+          isActive: true,
+          sortOrder: 1
+        },
+        {
+          id: '33333333-3333-3333-3333-333333333302',
+          slug: 'masterclass-volumen-ruso',
+          badge: '👑 Especialización Avanzada',
+          duration: '1 Jornada VIP',
+          title: 'Masterclass: Volumen Ruso & Mega',
+          subtitle: 'Técnicas Rusas • Armado manual de abanicos 2D a 6D',
+          desc: 'Llevá tu técnica al máximo nivel. Dominá el armado de abanicos en tira y pinza, retención blindada (hasta 6 semanas), mapping avanzado (Fox, Wet, Kim) y química del adhesivo.',
+          syllabus: [
+            'Técnica artesanal sin abanicos prearmados',
+            'Secretos de retención extrema y control de humedad',
+            'Módulo de fotografía y edición para Instagram',
+            'Certificado de Master Lashista en Volumen'
+          ],
+          priceLabel: 'Inversión',
+          price: 88000,
+          priceNote: 'Cupos ultra limitados (1 a 1)',
+          modalityFilter: 'ambos',
+          btnText: 'Consultar por WhatsApp',
+          whatsappText: 'Hola Mica! Quiero info y fechas de la Masterclass de Volumen Ruso',
+          isActive: true,
+          sortOrder: 2
+        },
+        {
+          id: '33333333-3333-3333-3333-333333333303',
+          slug: 'taller-lifting-laminado',
+          badge: '🌿 Rápida Salida Laboral',
+          duration: '1 Día Intensivo',
+          title: 'Taller Dual: Lifting & Laminado',
+          subtitle: 'Lifting con Keratina + Laminado & Perfilado de Cejas',
+          desc: 'Combiná los dos tratamientos naturales más pedidos en una sola capacitación. Aprendé tiempos exactos de exposición, elección de moldes según el párpado, tinte y nutrición botox.',
+          syllabus: [
+            'Modalidad Presencial VIP u Online en Video HD',
+            'Visagismo y perfilado de cejas con hilo y pinza',
+            'Dossier descargable y lista de proveedores directos',
+            'Doble Certificación Oficial incluida'
+          ],
+          priceLabel: 'Inversión',
+          price: 48000,
+          priceNote: 'Online: $28.000 • Material incluido',
+          modalityFilter: 'ambos',
+          btnText: 'Consultar por WhatsApp',
+          whatsappText: 'Hola Mica! Quiero info del Taller Dual de Lifting y Laminado de Cejas',
+          isActive: true,
+          sortOrder: 3
+        }
+      ]
+    },
+    hero: {
+      statusPill: 'Turnos Disponibles Esta Semana • Bahía Blanca',
+      scriptTitle: '¿Lista para sentir la diferencia?',
+      mainTitleLine1: 'Miradas con arte,',
+      mainTitleHighlight: 'precisión & elegancia.',
+      ribbonTop: 'RESERVÁ TU TURNO CON',
+      ribbonBrand: 'Mica Lash Art',
+      description: 'Diseño exclusivo de pestañas, visagismo y cuidado integral. Un espacio privado en Bahía Blanca para relajarte mientras transformamos tu mirada sin dañar tu pestaña natural.',
+      primaryBtnText: 'Pedir Turno Online',
+      secondaryBtnText: 'Ver Precios & Promos',
+      guarantees: [
+        '100% Sin dolor',
+        'Nutrición folicular',
+        '+150 clientas felices'
+      ],
+      styles: [
+        {
+          id: 'hibrido',
+          name: 'Volumen Híbrido',
+          badge: '★ Look Más Pedido',
+          title: 'Volumen Híbrido Glam',
+          detail: 'Densidad suave, textura aterciopelada y abanicos ultralivianos en camilla',
+          price: '$34.000',
+          time: '120 min',
+          img: 'images/ej-volumen-hibrido.jpg'
+        },
+        {
+          id: 'lifting',
+          name: 'Lifting & Botox',
+          badge: '🌿 100% Pestaña Natural',
+          title: 'Lifting con Keratina Botox',
+          detail: 'Eleva tus pestañas naturales desde la raíz con nutrición botox y tinte negro',
+          price: '$24.000',
+          time: '75 min',
+          img: 'images/ej-lifting-botox.jpg'
+        },
+        {
+          id: 'comparativa',
+          name: 'Comparativa Real',
+          badge: '✨ Ojo Real vs Natural',
+          title: 'Antes vs Después en Directo',
+          detail: 'Apertura total de mirada comprobada en sesión real con máxima fijación',
+          price: '$34.000',
+          time: '120 min',
+          img: 'images/ej-comparativa-real.jpg'
+        },
+        {
+          id: 'ruso',
+          name: 'Volumen Ruso',
+          badge: '🔥 Máxima Densidad 3D-5D',
+          title: 'Mega Volumen Ruso',
+          detail: 'Abanicos artesanales abiertos a mano, negro carbón y acabado aterciopelado',
+          price: '$42.000',
+          time: '150 min',
+          img: 'images/ej-volumen-ruso.jpg'
+        }
+      ]
+    },
+    servicesSection: {
+      pill: 'Catálogo del Estudio',
+      title: 'Técnicas & Tratamientos VIP',
+      subtitle: 'Aislación prolija 1 a 1 sin excesos ni peso. Seleccioná el servicio para agendar tu horario exclusivo.',
+      ctaCardTitle: '¿Querés ver todos los horarios libres?',
+      ctaCardDesc: 'Consultá el calendario interactivo en tiempo real, elegí el día y horario que más te convenga y dejá tu nota de preferencia.',
+      ctaCardBtn: 'Ver Calendario de Turnos'
+    },
+    gallerySection: {
+      pill: 'Trabajos Reales',
+      title: 'Galería de Miradas',
+      subtitle: 'Aislación milimétrica, cero grumos y terminación de alta gama en cada sesión. Tocá para ver en detalle.',
+      instagramBtnText: 'Ver más de 150 trabajos en Instagram @mica.lashart'
+    },
+    about: {
+      photoUrl: 'images/mica-bio-1.jpg',
+      photoTopBadge: 'Lashista & Maquilladora desde 2016',
+      photoCardName: 'Micaela',
+      photoCardRole: 'Creadora de Mica Lash Art • Bahía Blanca',
+      photoCardSub: 'Atención VIP & Capacitaciones',
+      stat1Value: '9+ Años',
+      stat1Label: 'De Experiencia (2016)',
+      stat2Value: '+150',
+      stat2Label: 'Clientas & Alumnas',
+      headerPill: '🎀✨ ¡HOLA, SOY MICA! BIENVENIDAS A MI MUNDO ✨🎀',
+      headline: '"Hacer de mi pasión mi profesión." 👑',
+      subheadline: 'Si todavía no me conocés, ¡me presento! 💗',
+      introParagraph1: 'Soy Micaela, creadora de Mica Lash Art, lashista desde 2016, maquilladora y apasionada por el mundo de la belleza. 🦋💄',
+      introParagraph2: 'A lo largo de los años fui aprendiendo, capacitándome y sumando nuevos servicios para ofrecerles una experiencia cada vez más completa, siempre con amor, dedicación y atención a cada detalle. 🩷',
+      boxTitle: '¿Qué podés encontrar en Mica Lash Art?',
+      specialties: [
+        { icon: '🎀', text: 'Extensiones de pestañas y diseños personalizados' },
+        { icon: '🤍', text: 'Lifting de pestañas' },
+        { icon: '🦋', text: 'Diseño y perfilado de cejas' },
+        { icon: '🌸', text: 'Depilación' },
+        { icon: '💄', text: 'Maquillaje profesional' },
+        { icon: '✨', text: 'Electroestimulación corporal' }
+      ],
+      quote: '"Cada servicio tiene su magia, pero todos comparten lo mismo: las ganas de ayudarte a resaltar tu belleza y que te sientas hermosa, cómoda y segura de vos misma. 🫶🏻"',
+      closingParagraph1: 'Detrás de esta marca hay años de trabajo, esfuerzo, aprendizaje y muchísimos sueños por cumplir. Y esto es solo el comienzo… 💫',
+      closingParagraph2: 'Gracias a cada clienta y alumna que confía en mí, recomienda mi trabajo y me acompaña en este camino. Ustedes son una parte muy importante de todo lo que estoy construyendo. 🥹💕',
+      closingSignature: 'Bienvenidas a mi espacio, a mi trabajo y a este sueño llamado MICA LASH ART. 🎀🩷'
+    },
+    bookingSection: {
+      pill: '✨ AGENDA ONLINE EN TIEMPO REAL ✨',
+      title: 'Reservá Tu Turno en Pocos Clics',
+      subtitle: 'Accedé a nuestra aplicación exclusiva de turnos. Seleccioná tu tratamiento favorito, elegí el día en el calendario interactivo y asegurá tu horario sin esperas.',
+      primaryBtnText: 'Abrir Agenda de Turnos',
+      secondaryBtnText: 'Iniciar Sesión Clientas',
+      features: [
+        { icon: '🗓️', title: 'Calendario Interactivo', desc: 'Elegí tu fecha y hora exacta disponible en vivo.' },
+        { icon: '⚡', title: 'Reserva Directa Online', desc: 'Tu cita queda registrada al instante en nuestra agenda.' },
+        { icon: '📅', title: 'Google Calendar', desc: 'Sincronizá tu cita directo en tu celular.' }
+      ],
+      turnosPageRibbon: 'AGENDA ONLINE • MICA LASH ART ♡',
+      turnosPageTitle: 'Pedir Turno',
+      turnosPageSubtitle: 'Elegí tu tratamiento, seleccioná fecha en el calendario y asegurá tu horario en tiempo real.',
+      turnosHoursNote: 'Atención: Mar a Sáb 10:00 a 19:30 hs'
+    },
+    location: {
+      pill: 'Estudio Privado',
+      title: 'Visitanos en Bahía Blanca',
+      subtitle: 'Atención en estudio privado climatizado, sin esperas ni ruido exterior. Tu sesión es 100% personalizada.',
+      addressTitle: 'Ubicación',
+      addressText: 'Zona Htal. Penna - Villa Cerrito - Bahía Blanca',
+      addressNote: 'Dirección exacta enviada por WhatsApp al confirmar seña',
+      hoursTitle: 'Días & Horarios',
+      hoursLine1: 'Lunes a Viernes: 10:00 a 19:30 hs',
+      hoursLine2: 'Sábados: 10:00 a 16:00 hs (Cupos limitados)',
+      studioPhotoUrl: 'images/studio-ambiance-vip.jpg',
+      whatsappNumber: '5492914491141',
+      instagramHandle: '@mica.lashart',
+      instagramUrl: 'https://instagram.com/mica.lashart',
+      brandName: 'MICA LASH ART',
+      footerSubtitle: 'Zona Htal. Penna - Villa Cerrito - Bahía Blanca • Agenda de Turnos Online',
+      footerCopyright: '© 2025 Mica Lash Art. Todos los derechos reservados.'
+    },
+    faqs: {
+      pill: 'Información Útil',
+      title: 'Preguntas Frecuentes',
+      subtitle: 'Todo lo que tenés que saber antes de tu cita en el estudio.',
+      items: [
+        {
+          id: 'faq_1',
+          question: '¿Duelen las extensiones o el lifting?',
+          answer: 'Para nada. Es un proceso 100% indoloro, no invasivo y muy relajante. La mayoría de las clientas se duerme plácidamente durante la sesión sobre nuestra camilla ergonómica.'
+        },
+        {
+          id: 'faq_2',
+          question: '¿Cuánto duran las extensiones de pestañas?',
+          answer: 'Acompañan el ciclo biológico natural de tu pestaña (4 a 6 semanas). Para mantenerlas siempre tupidas y prolijas, se sugiere realizar el service de mantenimiento cada 2 a 3 semanas.'
+        },
+        {
+          id: 'faq_3',
+          question: '¿Cómo llego a mi turno y cómo preparo mis pestañas?',
+          answer: 'Es fundamental asistir con los ojos completamente libres de maquillaje, rímel y sombras, y sin cremas en el contorno de ojos para garantizar la máxima adherencia y duración.'
+        },
+        {
+          id: 'faq_4',
+          question: '¿Cómo se confirma el turno en el estudio?',
+          answer: 'El turno se reserva formalmente mediante transferencia bancaria de una seña. Una vez recibida, te enviamos la confirmación del horario y la dirección exacta en Zona Htal. Penna - Villa Cerrito.'
+        }
+      ]
+    }
+  };
+}
+
+function loadSiteContentLocal() {
+  const defaults = getDefaultSiteContent();
+  try {
+    if (fs.existsSync(SITE_CONTENT_FILE)) {
+      const parsed = JSON.parse(fs.readFileSync(SITE_CONTENT_FILE, 'utf-8'));
+      if (parsed && typeof parsed === 'object') {
+        return {
+          ...defaults,
+          ...parsed,
+          services: Array.isArray(parsed.services) && parsed.services.length > 0 ? parsed.services : defaults.services,
+          promosSection: { ...defaults.promosSection, ...(parsed.promosSection || {}) },
+          coursesSection: {
+            ...defaults.coursesSection,
+            ...(parsed.coursesSection || {}),
+            courses: Array.isArray(parsed.coursesSection?.courses) ? parsed.coursesSection.courses : defaults.coursesSection.courses
+          },
+          hero: { ...defaults.hero, ...(parsed.hero || {}) },
+          servicesSection: { ...defaults.servicesSection, ...(parsed.servicesSection || {}) },
+          gallerySection: { ...defaults.gallerySection, ...(parsed.gallerySection || {}) },
+          about: { ...defaults.about, ...(parsed.about || {}) },
+          bookingSection: { ...defaults.bookingSection, ...(parsed.bookingSection || {}) },
+          location: { ...defaults.location, ...(parsed.location || {}) },
+          faqs: { ...defaults.faqs, ...(parsed.faqs || {}) }
+        };
+      }
+    }
+  } catch (e) {
+    console.warn('[SiteContent] Error al leer site-content.json:', e.message);
+  }
+  return defaults;
+}
+
+function saveSiteContentLocal(contentObj) {
+  try {
+    fs.writeFileSync(SITE_CONTENT_FILE, JSON.stringify(contentObj, null, 2), 'utf-8');
+  } catch (e) {
+    console.warn('[SiteContent] Error al guardar site-content.json:', e.message);
+  }
+}
+
+localDatabase.siteContent = loadSiteContentLocal();
+
+function mapDbCategoryForServicesTable(cat) {
+  const c = String(cat || '').toLowerCase();
+  if (c === 'lifting') return 'lifting';
+  if (c === 'cejas') return 'cejas';
+  if (c === 'combo') return 'combo';
+  return 'extensiones';
+}
+
+async function getSiteContentFull() {
+  if (supabase) {
+    try {
+      const { data, error } = await supabase
+        .from('settings')
+        .select('value')
+        .eq('key', 'site_content')
+        .maybeSingle();
+
+      if (!error && data && data.value && typeof data.value === 'object') {
+        const defaults = getDefaultSiteContent();
+        const remote = data.value;
+        const merged = {
+          ...defaults,
+          ...remote,
+          services: Array.isArray(remote.services) && remote.services.length > 0 ? remote.services : defaults.services,
+          promosSection: { ...defaults.promosSection, ...(remote.promosSection || {}) },
+          coursesSection: {
+            ...defaults.coursesSection,
+            ...(remote.coursesSection || {}),
+            courses: Array.isArray(remote.coursesSection?.courses) ? remote.coursesSection.courses : defaults.coursesSection.courses
+          },
+          hero: { ...defaults.hero, ...(remote.hero || {}) },
+          servicesSection: { ...defaults.servicesSection, ...(remote.servicesSection || {}) },
+          gallerySection: { ...defaults.gallerySection, ...(remote.gallerySection || {}) },
+          about: { ...defaults.about, ...(remote.about || {}) },
+          bookingSection: { ...defaults.bookingSection, ...(remote.bookingSection || {}) },
+          location: { ...defaults.location, ...(remote.location || {}) },
+          faqs: { ...defaults.faqs, ...(remote.faqs || {}) }
+        };
+        localDatabase.siteContent = merged;
+        saveSiteContentLocal(merged);
+        return merged;
+      }
+    } catch (e) {
+      console.warn('[Supabase] Error leyendo site_content:', e.message);
+    }
+  }
+  if (!localDatabase.siteContent) {
+    localDatabase.siteContent = loadSiteContentLocal();
+  }
+  return localDatabase.siteContent;
+}
+
+async function syncServicesToSupabaseTable(servicesList) {
+  if (!supabase || !Array.isArray(servicesList)) return;
+  try {
+    const crypto = require('crypto');
+    const rows = servicesList.map((s, idx) => {
+      const rawId = String(s.id || '');
+      const validUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(rawId)
+        ? rawId
+        : crypto.randomUUID();
+      s.id = validUuid;
+      const slugBase = String(s.slug || s.name || `servicio-${idx + 1}`)
+        .toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '') || `servicio-${idx + 1}`;
+      s.slug = slugBase;
+      const priceNum = Number(s.price !== undefined ? s.price : s.price_ars) || 0;
+      const depNum = Number(s.deposit !== undefined ? s.deposit : s.deposit_ars) || Math.ceil((priceNum * 0.2) / 100) * 100;
+      return {
+        id: validUuid,
+        name: s.name || 'Servicio',
+        slug: `${slugBase}-${validUuid.slice(-4)}`,
+        badge: s.badge || '',
+        description: s.desc || s.description || '',
+        duration_minutes: Number(s.duration || s.duration_minutes) || 90,
+        price_ars: priceNum,
+        deposit_ars: depNum,
+        icon: s.icon || '✨',
+        category: mapDbCategoryForServicesTable(s.category),
+        is_active: s.isActive !== false,
+        sort_order: Number(s.sortOrder) || (idx + 1)
+      };
+    });
+    if (rows.length > 0) {
+      await supabase.from('services').upsert(rows, { onConflict: 'id' });
+    }
+  } catch (e) {
+    console.warn('[Supabase] Aviso sincronizando tabla services:', e.message);
+  }
+}
+
+async function syncCoursesToSupabaseTable(coursesList) {
+  if (!supabase || !Array.isArray(coursesList)) return;
+  try {
+    const crypto = require('crypto');
+    const rows = coursesList.map((c, idx) => {
+      const rawId = String(c.id || '');
+      const validUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(rawId)
+        ? rawId
+        : crypto.randomUUID();
+      c.id = validUuid;
+      const slugBase = String(c.slug || c.title || `curso-${idx + 1}`)
+        .toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '') || `curso-${idx + 1}`;
+      c.slug = slugBase;
+      const priceNum = Number(c.price !== undefined ? c.price : c.price_ars) || 0;
+      return {
+        id: validUuid,
+        title: c.title || 'Curso',
+        slug: `${slugBase}-${validUuid.slice(-4)}`,
+        level: c.subtitle || c.level || 'Inicial',
+        modality: c.modalityFilter || c.modality || 'presencial',
+        duration_hours: c.duration || c.duration_hours || '1 Jornada',
+        price_ars: priceNum,
+        deposit_ars: Number(c.deposit || c.deposit_ars) || Math.ceil((priceNum * 0.2) / 100) * 100,
+        includes_kit: true,
+        badge: c.badge || 'Certificado Oficial',
+        description: c.desc || c.description || '',
+        syllabus: Array.isArray(c.syllabus) ? c.syllabus : [],
+        is_active: c.isActive !== false,
+        sort_order: Number(c.sortOrder) || (idx + 1)
+      };
+    });
+    if (rows.length > 0) {
+      await supabase.from('courses').upsert(rows, { onConflict: 'id' });
+    }
+  } catch (e) {
+    console.warn('[Supabase] Aviso sincronizando tabla courses:', e.message);
+  }
+}
+
+async function saveSiteContentFull(incomingContent) {
+  const current = await getSiteContentFull();
+  const merged = {
+    ...current,
+    ...incomingContent,
+    services: Array.isArray(incomingContent.services) ? incomingContent.services : current.services,
+    promosSection: incomingContent.promosSection ? { ...current.promosSection, ...incomingContent.promosSection } : current.promosSection,
+    coursesSection: incomingContent.coursesSection ? {
+      ...current.coursesSection,
+      ...incomingContent.coursesSection,
+      courses: Array.isArray(incomingContent.coursesSection.courses) ? incomingContent.coursesSection.courses : current.coursesSection.courses
+    } : current.coursesSection,
+    hero: incomingContent.hero ? { ...current.hero, ...incomingContent.hero } : current.hero,
+    servicesSection: incomingContent.servicesSection ? { ...current.servicesSection, ...incomingContent.servicesSection } : current.servicesSection,
+    gallerySection: incomingContent.gallerySection ? { ...current.gallerySection, ...incomingContent.gallerySection } : current.gallerySection,
+    about: incomingContent.about ? { ...current.about, ...incomingContent.about } : current.about,
+    bookingSection: incomingContent.bookingSection ? { ...current.bookingSection, ...incomingContent.bookingSection } : current.bookingSection,
+    location: incomingContent.location ? { ...current.location, ...incomingContent.location } : current.location,
+    faqs: incomingContent.faqs ? { ...current.faqs, ...incomingContent.faqs } : current.faqs,
+    updatedAt: new Date().toISOString()
+  };
+
+  if (Array.isArray(incomingContent.services)) {
+    await syncServicesToSupabaseTable(merged.services);
+  }
+  if (incomingContent.coursesSection && Array.isArray(incomingContent.coursesSection.courses)) {
+    await syncCoursesToSupabaseTable(merged.coursesSection.courses);
+  }
+
+  localDatabase.siteContent = merged;
+  localDatabase.services = merged.services;
+  saveSiteContentLocal(merged);
+
+  if (supabase) {
+    try {
+      const { error } = await supabase
+        .from('settings')
+        .upsert({
+          key: 'site_content',
+          value: merged,
+          description: 'Contenido editable completo del sitio web, precios, cursos, promos y secciones'
+        }, { onConflict: 'key' });
+      if (error) {
+        console.warn('[Supabase] Error guardando site_content en settings:', error.message);
+      }
+    } catch (e) {
+      console.warn('[Supabase] Excepción guardando site_content:', e.message);
+    }
+  }
+
+  return merged;
+}
+
 async function getPublishedSchedulesMap() {
   if (supabase) {
     try {
@@ -347,18 +991,51 @@ async function handleApiRequest(req, res, pathname, queryParams) {
 
   // 3. GET /api/services
   if (req.method === 'GET' && pathname === '/api/services') {
-    if (supabase) {
-      const { data, error } = await supabase
-        .from('services')
-        .select('*')
-        .eq('is_active', true)
-        .order('sort_order', { ascending: true });
+    const includeInactive = queryParams.get('all') === 'true';
+    const content = await getSiteContentFull();
+    const list = Array.isArray(content.services) ? content.services : localDatabase.services;
+    const filtered = includeInactive ? list : list.filter(s => s.isActive !== false);
+    return sendJson(res, 200, { services: filtered });
+  }
 
-      if (!error && data && data.length > 0) {
-        return sendJson(res, 200, { services: data });
-      }
+  // 3b. GET /api/site-content (Todo el contenido editable de la web, precios, cursos y secciones)
+  if (req.method === 'GET' && pathname === '/api/site-content') {
+    try {
+      const content = await getSiteContentFull();
+      return sendJson(res, 200, { content });
+    } catch (err) {
+      return sendJson(res, 500, { error: err.message });
     }
-    return sendJson(res, 200, { services: localDatabase.services });
+  }
+
+  // 3c. PUT /api/site-content (Guardar cambios en precios, servicios, cursos, promos o secciones)
+  if ((req.method === 'PUT' || req.method === 'POST') && pathname === '/api/site-content') {
+    try {
+      const body = await parseJsonBody(req);
+      const payload = body.content || body;
+      const saved = await saveSiteContentFull(payload);
+      return sendJson(res, 200, { success: true, content: saved });
+    } catch (err) {
+      return sendJson(res, 500, { error: err.message });
+    }
+  }
+
+  // 3d. POST /api/site-content/reset (Restaurar una sección o todo el sitio a los valores originales)
+  if (req.method === 'POST' && pathname === '/api/site-content/reset') {
+    try {
+      const body = await parseJsonBody(req);
+      const section = body.section;
+      const defaults = getDefaultSiteContent();
+      let updated;
+      if (section && defaults[section] !== undefined) {
+        updated = await saveSiteContentFull({ [section]: defaults[section] });
+      } else {
+        updated = await saveSiteContentFull(defaults);
+      }
+      return sendJson(res, 200, { success: true, content: updated });
+    } catch (err) {
+      return sendJson(res, 500, { error: err.message });
+    }
   }
 
   // 4. GET /api/turnos/availability
